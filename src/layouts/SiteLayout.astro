@@ -1,4 +1,5 @@
 ---
+import "../styles/global.css";
 const { title = "Materuni Hosts | Authentic Chagga Experiences", description = "Discover authentic Chagga coffee, waterfalls, food and village life in Materuni, Kilimanjaro, Tanzania." } = Astro.props;
 ---
 <!doctype html>
@@ -8,7 +9,7 @@ const { title = "Materuni Hosts | Authentic Chagga Experiences", description = "
 <title>{title}</title><meta name="description" content={description} /><meta name="theme-color" content="#173b2d" />
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/styles/global.css" />
+
 </head>
 <body>
 <header class="site-header"><a class="brand" href="/" aria-label="Materuni Hosts home"><span class="brand-mark">M</span><span class="brand-word">MATERUNI<small>HOSTS</small></span></a>
@@ -18,4 +19,5 @@ const { title = "Materuni Hosts | Authentic Chagga Experiences", description = "
 <footer class="site-footer"><div><a class="brand brand-light" href="/"><span class="brand-mark">M</span><span class="brand-word">MATERUNI<small>HOSTS</small></span></a><p>Authentic Chagga experiences in Materuni Village, Moshi, Tanzania.</p><p class="tagline">Come as a guest. Leave as a friend.</p><div class="social-links" aria-label="Social media"><a href="https://www.instagram.com/REPLACE_MATERUNI_HOSTS" data-social-key="instagram_url" target="_blank" rel="noopener noreferrer" aria-label="Instagram">◎ <span>Instagram</span></a><a href="https://www.facebook.com/REPLACE_MATERUNI_HOSTS" data-social-key="facebook_url" target="_blank" rel="noopener noreferrer" aria-label="Facebook">f <span>Facebook</span></a><a href="https://www.tripadvisor.com/REPLACE_MATERUNI_HOSTS" data-social-key="tripadvisor_url" target="_blank" rel="noopener noreferrer" aria-label="Tripadvisor">⌖ <span>Tripadvisor</span></a><a href="https://wa.me/255612068540" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">◉ <span>WhatsApp</span></a></div></div>
 <div><strong>Explore</strong><a href="/experiences">Our experiences</a><a href="/itinerary">Build your itinerary</a><a href="/reviews">Guest reviews</a><a href="/sustainability">Our approach</a><a href="/travel-guide">Travel guide</a><a href="/booking">Book your experience</a></div>
 <div><strong>Talk to a local host</strong><a href="https://wa.me/255612068540" target="_blank" rel="noopener noreferrer">WhatsApp +255 612 068 540</a><a href="mailto:hello@materunihosts.com">hello@materunihosts.com</a><span>Materuni Village, Moshi · Tanzania</span></div><div class="copyright">© {new Date().getFullYear()} Materuni Hosts. Thoughtful experiences, rooted in place.</div></footer>
-</body></html>\n<script>\nconst publicSettingsUrl="https://sskmzswoeljxwojcszta.supabase.co/rest/v1/site_settings?select=setting_key,setting_value";\nconst publicKey="sb_publishable_G9ru4P_yKzievqiXjXEEbQ_p28cB_NZ";\nfetch(publicSettingsUrl,{headers:{"apikey":publicKey,"Authorization":"Bearer "+publicKey}}).then(r=>r.ok?r.json():[]).then(rows=>{for(const row of rows){const link=document.querySelector('[data-social-key="'+row.setting_key+'"]');if(link&&/^https:\\/\\//i.test(row.setting_value)){link.href=row.setting_value;}}}).catch(()=>{});\n</script>\n
+\n<script>\nconst publicSettingsUrl="https://sskmzswoeljxwojcszta.supabase.co/rest/v1/site_settings?select=setting_key,setting_value";\nconst publicKey="sb_publishable_G9ru4P_yKzievqiXjXEEbQ_p28cB_NZ";\nfetch(publicSettingsUrl,{headers:{"apikey":publicKey,"Authorization":"Bearer "+publicKey}}).then(r=>r.ok?r.json():[]).then(rows=>{for(const row of rows){const link=document.querySelector('[data-social-key="'+row.setting_key+'"]');if(link&&/^https:\\/\\//i.test(row.setting_value)){link.href=row.setting_value;}}}).catch(()=>{});\n</script>
+</body></html>\n
