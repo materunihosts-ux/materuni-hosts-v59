@@ -23,10 +23,10 @@ fetch(siteContentEndpoint,{headers:{apikey:siteContentKey,Authorization:"Bearer 
  .then(response=>response.ok?response.json():[])
  .then(rows=>{
   if(!Array.isArray(rows))return;
-  const content=new Map(rows.filter(row=>typeof row.content==="string"&&/^https:\/\//i.test(row.content)).map(row=>[row.id,row.content]));
+  const content=new Map(rows.filter(row=>typeof row.content==="string").map(row=>[row.id,row.content]));
   document.querySelectorAll("[data-site-content]").forEach(node=>{const value=content.get(node.dataset.siteContent);if(value)node.textContent=value});
   document.querySelectorAll("[data-site-image]").forEach(node=>{
-   const url=content.get(node.dataset.siteImage);if(!url)return;
+   const url=content.get(node.dataset.siteImage);if(!url||!/^https:\/\//i.test(url))return;
    if(node.tagName==="IMG")node.src=url;
    else node.style.backgroundImage="linear-gradient(0deg,rgba(14,35,25,.22),rgba(14,35,25,.04)),url("+JSON.stringify(url)+")";
   });
