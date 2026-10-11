@@ -67,6 +67,8 @@ function renderTargets(){
      const key=encodeURIComponent(target.experienceKey);
      const updated=await api("/rest/v1/experience_catalog?experience_key=eq."+key,{method:"PATCH",headers:{"Content-Type":"application/json","Prefer":"return=representation"},body:JSON.stringify({image_url:publicUrl,updated_at:new Date().toISOString()})});
      if(!Array.isArray(updated)||!updated.length)throw new Error("Image uploaded, but no matching package was found in the catalogue.");
+     // Keep homepage's legacy image slot in sync with the live package catalogue.
+     await api("/rest/v1/site_content?on_conflict=id",{method:"POST",headers:{"Content-Type":"application/json","Prefer":"resolution=merge-duplicates,return=minimal"},body:JSON.stringify({id:target.key,content:publicUrl,updated_at:new Date().toISOString()})});
     }else{
      await api("/rest/v1/site_content?on_conflict=id",{method:"POST",headers:{"Content-Type":"application/json","Prefer":"resolution=merge-duplicates,return=minimal"},body:JSON.stringify({id:target.key,content:publicUrl,updated_at:new Date().toISOString()})});
     }
