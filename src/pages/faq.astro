@@ -14,7 +14,7 @@ const faqs = [
 ];
 ---
 <SiteLayout title="Frequently Asked Questions | Materuni Hosts" description="Booking, prices, transport and practical information for Materuni Village experiences near Moshi, Tanzania.">
-<section class="page-hero"><span class="eyebrow">GOOD TO KNOW BEFORE YOU VISIT</span><h1>Plan your visit with confidence.</h1><p>Practical answers about Materuni, experience prices, availability, transport and what happens after you send a booking request.</p></section>
+<section class="page-hero"><span class="eyebrow">GOOD TO KNOW BEFORE YOU VISIT</span><h1 data-i18n="faq_page_title">Plan your visit with confidence.</h1><p data-i18n="faq_page_intro">Practical answers about Materuni, experience prices, availability, transport and what happens after you send a booking request.</p></section>
 <section class="section faq-section">
   <div class="faq-intro"><span class="eyebrow">PLAN WITH CONFIDENCE</span><h2>Everything you need to know.</h2><p>If you need help with something not covered here, speak directly with a local host.</p><a class="button" href="https://wa.me/255612068540" target="_blank" rel="noopener noreferrer">Ask us on WhatsApp</a></div>
   <div class="faq-list">{faqs.map(([question,answer])=><details class="faq-item"><summary>{question}</summary><p>{answer}</p></details>)}</div>
