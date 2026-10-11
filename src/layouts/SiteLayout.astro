@@ -14,7 +14,7 @@ const canonical = new URL(Astro.url.pathname, "https://materunihosts.com").toStr
 </head>
 <body>
 <header class="site-header"><a class="brand" href="/" aria-label="Materuni Hosts home"><span class="brand-mark">M</span><span class="brand-word">MATERUNI<small>HOSTS</small></span></a>
-<nav aria-label="Main navigation"><a href="/experiences">Experiences</a><a href="/itinerary">Build itinerary</a><a href="/reviews">Guest reviews</a><a href="/faq">FAQs</a><a href="/sustainability">Our approach</a><a href="/travel-guide">Travel guide</a><a class="nav-cta" href="/booking">Check availability</a></nav>
+<nav aria-label="Main navigation"><a href="/experiences">Experiences</a><a href="/itinerary">Build itinerary</a><a href="/reviews">Guest reviews</a><a href="/faq">FAQs</a><a href="/sustainability">Our approach</a><a href="/travel-guide">Travel guide</a><a href="/privacy">Privacy</a><a href="/terms">Booking terms</a><a class="nav-cta" href="/booking">Check availability</a></nav>
 <button class="menu-toggle" aria-label="Open menu" aria-expanded="false" onclick="const n=document.querySelector('.site-header nav');const open=n.classList.toggle('open');this.setAttribute('aria-expanded',String(open))">☰</button></header>
 <main><slot /></main>
 
