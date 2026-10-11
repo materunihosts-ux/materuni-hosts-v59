@@ -33,12 +33,12 @@ const headers=()=>({apikey:publishableKey,Authorization:"Bearer "+accessToken});
 const targets=[
  {key:"hero_image",label:"Homepage hero",help:"Main landscape photograph at the top of the homepage"},
  {key:"story_image",label:"Our story",help:"Image beside the homepage local-host story"},
- {key:"waterfall_image",label:"Waterfalls & Coffee Tour",help:"First featured experience card"},
- {key:"coffee_image",label:"Coffee & Chagga Culture",help:"Coffee experience card"},
- {key:"cooking_image",label:"Cooking & Culture",help:"Cooking experience card"},
- {key:"culturalday_image",label:"Waterfall Hike & Cultural Day",help:"Cultural day-trip card"},
- {key:"camping_image",label:"Overnight Camping",help:"Camping experience card"},
- {key:"ultimate_image",label:"Ultimate experience",help:"Ultimate experience card"}
+ {key:"waterfall_image",experienceKey:"Waterfall & Chagga Culture",label:"Waterfalls & Coffee Tour",help:"First featured experience card"},
+ {key:"coffee_image",experienceKey:"Traditional Coffee Experience",label:"Coffee & Chagga Culture",help:"Coffee experience card"},
+ {key:"cooking_image",experienceKey:"Traditional Chagga Cooking Class",label:"Cooking & Culture",help:"Cooking experience card"},
+ {key:"culturalday_image",experienceKey:"Materuni Waterfall Hike & Cultural Day Trip",label:"Waterfall Hike & Cultural Day",help:"Cultural day-trip card"},
+ {key:"camping_image",experienceKey:"Camping & Village Life",label:"Overnight Camping",help:"Camping experience card"},
+ {key:"ultimate_image",experienceKey:"The Ultimate Kilimanjaro Foothills & Materuni Experience",label:"Ultimate experience",help:"Ultimate experience card"}
 ];
 async function api(path,options={}){const response=await fetch(supabaseUrl+path,{...options,headers:{...headers(),...(options.headers||{})}});const data=await response.json().catch(()=>null);if(!response.ok)throw new Error(data?.message||data?.error||"Supabase request failed.");return data}
 function renderTargets(){
@@ -63,7 +63,13 @@ function renderTargets(){
     const upload=await fetch(supabaseUrl+"/storage/v1/object/"+bucket+"/"+objectPath,{method:"POST",headers:{...headers(),"Content-Type":file.type,"x-upsert":"false"},body:file});
     const uploadData=await upload.json().catch(()=>null);if(!upload.ok)throw new Error(uploadData?.message||uploadData?.error||"Image upload failed.");
     const publicUrl=supabaseUrl+"/storage/v1/object/public/"+bucket+"/"+objectPath;
-    await api("/rest/v1/site_content?on_conflict=id",{method:"POST",headers:{"Content-Type":"application/json","Prefer":"resolution=merge-duplicates,return=minimal"},body:JSON.stringify({id:target.key,content:publicUrl,updated_at:new Date().toISOString()})});
+    if(target.experienceKey){
+     const key=encodeURIComponent(target.experienceKey);
+     const updated=await api("/rest/v1/experience_catalog?experience_key=eq."+key,{method:"PATCH",headers:{"Content-Type":"application/json","Prefer":"return=representation"},body:JSON.stringify({image_url:publicUrl,updated_at:new Date().toISOString()})});
+     if(!Array.isArray(updated)||!updated.length)throw new Error("Image uploaded, but no matching package was found in the catalogue.");
+    }else{
+     await api("/rest/v1/site_content?on_conflict=id",{method:"POST",headers:{"Content-Type":"application/json","Prefer":"resolution=merge-duplicates,return=minimal"},body:JSON.stringify({id:target.key,content:publicUrl,updated_at:new Date().toISOString()})});
+    }
     status.textContent="Uploaded and assigned. Refresh the homepage to see the new photograph.";input.value="";await loadCurrent();
    }catch(error){status.textContent=error.message}finally{button.disabled=false}
   });
@@ -71,14 +77,15 @@ function renderTargets(){
  });
 }
 async function loadCurrent(){
- const rows=await api("/rest/v1/site_content?select=id,content&id=in.("+targets.map(x=>encodeURIComponent(x.key)).join(",")+")");
+ const rows=await api("/rest/v1/site_content?select=id,content&id=in.("+targets.filter(x=>!x.experienceKey).map(x=>encodeURIComponent(x.key)).join(",")+")");
+ const catalogue=await api("/rest/v1/experience_catalog?select=experience_key,image_url");
  const root=el("media-current");root.replaceChildren();
  targets.forEach(target=>{
-  const row=rows.find(item=>item.id===target.key);const card=document.createElement("div");card.className="notice";
+  const row=target.experienceKey?catalogue.find(item=>item.experience_key===target.experienceKey):rows.find(item=>item.id===target.key);const imageUrl=target.experienceKey?row?.image_url:row?.content;const card=document.createElement("div");card.className="notice";
   const title=document.createElement("strong");title.textContent=target.label;
   const img=document.createElement("img");img.alt=target.label;img.loading="lazy";img.style.width="100%";img.style.aspectRatio="16/9";img.style.objectFit="cover";img.style.borderRadius="12px";img.style.marginTop=".6rem";
-  if(row?.content)img.src=row.content;else img.alt="No image assigned yet";
-  const note=document.createElement("p");note.className="muted";note.textContent=row?.content?"Image assigned":"Using the website's built-in image";
+  if(imageUrl)img.src=imageUrl;else img.alt="No image assigned yet";
+  const note=document.createElement("p");note.className="muted";note.textContent=imageUrl?"Image assigned to the live website package":"Using the website's built-in image";
   card.append(title,img,note);root.append(card);
  });
 }
