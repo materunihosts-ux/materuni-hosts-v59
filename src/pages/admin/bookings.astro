@@ -154,6 +154,58 @@ async function loadBookings() {
           catch (error) { el("booking-feedback").textContent = error.message; cancel.disabled = false; }
         });
         actions.append(cancel);
+        const reschedule = makeText("button","button button-secondary","Reschedule");
+        reschedule.type = "button";
+        reschedule.addEventListener("click", async () => {
+          reschedule.disabled = true;
+          try {
+            const today = localDate(new Date());
+            const params = new URLSearchParams({
+              select:"id,slot_date,start_time,end_time,capacity,booked_count",
+              experience:"eq."+booking.experience,
+              slot_date:"gte."+today,
+              is_active:"eq.true",
+              order:"slot_date.asc,start_time.asc",
+              limit:"100"
+            });
+            const slots = await api("/rest/v1/availability_slots?"+params.toString());
+            const guestCount = Number(booking.guest_count || 1);
+            const available = slots.filter(slot => slot.id !== booking.slot_id && Number(slot.capacity)-Number(slot.booked_count)>=guestCount);
+            if (!available.length) throw new Error("No matching future time slots have enough spaces yet.");
+            const picker = document.createElement("select");
+            picker.setAttribute("aria-label","Choose a new date and time");
+            available.forEach(slot => {
+              const option = document.createElement("option");
+              option.value = slot.id;
+              option.textContent = slot.slot_date+" · "+String(slot.start_time).slice(0,5)+"–"+String(slot.end_time).slice(0,5)+" · "+(Number(slot.capacity)-Number(slot.booked_count))+" spaces left";
+              picker.append(option);
+            });
+            const save = makeText("button","button","Save new time");
+            save.type = "button";
+            const cancelPicker = makeText("button","button button-secondary","Close");
+            cancelPicker.type = "button";
+            const editor = document.createElement("div");
+            editor.className = "admin-booking-actions";
+            editor.append(picker,save,cancelPicker);
+            actions.append(editor);
+            cancelPicker.addEventListener("click",()=>editor.remove());
+            save.addEventListener("click",async()=>{
+              save.disabled = true;
+              try {
+                await api("/rest/v1/rpc/admin_reschedule_booking",{method:"POST",body:JSON.stringify({p_booking_id:booking.booking_id,p_new_slot_id:picker.value})});
+                await loadBookings();
+              } catch(error) {
+                el("booking-feedback").textContent = error.message;
+                save.disabled = false;
+              }
+            });
+          } catch(error) {
+            el("booking-feedback").textContent = error.message;
+          } finally {
+            reschedule.disabled = false;
+          }
+        });
+        actions.append(reschedule);
       }
       const bookingDate = String(booking.booking_date || "");
       const todayString = localDate(new Date());
