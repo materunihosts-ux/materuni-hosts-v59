@@ -1,0 +1,41 @@
+---
+import SiteLayout from "../layouts/SiteLayout.astro";
+const tours=[{"key":"Waterfall & Chagga Culture","name":"Waterfalls & Coffee Tour","price":65,"duration":"6–7 hours","detail":"Rainforest walk, Materuni Waterfall, coffee-making and a local lunch."},{"key":"Traditional Coffee Experience","name":"Coffee & Chagga Culture Tour","price":50,"duration":"4–5 hours","detail":"Village walk, bean-to-cup coffee, Chagga culture and local lunch."},{"key":"Traditional Chagga Cooking Class","name":"Cooking & Culture","price":70,"duration":"5–6 hours","detail":"Hands-on traditional cooking, village life and cultural discovery."},{"key":"Materuni Waterfall Hike & Cultural Day Trip","name":"Waterfall Hike & Cultural Day Trip","price":75,"duration":"7–8 hours","detail":"A fuller day of waterfall adventure, coffee and village culture."},{"key":"Camping & Village Life","name":"Overnight Camping","price":110,"duration":"2 days / 1 night","detail":"Village experiences, camping, dinner, storytelling and breakfast."},{"key":"The Ultimate Kilimanjaro Foothills & Materuni Experience","name":"Ultimate","price":135,"duration":"2 days / 1 night","detail":"A curated combination of waterfall, coffee, cooking and overnight village life."}];
+---
+<SiteLayout title="Build Your Materuni Itinerary | Materuni Hosts" description="Choose Materuni experiences and create a tailored itinerary with local hosts.">
+<section class="page-hero"><span class="eyebrow">YOUR TRIP, THOUGHTFULLY PLANNED</span><h1>Build a Materuni itinerary that feels like yours.</h1><p>Choose the experiences you are interested in. We will arrange them into a practical suggested plan for your visit.</p></section>
+<section class="section"><div class="split" style="align-items:start"><div class="booking-panel"><form id="planner" class="form-grid">
+<div class="field full"><label for="guest">Your name</label><input id="guest" required maxlength="100" placeholder="Full name"></div>
+<div class="field"><label for="date">Preferred start date</label><input id="date" type="date" required></div>
+<div class="field"><label for="guests">Number of guests</label><input id="guests" type="number" min="1" max="30" value="2" required></div>
+<div class="field"><label for="pace">Travel pace</label><select id="pace"><option value="relaxed">Relaxed – take your time</option><option value="balanced" selected>Balanced – a little of everything</option><option value="active">Active – fit more in</option></select></div>
+<div class="field"><label for="interests">Main interest</label><select id="interests"><option>Culture and local life</option><option>Nature and waterfall</option><option>Coffee and food</option><option>A mix of everything</option></select></div>
+<div class="field full"><span class="label">Select experiences (choose more than one)</span><div class="form-grid choices">{tours.map((t,i)=><label class="choice"><input type="checkbox" name="tour" value={i} /> <span><strong>{t.name}</strong><small>${t.price} per person · {t.duration}</small></span></label>)}</div></div>
+<div class="field full"><label for="notes">Anything we should consider?</label><textarea id="notes" rows="3" placeholder="Children, dietary needs, mobility, pickup point or special interests…"></textarea></div>
+<div class="field full"><button class="button" type="submit">Create my suggested itinerary</button><p class="muted" id="planner-feedback" aria-live="polite"></p></div>
+</form></div>
+<div class="booking-panel itinerary-output" id="output"><span class="eyebrow">YOUR PERSONAL PLAN</span><h2>Your itinerary will appear here.</h2><p>Select one or more experiences and create your suggested plan. A local host can then confirm timing, availability and transport.</p></div></div></section>
+<script>
+const tourData=[{"key":"Waterfall & Chagga Culture","name":"Waterfalls & Coffee Tour","price":65,"duration":"6–7 hours","detail":"Rainforest walk, Materuni Waterfall, coffee-making and a local lunch."},{"key":"Traditional Coffee Experience","name":"Coffee & Chagga Culture Tour","price":50,"duration":"4–5 hours","detail":"Village walk, bean-to-cup coffee, Chagga culture and local lunch."},{"key":"Traditional Chagga Cooking Class","name":"Cooking & Culture","price":70,"duration":"5–6 hours","detail":"Hands-on traditional cooking, village life and cultural discovery."},{"key":"Materuni Waterfall Hike & Cultural Day Trip","name":"Waterfall Hike & Cultural Day Trip","price":75,"duration":"7–8 hours","detail":"A fuller day of waterfall adventure, coffee and village culture."},{"key":"Camping & Village Life","name":"Overnight Camping","price":110,"duration":"2 days / 1 night","detail":"Village experiences, camping, dinner, storytelling and breakfast."},{"key":"The Ultimate Kilimanjaro Foothills & Materuni Experience","name":"Ultimate","price":135,"duration":"2 days / 1 night","detail":"A curated combination of waterfall, coffee, cooking and overnight village life."}];
+const form=document.getElementById("planner"), output=document.getElementById("output");
+const dateInput=document.getElementById("date");
+dateInput.min=new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,10);
+form.addEventListener("submit",event=>{
+ event.preventDefault();
+ const selected=[...form.querySelectorAll('input[name="tour"]:checked')].map(input=>tourData[Number(input.value)]);
+ const feedback=document.getElementById("planner-feedback");
+ if(!selected.length){feedback.textContent="Please choose at least one experience.";return;}
+ const guests=Number(document.getElementById("guests").value), date=dateInput.value;
+ const pace=document.getElementById("pace").value, name=document.getElementById("guest").value.trim();
+ const notes=document.getElementById("notes").value.trim(), interest=document.getElementById("interests").value;
+ const total=selected.reduce((sum,t)=>sum+t.price,0)*guests;
+ const days=selected.some(t=>t.duration.includes("2 days"))?2:1;
+ const dateLabel=new Date(date+"T12:00:00").toLocaleDateString(undefined,{day:"numeric",month:"long",year:"numeric"});
+ const cards=selected.map((t,i)=>'<li class="itinerary-stop"><span class="stop-number">'+(i+1)+'</span><div><strong>'+t.name+'</strong><p>'+t.detail+'</p><small>'+t.duration+' · $'+t.price+' per person</small></div></li>').join("");
+ output.innerHTML='<span class="eyebrow">YOUR PERSONAL PLAN</span><h2>Suggested Materuni itinerary</h2><p><strong>'+name+'</strong> · '+dateLabel+' · '+guests+' guest(s)</p><p>'+interest+' · '+pace+' pace</p><ol class="itinerary-list">'+cards+'</ol><div class="notice"><strong>Estimated experience total: $'+total.toFixed(2)+'</strong><p>Estimate for selected experiences only, for '+guests+' guest(s). Transport and extras are not included unless confirmed.</p><p>Suggested duration: '+days+' day(s) or more, depending on the combination. Your host will confirm the best sequence and exact timings.</p></div><button class="button" type="button" id="send-plan">Send this plan to a local host on WhatsApp</button><p class="muted">This is a suggested plan, not a confirmed reservation. Availability will be checked by your host.</p>';
+ const message=['Hello Materuni Hosts, please help me refine this itinerary.','Name: '+name,'Start date: '+date,'Guests: '+guests,'Pace: '+pace,'Interest: '+interest,'Selected experiences: '+selected.map(t=>t.name).join(', '),'Estimated experience total: $'+total.toFixed(2),'Notes: '+(notes||'None')].join('\n');
+ document.getElementById("send-plan").addEventListener("click",()=>window.open('https://wa.me/255612068540?text='+encodeURIComponent(message),'_blank','noopener'));
+ feedback.textContent="Your suggested itinerary is ready below.";
+});
+</script>
+</SiteLayout>
