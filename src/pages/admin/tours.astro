@@ -56,6 +56,34 @@ async function api(path,options={}){
  if(!response.ok) throw new Error(body?.message||body?.error_description||body?.details||"Request failed. Please try again.");
  return body;
 }
+async function refreshAvailability(){
+ const list=el("availability-list");
+ list.textContent="Loading availability…";
+ try{
+  const today=new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,10);
+  const query=new URLSearchParams({select:"id,experience,slot_date,start_time,end_time,capacity,booked_count,is_active",slot_date:"gte."+today,order:"slot_date.asc,start_time.asc",limit:"150"});
+  const rows=await api("/rest/v1/availability_slots?"+query.toString());
+  list.replaceChildren();
+  if(!rows.length){const empty=document.createElement("p");empty.className="muted";empty.textContent="No upcoming availability has been published yet.";list.append(empty);return;}
+  rows.forEach(slot=>{
+   const line=document.createElement("div");line.className="notice";line.style.marginTop="0.65rem";
+   const title=document.createElement("strong");title.textContent=slot.experience;
+   const meta=document.createElement("p");meta.className="muted";
+   meta.textContent=slot.slot_date+" · "+String(slot.start_time).slice(0,5)+"–"+String(slot.end_time).slice(0,5)+" · "+Math.max(0,Number(slot.capacity)-Number(slot.booked_count))+" spaces left of "+slot.capacity+" · "+(slot.is_active?"Open":"Closed");
+   const action=document.createElement("button");action.type="button";action.className="button button-secondary";
+   action.textContent=slot.is_active?"Close availability":"Reopen availability";
+   action.disabled=slot.slot_date<today;
+   action.addEventListener("click",async()=>{
+    action.disabled=true;
+    try{
+     await api("/rest/v1/availability_slots?id=eq."+encodeURIComponent(slot.id),{method:"PATCH",body:JSON.stringify({is_active:!slot.is_active})});
+     await refreshAvailability();
+    }catch(error){el("slot-feedback").textContent=error.message;action.disabled=false;}
+   });
+   line.append(title,meta,action);list.append(line);
+  });
+ }catch(error){list.textContent="Availability could not be loaded: "+error.message;}
+}
 async function refreshTours(){
  const rows=await api("/rest/v1/experience_catalog?select=id,experience_key,display_name,price_usd,is_active,sort_order&order=sort_order.asc");
  const select=el("slot-experience");
@@ -79,7 +107,7 @@ el("login-form").addEventListener("submit",async e=>{
   accessToken=session.access_token;adminId=session.user.id;
   const admins=await api("/rest/v1/admin_users?select=user_id&user_id=eq."+adminId);
   if(!admins.length){accessToken="";throw new Error("This account is not authorised as a Materuni Hosts administrator.");}
-  el("login-panel").hidden=true;el("manager").hidden=false;await refreshTours();
+  el("login-panel").hidden=true;el("manager").hidden=false;await Promise.all([refreshTours(),refreshAvailability()]);
  }catch(error){el("login-feedback").textContent=error.message}finally{button.disabled=false}
 });
 el("tour-form").addEventListener("submit",async e=>{
@@ -94,9 +122,9 @@ el("slot-form").addEventListener("submit",async e=>{
  e.preventDefault();const feedback=el("slot-feedback");feedback.textContent="Publishing…";
  try{
   const start=el("slot-start").value,end=el("slot-end").value;
-  if(end<=start)throw new Error("End time must be later than start time.");
+  if(end<=start)throw new Error("End time must be later than start time.");\n  if(!el("slot-date").value||el("slot-date").value<minDate)throw new Error("Choose today or a future date.");\n  if(Number(el("slot-capacity").value)<1||Number(el("slot-capacity").value)>100)throw new Error("Capacity must be between 1 and 100 guests.");
   await api("/rest/v1/availability_slots",{method:"POST",headers:{"Prefer":"return=minimal"},body:JSON.stringify({experience:el("slot-experience").value,slot_date:el("slot-date").value,start_time:start,end_time:end,capacity:Number(el("slot-capacity").value),booked_count:0,is_active:true})});
-  feedback.textContent="Availability published. Guests can now select this date and time.";
+  feedback.textContent="Availability published. Guests can now select this date and time.";await refreshAvailability();
  }catch(error){feedback.textContent=error.message}
 });
 el("logout").addEventListener("click",async()=>{try{await fetch(supabaseUrl+"/auth/v1/logout",{method:"POST",headers:apiHeaders()})}catch{}accessToken="";adminId="";el("manager").hidden=true;el("login-panel").hidden=false;el("login-form").reset()});
