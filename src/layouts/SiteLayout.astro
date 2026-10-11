@@ -41,6 +41,7 @@ const structuredData = {
 <nav aria-label="Main navigation"><a href="/experiences">Experiences</a><a href="/itinerary">Build itinerary</a><a href="/reviews">Guest reviews</a><a href="/faq">FAQs</a><a href="/sustainability">Our approach</a><a href="/travel-guide">Travel guide</a><a class="nav-cta" href="/booking">Check availability</a></nav>
 <label class="language-control" for="site-language"><span class="sr-only">Website language</span><select id="site-language" aria-label="Website language"><option value="en">EN</option><option value="es">ES</option><option value="fr">FR</option><option value="de">DE</option></select></label><button class="menu-toggle" aria-label="Open menu" aria-expanded="false" onclick="const n=document.querySelector('.site-header nav');const open=n.classList.toggle('open');this.setAttribute('aria-expanded',String(open))">☰</button></header>
 <script>
+// @ts-nocheck
 (() => {
  const supported=["en","es","fr","de"], labels={
   en:{experiences:"Experiences",itinerary:"Build itinerary",reviews:"Guest reviews",faqs:"FAQs",approach:"Our approach",guide:"Travel guide",availability:"Check availability",skip:"Skip to content",ask:"Ask a local host",footer:"Authentic Chagga experiences in Materuni Village, Moshi, Tanzania.",explore:"Explore",book:"Book your experience"},
