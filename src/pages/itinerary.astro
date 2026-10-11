@@ -21,6 +21,25 @@ const tours=[{"key":"Waterfall & Chagga Culture","name":"Waterfalls & Coffee Tou
 
 const tourData=[{"key":"Waterfall & Chagga Culture","name":"Waterfalls & Coffee Tour","price":65,"duration":"6–7 hours","detail":"Rainforest walk, Materuni Waterfall, coffee-making and a local lunch."},{"key":"Traditional Coffee Experience","name":"Coffee & Chagga Culture Tour","price":50,"duration":"4–5 hours","detail":"Village walk, bean-to-cup coffee, Chagga culture and local lunch."},{"key":"Traditional Chagga Cooking Class","name":"Cooking & Culture","price":70,"duration":"5–6 hours","detail":"Hands-on traditional cooking, village life and cultural discovery."},{"key":"Materuni Waterfall Hike & Cultural Day Trip","name":"Waterfall Hike & Cultural Day Trip","price":75,"duration":"7–8 hours","detail":"A fuller day of waterfall adventure, coffee and village culture."},{"key":"Camping & Village Life","name":"Overnight Camping","price":110,"duration":"2 days / 1 night","detail":"Village experiences, camping, dinner, storytelling and breakfast."},{"key":"The Ultimate Kilimanjaro Foothills & Materuni Experience","name":"Ultimate","price":135,"duration":"2 days / 1 night","detail":"A curated combination of waterfall, coffee, cooking and overnight village life."}];
 const form=document.getElementById("planner"), output=document.getElementById("output");
+const catalogueEndpoint="https://sskmzswoeljxwojcszta.supabase.co/rest/v1/experience_catalog?select=experience_key,display_name,price_usd,short_description,full_description,duration_label,is_active,sort_order&is_active=eq.true&order=sort_order.asc";
+async function syncItineraryTours(){
+ try{
+  const response=await fetch(catalogueEndpoint,{headers:{apikey:"sb_publishable_G9ru4P_yKzievqiXjXEEbQ_p28cB_NZ",Authorization:"Bearer sb_publishable_G9ru4P_yKzievqiXjXEEbQ_p28cB_NZ"},cache:"no-store"});
+  if(!response.ok)throw new Error("Catalogue unavailable");
+  const rows=await response.json();
+  if(!Array.isArray(rows)||!rows.length)return;
+  tourData=rows.map(row=>({key:row.experience_key,name:row.display_name,price:Number(row.price_usd),duration:row.duration_label||"Duration confirmed by host",detail:row.full_description||row.short_description||"A locally hosted Materuni experience."}));
+  const root=form.querySelector(".choices");root.replaceChildren();
+  tourData.forEach((tour,index)=>{
+   const label=document.createElement("label");label.className="choice";
+   const input=document.createElement("input");input.type="checkbox";input.name="tour";input.value=String(index);
+   const span=document.createElement("span");const strong=document.createElement("strong");strong.textContent=tour.name;
+   const small=document.createElement("small");small.textContent="$"+tour.price.toFixed(0)+" per person · "+tour.duration;
+   span.append(strong,small);label.append(input,span);root.append(label);
+  });
+ }catch(error){console.warn("Using the built-in itinerary catalogue.",error)}
+}
+syncItineraryTours();
 const dateInput=document.getElementById("date");
 dateInput.min=new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,10);
 form.addEventListener("submit",event=>{
