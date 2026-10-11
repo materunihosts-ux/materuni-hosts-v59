@@ -396,3 +396,19 @@ main:focus{outline:none}
 .social-links a[aria-label="Facebook"] svg{fill:currentColor;stroke:none}
 @media(max-width:640px){.cards{grid-template-columns:1fr;gap:20px}.experience-card>img{height:225px}.experience-card .card-body{padding:21px}.experience-card h3{min-height:0;font-size:25px}.experience-card p{min-height:0}.social-links{gap:8px}.social-links a{min-height:42px;padding:8px 11px}}
 @media(prefers-reduced-motion:reduce){.experience-card,.experience-card>img,.social-links a,.experience-card .button::after{transition:none}.experience-card:hover,.social-links a:hover{transform:none}}
+
+/* Replace generic dot lists with refined inclusion markers */
+.experience-card .card-body ul{list-style:none;padding:0;margin:8px 0 18px}
+.experience-card .card-body li{position:relative;padding:0 0 0 23px;margin:8px 0;color:#4d5b50;font-size:12px;line-height:1.65}
+.experience-card .card-body li::before{content:"✓";position:absolute;left:0;top:1px;display:grid;place-items:center;width:15px;height:15px;border-radius:50%;background:#e9efe8;color:#31543c;font-size:10px;font-weight:800}
+.experience-card .card-body [data-i18n="exp_excluded_label"]+ul li::before{content:"–";background:#f3eee7;color:#8a7250}
+.booking-wrap{max-width:900px;margin-inline:auto}
+.booking-panel{border:1px solid #e8e0d4;box-shadow:0 12px 34px rgba(26,51,34,.07)}
+#booking-form .field label{font-size:12px;font-weight:800;letter-spacing:.015em;color:#29392e}
+#booking-form input,#booking-form select,#booking-form textarea{min-height:48px;border:1px solid #d8d4ca;border-radius:9px;background:#fff;color:#242421;padding:12px 14px}
+#booking-form textarea{min-height:112px}
+#booking-form input:focus,#booking-form select:focus,#booking-form textarea:focus{outline:3px solid rgba(197,160,89,.24);border-color:#a88a55}
+#booking-form .notice{border-left:3px solid #c5a059;background:#f7f3eb;padding:15px 17px;border-radius:4px 10px 10px 4px;font-size:12px;line-height:1.7}
+#booking-form #submit{width:100%;min-height:52px;font-weight:800;letter-spacing:.02em}
+#booking-form #submit:disabled{opacity:.65;cursor:wait}
+@media(max-width:640px){#booking-form{grid-template-columns:1fr}.booking-panel{padding:18px}.page-hero h1{font-size:clamp(36px,10vw,52px)}}
