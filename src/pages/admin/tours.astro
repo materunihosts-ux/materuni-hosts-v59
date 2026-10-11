@@ -122,7 +122,9 @@ el("slot-form").addEventListener("submit",async e=>{
  e.preventDefault();const feedback=el("slot-feedback");feedback.textContent="Publishing…";
  try{
   const start=el("slot-start").value,end=el("slot-end").value;
-  if(end<=start)throw new Error("End time must be later than start time.");\n  if(!el("slot-date").value||el("slot-date").value<minDate)throw new Error("Choose today or a future date.");\n  if(Number(el("slot-capacity").value)<1||Number(el("slot-capacity").value)>100)throw new Error("Capacity must be between 1 and 100 guests.");
+  if(end<=start)throw new Error("End time must be later than start time.");
+  if(!el("slot-date").value||el("slot-date").value<minDate)throw new Error("Choose today or a future date.");
+  if(Number(el("slot-capacity").value)<1||Number(el("slot-capacity").value)>100)throw new Error("Capacity must be between 1 and 100 guests.");
   await api("/rest/v1/availability_slots",{method:"POST",headers:{"Prefer":"return=minimal"},body:JSON.stringify({experience:el("slot-experience").value,slot_date:el("slot-date").value,start_time:start,end_time:end,capacity:Number(el("slot-capacity").value),booked_count:0,is_active:true})});
   feedback.textContent="Availability published. Guests can now select this date and time.";await refreshAvailability();
  }catch(error){feedback.textContent=error.message}
