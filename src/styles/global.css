@@ -162,3 +162,55 @@
 .brand-logo-footer{display:block;width:58px;height:58px;object-fit:contain}
 .social-links svg{display:block;width:17px;height:17px;flex:0 0 17px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 .social-links a{display:inline-flex;align-items:center;gap:7px}
+
+
+/* Premium editorial refinement */
+.site-header{padding-inline:clamp(18px,4.5vw,72px);box-shadow:0 4px 18px rgba(26,51,34,.035)}
+.brand-logo{width:78px;height:78px;object-fit:contain;border:0;border-radius:50%;box-shadow:none;background:transparent}
+.site-footer .brand-logo-footer{width:76px;height:76px;object-fit:contain}
+.hero{min-height:620px}
+.hero-copy{padding-top:clamp(68px,8vw,110px);padding-bottom:clamp(68px,8vw,110px)}
+.hero h1{max-width:640px;font-size:clamp(48px,5.3vw,76px);letter-spacing:-.025em}
+.hero p{font-size:15px;line-height:1.85;max-width:490px}
+.hero-image{position:relative}
+.hero-image:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(26,51,34,.12),transparent 35%),linear-gradient(0deg,rgba(26,51,34,.12),transparent 45%)}
+.section{padding-block:clamp(64px,7vw,96px)}
+.section-head{margin-bottom:48px}
+.section-head h2{letter-spacing:-.015em}
+.cards{gap:24px}
+.experience-card{border-color:#e6dfd3;box-shadow:0 8px 26px rgba(36,36,33,.035)}
+.experience-card img{height:238px}
+.card-body{padding:25px 25px 27px}
+.experience-card h3{font-size:24px;min-height:2.4em}
+.experience-card p{line-height:1.75}
+.experience-card ul{line-height:1.8}
+.button,.nav-cta{min-height:48px;padding-inline:21px}
+.split{gap:clamp(32px,6vw,76px)}
+.split img{box-shadow:16px 16px 0 #e6dfd3}
+.feature-list{gap:20px 26px}
+.site-footer{padding-top:68px}
+.site-footer>div{line-height:1.8}
+.social-links a{border-radius:2px;transition:background .2s,border-color .2s}
+.social-links a:hover{background:#ffffff12;border-color:#d7b16c}
+@media(max-width:850px){
+ .site-header{padding-inline:20px}
+ .brand-logo{width:66px;height:66px}
+ .hero-copy{padding:64px 26px}
+ .hero-image{min-height:340px}
+ .experience-card img{height:220px}
+}
+@media(max-width:560px){
+ .site-header{height:72px}
+ .brand-logo{width:58px;height:58px}
+ .hero h1{font-size:clamp(42px,12vw,52px);line-height:1.04}
+ .hero p{font-size:14px}
+ .hero-image{min-height:270px}
+ .section{padding:58px 19px}
+ .section-head{margin-bottom:30px}
+ .card-body{padding:21px}
+ .experience-card h3{min-height:0}
+ .split img{height:300px;box-shadow:9px 9px 0 #e6dfd3}
+ .feature-list{gap:13px}
+ .site-footer{padding:48px 22px 22px}
+ .mh-concierge{right:10px;bottom:10px}
+}
