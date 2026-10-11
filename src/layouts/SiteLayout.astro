@@ -92,7 +92,7 @@ const structuredData = {
   localStorage.setItem("materuni-language",language);
   const chat=document.getElementById("mh-chat-language");if(chat&&chat.value!==language){chat.value=language;chat.dispatchEvent(new Event("change"))}
  }
- apply(lang);select.addEventListener("change",()=>{apply(select.value);loadPageTranslations(select.value)});
+ apply(lang);document.addEventListener("DOMContentLoaded",()=>loadPageTranslations(lang),{once:true});select.addEventListener("change",()=>{apply(select.value);loadPageTranslations(select.value)});
  async function loadPageTranslations(language){
   const nodes=[...document.querySelectorAll("[data-i18n]")];
   nodes.forEach(node=>{if(!node.dataset.i18nDefault)node.dataset.i18nDefault=node.textContent||""});
