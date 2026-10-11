@@ -43,12 +43,12 @@ function makeCatalogCard(tour) {
   const heading = document.createElement("h3"); heading.textContent = tour.display_name || "Materuni experience";
   const description = document.createElement("p"); description.textContent = tour.full_description || tour.short_description || "Ask our local hosts for details about this experience.";
   if (Array.isArray(tour.inclusions) && tour.inclusions.length) {
-    const label = document.createElement("strong");
-    label.style.cssText = "font-size:12px;color:#173b2d";
-    label.textContent = "WHAT'S INCLUDED";
-    const list = document.createElement("ul");
-    tour.inclusions.forEach(value => { const li = document.createElement("li"); li.textContent = value; list.append(li); });
-    body.append(label, list);
+    const label = document.createElement("strong"); label.style.cssText = "font-size:12px;color:#173b2d"; label.textContent = "WHAT'S INCLUDED";
+    const list = document.createElement("ul"); tour.inclusions.forEach(value => { const li = document.createElement("li"); li.textContent = value; list.append(li); }); body.append(label, list);
+  }
+  if (Array.isArray(tour.exclusions) && tour.exclusions.length) {
+    const label = document.createElement("strong"); label.style.cssText = "display:block;margin-top:1rem;font-size:12px;color:#173b2d"; label.textContent = "WHAT’S NOT INCLUDED";
+    const list = document.createElement("ul"); tour.exclusions.forEach(value => { const li = document.createElement("li"); li.textContent = value; list.append(li); }); body.append(label, list);
   }
   const link = document.createElement("a"); link.className = "button"; link.textContent = "Check availability";
   link.href = "/booking?experience=" + encodeURIComponent(tour.experience_key);
@@ -57,7 +57,7 @@ function makeCatalogCard(tour) {
 async function syncPublicCatalogue() {
   try {
     const query = new URLSearchParams({
-      select: "experience_key,display_name,price_usd,is_active,short_description,full_description,image_url,duration_label,inclusions,sort_order",
+      select: "experience_key,display_name,price_usd,is_active,short_description,full_description,image_url,duration_label,inclusions,exclusions,sort_order",
       order: "sort_order.asc"
     });
     const response = await fetch(catalogApi + "/rest/v1/experience_catalog?" + query, {
@@ -87,6 +87,15 @@ async function syncPublicCatalogue() {
           const li = document.createElement("li"); li.textContent = value; return li;
         }));
       }
+      let exTitle = card.querySelector("[data-exclusions-title]");
+      let exList = card.querySelector("[data-exclusions-list]");
+      if (!exTitle) { exTitle = document.createElement("strong"); exTitle.dataset.exclusionsTitle = "true"; exTitle.style.cssText = "display:block;margin-top:1rem;font-size:12px;color:#173b2d"; exTitle.textContent = "WHAT’S NOT INCLUDED"; }
+      if (!exList) { exList = document.createElement("ul"); exList.dataset.exclusionsList = "true"; }
+      if (Array.isArray(item.exclusions) && item.exclusions.length) {
+        exList.replaceChildren(...item.exclusions.map(value => { const li = document.createElement("li"); li.textContent = value; return li; }));
+        const bookingLink = card.querySelector('a[href^="/booking"]');
+        if (bookingLink) { const body = card.querySelector(".card-body"); body.insertBefore(exTitle, bookingLink); body.insertBefore(exList, bookingLink); }
+      } else { exTitle.remove(); exList.remove(); }
       const bookingLink = card.querySelector('a[href^="/booking"]');
       if (bookingLink) bookingLink.href = "/booking?experience=" + encodeURIComponent(item.experience_key);
     });
