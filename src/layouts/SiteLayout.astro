@@ -1,23 +1,24 @@
 ---
 import "../styles/global.css";
 const { title = "Materuni Hosts | Authentic Chagga Experiences", description = "Discover authentic Chagga coffee, waterfalls, food and village life in Materuni, Kilimanjaro, Tanzania." } = Astro.props;
+const canonical = new URL(Astro.url.pathname, "https://materunihosts.com").toString();
 ---
 <!doctype html>
 <html lang="en">
 <head>
 <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>{title}</title><meta name="description" content={description} /><meta name="theme-color" content="#173b2d" />
+<title>{title}</title><meta name="description" content={description} /><meta name="theme-color" content="#1A3322" /><link rel="canonical" href={canonical} /><meta property="og:type" content="website" /><meta property="og:site_name" content="Materuni Hosts" /><meta property="og:title" content={title} /><meta property="og:description" content={description} /><meta property="og:url" content={canonical} /><meta name="twitter:card" content="summary_large_image" />
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 </head>
 <body>
 <header class="site-header"><a class="brand" href="/" aria-label="Materuni Hosts home"><span class="brand-mark">M</span><span class="brand-word">MATERUNI<small>HOSTS</small></span></a>
-<nav aria-label="Main navigation"><a href="/experiences">Experiences</a><a href="/itinerary">Build itinerary</a><a href="/reviews">Guest reviews</a><a href="/sustainability">Our approach</a><a href="/travel-guide">Travel guide</a><a class="nav-cta" href="/booking">Check availability</a></nav>
+<nav aria-label="Main navigation"><a href="/experiences">Experiences</a><a href="/itinerary">Build itinerary</a><a href="/reviews">Guest reviews</a><a href="/faq">FAQs</a><a href="/sustainability">Our approach</a><a href="/travel-guide">Travel guide</a><a class="nav-cta" href="/booking">Check availability</a></nav>
 <button class="menu-toggle" aria-label="Open menu" aria-expanded="false" onclick="const n=document.querySelector('.site-header nav');const open=n.classList.toggle('open');this.setAttribute('aria-expanded',String(open))">☰</button></header>
 <main><slot /></main>
 <footer class="site-footer"><div><a class="brand brand-light" href="/"><span class="brand-mark">M</span><span class="brand-word">MATERUNI<small>HOSTS</small></span></a><p>Authentic Chagga experiences in Materuni Village, Moshi, Tanzania.</p><p class="tagline">Come as a guest. Leave as a friend.</p><div class="social-links" aria-label="Social media"><a href="https://www.instagram.com/REPLACE_MATERUNI_HOSTS" data-social-key="instagram_url" target="_blank" rel="noopener noreferrer" aria-label="Instagram">◎ <span>Instagram</span></a><a href="https://www.facebook.com/REPLACE_MATERUNI_HOSTS" data-social-key="facebook_url" target="_blank" rel="noopener noreferrer" aria-label="Facebook">f <span>Facebook</span></a><a href="https://www.tripadvisor.com/REPLACE_MATERUNI_HOSTS" data-social-key="tripadvisor_url" target="_blank" rel="noopener noreferrer" aria-label="Tripadvisor">⌖ <span>Tripadvisor</span></a><a href="https://wa.me/255612068540" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">◉ <span>WhatsApp</span></a></div></div>
-<div><strong>Explore</strong><a href="/experiences">Our experiences</a><a href="/itinerary">Build your itinerary</a><a href="/reviews">Guest reviews</a><a href="/sustainability">Our approach</a><a href="/travel-guide">Travel guide</a><a href="/booking">Book your experience</a></div>
+<div><strong>Explore</strong><a href="/experiences">Our experiences</a><a href="/itinerary">Build your itinerary</a><a href="/reviews">Guest reviews</a><a href="/faq">FAQs</a><a href="/sustainability">Our approach</a><a href="/travel-guide">Travel guide</a><a href="/booking">Book your experience</a></div>
 <div><strong>Talk to a local host</strong><a href="https://wa.me/255612068540" target="_blank" rel="noopener noreferrer">WhatsApp +255 612 068 540</a><a href="mailto:hello@materunihosts.com">hello@materunihosts.com</a><span>Materuni Village, Moshi · Tanzania</span></div><div class="copyright">© {new Date().getFullYear()} Materuni Hosts. Thoughtful experiences, rooted in place.</div></footer>
 <script>
 // @ts-nocheck
