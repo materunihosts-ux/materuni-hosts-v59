@@ -214,3 +214,19 @@
  .site-footer{padding:48px 22px 22px}
  .mh-concierge{right:10px;bottom:10px}
 }
+
+
+/* Final logo alignment: true optical and geometric centering */
+.site-header{display:flex;align-items:center}
+.site-header>.brand{width:88px;height:88px;min-width:88px;display:flex;align-items:center;justify-content:center;padding:0;margin:0;line-height:0}
+.site-header>.brand .brand-logo{display:block;width:78px;height:78px;max-width:none;max-height:none;object-fit:contain;object-position:50% 50%;margin:0;padding:0;transform:none;flex:0 0 78px}
+.site-footer>.brand{display:inline-flex;width:78px;height:78px;align-items:center;justify-content:center;line-height:0}
+.site-footer>.brand .brand-logo-footer{display:block;width:76px;height:76px;object-fit:contain;object-position:50% 50%;margin:0;padding:0}
+@media(max-width:850px){
+ .site-header>.brand{width:72px;height:72px;min-width:72px}
+ .site-header>.brand .brand-logo{width:64px;height:64px;flex-basis:64px}
+}
+@media(max-width:560px){
+ .site-header>.brand{width:64px;height:64px;min-width:64px}
+ .site-header>.brand .brand-logo{width:58px;height:58px;flex-basis:58px}
+}
