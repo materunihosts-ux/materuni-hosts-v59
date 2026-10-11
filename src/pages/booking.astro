@@ -20,7 +20,7 @@ const url="https://sskmzswoeljxwojcszta.supabase.co";
 const key="sb_publishable_G9ru4P_yKzievqiXjXEEbQ_p28cB_NZ";
 const headers={"apikey":key,"Authorization":"Bearer "+key,"Content-Type":"application/json"};
 const $=id=>document.getElementById(id);
-const today=new Date(); $("date").min=new Date(today.getTime()-today.getTimezoneOffset()*60000).toISOString().slice(0,10);
+const today=new Date(); $("date").min=new Date(today.getTime()-today.getTimezoneOffset()*60000).toISOString().slice(0,10);\n$("date").max=new Date(today.getTime()+365*86400000-today.getTimezoneOffset()*60000).toISOString().slice(0,10);
 const params=new URLSearchParams(location.search);
 async function loadExperienceCatalog(){
  const select=$("experience");
@@ -37,7 +37,7 @@ async function loadExperienceCatalog(){
    select.append(option);
   });
   const wanted=(params.get("experience")||"").trim().toLowerCase();
-  const match=[...select.options].find(o=>o.text.trim().toLowerCase()===wanted||o.value.trim().toLowerCase()===wanted);
+  const match=[...select.options].find(o=>o.text.split(" · $")[0].trim().toLowerCase()===wanted||o.value.trim().toLowerCase()===wanted);
   if(match) select.value=match.value;
  } catch(error) {
   select.innerHTML='<option value="">Experiences temporarily unavailable</option>';
