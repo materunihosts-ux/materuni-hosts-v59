@@ -116,3 +116,19 @@
 .conversation-message time{display:block;font-size:9px;opacity:.65}
 .conversation-note{font-size:11px;margin-top:14px}
 @media(max-width:760px){.conversation-layout{grid-template-columns:1fr}}
+
+
+/* Admin analytics */
+.analytics-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:18px}
+.analytics-value{grid-column:span 1;background:var(--forest);color:#fff}
+.analytics-value span,.analytics-value strong,.analytics-value small{color:#fff}
+.analytics-value strong{font-size:31px}
+.analytics-value small{font-size:10px;opacity:.7}
+.popular-experiences{display:flex;flex-direction:column;gap:18px;margin-top:22px}
+.popular-row{display:flex;flex-direction:column;gap:8px}
+.popular-label{display:flex;justify-content:space-between;gap:12px;align-items:baseline}
+.popular-label strong{font:600 18px var(--serif);color:var(--forest)}
+.popular-label span{font-size:10px;color:var(--muted);white-space:nowrap}
+.popular-track{height:7px;background:#eee8dc;overflow:hidden}
+.popular-track span{display:block;height:100%;background:var(--gold)}
+@media(max-width:700px){.analytics-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.analytics-value{grid-column:span 2}.popular-label{align-items:flex-start;flex-direction:column;gap:2px}}
