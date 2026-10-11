@@ -71,6 +71,17 @@ Deno.serve(async (request: Request) => {
       if (error) console.error("Could not update notification log:", error.message);
     }
     async function logSkipped(channel: string, type: string, recipient: string, message: string, reason: string) {
+      const { data: existing, error: lookupError } = await supabase.from("notification_logs")
+        .select("id").eq("booking_id", bookingId).eq("channel", channel)
+        .eq("notification_type", type).eq("delivery_status", "skipped").maybeSingle();
+      if (lookupError) console.error("Could not inspect skipped notification:", lookupError.message);
+      if (existing) {
+        const { error } = await supabase.from("notification_logs").update({
+          recipient, message, error_message: reason,
+        }).eq("id", existing.id);
+        if (error) console.error("Could not refresh skipped notification:", error.message);
+        return;
+      }
       const { error } = await supabase.from("notification_logs").insert({
         booking_id: bookingId, recipient, channel, notification_type: type,
         message, delivery_status: "skipped", error_message: reason,
