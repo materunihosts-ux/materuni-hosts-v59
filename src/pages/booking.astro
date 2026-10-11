@@ -20,7 +20,8 @@ const url="https://sskmzswoeljxwojcszta.supabase.co";
 const key="sb_publishable_G9ru4P_yKzievqiXjXEEbQ_p28cB_NZ";
 const headers={"apikey":key,"Authorization":"Bearer "+key,"Content-Type":"application/json"};
 const $=id=>document.getElementById(id);
-const today=new Date(); $("date").min=new Date(today.getTime()-today.getTimezoneOffset()*60000).toISOString().slice(0,10);\n$("date").max=new Date(today.getTime()+365*86400000-today.getTimezoneOffset()*60000).toISOString().slice(0,10);
+const today=new Date(); $("date").min=new Date(today.getTime()-today.getTimezoneOffset()*60000).toISOString().slice(0,10);
+$("date").max=new Date(today.getTime()+365*86400000-today.getTimezoneOffset()*60000).toISOString().slice(0,10);
 const params=new URLSearchParams(location.search);
 async function loadExperienceCatalog(){
  const select=$("experience");
