@@ -33,9 +33,54 @@ fetch(siteContentEndpoint,{headers:{apikey:siteContentKey,Authorization:"Bearer 
   });
  }).catch(()=>{});
 
-fetch("https://sskmzswoeljxwojcszta.supabase.co/rest/v1/experience_catalog?select=experience_key,display_name,price_usd,short_description,full_description,image_url,duration_label,inclusions,is_active&order=sort_order.asc",{headers:{apikey:siteContentKey,Authorization:"Bearer "+siteContentKey}})
- .then(r=>r.ok?r.json():[])
- .then(tours=>{if(!Array.isArray(tours)||!tours.length)return;const byKey=new Map(tours.map(t=>[t.experience_key,t]));document.querySelectorAll("[data-catalog-key]").forEach(card=>{const t=byKey.get(card.dataset.catalogKey);if(!t||!t.is_active){card.remove();return}const title=card.querySelector("h3"),price=card.querySelector(".price"),desc=card.querySelector(".card-body>p"),img=card.querySelector("img"),list=card.querySelector("ul"),link=card.querySelector("a.button");if(title)title.textContent=t.display_name;if(price&&price.firstChild)price.firstChild.nodeValue="$"+Number(t.price_usd).toFixed(0);if(desc&&(t.full_description||t.short_description))desc.textContent=t.full_description||t.short_description;if(img&&t.image_url&&/^https:\/\//i.test(t.image_url))img.src=t.image_url;if(list&&Array.isArray(t.inclusions)&&t.inclusions.length){list.replaceChildren();t.inclusions.slice(0,3).forEach(value=>{const li=document.createElement("li");li.textContent=value;list.append(li)})}if(link)link.href="/booking?experience="+encodeURIComponent(t.display_name)})})
- .catch(()=>{});
+fetch("https://sskmzswoeljxwojcszta.supabase.co/rest/v1/experience_catalog?select=experience_key,display_name,price_usd,short_description,full_description,image_url,duration_label,inclusions,exclusions,is_active,sort_order&order=sort_order.asc",{headers:{apikey:siteContentKey,Authorization:"Bearer "+siteContentKey},cache:"no-store"})
+ .then(r=>r.ok?r.json():Promise.reject(new Error("Catalogue unavailable")))
+ .then(tours=>{
+  if(!Array.isArray(tours))return;
+  const root=document.querySelector(".cards");
+  if(!root)return;
+  const makeList=(values)=>{
+   const list=document.createElement("ul");
+   (Array.isArray(values)?values:[]).forEach(value=>{if(typeof value!=="string"||!value.trim())return;const li=document.createElement("li");li.textContent=value;list.append(li)});
+   return list;
+  };
+  const addDetails=(body,tour)=>{
+   const inclusions=Array.isArray(tour.inclusions)?tour.inclusions:[];
+   if(inclusions.length){const heading=document.createElement("strong");heading.textContent="WHAT'S INCLUDED";heading.className="catalog-detail-heading";body.append(heading,makeList(inclusions))}
+   const exclusions=Array.isArray(tour.exclusions)?tour.exclusions:[];
+   if(exclusions.length){const heading=document.createElement("strong");heading.textContent="WHAT'S NOT INCLUDED";heading.className="catalog-detail-heading";body.append(heading,makeList(exclusions))}
+  };
+  const existing=new Map();
+  root.querySelectorAll("[data-catalog-key]").forEach(card=>existing.set(card.dataset.catalogKey,card));
+  const active=tours.filter(t=>t.is_active);
+  const activeKeys=new Set(active.map(t=>t.experience_key));
+  existing.forEach((card,key)=>{if(!activeKeys.has(key))card.remove()});
+  active.forEach(t=>{
+   let card=existing.get(t.experience_key);
+   if(!card){
+    card=document.createElement("article");card.className="experience-card";card.dataset.catalogKey=t.experience_key;
+    if(t.image_url&&/^https:\/\//i.test(t.image_url)){const img=document.createElement("img");img.src=t.image_url;img.alt=t.display_name||"Materuni experience";img.loading="lazy";img.decoding="async";img.width=640;img.height=420;card.append(img)}
+    const body=document.createElement("div");body.className="card-body";
+    const top=document.createElement("div");top.className="card-top";
+    const pill=document.createElement("span");pill.className="pill";pill.textContent=t.duration_label||"Local experience";
+    const price=document.createElement("span");price.className="price";price.append(document.createTextNode("$"+Number(t.price_usd).toFixed(0)));const small=document.createElement("small");small.textContent="PER PERSON";price.append(small);top.append(pill,price);
+    const title=document.createElement("h3");title.textContent=t.display_name||"Materuni experience";
+    const desc=document.createElement("p");desc.textContent=t.full_description||t.short_description||"Ask our local hosts for details.";
+    body.append(top,title,desc);addDetails(body,t);
+    const link=document.createElement("a");link.className="button";link.href="/booking?experience="+encodeURIComponent(t.experience_key);link.textContent="Check availability";body.append(link);card.append(body);root.append(card);
+    return;
+   }
+   const title=card.querySelector("h3"),price=card.querySelector(".price"),desc=card.querySelector(".card-body>p"),img=card.querySelector("img"),pill=card.querySelector(".pill"),body=card.querySelector(".card-body"),link=card.querySelector("a.button");
+   if(title)title.textContent=t.display_name||"Materuni experience";
+   if(price){price.replaceChildren(document.createTextNode("$"+Number(t.price_usd).toFixed(0)));const small=document.createElement("small");small.textContent="PER PERSON";price.append(small)}
+   if(desc&&(t.full_description||t.short_description))desc.textContent=t.full_description||t.short_description;
+   if(img&&t.image_url&&/^https:\/\//i.test(t.image_url))img.src=t.image_url;
+   if(pill&&t.duration_label)pill.textContent=t.duration_label;
+   body.querySelectorAll(".catalog-detail-heading, .catalog-detail-heading + ul").forEach(node=>node.remove());
+   addDetails(body,t);
+   if(link)link.href="/booking?experience="+encodeURIComponent(t.experience_key);
+  });
+ })
+ .catch(error=>console.warn("Using the built-in homepage catalogue because the live catalogue could not be loaded.",error));
 </script>
 </SiteLayout>
