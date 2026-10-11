@@ -108,7 +108,26 @@ const structuredData = {
   }catch(error){console.warn("Optional page translations unavailable.",error)}
  }
  window.MateruniApplyPageTranslations=loadPageTranslations;
+ async function loadSocialLinks(){
+  const keys=["instagram_url","facebook_url","tripadvisor_url","google_review_url"];
+  try{
+   const response=await fetch("https://sskmzswoeljxwojcszta.supabase.co/rest/v1/site_settings?select=setting_key,setting_value&setting_key=in.("+keys.join(",")+")",{headers:{apikey:"sb_publishable_G9ru4P_yKzievqiXjXEEbQ_p28cB_NZ",Authorization:"Bearer sb_publishable_G9ru4P_yKzievqiXjXEEbQ_p28cB_NZ"},cache:"no-store"});
+   if(!response.ok)throw new Error("Social links unavailable");
+   const rows=await response.json(),values=Object.fromEntries(rows.map(row=>[row.setting_key,row.setting_value]));
+   document.querySelectorAll("[data-social-key]").forEach(link=>{
+    const value=values[link.dataset.socialKey];
+    let valid=false;
+    try{const parsed=new URL(value);valid=parsed.protocol==="https:"||parsed.protocol==="http:"}catch{}
+    if(valid){link.href=value;link.hidden=false;link.removeAttribute("aria-hidden")}
+    else{link.hidden=true;link.setAttribute("aria-hidden","true");link.removeAttribute("href")}
+   });
+  }catch(error){
+   document.querySelectorAll("[data-social-key]").forEach(link=>{link.hidden=true;link.setAttribute("aria-hidden","true");link.removeAttribute("href")});
+   console.warn("Optional social links unavailable.",error);
+  }
+ }
  loadPageTranslations(lang);
+ loadSocialLinks();
 
 })();
 </script>
