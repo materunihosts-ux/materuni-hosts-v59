@@ -73,8 +73,8 @@ async function syncPublicCatalogue() {
       const pill = card.querySelector(".pill");
       if (pill && item.duration_label) pill.textContent = item.duration_label;
       const inclusionList = card.querySelectorAll(".card-body ul");
-      if (inclusionList[0] && Array.isArray(item.inclusions) && item.inclusions.length) {
-        inclusionList[0].replaceChildren(...item.inclusions.map(value => {
+      if (inclusionList[1] && Array.isArray(item.inclusions) && item.inclusions.length) {
+        inclusionList[1].replaceChildren(...item.inclusions.map(value => {
           const li = document.createElement("li"); li.textContent = value; return li;
         }));
       }
