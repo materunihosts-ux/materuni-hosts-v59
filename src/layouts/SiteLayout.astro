@@ -8,12 +8,12 @@ const canonical = new URL(Astro.url.pathname, "https://materunihosts.com").toStr
 <head>
 <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>{title}</title><meta name="description" content={description} /><meta name="theme-color" content="#1A3322" /><link rel="canonical" href={canonical} /><meta property="og:type" content="website" /><meta property="og:site_name" content="Materuni Hosts" /><meta property="og:title" content={title} /><meta property="og:description" content={description} /><meta property="og:url" content={canonical} /><meta name="twitter:card" content="summary_large_image" />{noindex && <meta name="robots" content="noindex,nofollow" />}{preloadImage && <link rel="preload" as="image" href={preloadImage} fetchpriority="high" />}
-<link rel="preconnect" href="https://sskmzswoeljxwojcszta.supabase.co" crossorigin /><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="icon" type="image/jpeg" href="/materuni-hosts-logo-round.jpg" /><link rel="preconnect" href="https://sskmzswoeljxwojcszta.supabase.co" crossorigin /><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 </head>
 <body>
-<header class="site-header"><a class="brand" href="/" aria-label="Materuni Hosts home"><span class="brand-mark">M</span><span class="brand-word">MATERUNI<small>HOSTS</small></span></a>
+<header class="site-header"><a class="brand" href="/" aria-label="Materuni Hosts home"><img class="brand-logo" src="/materuni-hosts-logo-round.jpg" alt="Materuni Hosts logo" width="86" height="86" /></a>
 <nav aria-label="Main navigation"><a href="/experiences">Experiences</a><a href="/itinerary">Build itinerary</a><a href="/reviews">Guest reviews</a><a href="/faq">FAQs</a><a href="/sustainability">Our approach</a><a href="/travel-guide">Travel guide</a><a href="/privacy">Privacy</a><a href="/terms">Booking terms</a><a class="nav-cta" href="/booking">Check availability</a></nav>
 <button class="menu-toggle" aria-label="Open menu" aria-expanded="false" onclick="const n=document.querySelector('.site-header nav');const open=n.classList.toggle('open');this.setAttribute('aria-expanded',String(open))">☰</button></header>
 <main><slot /></main>
