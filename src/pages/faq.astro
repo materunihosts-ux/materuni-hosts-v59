@@ -1,20 +1,20 @@
 ---
 import SiteLayout from "../layouts/SiteLayout.astro";
 const faqs = [
-  ["Where is Materuni Village?", "Materuni Village is in the Kilimanjaro region of northern Tanzania, near Moshi, on the lower slopes of Mount Kilimanjaro."],
+  ["Where is Materuni Village?", "Materuni Village is in the Kilimanjaro region of northern Tanzania, near Moshi, on the forested slopes of Mount Kilimanjaro. It is a village visit rather than a town-centre attraction, so agree your transport and pickup point before travelling."],
   ["Which experiences can I book?", "Our six featured experiences are Waterfalls & Coffee Tour ($65), Coffee & Chagga Culture Tour ($50), Cooking & Culture ($70), Waterfall Hike & Cultural Day Trip ($75), Overnight Camping ($110) and Ultimate ($135), all priced per person."],
-  ["How do I make a booking?", "Choose an experience, select a date and an available time on the booking page, then send your request. A booking request is not a confirmed reservation. Our local host will contact you to confirm the details."],
+  ["How do I make a booking?", "Open the availability page, choose your experience, preferred date and one of the time slots shown for your group size. Enter your contact details and send the request. We will review it and contact you to confirm the arrangements. The request itself does not reserve a place."],
   ["When do I pay?", "There is no live card payment on the website at this stage. After your request is reviewed and arrangements are confirmed, our team will send the payment instructions."],
   ["Are the prices per person?", "Yes. The published prices are per person. Your total estimate depends on the number of guests and the experiences selected."],
-  ["Is transport from Moshi included?", "Transport and pickup arrangements must be confirmed separately when you enquire. Please share your hotel or pickup point in the booking form."],
+  ["Is transport from Moshi included?", "Transport from Moshi is not included in the published experience prices unless we have specifically agreed it with you. Add your hotel or preferred pickup point to the booking form so we can discuss the options before your visit."],
   ["Can I combine more than one experience?", "Yes. Use the itinerary builder to select several experiences and send your suggested plan to a local host. We will review the timing and confirm a practical sequence."],
-  ["Are meals included?", "Meal inclusions depend on the package. Please check the inclusions shown on each experience card and tell us about dietary requirements before your visit."],
+  ["Are meals included?", "Meal inclusions vary by experience. Check the 'What's included' list on the experience you select. Please tell us about allergies, dietary preferences or food restrictions in your booking notes; we will discuss what can be accommodated before confirming."],
   ["What should I tell you about accessibility or dietary needs?", "Please add mobility, dietary, children’s or other special requirements to the booking notes. We will discuss what can be arranged before confirming."],
-  ["Can I change or cancel a booking?", "Contact us as soon as possible through WhatsApp or email with your booking reference. Our team will review your request and confirm the available options."]
+  ["Can I change or cancel a booking?", "Send us your booking reference as soon as possible by WhatsApp or email. We will review the booking status and explain the options available. Any change is subject to availability and confirmation by your host."]
 ];
 ---
 <SiteLayout title="Frequently Asked Questions | Materuni Hosts" description="Booking, prices, transport and practical information for Materuni Village experiences near Moshi, Tanzania.">
-<section class="page-hero"><span class="eyebrow">GOOD TO KNOW BEFORE YOU VISIT</span><h1>Frequently asked questions.</h1><p>Clear answers to help you plan an authentic Materuni experience with local hosts.</p></section>
+<section class="page-hero"><span class="eyebrow">GOOD TO KNOW BEFORE YOU VISIT</span><h1>Plan your visit with confidence.</h1><p>Practical answers about Materuni, experience prices, availability, transport and what happens after you send a booking request.</p></section>
 <section class="section faq-section">
   <div class="faq-intro"><span class="eyebrow">PLAN WITH CONFIDENCE</span><h2>Everything you need to know.</h2><p>If you need help with something not covered here, speak directly with a local host.</p><a class="button" href="https://wa.me/255612068540" target="_blank" rel="noopener noreferrer">Ask us on WhatsApp</a></div>
   <div class="faq-list">{faqs.map(([question,answer])=><details class="faq-item"><summary>{question}</summary><p>{answer}</p></details>)}</div>
