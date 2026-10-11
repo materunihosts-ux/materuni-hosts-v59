@@ -104,6 +104,7 @@ const structuredData = {
    document.querySelectorAll("[data-i18n]").forEach(node=>{const value=translations[node.dataset.i18n];if(typeof value==="string"&&value.trim())node.textContent=value});
   }catch(error){console.warn("Optional page translations unavailable.",error)}
  }
+ window.MateruniApplyPageTranslations=loadPageTranslations;
  loadPageTranslations(lang);
 
 })();
