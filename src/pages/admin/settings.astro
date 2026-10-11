@@ -6,10 +6,10 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
 <section class="booking-wrap"><div class="booking-panel" id="login-panel"><h2>Administrator sign in</h2><form id="login-form" class="form-grid"><div class="field full"><label for="email">Admin email</label><input id="email" type="email" autocomplete="username" required></div><div class="field full"><label for="password">Password</label><input id="password" type="password" autocomplete="current-password" required></div><div class="field full"><button class="button" id="login-button">Sign in securely</button><p id="login-feedback" class="muted" aria-live="polite"></p></div></form></div>
 <div id="manager" hidden><div class="booking-panel"><div class="section-heading"><div><span class="eyebrow">PUBLIC PROFILES</span><h2>Social media & review links</h2><p><a href="/admin/bookings">Bookings</a> · <a href="/admin/analytics">Analytics</a> · <a href="/admin/conversations">Guest conversations</a> · <a href="/admin/tours">Tours & availability</a></p></div><button class="button button-secondary" id="logout" type="button">Sign out</button></div>
 <form id="settings-form" class="form-grid">
-<div class="field full"><label for="instagram">Instagram URL</label><input id="instagram" type="url" placeholder="https://www.instagram.com/..." required></div>
-<div class="field full"><label for="facebook">Facebook URL</label><input id="facebook" type="url" placeholder="https://www.facebook.com/..." required></div>
-<div class="field full"><label for="tripadvisor">Tripadvisor URL</label><input id="tripadvisor" type="url" placeholder="https://www.tripadvisor.com/..." required></div>
-<div class="field full"><label for="google">Google review URL</label><input id="google" type="url" placeholder="https://g.page/r/..." required></div>
+<div class="field full"><label for="instagram">Instagram URL</label><input id="instagram" type="url" placeholder="https://www.instagram.com/..."></div>
+<div class="field full"><label for="facebook">Facebook URL</label><input id="facebook" type="url" placeholder="https://www.facebook.com/..."></div>
+<div class="field full"><label for="tripadvisor">Tripadvisor URL</label><input id="tripadvisor" type="url" placeholder="https://www.tripadvisor.com/..."></div>
+<div class="field full"><label for="google">Google review URL</label><input id="google" type="url" placeholder="https://g.page/r/..."></div>
 <div class="field full"><button class="button" id="save" type="submit">Save website links</button><p id="feedback" class="muted" aria-live="polite"></p></div></form></div></div></section>
 <script>
 // @ts-nocheck
