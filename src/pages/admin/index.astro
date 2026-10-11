@@ -31,19 +31,23 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
    <p id="snapshot-feedback" class="muted" aria-live="polite"></p>
   </div>
   <div class="booking-panel" style="margin-top:1.25rem">
-   <span class="eyebrow">QUICK OPERATIONS</span><h2>Manage your business</h2>
-   <div class="admin-shortcuts">
-    <a class="button" href="/admin/bookings">Manage bookings</a>
-    <a class="button button-secondary" href="/admin/tours">Tours, inclusions & exclusions</a>
-    <a class="button button-secondary" href="/admin/analytics">Business analytics</a>
-    <a class="button button-secondary" href="/admin/conversations">Guest CRM & AI inbox</a>
-    <a class="button button-secondary" href="/admin/partners">Partner management</a>
-    <a class="button button-secondary" href="/admin/content">Website content editor</a>
-    <a class="button button-secondary" href="/admin/media">Photo library</a>
-    <a class="button button-secondary" href="/admin/email">Email Studio & invitations</a>
-    <a class="button button-secondary" href="/admin/settings">Website & social settings</a>
-    <button class="button button-secondary" id="logout" type="button">Sign out</button>
+   <span class="eyebrow">START HERE</span><h2>Your daily tools</h2><p class="muted">Most tasks are handled in these three sections. Open the one you need.</p>
+   <div class="admin-home-grid">
+    <a class="admin-home-card admin-home-primary" href="/admin/bookings"><span class="admin-home-icon">01</span><span><strong>Bookings</strong><small>View requests, confirm guests and manage reservations</small></span><span class="admin-home-arrow">→</span></a>
+    <a class="admin-home-card admin-home-primary" href="/admin/tours"><span class="admin-home-icon">02</span><span><strong>Tours & calendar</strong><small>Edit experiences, prices and available dates</small></span><span class="admin-home-arrow">→</span></a>
+    <a class="admin-home-card admin-home-primary" href="/admin/content"><span class="admin-home-icon">03</span><span><strong>Website content</strong><small>Update public information shown to guests</small></span><span class="admin-home-arrow">→</span></a>
    </div>
+   <details class="admin-more-tools"><summary>More tools <span>Analytics, guest messages, partners and settings</span></summary>
+    <div class="admin-shortcuts">
+     <a class="button button-secondary" href="/admin/analytics">Analytics</a>
+     <a class="button button-secondary" href="/admin/conversations">Guest messages</a>
+     <a class="button button-secondary" href="/admin/partners">Partners</a>
+     <a class="button button-secondary" href="/admin/media">Photo library</a>
+     <a class="button button-secondary" href="/admin/email">Email templates</a>
+     <a class="button button-secondary" href="/admin/settings">Social & website links</a>
+    </div>
+   </details>
+   <div class="admin-home-footer"><span>Need to leave the dashboard?</span><button class="button button-secondary" id="logout" type="button">Sign out</button></div>
   </div>
   <div class="booking-panel" style="margin-top:1.25rem">
    <span class="eyebrow">RECENT BOOKINGS</span><h2>Latest guest requests</h2><div id="recent-bookings" class="admin-booking-list"><p class="muted">Loading bookings…</p></div>
