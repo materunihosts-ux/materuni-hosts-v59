@@ -214,7 +214,7 @@ async function loadBookings() {
         remove.addEventListener("click", async () => {
           if (!window.confirm("Permanently delete this old booking record? This cannot be undone.")) return;
           remove.disabled = true;
-          try { await api("/rest/v1/bookings?id=eq." + encodeURIComponent(booking.booking_id),{method:"DELETE",headers:{"Prefer":"return=minimal"}}); await loadBookings(); }
+          try { await api("/rest/v1/rpc/admin_delete_booking",{method:"POST",body:JSON.stringify({p_booking_id:booking.booking_id})}); await loadBookings(); }
           catch (error) { el("booking-feedback").textContent = error.message; remove.disabled = false; }
         });
         actions.append(remove);
