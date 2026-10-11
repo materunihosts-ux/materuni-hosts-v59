@@ -1,0 +1,50 @@
+MATERUNI HOSTS V59 — REFACTORING NOTES
+
+BASE
+- Built from the saved V58 Materuni Hosts project archive.
+- Preserved the existing V58 homepage layout, Supabase project configuration, booking flow, availability lookup, admin dashboard, notification Edge Function and content editor.
+- No Supabase tables, policies, rows, secrets or Edge Function deployment were changed by this frontend refactor.
+
+ASTRO ROUTES
+- src/pages/index.astro remains the homepage.
+- public/partners.html -> src/pages/partners.astro
+- public/sustainability.html -> src/pages/sustainability.astro
+- public/admin.html -> src/pages/admin.astro (noindex,nofollow)
+- Added src/pages/travel-guide.astro.
+- Added src/components/SEO.astro and used it on every Astro page.
+- Added permanent Vercel redirects from the previous .html URLs to the new clean routes.
+
+TYPOGRAPHY / ACCESSIBILITY
+- Converted fixed px typography declarations to rem values, including pixel values inside clamp() bounds.
+- Added a global responsive type scale for body, small text, H1, H2 and H3.
+- Re-established the approved Materuni Hosts earthy palette and readable text tokens.
+- Added visible keyboard focus, reduced-motion handling, responsive overflow safeguards and SVG line icons for the homepage impact cards.
+- Contrast ratios for core pairs: forest #1A3322 on ivory #FAF7F2 = 12.76:1; charcoal #242421 on ivory = 14.56:1; muted #55584F on ivory = 6.79:1; gold-ink #76551F on ivory = 6.36:1.
+
+SEO
+- Unique page titles, descriptions, canonical URLs, Open Graph and Twitter metadata on all public pages.
+- Admin route is noindex/nofollow.
+- Social image points to the existing 1280px WebP brand logo.
+- Sitemap includes homepage, travel guide, partners and sustainability only.
+- robots.txt disallows /admin.
+
+BOOKING / NETWORK STATES
+- Added a shared fetchWithTimeout helper to public/assets/site.js.
+- Availability, booking re-check, booking insert, notification request and published content retrieval now have timeout protection where called.
+- Booking submit checks offline status, prevents duplicate submission and exposes aria-busy while processing.
+- Notification delivery remains non-fatal after a booking has been saved; the guest is told that host follow-up is required if email acknowledgement was not sent.
+
+ASSETS
+- Added public/assets/materuni-mark.svg and switched page favicons to SVG.
+- Existing WebP logo is used for page logo and social metadata; PNG PWA icons remain PNG because manifest icon compatibility is important.
+- Existing dynamic guest photos remain in Supabase Storage and are not bulk-converted here. No source photo files were present in this archive to safely recompress; existing lazy-loading/async-decoding behaviour is retained.
+
+TRAVEL GUIDE
+- New page explains the waterfall walk, Chagga coffee, village culture, camping considerations, arrival via JRO/Moshi and practical packing/transport questions.
+- Transport and activity inclusions are clearly stated as items to confirm, not assumed.
+
+TEST STATUS
+- node --check public/assets/site.js: PASS.
+- ZIP archive integrity: checked after packaging.
+- Astro compiler/check/build: NOT RUN. npm install did not complete within the available network/time window, and node_modules is not present. Do not deploy this archive until npm install, npm run check and npm run build pass in the user's environment.
+- No browser visual test or live Supabase submission test was run.

@@ -1,0 +1,33 @@
+MATERUNI HOSTS — V56 QUALITY AUDIT
+Date: 11 October 2026
+
+SCOPE
+Reviewed public homepage source, global stylesheet, Admin interface styling, local asset references, responsive breakpoints, logo treatment, typography, colour tokens, interaction focus states, PWA cache version and SEO preview metadata.
+
+CHANGES MADE
+- Consolidated a final design-system layer to stabilize typography, spacing, colours, cards, controls and content widths after earlier cascading style revisions.
+- Improved desktop/tablet/mobile navigation wrapping and mobile menu presentation.
+- Increased and normalized the official square logo display while preserving its aspect ratio (no cropping or distortion).
+- Set a clearer readable type scale for headings, body copy, package descriptions, inclusions, prices, forms and buttons.
+- Improved card image proportions, card consistency, impact icons, button/tap target sizes and form field sizing.
+- Added overflow protection and responsive single-column layouts for narrow screens, plus focus-visible keyboard outlines and reduced-motion support.
+- Improved Admin dashboard font sizes, form controls, table readability, logo scaling and small-screen layout.
+- Added canonical URL and social sharing image metadata.
+- Bumped CSS asset query and service-worker cache to V56.
+
+AUTOMATED CHECKS
+- JavaScript syntax: PASS (site.js, language.js, sw.js via node --check).
+- CSS parse: PASS (tinycss2; 1,141 top-level rules; zero parser errors before final additions; final CSS layer appended with balanced rules).
+- Homepage source ID audit: PASS (100 IDs, no duplicates).
+- Local static asset/link audit: PASS (no missing local paths found in the homepage markup).
+- PWA manifest JSON: PASS.
+- ZIP integrity: checked after packaging.
+
+NOT VERIFIED / LIMITATIONS
+- Astro production build was not run successfully in this environment; dependency installation previously timed out. Do not treat this ZIP as a proven production build until `npm install` and `npm run build` succeed.
+- No real guest experience photos are bundled other than the brand logo/icons; upload authentic Materuni photos in Admin and verify their public display.
+- No live browser/device screenshot or Lighthouse score is claimed.
+- External Supabase, email, WhatsApp and AI service delivery are not validated by this frontend visual audit.
+
+RECOMMENDATION
+Use this as the V56 visual-quality candidate. Before production deployment, run `npm install` then `npm run build`, test the site at 360px, 390px, 768px and desktop widths, upload real photos, and complete live booking/admin smoke tests.

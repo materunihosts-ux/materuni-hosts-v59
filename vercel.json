@@ -1,0 +1,22 @@
+{
+  "framework": "astro",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "redirects": [
+    {
+      "source": "/partners.html",
+      "destination": "/partners",
+      "permanent": true
+    },
+    {
+      "source": "/sustainability.html",
+      "destination": "/sustainability",
+      "permanent": true
+    },
+    {
+      "source": "/admin.html",
+      "destination": "/admin",
+      "permanent": true
+    }
+  ]
+}

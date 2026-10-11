@@ -1,0 +1,22 @@
+MATERUNI HOSTS V59 — BUILD STATUS
+
+Source: saved V58 project archive.
+Frontend changes: V59 responsive Astro/SEO refactor applied.
+Routes: /, /travel-guide, /partners, /sustainability, /admin.
+Supabase backend: preserved; no schema, RLS, records or Edge Function deployment changes.
+
+Checks completed:
+- node --check public/assets/site.js: PASS
+- node --check public/assets/language.js: PASS
+- Inline browser scripts in index/admin/partners: PASS
+- HTML structural parse of all five Astro page files: PASS
+- Typography audit: no px units remain in font-size or font shorthand declarations in Astro/CSS/JS: PASS
+- CSS brace balance: PASS
+- ZIP integrity: PASS
+
+Not completed:
+- npm install timed out; node_modules unavailable.
+- Astro compiler `npm run check` and `npm run build` not run.
+- No browser screenshot/responsive test or live Supabase booking test run.
+
+Deployment instruction: run `npm install`, `npm run check`, and `npm run build` locally or in CI. Deploy only after all three succeed and preview pages/forms have been checked.
