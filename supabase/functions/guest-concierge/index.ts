@@ -35,30 +35,42 @@ Deno.serve(async (request: Request) => {
     const language = ["en", "es", "fr", "de"].includes(String(body?.language ?? "en"))
       ? String(body?.language ?? "en") : "en";
     let sessionId = String(body?.session_id ?? "").trim();
+    let sessionToken = String(body?.session_token ?? "").trim();
     if (!message) return json({ error: "Please enter a message." }, 400);
-    if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(sessionId)) {
-      sessionId = crypto.randomUUID();
-    }
+
 
     const supabaseUrl = Deno.env.get("SUPABASE_URL");
     const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
     if (!supabaseUrl || !serviceRoleKey) return json({ error: "Guest assistant is temporarily unavailable." }, 503);
     const supabase = createClient(supabaseUrl, serviceRoleKey, { auth: { persistSession: false, autoRefreshToken: false } });
-
-    let { data: conversation, error: conversationError } = await supabase
-      .from("ai_conversations").select("id, session_id")
-      .eq("session_id", sessionId).maybeSingle();
-    if (conversationError) throw conversationError;
-    if (!conversation) {
-      const created = await supabase.from("ai_conversations")
-        .insert({ session_id: sessionId, language_code: language, conversation_status: "open" })
-        .select("id, session_id").single();
-      if (created.error) throw created.error;
-      conversation = created.data;
+    const ip = request.headers.get("cf-connecting-ip") || request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "";
+    const sha256 = async (value: string) => {
+      const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(value));
+      return Array.from(new Uint8Array(digest)).map(byte => byte.toString(16).padStart(2, "0")).join("");
+    };
+    if (ip) {
+      const ipHash = await sha256(ip);
+      const { data: rate } = await supabase.from("guest_chat_rate_limits").select("*").eq("ip_hash", ipHash).maybeSingle();
+      const expired = !rate || Date.now() - new Date(rate.window_started_at).getTime() >= 3600000;
+      if (!expired && Number(rate.request_count) >= 100) return json({ error: "Please pause before sending more messages." }, 429);
+      await supabase.from("guest_chat_rate_limits").upsert({ ip_hash: ipHash, window_started_at: expired ? new Date().toISOString() : rate.window_started_at, request_count: expired ? 1 : Number(rate.request_count) + 1, updated_at: new Date().toISOString() }, { onConflict: "ip_hash" });
+    }
+    let conversation: { id: string; session_id: string } | null = null;
+    let newSession = false;
+    if (sessionId) {
+      if (!sessionToken || !/^[0-9a-f-]{36}$/i.test(sessionId)) return json({ error: "Your chat session has expired. Please start a new conversation." }, 401);
+      const tokenHash = await sha256(sessionToken);
+      const { data, error } = await supabase.from("ai_conversations").select("id, session_id").eq("session_id", sessionId).eq("session_token_hash", tokenHash).maybeSingle();
+      if (error) throw error;
+      if (!data) return json({ error: "Your chat session could not be verified. Please start a new conversation." }, 401);
+      conversation = data;
     } else {
-      await supabase.from("ai_conversations")
-        .update({ language_code: language, updated_at: new Date().toISOString() })
-        .eq("id", conversation.id);
+      sessionId = crypto.randomUUID();
+      sessionToken = crypto.randomUUID() + crypto.randomUUID();
+      const { data, error } = await supabase.from("ai_conversations").insert({ session_id: sessionId, session_token_hash: await sha256(sessionToken), ip_hash: ip ? await sha256(ip) : null, language_code: language, conversation_status: "open" }).select("id, session_id").single();
+      if (error) throw error;
+      conversation = data;
+      newSession = true;
     }
 
     const { count, error: countError } = await supabase.from("ai_messages")
