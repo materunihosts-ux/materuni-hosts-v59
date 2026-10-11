@@ -17,6 +17,117 @@ const canonical = new URL(Astro.url.pathname, "https://materunihosts.com").toStr
 <nav aria-label="Main navigation"><a href="/experiences">Experiences</a><a href="/itinerary">Build itinerary</a><a href="/reviews">Guest reviews</a><a href="/faq">FAQs</a><a href="/sustainability">Our approach</a><a href="/travel-guide">Travel guide</a><a class="nav-cta" href="/booking">Check availability</a></nav>
 <button class="menu-toggle" aria-label="Open menu" aria-expanded="false" onclick="const n=document.querySelector('.site-header nav');const open=n.classList.toggle('open');this.setAttribute('aria-expanded',String(open))">☰</button></header>
 <main><slot /></main>
+
+{!noindex && <div class="mh-concierge" id="mh-concierge">
+  <button class="mh-concierge-launch" id="mh-chat-open" type="button" aria-expanded="false" aria-controls="mh-chat-panel"><span class="mh-chat-icon">✦</span><span>Ask a local host</span></button>
+  <section class="mh-chat-panel" id="mh-chat-panel" hidden aria-label="Materuni Hosts guest concierge">
+    <header class="mh-chat-header"><div><strong>Materuni Hosts</strong><small id="mh-chat-subtitle">Local experience concierge</small></div><button id="mh-chat-close" type="button" aria-label="Close chat">×</button></header>
+    <div class="mh-chat-messages" id="mh-chat-messages" aria-live="polite"></div>
+    <form class="mh-chat-form" id="mh-chat-form">
+      <select id="mh-chat-language" aria-label="Chat language"><option value="en">English</option><option value="es">Español</option><option value="fr">Français</option><option value="de">Deutsch</option></select>
+      <div class="mh-chat-compose"><input id="mh-chat-input" maxlength="1200" placeholder="Ask about experiences, dates or prices…" autocomplete="off" required><button id="mh-chat-send" type="submit" aria-label="Send message">Send</button></div>
+    </form>
+    <a class="mh-chat-whatsapp" href="https://wa.me/255612068540" target="_blank" rel="noopener noreferrer">Prefer a person? Chat on WhatsApp</a>
+  </section>
+</div>}
+<script>
+// @ts-nocheck
+const conciergeEndpoint = "https://sskmzswoeljxwojcszta.supabase.co/functions/v1/guest-concierge";
+const conciergeKey = "sb_publishable_G9ru4P_yKzievqiXjXEEbQ_p28cB_NZ";
+const chatEl = id => document.getElementById(id);
+const chatStore = { id: "materuni_chat_session", token: "materuni_chat_token" };
+let chatSessionId = sessionStorage.getItem(chatStore.id) || "";
+let chatSessionToken = sessionStorage.getItem(chatStore.token) || "";
+const chatGreetings = {
+  en: "Hello! I’m your Materuni Hosts concierge. I can help you choose an experience, understand prices and plan your visit. What would you like to know?",
+  es: "¡Hola! Soy tu asistente de Materuni Hosts. Puedo ayudarte a elegir una experiencia, conocer los precios y planificar tu visita. ¿Qué te gustaría saber?",
+  fr: "Bonjour ! Je suis votre concierge Materuni Hosts. Je peux vous aider à choisir une expérience, comprendre les prix et organiser votre visite. Que souhaitez-vous savoir ?",
+  de: "Hallo! Ich bin Ihr Materuni Hosts Concierge. Ich helfe Ihnen bei der Auswahl eines Erlebnisses, den Preisen und der Planung Ihres Besuchs. Was möchten Sie wissen?"
+};
+const detectedLanguage = (navigator.language || "en").slice(0,2).toLowerCase();
+const languageSelect = chatEl("mh-chat-language");
+if (languageSelect) languageSelect.value = ["en","es","fr","de"].includes(detectedLanguage) ? detectedLanguage : "en";
+function chatBubble(role, message, mode) {
+  const list = chatEl("mh-chat-messages");
+  const bubble = document.createElement("div");
+  bubble.className = "mh-chat-bubble " + role;
+  if (mode) {
+    const label = document.createElement("small");
+    label.className = "mh-chat-mode";
+    label.textContent = mode === "ai" ? "AI concierge" : "Guest guide";
+    bubble.append(label);
+  }
+  const text = document.createElement("p");
+  text.textContent = message;
+  bubble.append(text);
+  list.append(bubble);
+  list.scrollTop = list.scrollHeight;
+  return bubble;
+}
+if (chatEl("mh-chat-open")) {
+  chatBubble("assistant", chatGreetings[languageSelect.value] || chatGreetings.en);
+  chatEl("mh-chat-open").addEventListener("click", () => {
+    const panel = chatEl("mh-chat-panel");
+    panel.hidden = !panel.hidden;
+    chatEl("mh-chat-open").setAttribute("aria-expanded", String(!panel.hidden));
+    if (!panel.hidden) chatEl("mh-chat-input").focus();
+  });
+  chatEl("mh-chat-close").addEventListener("click", () => {
+    chatEl("mh-chat-panel").hidden = true;
+    chatEl("mh-chat-open").setAttribute("aria-expanded", "false");
+  });
+  languageSelect.addEventListener("change", () => {
+    const language = languageSelect.value;
+    chatEl("mh-chat-subtitle").textContent = ({en:"Local experience concierge",es:"Asistente de experiencias locales",fr:"Concierge d’expériences locales",de:"Lokaler Erlebnis-Concierge"})[language];
+  });
+  chatEl("mh-chat-form").addEventListener("submit", async event => {
+    event.preventDefault();
+    const input = chatEl("mh-chat-input");
+    const send = chatEl("mh-chat-send");
+    const message = input.value.trim();
+    if (!message) return;
+    chatBubble("guest", message);
+    input.value = "";
+    input.disabled = true;
+    send.disabled = true;
+    const typing = chatBubble("assistant", "…");
+    async function requestReply(retry = false) {
+      const response = await fetch(conciergeEndpoint, {
+        method: "POST",
+        headers: { apikey: conciergeKey, "Content-Type": "application/json" },
+        body: JSON.stringify({
+          message,
+          language: languageSelect.value,
+          ...(chatSessionId && chatSessionToken ? { session_id: chatSessionId, session_token: chatSessionToken } : {})
+        })
+      });
+      const data = await response.json().catch(() => ({}));
+      if (response.status === 401 && !retry) {
+        chatSessionId = ""; chatSessionToken = "";
+        sessionStorage.removeItem(chatStore.id); sessionStorage.removeItem(chatStore.token);
+        return requestReply(true);
+      }
+      if (!response.ok) throw new Error(data.error || "The chat is temporarily unavailable.");
+      if (data.session_id) { chatSessionId = data.session_id; sessionStorage.setItem(chatStore.id, chatSessionId); }
+      if (data.session_token) { chatSessionToken = data.session_token; sessionStorage.setItem(chatStore.token, chatSessionToken); }
+      return data;
+    }
+    try {
+      const data = await requestReply();
+      typing.remove();
+      chatBubble("assistant", data.reply || "Please contact a local host for help.", data.mode);
+    } catch (error) {
+      typing.remove();
+      chatBubble("assistant", "I’m sorry, the chat is temporarily unavailable. Please reach our local host on WhatsApp: +255 612 068 540.");
+    } finally {
+      input.disabled = false;
+      send.disabled = false;
+      input.focus();
+    }
+  });
+}
+</script>
+
 <footer class="site-footer"><div><a class="brand brand-light" href="/"><span class="brand-mark">M</span><span class="brand-word">MATERUNI<small>HOSTS</small></span></a><p>Authentic Chagga experiences in Materuni Village, Moshi, Tanzania.</p><p class="tagline">Come as a guest. Leave as a friend.</p><div class="social-links" aria-label="Social media"><a href="https://www.instagram.com/REPLACE_MATERUNI_HOSTS" data-social-key="instagram_url" target="_blank" rel="noopener noreferrer" aria-label="Instagram">◎ <span>Instagram</span></a><a href="https://www.facebook.com/REPLACE_MATERUNI_HOSTS" data-social-key="facebook_url" target="_blank" rel="noopener noreferrer" aria-label="Facebook">f <span>Facebook</span></a><a href="https://www.tripadvisor.com/REPLACE_MATERUNI_HOSTS" data-social-key="tripadvisor_url" target="_blank" rel="noopener noreferrer" aria-label="Tripadvisor">⌖ <span>Tripadvisor</span></a><a href="https://wa.me/255612068540" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">◉ <span>WhatsApp</span></a></div></div>
 <div><strong>Explore</strong><a href="/experiences">Our experiences</a><a href="/itinerary">Build your itinerary</a><a href="/reviews">Guest reviews</a><a href="/faq">FAQs</a><a href="/sustainability">Our approach</a><a href="/travel-guide">Travel guide</a><a href="/booking">Book your experience</a></div>
 <div><strong>Talk to a local host</strong><a href="https://wa.me/255612068540" target="_blank" rel="noopener noreferrer">WhatsApp +255 612 068 540</a><a href="mailto:hello@materunihosts.com">hello@materunihosts.com</a><span>Materuni Village, Moshi · Tanzania</span></div><div class="copyright">© {new Date().getFullYear()} Materuni Hosts. Thoughtful experiences, rooted in place.</div></footer>
