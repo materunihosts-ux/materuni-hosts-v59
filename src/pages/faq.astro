@@ -20,4 +20,5 @@ const faqs = [
   <div class="faq-list">{faqs.map(([question,answer])=><details class="faq-item"><summary>{question}</summary><p>{answer}</p></details>)}</div>
 </section>
 <section class="band"><h2>Still planning your visit?</h2><p>Tell us what you would like to experience and we will help you shape a practical plan.</p><div class="actions" style="justify-content:center"><a class="button button-light" href="/itinerary">Build your itinerary</a><a class="button secondary" href="/booking">Check availability</a></div></section>
+<script type="application/ld+json" set:html={JSON.stringify({"@context":"https://schema.org","@type":"FAQPage","mainEntity":faqs.map(([question,answer])=>({"@type":"Question","name":question,"acceptedAnswer":{"@type":"Answer","text":answer}}))})} />
 </SiteLayout>
