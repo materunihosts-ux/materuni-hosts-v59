@@ -53,7 +53,6 @@ $("date").addEventListener("change",async()=>{
 });
 $("experience").addEventListener("change",()=>{if($("date").value)$("date").dispatchEvent(new Event("change"))});
 $("count").addEventListener("change",()=>{if($("date").value)$("date").dispatchEvent(new Event("change"))});
-$("count").addEventListener("input",()=>{if($("date").value)$("date").dispatchEvent(new Event("change"))});
 $("booking-form").addEventListener("submit",async e=>{
  e.preventDefault();const btn=$("submit"),fb=$("feedback");btn.disabled=true;btn.textContent="Sending request…";fb.textContent="";
  const body={p_experience:$("experience").value,p_slot_id:$("slot").value,p_guest_count:Number($("count").value),p_guest:$("name").value.trim(),p_email:$("email").value.trim(),p_phone:$("phone").value.trim(),p_nationality:$("nationality").value,p_country_of_residence:$("country").value,p_preferred_contact:$("contact").value,p_pickup:$("pickup").value,p_language:$("language").value,p_notes:$("notes").value,p_booking_type:"tour"};
