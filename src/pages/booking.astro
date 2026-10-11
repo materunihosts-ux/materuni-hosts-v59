@@ -4,7 +4,7 @@ import SiteLayout from "../layouts/SiteLayout.astro";
 <SiteLayout title="Check Availability & Book | Materuni Hosts">
 <section class="page-hero"><span class="eyebrow">PLAN YOUR VISIT</span><h1>Check availability before you book.</h1><p>Choose your experience and preferred date. Available times are retrieved from our live Materuni Hosts calendar.</p></section>
 <section class="booking-wrap"><div class="booking-panel"><form id="booking-form" class="form-grid">
-<div class="field full"><label for="experience">Choose your experience *</label><select id="experience" required><option value="">Select an experience</option><option>Materuni Waterfalls & Coffee Tour</option><option>Materuni Coffee & Chagga Culture Tour</option><option>Traditional Chagga Cooking & Culture Experience</option><option>Materuni Waterfall Hike & Cultural Day Trip</option><option>Materuni Village Overnight Camping Tour</option><option>The Ultimate Kilimanjaro Foothills & Materuni Experience</option></select></div>
+<div class="field full"><label for="experience">Choose your experience *</label><select id="experience" required><option value="">Select an experience</option><option value="Waterfall & Chagga Culture">Materuni Waterfalls & Coffee Tour</option><option value="Traditional Coffee Experience">Materuni Coffee & Chagga Culture Tour</option><option value="Traditional Chagga Cooking Class">Traditional Chagga Cooking & Culture Experience</option><option value="Materuni Waterfall Hike & Cultural Day Trip">Materuni Waterfall Hike & Cultural Day Trip</option><option value="Camping & Village Life">Materuni Village Overnight Camping Tour</option><option value="The Ultimate Kilimanjaro Foothills & Materuni Experience">The Ultimate Kilimanjaro Foothills & Materuni Experience</option></select></div>
 <div class="field"><label for="date">Preferred date *</label><input id="date" type="date" required></div><div class="field"><label for="slot">Available time *</label><select id="slot" required disabled><option value="">Choose a date first</option></select></div>
 <div class="field"><label for="count">Number of guests *</label><input id="count" type="number" min="1" max="30" value="2" required></div><div class="field"><label for="name">Full name *</label><input id="name" autocomplete="name" required></div>
 <div class="field"><label for="email">Email address *</label><input id="email" type="email" autocomplete="email" required></div><div class="field"><label for="phone">WhatsApp / phone *</label><input id="phone" type="tel" autocomplete="tel" required></div><div class="field"><label for="nationality">Nationality</label><input id="nationality"></div>
@@ -19,7 +19,12 @@ const key="sb_publishable_G9ru4P_yKzievqiXjXEEbQ_p28cB_NZ";
 const headers={"apikey":key,"Authorization":"Bearer "+key,"Content-Type":"application/json"};
 const $=id=>document.getElementById(id);
 const today=new Date(); $("date").min=new Date(today.getTime()-today.getTimezoneOffset()*60000).toISOString().slice(0,10);
-const params=new URLSearchParams(location.search); if(params.get("experience")) $("experience").value=params.get("experience");
+const params=new URLSearchParams(location.search);
+if(params.get("experience")) {
+ const wanted=params.get("experience").trim().toLowerCase();
+ const option=[...$("experience").options].find(o=>o.text.trim().toLowerCase()===wanted||o.value.trim().toLowerCase()===wanted);
+ if(option) $("experience").value=option.value;
+}
 $("date").addEventListener("change",async()=>{
  const exp=$("experience").value, date=$("date").value, sel=$("slot");sel.innerHTML='<option value="">Loading availability…</option>';sel.disabled=true;
  if(!exp||!date){sel.innerHTML='<option value="">Choose experience and date</option>';return}
