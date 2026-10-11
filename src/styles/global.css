@@ -252,3 +252,47 @@
 a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
 main:focus{outline:none}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+
+
+/* Booking form: consistent typography, clear field states and live availability */
+.booking-panel,.booking-panel *{font-family:var(--sans)}
+.booking-panel{color:var(--ink)}
+.booking-panel .field{min-width:0}
+.booking-panel .field label{font-size:13px;line-height:1.45;color:#1A3322;font-weight:800}
+.booking-panel .field input,.booking-panel .field select,.booking-panel .field textarea{min-height:49px;border:1px solid #8A9189;border-radius:3px;background:#fff;color:#242421;font:500 15px/1.45 var(--sans);padding:12px 14px;box-shadow:0 1px 2px rgba(0,0,0,.035)}
+.booking-panel .field textarea{min-height:112px}
+.booking-panel .field input::placeholder,.booking-panel .field textarea::placeholder{color:#626960;opacity:1}
+.booking-panel .field input:focus,.booking-panel .field select:focus,.booking-panel .field textarea:focus{outline:3px solid rgba(26,51,34,.2);outline-offset:1px;border-color:#1A3322}
+.booking-panel .field input:disabled,.booking-panel .field select:disabled{background:#f0eee9;color:#555b54;opacity:1}
+.booking-panel .field input[type=date]{min-height:50px}
+.booking-panel .field small{font-size:12px;line-height:1.55;color:#50574f}
+.availability-status{display:block;min-height:20px;font-size:12px;font-weight:600;color:#3f5143}
+.availability-status[data-state="success"]{color:#21633b}
+.availability-status[data-state="warning"]{color:#785319}
+.availability-status[data-state="error"]{color:#9b3028}
+.availability-refresh{align-self:flex-start;border:1px solid #1A3322;background:#fff;color:#1A3322;padding:9px 13px;font:700 12px var(--sans);cursor:pointer;border-radius:2px}
+.availability-refresh:hover:not(:disabled){background:#1A3322;color:#fff}
+.availability-refresh:disabled{opacity:.5;cursor:not-allowed}
+.booking-panel .notice{background:#f0eadf;border-left:3px solid #1A3322;color:#343a33;font:500 13px/1.7 var(--sans);padding:16px}
+.booking-panel #feedback{font-size:13px;line-height:1.65;color:#344337;overflow-wrap:anywhere}
+.booking-panel #submit{font:800 13px var(--sans)}
+.booking-panel #submit:disabled{opacity:.65;cursor:wait}
+.booking-panel .field input[type=number]{font-variant-numeric:tabular-nums}
+
+/* Gold is an accent, not a small-text foreground on light surfaces */
+.eyebrow{color:#76551f}
+.hero .eyebrow,.band .eyebrow{color:#e5c681}
+.mh-chat-mode{color:#76551f}
+.mh-chat-compose button{background:#C5A059;color:#1A3322}
+.mh-chat-compose button:hover{background:#b58e45;color:#1A3322}
+.itinerary-stop small{color:#76551f}
+.button:hover,.nav-cta:hover{background:#C5A059;color:#1A3322!important}
+.pill{color:#674716;background:#f2eadb}
+.site-footer .tagline{color:#e5c681}
+@media(max-width:560px){
+ .booking-wrap{padding:34px 14px}
+ .booking-panel{padding:20px 16px}
+ .booking-panel .form-grid{gap:16px}
+ .booking-panel .field label{font-size:13px}
+ .booking-panel .field input,.booking-panel .field select,.booking-panel .field textarea{font-size:16px}
+}
