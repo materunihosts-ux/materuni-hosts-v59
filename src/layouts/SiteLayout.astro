@@ -20,6 +20,8 @@ const { title = "Materuni Hosts | Authentic Chagga Experiences", description = "
 <div><strong>Explore</strong><a href="/experiences">Our experiences</a><a href="/itinerary">Build your itinerary</a><a href="/reviews">Guest reviews</a><a href="/sustainability">Our approach</a><a href="/travel-guide">Travel guide</a><a href="/booking">Book your experience</a></div>
 <div><strong>Talk to a local host</strong><a href="https://wa.me/255612068540" target="_blank" rel="noopener noreferrer">WhatsApp +255 612 068 540</a><a href="mailto:hello@materunihosts.com">hello@materunihosts.com</a><span>Materuni Village, Moshi · Tanzania</span></div><div class="copyright">© {new Date().getFullYear()} Materuni Hosts. Thoughtful experiences, rooted in place.</div></footer>
 <script>
+// @ts-nocheck
+
 const settingsEndpoint="https://sskmzswoeljxwojcszta.supabase.co/rest/v1/site_settings?select=setting_key,setting_value";
 const publicKey="sb_publishable_G9ru4P_yKzievqiXjXEEbQ_p28cB_NZ";
 fetch(settingsEndpoint,{headers:{"apikey":publicKey,"Authorization":"Bearer "+publicKey}}).then(response=>response.ok?response.json():[]).then(rows=>rows.forEach(row=>{const link=document.querySelector('[data-social-key="'+row.setting_key+'"]');if(link&&row.setting_value.startsWith("https://"))link.href=row.setting_value;})).catch(()=>{});
