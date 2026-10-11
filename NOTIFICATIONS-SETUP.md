@@ -1,49 +1,45 @@
-# Materuni Hosts — Instant messaging & email automation
+# Materuni Hosts — Booking notifications
 
-## What the website does now
-- The guest-facing host chat and floating WhatsApp actions open WhatsApp with a prefilled enquiry message (guest-initiated instant messaging).
-- After a booking enquiry is saved, the frontend calls the Supabase Edge Function `booking-notifications` using the saved booking UUID.
-- The function looks up the saved booking server-side and can send an acknowledgement to the guest plus a new-enquiry alert to the business email through Resend.
-- It can send a WhatsApp alert to the business number using WhatsApp Cloud API and an approved message template.
-- Delivery attempts are written to `notification_logs` where its existing schema permits.
+## Current implementation
+- The Supabase Edge Function `booking-notifications` is deployed and active in project `sskmzswoeljxwojcszta`.
+- The public booking page calls the function after `submit_booking` saves a new request.
+- The function looks up the booking server-side using the Supabase service-role key; the key is never exposed in the browser.
+- It accepts only a valid booking UUID for a new booking created within the previous 30 minutes.
+- Delivery attempts are written to `notification_logs`; duplicate successful or in-progress sends are blocked by a partial unique index.
+- The Admin booking page shows the latest email and WhatsApp delivery outcomes.
+- The function is deployed with JWT verification disabled because guests submit bookings without signing in. Its custom checks require a valid, unguessable booking UUID, a recent creation timestamp and status `New`. It must not be used as a general messaging endpoint.
 
-## Deploy the Supabase function
-From the project root, with Supabase CLI linked to project `sskmzswoeljxwojcszta`:
+## Email setup (Resend)
+Add these as Supabase Edge Function secrets:
+- `RESEND_API_KEY` — API key from Resend.
+- `EMAIL_FROM` — sender address on a domain verified with Resend, e.g. `Materuni Hosts <bookings@materunihosts.com>`.
+- `ADMIN_NOTIFICATION_EMAIL` — inbox for new booking alerts.
 
-```bash
-supabase functions deploy booking-notifications --no-verify-jwt
-```
+When configured, the function sends:
+1. A guest acknowledgement confirming receipt (not a confirmed reservation and no payment taken).
+2. A new booking alert to the admin inbox.
 
-The function validates the booking UUID against the database using the server-only service-role key. Never put service-role credentials in frontend code.
+Supabase provides `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` to Edge Functions; never copy the service-role key into frontend code or GitHub.
 
-## Configure secrets (Supabase Edge Function secrets)
-Required for email:
-- `SUPABASE_URL`
-- `SUPABASE_SERVICE_ROLE_KEY` (server-side only)
-- `RESEND_API_KEY`
-- `EMAIL_FROM` — a sender address on a domain verified with Resend, e.g. `Materuni Hosts <bookings@materunihosts.com>` after domain verification
-- `ADMIN_NOTIFICATION_EMAIL` — the inbox that receives new booking alerts
-
-Optional for automatic WhatsApp admin alerts:
+## WhatsApp Cloud API setup
+Add these secrets only after the WhatsApp Business Platform phone number is connected:
 - `WHATSAPP_ACCESS_TOKEN`
 - `WHATSAPP_PHONE_NUMBER_ID`
-- `WHATSAPP_ADMIN_NUMBER` — digits with country code, e.g. 2556…
-- `WHATSAPP_BOOKING_TEMPLATE` — approved Meta WhatsApp template name with five body variables in this order: guest, experience, date, guest count, guest phone
-- `WHATSAPP_TEMPLATE_LANGUAGE` — defaults to `en`
+- `WHATSAPP_ADMIN_NUMBER` — recipient digits with country code, e.g. `2556…`.
+- `WHATSAPP_BOOKING_TEMPLATE` — approved Meta template name with five body variables in this order: guest, experience, date, guest count, guest phone.
+- `WHATSAPP_TEMPLATE_LANGUAGE` — optional; defaults to `en`.
 
-Set with `supabase secrets set NAME=value ...` or the Supabase Dashboard Edge Function secrets UI. Do not commit secrets to this repository.
+The business alert uses the approved template. It will not send until the token, phone number ID, recipient number and template are all configured.
 
-## WhatsApp rules
-The website's click-to-chat is available immediately and requires the guest to press Send in WhatsApp. Automatic business-initiated notifications require a WhatsApp Business Platform account, a connected phone number, an access token, and an approved template. This package does not claim WhatsApp API delivery until configured and tested.
-
-## Email rules
-Email automation requires a Resend account, verified sending domain, API key, and sender address. The function sends the guest acknowledgement and business alert after the booking row is saved. If email credentials are absent or delivery fails, the booking remains saved and the response reports notification status separately.
+## Guest-initiated WhatsApp
+Website WhatsApp buttons open a prefilled chat. The guest must press Send in WhatsApp; this is separate from automatic WhatsApp Business API notifications.
 
 ## Test checklist
-1. Deploy the Edge Function and set secrets.
-2. Submit one test booking with an email address you control.
-3. Confirm the booking appears in Admin.
-4. Confirm the guest acknowledgement and admin alert arrive (also inspect spam).
-5. Configure the WhatsApp template and test the business alert.
-6. Inspect `notification_logs` for delivery outcomes.
-7. Remove test bookings only if they are clearly identified as test records and after confirming with the site owner.
+1. Add the Resend secrets and verify the sending domain.
+2. Submit one booking using an email address you control.
+3. Check that the booking appears in Admin and that the notification log shows `sent`.
+4. Check the guest acknowledgement and admin alert (including spam).
+5. Configure the approved WhatsApp template and test the admin alert.
+6. Inspect notification logs for `sent`, `failed` or `skipped` states.
+
+**Important:** the function is deployed, but real email and WhatsApp delivery is not active until the provider credentials and sender/template setup above are supplied and a live test passes.
