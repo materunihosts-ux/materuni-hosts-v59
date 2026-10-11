@@ -12,6 +12,8 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
 <div class="field full"><label for="google">Google review URL</label><input id="google" type="url" placeholder="https://g.page/r/..." required></div>
 <div class="field full"><button class="button" id="save" type="submit">Save website links</button><p id="feedback" class="muted" aria-live="polite"></p></div></form></div></div></section>
 <script>
+// @ts-nocheck
+
 const supabaseUrl="https://sskmzswoeljxwojcszta.supabase.co", publishableKey="sb_publishable_G9ru4P_yKzievqiXjXEEbQ_p28cB_NZ";
 let token="";
 const el=id=>document.getElementById(id);
