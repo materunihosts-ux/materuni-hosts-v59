@@ -94,7 +94,9 @@ const structuredData = {
  }
  apply(lang);select.addEventListener("change",()=>{apply(select.value);loadPageTranslations(select.value)});
  async function loadPageTranslations(language){
-  if(language==="en")return;
+  const nodes=[...document.querySelectorAll("[data-i18n]")];
+  nodes.forEach(node=>{if(!node.dataset.i18nDefault)node.dataset.i18nDefault=node.textContent||""});
+  if(language==="en"){nodes.forEach(node=>{node.textContent=node.dataset.i18nDefault||""});return}
   try{
    const response=await fetch("https://sskmzswoeljxwojcszta.supabase.co/rest/v1/site_settings?select=setting_value&setting_key=eq.language_content",{headers:{apikey:"sb_publishable_G9ru4P_yKzievqiXjXEEbQ_p28cB_NZ",Authorization:"Bearer sb_publishable_G9ru4P_yKzievqiXjXEEbQ_p28cB_NZ"},cache:"no-store"});
    if(!response.ok)return;
