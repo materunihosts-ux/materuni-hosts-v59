@@ -143,7 +143,42 @@ const translationKeys={
  story_desc:{label:"Story paragraph",type:"textarea",max:900},
  story_desc2:{label:"Story second paragraph",type:"textarea",max:500}
 };
-let languageContent={es:{},fr:{},de:{}};
+const defaultTranslations={
+ es:{
+  hero_title:"Acércate al corazón de la cultura chagga.",hero_intro:"Descubre la cascada, el café y la vida del pueblo con anfitriones locales en Materuni.",
+  experiences_title:"Seis maneras de descubrir el pueblo",experiences_intro:"Elige experiencias auténticas, guiadas por anfitriones locales.",
+  experiences_page_title:"Elige tu propia experiencia en Materuni.",experiences_page_intro:"Precios claros por persona, inclusiones detalladas y experiencias auténticas en Materuni.",
+  booking_page_title:"Consulta la disponibilidad antes de reservar.",booking_page_intro:"Elige tu experiencia y fecha preferida. Consulta los horarios disponibles en nuestro calendario.",
+  itinerary_page_title:"Crea un itinerario de Materuni a tu medida.",itinerary_page_intro:"Elige las experiencias que te interesan y prepararemos una propuesta práctica para tu visita.",
+  faq_page_title:"Planifica tu visita con confianza.",faq_page_intro:"Respuestas prácticas sobre Materuni, precios, disponibilidad, transporte y solicitudes de reserva.",
+  booking_experience_label:"Elige tu experiencia *",booking_date_label:"Fecha preferida *",booking_slot_label:"Hora disponible *",booking_guests_label:"Número de visitantes *",booking_name_label:"Nombre completo *",booking_submit_label:"Enviar solicitud de reserva",
+  itinerary_name_label:"Tu nombre",itinerary_date_label:"Fecha de inicio preferida",itinerary_guests_label:"Número de visitantes",itinerary_pace_label:"Ritmo del viaje",itinerary_interest_label:"Interés principal",itinerary_submit_label:"Crear mi itinerario sugerido",
+  story_title:"Una experiencia de pueblo compartida por anfitriones locales.",story_desc:"Conoce Materuni a través de las personas, la cultura y los paisajes que hacen especial este lugar.",story_desc2:"Ven como invitado. Vete como amigo."
+ },
+ fr:{
+  hero_title:"Au cœur de la culture chagga.",hero_intro:"Découvrez la cascade, le café et la vie du village avec des hôtes locaux à Materuni.",
+  experiences_title:"Six façons de découvrir le village",experiences_intro:"Choisissez des expériences authentiques accompagnées par des hôtes locaux.",
+  experiences_page_title:"Choisissez votre expérience à Materuni.",experiences_page_intro:"Des prix clairs par personne, des inclusions détaillées et des expériences authentiques au village de Materuni.",
+  booking_page_title:"Vérifiez les disponibilités avant de réserver.",booking_page_intro:"Choisissez votre expérience et la date souhaitée. Consultez les horaires disponibles dans notre calendrier.",
+  itinerary_page_title:"Créez un itinéraire à votre image à Materuni.",itinerary_page_intro:"Choisissez les expériences qui vous intéressent et nous préparerons une proposition pratique pour votre visite.",
+  faq_page_title:"Préparez votre visite en toute confiance.",faq_page_intro:"Des réponses pratiques sur Materuni, les prix, les disponibilités, le transport et les demandes de réservation.",
+  booking_experience_label:"Choisissez votre expérience *",booking_date_label:"Date souhaitée *",booking_slot_label:"Horaire disponible *",booking_guests_label:"Nombre de visiteurs *",booking_name_label:"Nom complet *",booking_submit_label:"Envoyer la demande de réservation",
+  itinerary_name_label:"Votre nom",itinerary_date_label:"Date de début souhaitée",itinerary_guests_label:"Nombre de visiteurs",itinerary_pace_label:"Rythme du voyage",itinerary_interest_label:"Centre d’intérêt principal",itinerary_submit_label:"Créer mon itinéraire suggéré",
+  story_title:"Une expérience villageoise partagée par des hôtes locaux.",story_desc:"Découvrez Materuni à travers les personnes, la culture et les paysages qui rendent ce lieu unique.",story_desc2:"Venez en invité. Repartez en ami."
+ },
+ de:{
+  hero_title:"Erleben Sie das Herz der Chagga-Kultur.",hero_intro:"Entdecken Sie Wasserfall, Kaffee und das Dorfleben mit lokalen Gastgebern in Materuni.",
+  experiences_title:"Sechs Wege, das Dorf zu erleben",experiences_intro:"Wählen Sie authentische Erlebnisse mit lokalen Gastgebern.",
+  experiences_page_title:"Wählen Sie Ihr persönliches Materuni-Erlebnis.",experiences_page_intro:"Klare Preise pro Person, transparente Inklusivleistungen und authentische Erlebnisse im Dorf Materuni.",
+  booking_page_title:"Prüfen Sie die Verfügbarkeit vor der Buchung.",booking_page_intro:"Wählen Sie Ihr Erlebnis und Ihren Wunschtermin. Verfügbare Zeiten finden Sie in unserem Kalender.",
+  itinerary_page_title:"Erstellen Sie Ihren persönlichen Materuni-Reiseplan.",itinerary_page_intro:"Wählen Sie Ihre gewünschten Erlebnisse. Wir erstellen einen praktischen Vorschlag für Ihren Besuch.",
+  faq_page_title:"Planen Sie Ihren Besuch mit einem guten Gefühl.",faq_page_intro:"Praktische Antworten zu Materuni, Preisen, Verfügbarkeit, Transport und Buchungsanfragen.",
+  booking_experience_label:"Erlebnis auswählen *",booking_date_label:"Wunschtermin *",booking_slot_label:"Verfügbare Uhrzeit *",booking_guests_label:"Anzahl der Gäste *",booking_name_label:"Vollständiger Name *",booking_submit_label:"Buchungsanfrage senden",
+  itinerary_name_label:"Ihr Name",itinerary_date_label:"Gewünschtes Startdatum",itinerary_guests_label:"Anzahl der Gäste",itinerary_pace_label:"Reisetempo",itinerary_interest_label:"Hauptinteresse",itinerary_submit_label:"Reiseplan erstellen",
+  story_title:"Ein Dorferlebnis, geteilt von lokalen Gastgebern.",story_desc:"Entdecken Sie Materuni durch die Menschen, Kultur und Landschaft, die diesen Ort besonders machen.",story_desc2:"Kommen Sie als Gast. Gehen Sie als Freund."
+ }
+};
+let languageContent=JSON.parse(JSON.stringify(defaultTranslations));
 function renderTranslations(){
  const locale=el("translation-language").value,root=el("translation-editor");root.replaceChildren();
  Object.entries(translationKeys).forEach(([key,meta])=>{
@@ -157,7 +192,7 @@ function renderTranslations(){
 }
 async function loadTranslations(){
  const rows=await api("/rest/v1/site_settings?select=setting_key,setting_value&setting_key=eq.language_content");
- if(rows?.[0]?.setting_value){try{const parsed=JSON.parse(rows[0].setting_value);if(parsed&&typeof parsed==="object")languageContent={...languageContent,...parsed}}catch{el("translation-feedback").textContent="Saved translations could not be read."}}
+ if(rows?.[0]?.setting_value){try{const parsed=JSON.parse(rows[0].setting_value);if(parsed&&typeof parsed==="object")languageContent={...languageContent,...parsed,es:{...defaultTranslations.es,...(parsed.es||{})},fr:{...defaultTranslations.fr,...(parsed.fr||{})},de:{...defaultTranslations.de,...(parsed.de||{})}}}catch{el("translation-feedback").textContent="Saved translations could not be read."}}
  renderTranslations();
 }
 el("translation-language").addEventListener("change",renderTranslations);
