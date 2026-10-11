@@ -344,3 +344,26 @@ main:focus{outline:none}
 .site-footer .social-links svg{display:block;width:25px;height:25px;min-width:25px;flex:0 0 25px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .site-footer .social-links a[aria-label="Facebook"] svg{fill:currentColor;stroke:none}
 @media(max-width:560px){.site-footer .social-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.site-footer .social-links a{min-width:0;width:100%;min-height:52px;padding:10px 11px;font-size:12px}.site-footer .social-links svg{width:25px;height:25px;flex-basis:25px}}
+
+
+/* Simplified admin home and centered brand mark */
+.site-header .brand{flex:0 0 auto;justify-content:center;align-items:center}
+.site-header .brand-logo{display:block;width:76px;height:76px;object-fit:contain;object-position:center;flex:0 0 76px}
+.admin-home-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:22px}
+.admin-home-card{display:flex;align-items:center;gap:13px;min-width:0;padding:19px 16px;background:#fff;border:1px solid var(--sand);border-radius:4px;transition:border-color .2s,transform .2s}
+.admin-home-card:hover{border-color:var(--gold);transform:translateY(-2px)}
+.admin-home-primary{color:var(--forest)}
+.admin-home-icon{display:grid;place-items:center;width:38px;height:38px;flex:0 0 38px;border-radius:50%;background:#f2eadb;color:#89652e;font:700 12px var(--sans)}
+.admin-home-card strong,.admin-home-card small{display:block}
+.admin-home-card strong{font:600 20px var(--serif);line-height:1.15}
+.admin-home-card small{margin-top:5px;color:var(--muted);font-size:11px;line-height:1.5}
+.admin-home-arrow{margin-left:auto;color:var(--gold);font-size:20px}
+.admin-more-tools{margin-top:18px;border-top:1px solid var(--sand);border-bottom:1px solid var(--sand);padding:14px 0}
+.admin-more-tools summary{cursor:pointer;list-style:none;color:var(--forest);font-weight:700}
+.admin-more-tools summary::-webkit-details-marker{display:none}
+.admin-more-tools summary:after{content:"＋";float:right;color:var(--gold)}
+.admin-more-tools[open] summary:after{content:"−"}
+.admin-more-tools summary span{display:block;color:var(--muted);font-size:11px;font-weight:400}
+.admin-more-tools .admin-shortcuts{padding-top:16px}
+.admin-home-footer{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:18px;color:var(--muted);font-size:12px}
+@media(max-width:760px){.admin-home-grid{grid-template-columns:1fr}.admin-home-card{padding:16px}.site-header .brand-logo{width:62px;height:62px;flex-basis:62px}}
