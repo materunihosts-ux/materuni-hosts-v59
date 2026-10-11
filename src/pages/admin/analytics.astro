@@ -1,0 +1,86 @@
+---
+import SiteLayout from "../../layouts/SiteLayout.astro";
+---
+<SiteLayout title="Analytics | Materuni Hosts" description="Private Materuni Hosts booking and guest analytics." noindex={true}>
+<section class="page-hero"><span class="eyebrow">PRIVATE ADMIN</span><h1>Performance overview</h1><p>Track booking demand, guest volume and estimated confirmed booking value.</p></section>
+<section class="booking-wrap">
+  <div class="booking-panel" id="login-panel">
+    <h2>Administrator sign in</h2>
+    <form id="login-form" class="form-grid">
+      <div class="field full"><label for="admin-email">Admin email</label><input id="admin-email" type="email" autocomplete="username" required></div>
+      <div class="field full"><label for="admin-password">Password</label><input id="admin-password" type="password" autocomplete="current-password" required></div>
+      <div class="field full"><button class="button" id="login-button" type="submit">Sign in securely</button><p id="login-feedback" class="muted" aria-live="polite"></p></div>
+    </form>
+  </div>
+  <div id="manager" hidden>
+    <div class="booking-panel">
+      <div class="section-heading"><div><span class="eyebrow">BUSINESS INTELLIGENCE</span><h2>Booking analytics</h2><p class="muted">The value shown is an estimate for confirmed bookings, not money collected.</p></div><div class="admin-shortcuts"><a class="button button-secondary" href="/admin/bookings">Bookings</a><a class="button button-secondary" href="/admin/conversations">Guest conversations</a><a class="button button-secondary" href="/admin/tours">Tours & availability</a><button class="button button-secondary" id="logout" type="button">Sign out</button></div></div>
+      <form id="filter-form" class="form-grid">
+        <div class="field"><label for="from-date">From</label><input id="from-date" type="date" required></div>
+        <div class="field"><label for="to-date">To</label><input id="to-date" type="date" required></div>
+        <div class="field full"><button class="button" type="submit" id="load-button">Update analytics</button><p id="feedback" class="muted" aria-live="polite"></p></div>
+      </form>
+    </div>
+    <div class="analytics-grid" id="analytics-stats">
+      <div class="admin-stat"><span>Total bookings</span><strong id="total-bookings">—</strong></div>
+      <div class="admin-stat"><span>Confirmed</span><strong id="confirmed-bookings">—</strong></div>
+      <div class="admin-stat"><span>New requests</span><strong id="new-bookings">—</strong></div>
+      <div class="admin-stat"><span>Cancelled</span><strong id="cancelled-bookings">—</strong></div>
+      <div class="admin-stat"><span>Total guests</span><strong id="total-guests">—</strong></div>
+      <div class="admin-stat"><span>Returning guests</span><strong id="returning-guests">—</strong></div>
+      <div class="admin-stat analytics-value"><span>Estimated confirmed value</span><strong id="confirmed-value">—</strong><small>USD · not cash received</small></div>
+    </div>
+    <div class="booking-panel" style="margin-top:1.5rem"><span class="eyebrow">DEMAND</span><h2>Most requested experiences</h2><div id="popular-experiences" class="popular-experiences"><p class="muted">Choose a date range to view demand.</p></div></div>
+  </div>
+</section>
+<script>
+// @ts-nocheck
+const supabaseUrl="https://sskmzswoeljxwojcszta.supabase.co";
+const publishableKey="sb_publishable_G9ru4P_yKzievqiXjXEEbQ_p28cB_NZ";
+let accessToken="";
+const el=id=>document.getElementById(id);
+const headers=()=>({apikey:publishableKey,Authorization:"Bearer "+accessToken,"Content-Type":"application/json"});
+const dateString=d=>new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10);
+const now=new Date();
+el("from-date").value=dateString(new Date(now.getFullYear(),now.getMonth(),1));
+el("to-date").value=dateString(now);
+async function api(path,options={}){const r=await fetch(supabaseUrl+path,{...options,headers:{...headers(),...(options.headers||{})}});const data=await r.json().catch(()=>null);if(!r.ok)throw new Error(data?.message||data?.details||"Request failed.");return data}
+async function loadAnalytics(){
+ const button=el("load-button");button.disabled=true;el("feedback").textContent="Loading analytics…";
+ try{
+  const from=el("from-date").value,to=el("to-date").value;if(!from||!to||to<from)throw new Error("Choose a valid date range.");
+  const data=await api("/rest/v1/rpc/admin_get_analytics",{method:"POST",body:JSON.stringify({p_start_date:from,p_end_date:to})});
+  [["total-bookings","total_bookings"],["confirmed-bookings","confirmed"],["new-bookings","new"],["cancelled-bookings","cancelled"],["total-guests","total_guests"],["returning-guests","returning_guests"]].forEach(([id,key])=>el(id).textContent=Number(data[key]||0).toLocaleString());
+  el("confirmed-value").textContent="$"+Number(data.estimated_confirmed_value_usd||0).toLocaleString(undefined,{maximumFractionDigits:0});
+  const list=el("popular-experiences");list.replaceChildren();
+  const items=Array.isArray(data.popular_experiences)?data.popular_experiences:[];
+  if(!items.length){list.append(Object.assign(document.createElement("p"),{className:"muted",textContent:"No booking activity in this period yet."}))}
+  const max=Math.max(1,...items.map(x=>Number(x.bookings||0)));
+  items.forEach(item=>{
+   const row=document.createElement("div");row.className="popular-row";
+   const label=document.createElement("div");label.className="popular-label";
+   const name=document.createElement("strong");name.textContent=item.experience||"Experience";
+   const count=document.createElement("span");count.textContent=Number(item.bookings||0)+" bookings · "+Number(item.guests||0)+" guests";
+   label.append(name,count);
+   const track=document.createElement("div");track.className="popular-track";
+   const bar=document.createElement("span");bar.style.width=(Number(item.bookings||0)/max*100)+"%";track.append(bar);
+   row.append(label,track);list.append(row);
+  });
+  el("feedback").textContent="Analytics updated for "+from+" to "+to+".";
+ }catch(error){el("feedback").textContent=error.message}
+ finally{button.disabled=false}
+}
+el("login-form").addEventListener("submit",async event=>{
+ event.preventDefault();const button=el("login-button");button.disabled=true;el("login-feedback").textContent="Verifying administrator…";
+ try{
+  const r=await fetch(supabaseUrl+"/auth/v1/token?grant_type=password",{method:"POST",headers:{apikey:publishableKey,"Content-Type":"application/json"},body:JSON.stringify({email:el("admin-email").value.trim(),password:el("admin-password").value})});
+  const session=await r.json();if(!r.ok)throw new Error(session.msg||session.message||"Sign in failed.");
+  accessToken=session.access_token;const admins=await api("/rest/v1/admin_users?select=user_id&user_id=eq."+encodeURIComponent(session.user.id));
+  if(!admins.length){accessToken="";throw new Error("This account is not authorised as an administrator.")}
+  el("login-panel").hidden=true;el("manager").hidden=false;await loadAnalytics();
+ }catch(error){el("login-feedback").textContent=error.message}finally{button.disabled=false}
+});
+el("filter-form").addEventListener("submit",event=>{event.preventDefault();loadAnalytics()});
+el("logout").addEventListener("click",async()=>{try{await fetch(supabaseUrl+"/auth/v1/logout",{method:"POST",headers:headers()})}catch{}accessToken="";el("manager").hidden=true;el("login-panel").hidden=false;el("login-form").reset()});
+</script>
+</SiteLayout>
