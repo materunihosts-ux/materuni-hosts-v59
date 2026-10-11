@@ -132,3 +132,12 @@
 .popular-track{height:7px;background:#eee8dc;overflow:hidden}
 .popular-track span{display:block;height:100%;background:var(--gold)}
 @media(max-width:700px){.analytics-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.analytics-value{grid-column:span 2}.popular-label{align-items:flex-start;flex-direction:column;gap:2px}}
+
+
+/* Legal information pages */
+.legal-copy{max-width:850px;padding-top:20px;padding-bottom:90px}
+.legal-copy h2{font:600 27px var(--serif);color:var(--forest);margin:34px 0 10px}
+.legal-copy p,.legal-copy li{font-size:14px;line-height:1.85;color:#555c54}
+.legal-copy ul{padding-left:22px}
+.legal-copy a{color:var(--forest);text-decoration:underline;text-underline-offset:3px}
+.legal-updated{font-size:11px;margin-top:38px}
