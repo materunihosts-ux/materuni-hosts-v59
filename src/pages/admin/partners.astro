@@ -31,7 +31,7 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
    </form>
   </div>
   <div class="booking-panel" style="margin-top:1.25rem">
-   <div class="section-heading"><div><span class="eyebrow">RELATIONSHIP OVERVIEW</span><h2>Partner records</h2><p class="muted" id="partner-count">Loading partners…</p></div><button class="button button-secondary" id="refresh" type="button">Refresh</button></div>
+   <div class="section-heading"><div><span class="eyebrow">RELATIONSHIP OVERVIEW</span><h2>Partner records</h2><p class="muted" id="partner-count">Loading partners…</p></div><div class="partner-actions"><button class="button button-secondary" id="export-csv" type="button">Export CSV</button><button class="button button-secondary" id="refresh" type="button">Refresh</button></div></div>
    <div class="form-grid" style="grid-template-columns:2fr 1fr;align-items:end;margin-bottom:1rem">
     <div class="field"><label for="partner-search">Search partners</label><input id="partner-search" type="search" placeholder="Business, contact, email or location"></div>
     <div class="field"><label for="status-filter">Filter status</label><select id="status-filter"><option value="">All statuses</option><option value="lead">Lead</option><option value="active">Active</option><option value="paused">Paused</option><option value="archived">Archived</option></select></div>
@@ -63,10 +63,12 @@ async function api(path,options={}){const r=await fetch(supabaseUrl+path,{...opt
 function node(tag,cls,value){const n=document.createElement(tag);if(cls)n.className=cls;n.textContent=value==null?"":String(value);return n}
 function clearForm(){el("partner-form").reset();el("partner-id").value="";el("form-heading").textContent="Add a partner";el("save-partner").textContent="Save partner";el("form-feedback").textContent=""}
 function safeUrl(value){try{const u=new URL(value);return ["https:","http:"].includes(u.protocol)?u.href:""}catch{return ""}}
-function render(){
+function filteredPartners(){
  const q=el("partner-search").value.trim().toLowerCase(),status=el("status-filter").value;
- const filtered=partners.filter(p=>(!status||p.status===status)&&[p.business_name,p.contact_name,p.email,p.whatsapp,p.location,p.partner_type].some(v=>String(v||"").toLowerCase().includes(q)));
- const root=el("partner-list");root.replaceChildren();
+ return partners.filter(p=>(!status||p.status===status)&&[p.business_name,p.contact_name,p.email,p.whatsapp,p.location,p.partner_type].some(v=>String(v||"").toLowerCase().includes(q)));
+}
+function render(){
+ const filtered=filteredPartners(),root=el("partner-list");root.replaceChildren();
  el("partner-count").textContent=partners.length+" partner record"+(partners.length===1?"":"s")+" · "+partners.filter(p=>p.status==="active").length+" active";
  if(!filtered.length){root.append(node("p","muted",partners.length?"No partners match your filters.":"No partner records yet. Add your first partner above."));return}
  filtered.forEach(p=>{
@@ -90,6 +92,17 @@ function render(){
   actions.append(edit,remove);card.append(actions);root.append(card);
  });
 }
+function exportCsv(){
+ const rows=filteredPartners();
+ if(!rows.length){el("list-feedback").textContent="There are no partner records to export for this filter.";return}
+ const columns=["business_name","contact_name","email","whatsapp","partner_type","status","location","website","commission_rate","notes","created_at"];
+ const quote=value=>'"'+String(value??"").replace(/"/g,'""')+'"';
+ const csv=[columns.join(","),...rows.map(p=>columns.map(key=>quote(p[key])).join(","))].join("\r\n");
+ const blob=new Blob(["\uFEFF",csv],{type:"text/csv;charset=utf-8"});
+ const url=URL.createObjectURL(blob),link=document.createElement("a");link.href=url;link.download="materuni-hosts-partners-"+new Date().toISOString().slice(0,10)+".csv";document.body.append(link);link.click();link.remove();URL.revokeObjectURL(url);
+ el("list-feedback").textContent=rows.length+" partner record(s) exported as CSV.";
+}
+
 function editPartner(p){
  el("partner-id").value=p.id;el("business-name").value=p.business_name||"";el("contact-name").value=p.contact_name||"";
  el("partner-email").value=p.email||"";el("partner-whatsapp").value=p.whatsapp||"";el("partner-type").value=p.partner_type||"other";
@@ -135,6 +148,7 @@ el("partner-form").addEventListener("submit",async e=>{
 });
 el("reset-form").addEventListener("click",clearForm);
 el("refresh").addEventListener("click",loadPartners);
+el("export-csv").addEventListener("click",exportCsv);
 el("partner-search").addEventListener("input",render);el("status-filter").addEventListener("change",render);
 </script>
 </SiteLayout>
