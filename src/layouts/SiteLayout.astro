@@ -2,6 +2,35 @@
 import "../styles/global.css";
 const { title = "Materuni Hosts | Authentic Chagga Experiences", description = "Discover authentic Chagga coffee, waterfalls, food and village life in Materuni, Kilimanjaro, Tanzania.", noindex = false, preloadImage = null } = Astro.props;
 const canonical = new URL(Astro.url.pathname, "https://materunihosts.com").toString();
+const breadcrumbLabels = {
+  experiences: "Experiences",
+  itinerary: "Build itinerary",
+  booking: "Check availability",
+  reviews: "Guest reviews",
+  faq: "Frequently asked questions",
+  sustainability: "Our approach",
+  "travel-guide": "Travel guide",
+  privacy: "Privacy policy",
+  terms: "Booking terms"
+};
+const breadcrumbParts = Astro.url.pathname.split("/").filter(Boolean);
+const breadcrumbItems = [{ "@type": "ListItem", position: 1, name: "Home", item: "https://materunihosts.com/" }];
+if (!noindex) {
+  breadcrumbParts.forEach((part, index) => {
+    const label = breadcrumbLabels[part];
+    if (label) breadcrumbItems.push({
+      "@type": "ListItem",
+      position: breadcrumbItems.length + 1,
+      name: label,
+      item: new URL("/" + breadcrumbParts.slice(0, index + 1).join("/"), "https://materunihosts.com").toString()
+    });
+  });
+}
+const breadcrumbData = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: breadcrumbItems
+};
 const socialImage = preloadImage ?? "https://sskmzswoeljxwojcszta.supabase.co/storage/v1/object/public/materuni-images/hero_image/1791600514716-b2bclfcnhhh.jpg";
 const structuredData = {
   "@context": "https://schema.org",
@@ -30,7 +59,7 @@ const structuredData = {
 <html lang="en">
 <head>
 <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>{title}</title><meta name="description" content={description} /><meta name="theme-color" content="#1A3322" /><link rel="canonical" href={canonical} /><meta property="og:type" content="website" /><meta property="og:site_name" content="Materuni Hosts" /><meta property="og:title" content={title} /><meta property="og:description" content={description} /><meta property="og:url" content={canonical} /><meta property="og:image" content={socialImage} /><meta property="og:locale" content="en_TZ" /><meta property="og:image:alt" content="Materuni Hosts authentic village experiences in Materuni, Tanzania" /><meta name="twitter:card" content="summary_large_image" /><meta name="twitter:title" content={title} /><meta name="twitter:description" content={description} /><meta name="twitter:image" content={socialImage} /><script type="application/ld+json" set:html={JSON.stringify(structuredData)} />{noindex && <meta name="robots" content="noindex,nofollow" />}{preloadImage && <link rel="preload" as="image" href={preloadImage} fetchpriority="high" />}
+<title>{title}</title><meta name="description" content={description} /><meta name="theme-color" content="#1A3322" /><link rel="canonical" href={canonical} /><meta property="og:type" content="website" /><meta property="og:site_name" content="Materuni Hosts" /><meta property="og:title" content={title} /><meta property="og:description" content={description} /><meta property="og:url" content={canonical} /><meta property="og:image" content={socialImage} /><meta property="og:locale" content="en_TZ" /><meta property="og:image:alt" content="Materuni Hosts authentic village experiences in Materuni, Tanzania" /><meta name="twitter:card" content="summary_large_image" /><meta name="twitter:title" content={title} /><meta name="twitter:description" content={description} /><meta name="twitter:image" content={socialImage} /><script type="application/ld+json" set:html={JSON.stringify(structuredData)} />{!noindex && <script type="application/ld+json" set:html={JSON.stringify(breadcrumbData)} />}{noindex && <meta name="robots" content="noindex,nofollow" />}{preloadImage && <link rel="preload" as="image" href={preloadImage} fetchpriority="high" />}
 <link rel="icon" type="image/svg+xml" href="/materuni-hosts-logo-round.svg" /><link rel="preconnect" href="https://sskmzswoeljxwojcszta.supabase.co" crossorigin /><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
