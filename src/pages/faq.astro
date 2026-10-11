@@ -18,6 +18,27 @@ const faqs = [
 <section class="section faq-section">
   <div class="faq-intro"><span class="eyebrow">PLAN WITH CONFIDENCE</span><h2>Everything you need to know.</h2><p>If you need help with something not covered here, speak directly with a local host.</p><a class="button" href="https://wa.me/255612068540" target="_blank" rel="noopener noreferrer">Ask us on WhatsApp</a></div>
   <div class="faq-list">{faqs.map(([question,answer])=><details class="faq-item"><summary>{question}</summary><p>{answer}</p></details>)}</div>
+  <script>
+  const faqSettingsUrl="https://sskmzswoeljxwojcszta.supabase.co/rest/v1/site_settings?select=setting_key,setting_value&setting_key=eq.faq_items";
+  const faqPublicKey="sb_publishable_G9ru4P_yKzievqiXjXEEbQ_p28cB_NZ";
+  fetch(faqSettingsUrl,{headers:{apikey:faqPublicKey,Authorization:"Bearer "+faqPublicKey}})
+    .then(response=>response.ok?response.json():[])
+    .then(rows=>{
+      if(!Array.isArray(rows)||!rows[0]?.setting_value)return;
+      let entries;try{entries=JSON.parse(rows[0].setting_value)}catch{return}
+      if(!Array.isArray(entries)||!entries.length||entries.length>30||!entries.every(x=>x&&typeof x.question==="string"&&typeof x.answer==="string"))return;
+      const list=document.querySelector(".faq-list");if(!list)return;
+      list.replaceChildren();
+      entries.forEach(item=>{
+        const details=document.createElement("details");details.className="faq-item";
+        const summary=document.createElement("summary");summary.textContent=item.question;
+        const answer=document.createElement("p");answer.textContent=item.answer;
+        details.append(summary,answer);list.append(details);
+      });
+      const schema=document.querySelector('script[type="application/ld+json"]');
+      if(schema)schema.textContent=JSON.stringify({"@context":"https://schema.org","@type":"FAQPage","mainEntity":entries.map(item=>({"@type":"Question","name":item.question,"acceptedAnswer":{"@type":"Answer","text":item.answer}}))});
+    }).catch(()=>{});
+  </script>
 </section>
 <section class="band"><h2>Still planning your visit?</h2><p>Tell us what you would like to experience and we will help you shape a practical plan.</p><div class="actions" style="justify-content:center"><a class="button button-light" href="/itinerary">Build your itinerary</a><a class="button secondary" href="/booking">Check availability</a></div></section>
 <script type="application/ld+json" set:html={JSON.stringify({"@context":"https://schema.org","@type":"FAQPage","mainEntity":faqs.map(([question,answer])=>({"@type":"Question","name":question,"acceptedAnswer":{"@type":"Answer","text":answer}}))})} />
