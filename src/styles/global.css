@@ -296,3 +296,33 @@ main:focus{outline:none}
  .booking-panel .field label{font-size:13px}
  .booking-panel .field input,.booking-panel .field select,.booking-panel .field textarea{font-size:16px}
 }
+
+
+/* Final brand, icon and typography consistency pass */
+.site-header>.brand .brand-logo{width:76px;height:76px;flex:0 0 76px;object-fit:contain;object-position:center}
+.site-footer>.brand .brand-logo-footer{width:78px;height:78px;object-fit:contain;object-position:center}
+.social-links{gap:11px;margin-top:14px}
+.social-links a{min-height:48px;padding:10px 13px;gap:9px;font-size:13px;font-weight:600;line-height:1.3}
+.social-links svg{width:24px;height:24px;flex:0 0 24px;stroke-width:1.8}
+.social-links a[aria-label="Facebook"] svg{fill:currentColor}
+.host-login-link{display:inline-flex;align-self:flex-start;margin-top:7px;padding:8px 11px;border:1px solid #ffffff55;color:#e5c681!important;font-size:12px;font-weight:700;letter-spacing:.025em}
+.host-login-link:hover{background:#ffffff12;border-color:#e5c681}
+.booking-panel h1,.booking-panel h2,.booking-panel h3{font-family:var(--serif);font-weight:600;line-height:1.2;color:var(--forest)}
+.booking-panel h2{font-size:clamp(27px,3vw,34px)}
+.booking-panel h3{font-size:22px}
+.booking-panel p,.booking-panel li{font-size:14px;line-height:1.7}
+.booking-panel .field label{font-family:var(--sans);font-size:13px;font-weight:700;line-height:1.45}
+.booking-panel .field input,.booking-panel .field select,.booking-panel .field textarea{font-family:var(--sans);font-weight:500}
+.admin-stat span{font-size:12px;font-weight:600;line-height:1.45}
+.admin-stat strong{font-family:var(--serif);font-weight:600}
+@media(max-width:850px){
+ .site-header>.brand .brand-logo{width:68px;height:68px;flex-basis:68px}
+ .social-links a{min-height:48px;font-size:13px}
+}
+@media(max-width:560px){
+ .site-header>.brand .brand-logo{width:64px;height:64px;flex-basis:64px}
+ .social-links{gap:9px}
+ .social-links a{min-height:46px;padding:9px 11px;font-size:12px}
+ .social-links svg{width:23px;height:23px;flex-basis:23px}
+ .booking-panel h2{font-size:29px}
+}
