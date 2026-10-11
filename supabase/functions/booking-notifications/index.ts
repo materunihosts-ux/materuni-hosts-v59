@@ -1,3 +1,12 @@
+// Supabase Edge Function runtime declarations for the repository-wide Astro type check.
+declare const Deno: {
+  env: { get(name: string): string | undefined };
+  serve(handler: (request: Request) => Response | Promise<Response>): void;
+};
+declare module "npm:@supabase/supabase-js@2" {
+  export function createClient(...args: any[]): any;
+}
+
 import { createClient } from "npm:@supabase/supabase-js@2";
 
 const corsHeaders = {
