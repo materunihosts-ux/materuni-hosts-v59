@@ -244,3 +244,11 @@
   .site-header nav{top:75px}
   .menu-toggle{position:absolute;right:20px;top:50%;transform:translateY(-50%);z-index:2}
 }
+
+
+/* Accessibility and keyboard navigation refinements */
+.skip-link{position:fixed;left:16px;top:12px;z-index:1000;padding:11px 16px;background:var(--cream);color:var(--forest);border:2px solid var(--gold);transform:translateY(-160%);transition:transform .18s ease}
+.skip-link:focus{transform:translateY(0)}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+main:focus{outline:none}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
