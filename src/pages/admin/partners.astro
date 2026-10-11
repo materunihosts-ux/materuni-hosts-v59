@@ -1,0 +1,139 @@
+---
+import SiteLayout from "../../layouts/SiteLayout.astro";
+---
+<SiteLayout title="Partner Management | Materuni Hosts Admin" description="Private partner relationship management." noindex={true}>
+<section class="page-hero"><span class="eyebrow">MATERUNI HOSTS · PRIVATE</span><h1>Partner management</h1><p>Keep accommodation, guide, transport and experience partners organised in one private workspace.</p></section>
+<section class="booking-wrap">
+ <div class="booking-panel" id="login-panel">
+  <h2>Administrator sign in</h2><p class="muted">Only approved Materuni Hosts administrators can access partner records.</p>
+  <form id="login-form" class="form-grid">
+   <div class="field full"><label for="admin-email">Admin email</label><input id="admin-email" type="email" autocomplete="username" required></div>
+   <div class="field full"><label for="admin-password">Password</label><input id="admin-password" type="password" autocomplete="current-password" required></div>
+   <div class="field full"><button class="button" id="login-button" type="submit">Sign in securely</button><p id="login-feedback" class="muted" aria-live="polite"></p></div>
+  </form>
+ </div>
+ <div id="manager" hidden>
+  <div class="booking-panel">
+   <div class="section-heading"><div><span class="eyebrow">PARTNER DIRECTORY</span><h2 id="form-heading">Add a partner</h2><p class="muted">Store business contacts and agreed commercial details. Records are private to authorised administrators.</p></div><a class="button button-secondary" href="/admin/">Dashboard</a></div>
+   <form id="partner-form" class="form-grid">
+    <input id="partner-id" type="hidden">
+    <div class="field"><label for="business-name">Business / partner name *</label><input id="business-name" maxlength="160" required></div>
+    <div class="field"><label for="contact-name">Contact person</label><input id="contact-name" maxlength="120"></div>
+    <div class="field"><label for="partner-email">Email</label><input id="partner-email" type="email" maxlength="254"></div>
+    <div class="field"><label for="partner-whatsapp">WhatsApp / phone</label><input id="partner-whatsapp" type="tel" maxlength="40"></div>
+    <div class="field"><label for="partner-type">Partner category</label><select id="partner-type"><option value="accommodation">Accommodation</option><option value="local_guide">Local guide</option><option value="transport">Transport</option><option value="travel_agency">Travel agency</option><option value="activity_provider">Activity provider</option><option value="other">Other</option></select></div>
+    <div class="field"><label for="partner-status">Relationship status</label><select id="partner-status"><option value="lead">Lead</option><option value="active">Active</option><option value="paused">Paused</option><option value="archived">Archived</option></select></div>
+    <div class="field"><label for="partner-location">Location</label><input id="partner-location" maxlength="160" placeholder="e.g. Materuni / Moshi"></div>
+    <div class="field"><label for="partner-website">Website</label><input id="partner-website" type="url" maxlength="500" placeholder="https://"></div>
+    <div class="field"><label for="commission-rate">Agreed commission (%)</label><input id="commission-rate" type="number" min="0" max="100" step="0.01" placeholder="Optional"></div>
+    <div class="field full"><label for="partner-notes">Private notes / agreement details</label><textarea id="partner-notes" rows="3" maxlength="3000"></textarea></div>
+    <div class="field full actions"><button class="button" id="save-partner" type="submit">Save partner</button><button class="button button-secondary" id="reset-form" type="button">Clear form</button><p id="form-feedback" class="muted" aria-live="polite"></p></div>
+   </form>
+  </div>
+  <div class="booking-panel" style="margin-top:1.25rem">
+   <div class="section-heading"><div><span class="eyebrow">RELATIONSHIP OVERVIEW</span><h2>Partner records</h2><p class="muted" id="partner-count">Loading partners…</p></div><button class="button button-secondary" id="refresh" type="button">Refresh</button></div>
+   <div class="form-grid" style="grid-template-columns:2fr 1fr;align-items:end;margin-bottom:1rem">
+    <div class="field"><label for="partner-search">Search partners</label><input id="partner-search" type="search" placeholder="Business, contact, email or location"></div>
+    <div class="field"><label for="status-filter">Filter status</label><select id="status-filter"><option value="">All statuses</option><option value="lead">Lead</option><option value="active">Active</option><option value="paused">Paused</option><option value="archived">Archived</option></select></div>
+   </div>
+   <div id="partner-list" class="admin-booking-list"><p class="muted">Sign in to load partner records.</p></div>
+   <p id="list-feedback" class="muted" aria-live="polite"></p>
+  </div>
+ </div>
+</section>
+<style>
+.partner-card{border:1px solid var(--line,#ded8cd);border-radius:14px;padding:1rem;margin:.75rem 0;background:var(--surface,#fff)}
+.partner-card-top{display:flex;justify-content:space-between;gap:1rem;align-items:flex-start;flex-wrap:wrap}
+.partner-card h3{margin:0 0 .3rem;font-size:1.08rem}
+.partner-meta{display:flex;gap:.45rem 1rem;flex-wrap:wrap;color:var(--muted,#68665f);font-size:.9rem;margin:.65rem 0}
+.partner-actions{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.75rem}
+.partner-actions button{font:inherit;cursor:pointer}
+.partner-status{display:inline-flex;border-radius:99px;padding:.25rem .65rem;background:#eee9df;color:#39372f;font-size:.78rem;text-transform:capitalize}
+.partner-status.active{background:#e1eee3;color:#214b2b}.partner-status.paused{background:#f5ecd7;color:#76551d}.partner-status.archived{background:#eee;color:#666}
+@media(max-width:620px){.partner-card{padding:.8rem}.partner-card-top{display:block}.partner-card-top .partner-status{margin-top:.4rem}}
+</style>
+<script>
+const supabaseUrl="https://sskmzswoeljxwojcszta.supabase.co";
+const publishableKey="sb_publishable_G9ru4P_yKzievqiXjXEEbQ_p28cB_NZ";
+let accessToken="",partners=[];
+const el=id=>document.getElementById(id);
+const headers=()=>({apikey:publishableKey,Authorization:"Bearer "+accessToken,"Content-Type":"application/json"});
+async function api(path,options={}){const r=await fetch(supabaseUrl+path,{...options,headers:{...headers(),...(options.headers||{})}});const data=await r.json().catch(()=>null);if(!r.ok)throw new Error(data?.message||data?.details||data?.hint||"Request failed.");return data}
+function node(tag,cls,value){const n=document.createElement(tag);if(cls)n.className=cls;n.textContent=value==null?"":String(value);return n}
+function clearForm(){el("partner-form").reset();el("partner-id").value="";el("form-heading").textContent="Add a partner";el("save-partner").textContent="Save partner";el("form-feedback").textContent=""}
+function safeUrl(value){try{const u=new URL(value);return ["https:","http:"].includes(u.protocol)?u.href:""}catch{return ""}}
+function render(){
+ const q=el("partner-search").value.trim().toLowerCase(),status=el("status-filter").value;
+ const filtered=partners.filter(p=>(!status||p.status===status)&&[p.business_name,p.contact_name,p.email,p.whatsapp,p.location,p.partner_type].some(v=>String(v||"").toLowerCase().includes(q)));
+ const root=el("partner-list");root.replaceChildren();
+ el("partner-count").textContent=partners.length+" partner record"+(partners.length===1?"":"s")+" · "+partners.filter(p=>p.status==="active").length+" active";
+ if(!filtered.length){root.append(node("p","muted",partners.length?"No partners match your filters.":"No partner records yet. Add your first partner above."));return}
+ filtered.forEach(p=>{
+  const card=node("article","partner-card","");
+  const top=node("div","partner-card-top","");
+  const title=node("div","","");title.append(node("h3","",p.business_name));
+  if(p.contact_name)title.append(node("p","muted","Contact: "+p.contact_name));
+  top.append(title,node("span","partner-status "+p.status,p.status));
+  const meta=node("div","partner-meta","");
+  meta.append(node("span","",p.partner_type.replaceAll("_"," ")));
+  if(p.location)meta.append(node("span","",p.location));
+  if(p.email)meta.append(node("span","",p.email));
+  if(p.whatsapp)meta.append(node("span","",p.whatsapp));
+  if(p.commission_rate!==null&&p.commission_rate!=="")meta.append(node("span","",p.commission_rate+"% agreed commission"));
+  card.append(top,meta);
+  if(p.website){const url=safeUrl(p.website);if(url){const a=document.createElement("a");a.href=url;a.target="_blank";a.rel="noopener noreferrer";a.textContent="Visit website";card.append(a)}}
+  if(p.notes)card.append(node("p","muted",p.notes));
+  const actions=node("div","partner-actions","");
+  const edit=node("button","button button-secondary","Edit");edit.type="button";edit.addEventListener("click",()=>editPartner(p));
+  const remove=node("button","button button-secondary","Delete");remove.type="button";remove.addEventListener("click",()=>deletePartner(p));
+  actions.append(edit,remove);card.append(actions);root.append(card);
+ });
+}
+function editPartner(p){
+ el("partner-id").value=p.id;el("business-name").value=p.business_name||"";el("contact-name").value=p.contact_name||"";
+ el("partner-email").value=p.email||"";el("partner-whatsapp").value=p.whatsapp||"";el("partner-type").value=p.partner_type||"other";
+ el("partner-status").value=p.status||"lead";el("partner-location").value=p.location||"";el("partner-website").value=p.website||"";
+ el("commission-rate").value=p.commission_rate??"";el("partner-notes").value=p.notes||"";
+ el("form-heading").textContent="Edit partner";el("save-partner").textContent="Update partner";el("form-feedback").textContent="Editing "+p.business_name;
+ el("partner-form").scrollIntoView({behavior:"smooth",block:"start"});
+}
+async function loadPartners(){
+ el("refresh").disabled=true;el("list-feedback").textContent="Loading partner records…";
+ try{partners=await api("/rest/v1/partners?select=*&order=business_name.asc");render();el("list-feedback").textContent="Partner records refreshed."}
+ catch(error){el("list-feedback").textContent=error.message}
+ finally{el("refresh").disabled=false}
+}
+async function deletePartner(p){
+ if(!confirm("Delete partner record for "+p.business_name+"? This cannot be undone."))return;
+ try{await api("/rest/v1/partners?id=eq."+encodeURIComponent(p.id),{method:"DELETE"});partners=partners.filter(x=>x.id!==p.id);render();el("list-feedback").textContent="Partner record deleted."}
+ catch(error){el("list-feedback").textContent=error.message}
+}
+el("login-form").addEventListener("submit",async e=>{
+ e.preventDefault();const button=el("login-button");button.disabled=true;el("login-feedback").textContent="Verifying administrator…";
+ try{
+  const r=await fetch(supabaseUrl+"/auth/v1/token?grant_type=password",{method:"POST",headers:{apikey:publishableKey,"Content-Type":"application/json"},body:JSON.stringify({email:el("admin-email").value.trim(),password:el("admin-password").value})});
+  const session=await r.json();if(!r.ok)throw new Error(session.msg||session.message||"Sign in failed.");
+  accessToken=session.access_token;
+  const admins=await api("/rest/v1/admin_users?select=user_id&user_id=eq."+encodeURIComponent(session.user.id));
+  if(!admins.length){accessToken="";throw new Error("This account is not authorised as an administrator.")}
+  el("login-panel").hidden=true;el("manager").hidden=false;await loadPartners();
+ }catch(error){el("login-feedback").textContent=error.message}finally{button.disabled=false}
+});
+el("partner-form").addEventListener("submit",async e=>{
+ e.preventDefault();const button=el("save-partner");button.disabled=true;el("form-feedback").textContent="Saving partner…";
+ const id=el("partner-id").value;
+ const payload={business_name:el("business-name").value.trim(),contact_name:el("contact-name").value.trim()||null,email:el("partner-email").value.trim()||null,whatsapp:el("partner-whatsapp").value.trim()||null,partner_type:el("partner-type").value,status:el("partner-status").value,location:el("partner-location").value.trim()||null,website:el("partner-website").value.trim()||null,commission_rate:el("commission-rate").value===""?null:Number(el("commission-rate").value),notes:el("partner-notes").value.trim()||null,updated_at:new Date().toISOString()};
+ try{
+  if(!payload.business_name)throw new Error("Partner name is required.");
+  if(payload.website&&!safeUrl(payload.website))throw new Error("Enter a valid http or https website URL.");
+  if(payload.commission_rate!==null&&(!Number.isFinite(payload.commission_rate)||payload.commission_rate<0||payload.commission_rate>100))throw new Error("Commission must be between 0 and 100.");
+  if(id){await api("/rest/v1/partners?id=eq."+encodeURIComponent(id),{method:"PATCH",headers:{"Prefer":"return=minimal"},body:JSON.stringify(payload)});el("form-feedback").textContent="Partner updated."}
+  else{await api("/rest/v1/partners",{method:"POST",headers:{"Prefer":"return=minimal"},body:JSON.stringify(payload)});el("form-feedback").textContent="Partner added."}
+  clearForm();await loadPartners();
+ }catch(error){el("form-feedback").textContent=error.message}finally{button.disabled=false}
+});
+el("reset-form").addEventListener("click",clearForm);
+el("refresh").addEventListener("click",loadPartners);
+el("partner-search").addEventListener("input",render);el("status-filter").addEventListener("change",render);
+</script>
+</SiteLayout>
