@@ -14,7 +14,7 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
     <div class="field full"><label for="template-name">Internal template name</label><input id="template-name" maxlength="90" required></div>
     <div class="field full"><label for="template-subject">Email subject</label><input id="template-subject" maxlength="180" required></div>
     <div class="field full"><label for="template-body">Email message</label><textarea id="template-body" rows="17" maxlength="12000" required></textarea></div>
-    <div class="field full"><p class="muted">Available merge tags: {{guest_name}}, {{partner_name}}, {{experience}}, {{booking_date}}, {{guest_count}}, {{host_name}}, {{booking_reference}}, {{reply_email}}, {{whatsapp}}. Replace these when preparing each message.</p></div>
+    <div class="field full"><p class="muted">Available merge tags: <code>{"{{guest_name}}"}</code>, <code>{"{{partner_name}}"}</code>, <code>{"{{experience}}"}</code>, <code>{"{{booking_date}}"}</code>, <code>{"{{guest_count}}"}</code>, <code>{"{{host_name}}"}</code>, <code>{"{{booking_reference}}"}</code>, <code>{"{{reply_email}}"}</code>, <code>{"{{whatsapp}}"}</code>. Replace these when preparing each message.</p></div>
     <div class="field full"><div class="actions"><button class="button" id="save-template" type="submit">Save template</button><button class="button button-secondary" id="preview-template" type="button">Refresh preview</button></div><p id="template-feedback" class="muted" aria-live="polite"></p></div>
    </form>
   </div>
