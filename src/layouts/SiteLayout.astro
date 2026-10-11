@@ -27,7 +27,7 @@ const canonical = new URL(Astro.url.pathname, "https://materunihosts.com").toStr
       <select id="mh-chat-language" aria-label="Chat language"><option value="en">English</option><option value="es">Español</option><option value="fr">Français</option><option value="de">Deutsch</option></select>
       <div class="mh-chat-compose"><input id="mh-chat-input" maxlength="1200" placeholder="Ask about experiences, dates or prices…" autocomplete="off" required><button id="mh-chat-send" type="submit" aria-label="Send message">Send</button></div>
     </form>
-    <a class="mh-chat-whatsapp" href="https://wa.me/255612068540" target="_blank" rel="noopener noreferrer">Prefer a person? Chat on WhatsApp</a>
+    <a class="mh-chat-whatsapp" id="mh-chat-whatsapp" href="https://wa.me/255612068540" target="_blank" rel="noopener noreferrer">Prefer a person? Chat on WhatsApp</a>
   </section>
 </div>}
 <script>
@@ -79,6 +79,9 @@ if (chatEl("mh-chat-open")) {
   languageSelect.addEventListener("change", () => {
     const language = languageSelect.value;
     chatEl("mh-chat-subtitle").textContent = ({en:"Local experience concierge",es:"Asistente de experiencias locales",fr:"Concierge d’expériences locales",de:"Lokaler Erlebnis-Concierge"})[language];
+    chatEl("mh-chat-input").placeholder = ({en:"Ask about experiences, dates or prices…",es:"Pregunta sobre experiencias, fechas o precios…",fr:"Posez vos questions sur les expériences, dates ou prix…",de:"Fragen zu Erlebnissen, Terminen oder Preisen…"})[language];
+    chatEl("mh-chat-whatsapp").textContent = ({en:"Prefer a person? Chat on WhatsApp",es:"¿Prefieres hablar con una persona? WhatsApp",fr:"Vous préférez un hôte ? Écrivez sur WhatsApp",de:"Lieber persönlich sprechen? WhatsApp"})[language];
+    chatBubble("assistant", chatGreetings[language] || chatGreetings.en);
   });
   chatEl("mh-chat-form").addEventListener("submit", async event => {
     event.preventDefault();
