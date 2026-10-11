@@ -170,7 +170,7 @@ async function loadBookings() {
             });
             const slots = await api("/rest/v1/availability_slots?"+params.toString());
             const guestCount = Number(booking.guest_count || 1);
-            const available = slots.filter(slot => slot.id !== booking.slot_id && Number(slot.capacity)-Number(slot.booked_count)>=guestCount);
+            const available = slots.filter(slot => (slot.slot_date !== booking.booking_date || String(slot.start_time).slice(0,5) !== String(booking.start_time || "").slice(0,5)) && Number(slot.capacity)-Number(slot.booked_count)>=guestCount);
             if (!available.length) throw new Error("No matching future time slots have enough spaces yet.");
             const picker = document.createElement("select");
             picker.setAttribute("aria-label","Choose a new date and time");
