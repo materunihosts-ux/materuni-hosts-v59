@@ -14,7 +14,7 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
     <div class="field full"><label for="template-name">Internal template name</label><input id="template-name" maxlength="90" required></div>
     <div class="field full"><label for="template-subject">Email subject</label><input id="template-subject" maxlength="180" required></div>
     <div class="field full"><label for="template-body">Email message</label><textarea id="template-body" rows="17" maxlength="12000" required></textarea></div>
-    <div class="field full"><p class="muted">Available merge tags: {{guest_name}}, {{partner_name}}, {{experience}}, {{booking_date}}, {{guest_count}}, {{host_name}}, {{booking_reference}}, {{reply_email}}, {{whatsapp}}. Replace these when preparing each message.</p></div>
+    <div class="field full"><p class="muted">Available merge tags: &#123;&#123;guest_name&#125;&#125;, &#123;&#123;partner_name&#125;&#125;, &#123;&#123;experience&#125;&#125;, &#123;&#123;booking_date&#125;&#125;, &#123;&#123;guest_count&#125;&#125;, &#123;&#123;host_name&#125;&#125;, &#123;&#123;booking_reference&#125;&#125;, &#123;&#123;reply_email&#125;&#125;, &#123;&#123;whatsapp&#125;&#125;. Replace these when preparing each message.</p></div>
     <div class="field full"><div class="actions"><button class="button" id="save-template" type="submit">Save template</button><button class="button button-secondary" id="preview-template" type="button">Refresh preview</button></div><p id="template-feedback" class="muted" aria-live="polite"></p></div>
    </form>
   </div>
@@ -26,9 +26,9 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
 const supabaseUrl="https://sskmzswoeljxwojcszta.supabase.co", publishableKey="sb_publishable_G9ru4P_yKzievqiXjXEEbQ_p28cB_NZ";
 let token="",templates={};
 const el=id=>document.getElementById(id), headers=()=>({apikey:publishableKey,Authorization:"Bearer "+token,"Content-Type":"application/json"});
-async function api(path,options={}){const r=await fetch(supabaseUrl+path,{...options,headers:{...headers(),...(options.headers||{})}});const d=await r.json().catch(()=>null);if(!r.ok)throw new Error(d?.message||d?.details||"Request failed");return d}
+async function api(path,options={}){const r=await fetch(supabaseUrl+path,{...options,headers:{...headers(),...(options.headers||{})&#125;&#125;);const d=await r.json().catch(()=>null);if(!r.ok)throw new Error(d?.message||d?.details||"Request failed");return d}
 const starter={
- partner:{name:"Partner invitation · Boutique collaboration",subject:"An invitation to collaborate with Materuni Hosts",body:`Hello {{partner_name}},
+ partner:{name:"Partner invitation · Boutique collaboration",subject:"An invitation to collaborate with Materuni Hosts",body:`Hello &#123;&#123;partner_name&#125;&#125;,
 
 Warm greetings from Materuni Hosts.
 
@@ -36,82 +36,82 @@ We are reaching out to explore a thoughtful local partnership with your team. We
 
 We would be pleased to learn more about your guests, the experiences they value and how we might support one another with clear communication and carefully coordinated visits.
 
-If you are open to a conversation, simply reply to this email or reach us directly on WhatsApp at {{whatsapp}}. We can then share our current experience information, practical details and discuss a suitable way to work together.
+If you are open to a conversation, simply reply to this email or reach us directly on WhatsApp at &#123;&#123;whatsapp&#125;&#125;. We can then share our current experience information, practical details and discuss a suitable way to work together.
 
 Thank you for your time. We hope to welcome your guests to Materuni.
 
 Warm regards,
-{{host_name}}
+&#123;&#123;host_name&#125;&#125;
 Materuni Hosts
-{{reply_email}}
+&#123;&#123;reply_email&#125;&#125;
 Come as a guest. Leave as a friend.`},
- welcome:{name:"Guest welcome · Enquiry received",subject:"Your Materuni experience starts here",body:`Hello {{guest_name}},
+ welcome:{name:"Guest welcome · Enquiry received",subject:"Your Materuni experience starts here",body:`Hello &#123;&#123;guest_name&#125;&#125;,
 
 Thank you for contacting Materuni Hosts. We are delighted that you are considering spending time with us in Materuni Village.
 
-We have received your enquiry about {{experience}}. Our local team will review your preferred arrangements and get back to you with the next steps.
+We have received your enquiry about &#123;&#123;experience&#125;&#125;. Our local team will review your preferred arrangements and get back to you with the next steps.
 
-If you would like to add details or ask a question, reply to this email or message us on WhatsApp: {{whatsapp}}.
+If you would like to add details or ask a question, reply to this email or message us on WhatsApp: &#123;&#123;whatsapp&#125;&#125;.
 
 Warm regards,
-{{host_name}}
+&#123;&#123;host_name&#125;&#125;
 Materuni Hosts
-{{reply_email}}`},
- received:{name:"Booking request · Received, not confirmed",subject:"We have received your Materuni booking request",body:`Hello {{guest_name}},
+&#123;&#123;reply_email&#125;&#125;`},
+ received:{name:"Booking request · Received, not confirmed",subject:"We have received your Materuni booking request",body:`Hello &#123;&#123;guest_name&#125;&#125;,
 
 Thank you for sending your request to Materuni Hosts.
 
 Your request details:
-Experience: {{experience}}
-Preferred date: {{booking_date}}
-Group size: {{guest_count}}
-Reference: {{booking_reference}}
+Experience: &#123;&#123;experience&#125;&#125;
+Preferred date: &#123;&#123;booking_date&#125;&#125;
+Group size: &#123;&#123;guest_count&#125;&#125;
+Reference: &#123;&#123;booking_reference&#125;&#125;
 
 Please note that this is a request received, not a confirmed reservation. Our team will check the arrangements and contact you to confirm availability and next steps.
 
-Questions? Reply to this email or WhatsApp {{whatsapp}}.
+Questions? Reply to this email or WhatsApp &#123;&#123;whatsapp&#125;&#125;.
 
 Warm regards,
-{{host_name}}
+&#123;&#123;host_name&#125;&#125;
 Materuni Hosts`},
- confirmed:{name:"Booking · Confirmation",subject:"Your Materuni experience is confirmed",body:`Hello {{guest_name}},
+ confirmed:{name:"Booking · Confirmation",subject:"Your Materuni experience is confirmed",body:`Hello &#123;&#123;guest_name&#125;&#125;,
 
 We are pleased to confirm your Materuni Hosts experience.
 
-Experience: {{experience}}
-Date: {{booking_date}}
-Guests: {{guest_count}}
-Reference: {{booking_reference}}
+Experience: &#123;&#123;experience&#125;&#125;
+Date: &#123;&#123;booking_date&#125;&#125;
+Guests: &#123;&#123;guest_count&#125;&#125;
+Reference: &#123;&#123;booking_reference&#125;&#125;
 
-Please keep this message for your records. If any details need to be updated, contact your local host using {{reply_email}} or WhatsApp {{whatsapp}}.
+Please keep this message for your records. If any details need to be updated, contact your local host using &#123;&#123;reply_email&#125;&#125; or WhatsApp &#123;&#123;whatsapp&#125;&#125;.
 
 We look forward to welcoming you to Materuni Village.
 
 Warm regards,
-{{host_name}}
+&#123;&#123;host_name&#125;&#125;
 Materuni Hosts
 Come as a guest. Leave as a friend.`},
- followup:{name:"Guest follow-up · Thank you",subject:"Thank you for spending time in Materuni",body:`Hello {{guest_name}},
+ followup:{name:"Guest follow-up · Thank you",subject:"Thank you for spending time in Materuni",body:`Hello &#123;&#123;guest_name&#125;&#125;,
 
 Thank you for choosing to spend part of your journey with Materuni Hosts. We hope your time in the village brought you closer to Chagga culture, local flavours and the beauty of the Kilimanjaro foothills.
 
-We would value hearing about your experience. If you have a moment, you can reply to this email with your feedback or contact us on {{whatsapp}}.
+We would value hearing about your experience. If you have a moment, you can reply to this email with your feedback or contact us on &#123;&#123;whatsapp&#125;&#125;.
 
 Thank you again, and safe travels.
 
 Warm regards,
-{{host_name}}
+&#123;&#123;host_name&#125;&#125;
 Materuni Hosts`}
 };
 function selected(){return el("template-choice").value}
 function fill(){const t=templates[selected()];if(!t)return;el("template-name").value=t.name;el("template-subject").value=t.subject;el("template-body").value=t.body;preview()}
 function preview(){el("preview-subject").textContent=el("template-subject").value||"Email subject";el("preview-body").textContent=el("template-body").value||"Your email preview will appear here."}
-function sample(text){return text.replaceAll("{{guest_name}}","Alex Morgan").replaceAll("{{partner_name}}","Kilimanjaro View Lodge").replaceAll("{{experience}}","Waterfalls & Coffee Tour").replaceAll("{{booking_date}}","15 November 2026").replaceAll("{{guest_count}}","2").replaceAll("{{host_name}}","Your local host").replaceAll("{{booking_reference}}","MH-DEMO-001").replaceAll("{{reply_email}}","hello@materunihosts.com").replaceAll("{{whatsapp}}","+255 612 068 540")}
+function sample(text){return text.replaceAll("&#123;&#123;guest_name&#125;&#125;","Alex Morgan").replaceAll("&#123;&#123;partner_name&#125;&#125;","Kilimanjaro View Lodge").replaceAll("&#123;&#123;experience&#125;&#125;","Waterfalls & Coffee Tour").replaceAll("&#123;&#123;booking_date&#125;&#125;","15 November 2026").replaceAll("&#123;&#123;guest_count&#125;&#125;","2").replaceAll("&#123;&#123;host_name&#125;&#125;","Your local host").replaceAll("&#123;&#123;booking_reference&#125;&#125;","MH-DEMO-001").replaceAll("&#123;&#123;reply_email&#125;&#125;","hello@materunihosts.com").replaceAll("&#123;&#123;whatsapp&#125;&#125;","+255 612 068 540")}
 function renderChoices(){const s=el("template-choice");s.replaceChildren();Object.entries(templates).forEach(([key,t])=>{const o=document.createElement("option");o.value=key;o.textContent=t.name;s.append(o)});fill()}
-el("login-form").addEventListener("submit",async e=>{e.preventDefault();const b=el("login-button");b.disabled=true;el("login-feedback").textContent="Verifying administrator…";try{const r=await fetch(supabaseUrl+"/auth/v1/token?grant_type=password",{method:"POST",headers:{apikey:publishableKey,"Content-Type":"application/json"},body:JSON.stringify({email:el("admin-email").value.trim(),password:el("admin-password").value})});const s=await r.json();if(!r.ok)throw new Error(s.msg||s.message||"Sign in failed");token=s.access_token;const admins=await api("/rest/v1/admin_users?select=user_id&user_id=eq."+encodeURIComponent(s.user.id));if(!admins.length)throw new Error("This account is not authorised as an administrator");const rows=await api("/rest/v1/site_settings?select=setting_key,setting_value&setting_key=eq.email_templates");if(rows[0]?.setting_value){try{templates=JSON.parse(rows[0].setting_value)}catch{templates={}}}templates={...structuredClone(starter),...templates};el("login-panel").hidden=true;el("manager").hidden=false;renderChoices()}catch(err){token="";el("login-feedback").textContent=err.message}finally{b.disabled=false}});
+el("login-form").addEventListener("submit",async e=>{e.preventDefault();const b=el("login-button");b.disabled=true;el("login-feedback").textContent="Verifying administrator…";try{const r=await fetch(supabaseUrl+"/auth/v1/token?grant_type=password",{method:"POST",headers:{apikey:publishableKey,"Content-Type":"application/json"},body:JSON.stringify({email:el("admin-email").value.trim(),password:el("admin-password").value})});const s=await r.json();if(!r.ok)throw new Error(s.msg||s.message||"Sign in failed");token=s.access_token;const admins=await api("/rest/v1/admin_users?select=user_id&user_id=eq."+encodeURIComponent(s.user.id));if(!admins.length)throw new Error("This account is not authorised as an administrator");const rows=await api("/rest/v1/site_settings?select=setting_key,setting_value&setting_key=eq.email_templates");if(rows[0]?.setting_value){try{templates=JSON.parse(rows[0].setting_value)}catch{templates={&#125;&#125;}templates={...structuredClone(starter),...templates};el("login-panel").hidden=true;el("manager").hidden=false;renderChoices()}catch(err){token="";el("login-feedback").textContent=err.message}finally{b.disabled=false&#125;&#125;);
 el("template-choice").addEventListener("change",fill);el("template-subject").addEventListener("input",preview);el("template-body").addEventListener("input",preview);el("preview-template").addEventListener("click",preview);
-el("template-form").addEventListener("submit",async e=>{e.preventDefault();const b=el("save-template");b.disabled=true;el("template-feedback").textContent="Saving template…";try{templates[selected()]={name:el("template-name").value.trim(),subject:el("template-subject").value.trim(),body:el("template-body").value};await api("/rest/v1/site_settings?on_conflict=setting_key",{method:"POST",headers:{Prefer:"resolution=merge-duplicates,return=minimal"},body:JSON.stringify({setting_key:"email_templates",setting_value:JSON.stringify(templates),updated_at:new Date().toISOString()})});const option=el("template-choice").selectedOptions[0];option.textContent=templates[selected()].name;el("template-feedback").textContent="Template saved securely to website settings."}catch(err){el("template-feedback").textContent=err.message}finally{b.disabled=false}});
-el("copy-email").addEventListener("click",async()=>{const value=el("template-subject").value+"\n\n"+el("template-body").value;try{await navigator.clipboard.writeText(value);el("template-feedback").textContent="Email copied to clipboard."}catch{el("template-feedback").textContent="Clipboard unavailable on this browser. Select and copy the preview manually."}});
+el("template-form").addEventListener("submit",async e=>{e.preventDefault();const b=el("save-template");b.disabled=true;el("template-feedback").textContent="Saving template…";try{templates[selected()]={name:el("template-name").value.trim(),subject:el("template-subject").value.trim(),body:el("template-body").value};await api("/rest/v1/site_settings?on_conflict=setting_key",{method:"POST",headers:{Prefer:"resolution=merge-duplicates,return=minimal"},body:JSON.stringify({setting_key:"email_templates",setting_value:JSON.stringify(templates),updated_at:new Date().toISOString()})});const option=el("template-choice").selectedOptions[0];option.textContent=templates[selected()].name;el("template-feedback").textContent="Template saved securely to website settings."}catch(err){el("template-feedback").textContent=err.message}finally{b.disabled=false&#125;&#125;);
+el("copy-email").addEventListener("click",async()=>{const value=el("template-subject").value+"\n\n"+el("template-body").value;try{await navigator.clipboard.writeText(value);el("template-feedback").textContent="Email copied to clipboard."}catch{el("template-feedback").textContent="Clipboard unavailable on this browser. Select and copy the preview manually."&#125;&#125;);
 el("open-email").addEventListener("click",()=>{const subject=sample(el("template-subject").value),body=sample(el("template-body").value);location.href="mailto:?subject="+encodeURIComponent(subject)+"&body="+encodeURIComponent(body)});
 el("logout").addEventListener("click",async()=>{try{await fetch(supabaseUrl+"/auth/v1/logout",{method:"POST",headers:headers()})}catch{}token="";el("manager").hidden=true;el("login-panel").hidden=false;el("login-form").reset()});
 </script>
