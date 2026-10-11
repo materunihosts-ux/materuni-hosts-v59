@@ -20,6 +20,24 @@ const base="https://sskmzswoeljxwojcszta.supabase.co/storage/v1/object/public/ma
 // @ts-nocheck
 const siteContentEndpoint="https://sskmzswoeljxwojcszta.supabase.co/rest/v1/site_content?select=id,content&id=in.(hero_image,story_image,waterfall_image,coffee_image,cooking_image,culturalday_image,camping_image,ultimate_image,hero_title,hero_intro,experiences_title,experiences_intro,story_title,story_desc,story_desc2)";
 const siteContentKey="sb_publishable_G9ru4P_yKzievqiXjXEEbQ_p28cB_NZ";
+const languageContentUrl="https://sskmzswoeljxwojcszta.supabase.co/rest/v1/site_settings?select=setting_value&setting_key=eq.language_content";
+const applyHomepageLanguage=async()=>{
+ const locale=(localStorage.getItem("materuni-language")||"en").toLowerCase();
+ if(!["es","fr","de"].includes(locale))return;
+ try{
+  const response=await fetch(languageContentUrl,{headers:{apikey:siteContentKey,Authorization:"Bearer "+siteContentKey},cache:"no-store"});
+  if(!response.ok)return;
+  const rows=await response.json(),saved=rows?.[0]?.setting_value;
+  const translations=typeof saved==="string"?JSON.parse(saved):saved;
+  const copy=translations?.[locale];
+  if(!copy||typeof copy!=="object")return;
+  Object.entries(copy).forEach(([key,value])=>{
+   if(typeof value!=="string"||!value.trim())return;
+   const node=document.querySelector('[data-site-content="'+key+'"]');if(node)node.textContent=value;
+  });
+ }catch(error){console.warn("Homepage translations unavailable; showing English copy.",error)}
+};
+
 fetch(siteContentEndpoint,{headers:{apikey:siteContentKey,Authorization:"Bearer "+siteContentKey}})
  .then(response=>response.ok?response.json():[])
  .then(rows=>{
@@ -32,6 +50,8 @@ fetch(siteContentEndpoint,{headers:{apikey:siteContentKey,Authorization:"Bearer 
    else node.style.backgroundImage="linear-gradient(0deg,rgba(14,35,25,.22),rgba(14,35,25,.04)),url("+JSON.stringify(url)+")";
   });
  }).catch(()=>{});
+applyHomepageLanguage();
+document.getElementById("site-language")?.addEventListener("change",applyHomepageLanguage);
 
 fetch("https://sskmzswoeljxwojcszta.supabase.co/rest/v1/experience_catalog?select=experience_key,display_name,price_usd,short_description,full_description,image_url,duration_label,inclusions,exclusions,is_active,sort_order&order=sort_order.asc",{headers:{apikey:siteContentKey,Authorization:"Bearer "+siteContentKey},cache:"no-store"})
  .then(r=>r.ok?r.json():Promise.reject(new Error("Catalogue unavailable")))
