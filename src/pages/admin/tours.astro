@@ -95,7 +95,7 @@ async function refreshTours(){
  const rows=await api("/rest/v1/experience_catalog?select=id,experience_key,display_name,price_usd,is_active,sort_order,short_description,full_description,image_url,duration_label,inclusions&order=sort_order.asc");
  const select=el("slot-experience");
  select.innerHTML='<option value="">Select a tour</option>';
- rows.forEach(t=>{const o=document.createElement("option");o.value=t.experience_key;o.textContent=t.display_name+" · $"+Number(t.price_usd).toFixed(0)+(t.is_active?"":" · Hidden");select.append(o)});
+ rows.filter(t=>t.is_active).forEach(t=>{const o=document.createElement("option");o.value=t.experience_key;o.textContent=t.display_name+" · $"+Number(t.price_usd).toFixed(0);select.append(o)});
  el("tour-list").innerHTML="";
  rows.forEach(t=>{
   const line=document.createElement("section");line.className="notice";line.style.marginTop="0.8rem";
@@ -124,7 +124,11 @@ el("tour-form").addEventListener("submit",async e=>{
  e.preventDefault();const button=el("save-tour");button.disabled=true;el("tour-feedback").textContent="Saving tour…";
  const name=el("tour-name").value.trim();const key=el("tour-key").value.trim();
  try{
-   await api("/rest/v1/experience_catalog",{method:"POST",headers:{"Prefer":"return=minimal"},body:JSON.stringify({display_name:name,experience_key:key,price_usd:Number(el("tour-price").value),sort_order:Number(el("tour-order").value||100),short_description:el("tour-description").value.trim(),full_description:el("tour-full-description").value.trim(),duration_label:el("tour-duration").value.trim(),image_url:el("tour-image").value.trim()||null,inclusions:el("tour-inclusions").value.split("\n").map(x=>x.trim()).filter(Boolean),is_active:true})});
+   const price=Number(el("tour-price").value);const imageUrl=el("tour-image").value.trim();
+   if(!name||!key)throw new Error("Enter both a guest-facing name and a unique booking key.");
+   if(!Number.isFinite(price)||price<0)throw new Error("Enter a valid non-negative price.");
+   if(imageUrl&&!imageUrl.toLowerCase().startsWith("https://"))throw new Error("Image URL must begin with https://");
+   await api("/rest/v1/experience_catalog",{method:"POST",headers:{"Prefer":"return=minimal"},body:JSON.stringify({display_name:name,experience_key:key,price_usd:price,sort_order:Number(el("tour-order").value||100),short_description:el("tour-description").value.trim(),full_description:el("tour-full-description").value.trim(),duration_label:el("tour-duration").value.trim(),image_url:imageUrl||null,inclusions:el("tour-inclusions").value.split("\n").map(x=>x.trim()).filter(Boolean),is_active:true})});
   el("tour-form").reset();el("tour-order").value="100";el("tour-feedback").textContent="Tour added. It is now available in the guest booking form.";await refreshTours();
  }catch(error){el("tour-feedback").textContent=error.message}finally{button.disabled=false}
 });
