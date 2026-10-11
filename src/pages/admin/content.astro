@@ -200,7 +200,7 @@ function renderTranslations(){
   const wrap=document.createElement("div");wrap.className="field full";
   const label=document.createElement("label");label.textContent=meta.label;
   const field=document.createElement(meta.type==="textarea"?"textarea":"input");field.id="translation-"+key;field.maxLength=meta.max;field.value=languageContent[locale]?.[key]||"";
-  if(meta.type==="textarea")field.rows=3;
+  if(meta.type==="textarea")field.rows=key==="faq_items_json"?10:3;
   wrap.append(label,field);root.append(wrap);
  });
  el("translation-status").textContent=Object.values(translationKeys).filter((_,i)=>Boolean(languageContent[locale]?.[Object.keys(translationKeys)[i]]?.trim())).length+" of "+Object.keys(translationKeys).length+" fields translated";
@@ -214,7 +214,7 @@ el("translation-language").addEventListener("change",renderTranslations);
 el("save-translations").addEventListener("click",async()=>{
  const button=el("save-translations"),locale=el("translation-language").value;button.disabled=true;el("translation-feedback").textContent="Publishing translations…";
  try{
-  const next={};for(const [key,meta] of Object.entries(translationKeys)){const value=el("translation-"+key).value.trim();if(value.length>meta.max)throw new Error(meta.label+" is too long.");next[key]=value}
+  const next={};for(const [key,meta] of Object.entries(translationKeys)){const value=el("translation-"+key).value.trim();if(value.length>meta.max)throw new Error(meta.label+" is too long.");if(key==="faq_items_json"&&value){let entries;try{entries=JSON.parse(value)}catch{throw new Error("Translated FAQ must be valid JSON.")}if(!Array.isArray(entries)||entries.length<1||entries.length>30||!entries.every(item=>item&&typeof item.question==="string"&&typeof item.answer==="string"&&item.question.trim()&&item.answer.trim()))throw new Error("Translated FAQ must be an array of 1–30 question and answer objects.")}next[key]=value}
   languageContent[locale]=next;
   await api("/rest/v1/site_settings?on_conflict=setting_key",{method:"POST",headers:{"Prefer":"resolution=merge-duplicates,return=minimal"},body:JSON.stringify({setting_key:"language_content",setting_value:JSON.stringify(languageContent),updated_at:new Date().toISOString()})});
   renderTranslations();el("translation-feedback").textContent="Translations published. Visitors selecting "+locale.toUpperCase()+" will see the saved homepage copy.";
