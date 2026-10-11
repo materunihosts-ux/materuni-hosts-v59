@@ -47,3 +47,17 @@
 .admin-booking-actions button:disabled{opacity:.55;cursor:wait}
 @media(max-width:700px){.admin-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.admin-booking-details{grid-template-columns:repeat(2,minmax(0,1fr))}.admin-shortcuts{margin-top:12px}}
 @media(max-width:480px){.admin-booking-top{flex-direction:column}.admin-booking-details{grid-template-columns:1fr 1fr}.admin-booking-card{padding:15px}}
+
+/* FAQ page */
+.faq-section{display:grid;grid-template-columns:.8fr 1.2fr;gap:60px;align-items:start}
+.faq-intro{position:sticky;top:120px}
+.faq-intro h2{font:500 clamp(32px,4vw,46px)/1.1 var(--serif);color:var(--forest)}
+.faq-intro p{color:var(--muted);margin-bottom:24px}
+.faq-list{border-top:1px solid var(--sand)}
+.faq-item{border-bottom:1px solid var(--sand);padding:20px 0}
+.faq-item summary{cursor:pointer;list-style:none;position:relative;padding-right:34px;font:600 20px/1.3 var(--serif);color:var(--forest)}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-item summary:after{content:"+";position:absolute;right:4px;top:-3px;font:400 25px var(--sans);color:var(--gold)}
+.faq-item[open] summary:after{content:"−"}
+.faq-item p{font-size:14px;color:var(--muted);max-width:680px;margin:14px 0 0}
+@media(max-width:850px){.faq-section{grid-template-columns:1fr;gap:28px}.faq-intro{position:static}}
