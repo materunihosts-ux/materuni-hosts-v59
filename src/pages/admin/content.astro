@@ -20,6 +20,19 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
    <div class="actions" style="margin-top:1.2rem"><button class="button button-secondary" id="add-faq" type="button">Add a question</button><button class="button" id="save-faq" type="button">Publish FAQ changes</button></div>
    <p id="content-feedback" class="muted" aria-live="polite"></p>
   </div>
+  <div class="booking-panel" style="margin-top:1.25rem">
+   <span class="eyebrow">OUR APPROACH PAGE</span><h2>Edit sustainability & culture content</h2>
+   <p class="muted">These fields update the public Our Approach page. Keep the copy grounded in real practices and avoid unsupported environmental or community impact claims.</p>
+   <form id="approach-form" class="form-grid">
+    <div class="field full"><label for="approach-title">Page headline</label><input id="approach-title" maxlength="120" required></div>
+    <div class="field full"><label for="approach-intro">Introduction</label><textarea id="approach-intro" rows="3" maxlength="700" required></textarea></div>
+    <div class="field full"><label for="approach-section-title">Main section heading</label><input id="approach-section-title" maxlength="150" required></div>
+    <div class="field full"><label for="approach-section-intro">Main section text</label><textarea id="approach-section-intro" rows="4" maxlength="1000" required></textarea></div>
+    <div class="field full"><label for="approach-cta-title">Closing heading</label><input id="approach-cta-title" maxlength="120" required></div>
+    <div class="field full"><label for="approach-cta-text">Closing text</label><textarea id="approach-cta-text" rows="3" maxlength="500" required></textarea></div>
+    <div class="field full"><button class="button" id="save-approach" type="submit">Publish Our Approach changes</button><p id="approach-feedback" class="muted" aria-live="polite"></p></div>
+   </form>
+  </div>
  </div>
 </section>
 <script>
@@ -55,6 +68,24 @@ function renderFaq(){
   card.append(heading,qWrap,aWrap,remove);root.append(card);
  });
 }
+
+const approachDefaults={"title":"Good travel begins with respect for place.","intro":"A visit to Materuni should feel personal, respectful and grounded in the place itself. Our approach is to create space for guests to learn from local hosts, take part in everyday traditions and enjoy the landscape without treating the village as a backdrop.","sectionTitle":"Local culture is not a performance. It is a living way of life.","sectionIntro":"Rather than rushing from one photo stop to the next, we invite guests to slow down: learn how coffee is prepared, share food, ask questions and hear about the customs and stories that give Materuni its character. Each visit is an opportunity for exchange, with respect for the people and places involved.","ctaTitle":"Come as a guest. Leave as a friend.","ctaText":"Discover Materuni at a thoughtful pace, with a warm welcome from local hosts."};
+const approachFields={title:"approach-title",intro:"approach-intro",sectionTitle:"approach-section-title",sectionIntro:"approach-section-intro",ctaTitle:"approach-cta-title",ctaText:"approach-cta-text"};
+async function loadApproach(){
+ const rows=await api("/rest/v1/site_settings?select=setting_key,setting_value&setting_key=eq.approach_content");
+ let data=approachDefaults;
+ if(rows?.[0]?.setting_value){try{const parsed=JSON.parse(rows[0].setting_value);if(parsed&&typeof parsed==="object")data={...approachDefaults,...parsed}}catch{}}
+ for(const [key,id] of Object.entries(approachFields))el(id).value=typeof data[key]==="string"?data[key]:approachDefaults[key];
+}
+el("approach-form").addEventListener("submit",async event=>{
+ event.preventDefault();const button=el("save-approach");button.disabled=true;el("approach-feedback").textContent="Publishing page content…";
+ try{
+  const data={};for(const [key,id] of Object.entries(approachFields)){data[key]=el(id).value.trim();if(!data[key])throw new Error("Please complete every content field.");}
+  await api("/rest/v1/site_settings?on_conflict=setting_key",{method:"POST",headers:{"Prefer":"resolution=merge-duplicates,return=minimal"},body:JSON.stringify({setting_key:"approach_content",setting_value:JSON.stringify(data),updated_at:new Date().toISOString()})});
+  el("approach-feedback").textContent="Our Approach page content published successfully.";
+ }catch(error){el("approach-feedback").textContent=error.message}finally{button.disabled=false}
+});
+
 async function loadFaq(){
  const rows=await api("/rest/v1/site_settings?select=setting_key,setting_value&setting_key=eq.faq_items");
  if(rows?.[0]?.setting_value){try{const parsed=JSON.parse(rows[0].setting_value);if(Array.isArray(parsed)&&parsed.length<=30&&parsed.every(x=>typeof x.question==="string"&&typeof x.answer==="string"))faqItems=parsed}catch{el("content-feedback").textContent="Saved FAQ content could not be read. Showing the built-in FAQ copy instead."}}
@@ -68,7 +99,7 @@ el("login-form").addEventListener("submit",async e=>{
   accessToken=session.access_token;
   const admins=await api("/rest/v1/admin_users?select=user_id&user_id=eq."+encodeURIComponent(session.user.id));
   if(!admins.length){accessToken="";throw new Error("This account is not authorised as an administrator.");}
-  el("login-panel").hidden=true;el("manager").hidden=false;await loadFaq();
+  el("login-panel").hidden=true;el("manager").hidden=false;await Promise.all([loadFaq(),loadApproach()]);
  }catch(error){el("login-feedback").textContent=error.message}finally{button.disabled=false}
 });
 el("add-faq").addEventListener("click",()=>{if(faqItems.length>=30){el("content-feedback").textContent="A maximum of 30 FAQ entries is allowed.";return}faqItems.push({question:"",answer:""});renderFaq()});
