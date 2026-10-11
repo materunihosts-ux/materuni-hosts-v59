@@ -92,7 +92,7 @@ async function refreshAvailability(){
  }catch(error){list.textContent="Availability could not be loaded: "+error.message;}
 }
 async function refreshTours(){
- const rows=await api("/rest/v1/experience_catalog?select=id,experience_key,display_name,price_usd,is_active,sort_order&order=sort_order.asc");
+ const rows=await api("/rest/v1/experience_catalog?select=id,experience_key,display_name,price_usd,is_active,sort_order,short_description,full_description,image_url,duration_label,inclusions&order=sort_order.asc");
  const select=el("slot-experience");
  select.innerHTML='<option value="">Select a tour</option>';
  rows.forEach(t=>{const o=document.createElement("option");o.value=t.experience_key;o.textContent=t.display_name+" · $"+Number(t.price_usd).toFixed(0)+(t.is_active?"":" · Hidden");select.append(o)});
