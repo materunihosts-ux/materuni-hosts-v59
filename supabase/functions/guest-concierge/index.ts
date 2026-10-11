@@ -173,7 +173,7 @@ Deno.serve(async (request: Request) => {
       .update({ updated_at: new Date().toISOString(), language_code: language })
       .eq("id", conversation.id);
 
-    return json({ success: true, session_id: conversation.session_id, conversation_id: conversation.id, reply, mode });
+    return json({ success: true, session_id: conversation.session_id, session_token: sessionToken, conversation_id: conversation.id, reply, mode });
   } catch (error) {
     console.error("guest-concierge error:", error);
     return json({ error: "I’m sorry — the guest assistant is unavailable right now. Please contact us on WhatsApp." }, 500);
