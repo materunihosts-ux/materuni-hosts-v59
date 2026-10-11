@@ -3,7 +3,7 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
 ---
 <SiteLayout title="Guest Conversations | Materuni Hosts" description="Private guest concierge conversation inbox." noindex={true}>
 <section class="page-hero"><span class="eyebrow">PRIVATE ADMIN</span><h1>Guest conversations</h1><p>Review visitor questions from the website concierge and follow up when a human host is needed.</p></section>
-<section class="booking-wrap">
+<style>.conversation-status{display:inline-flex;margin-top:.4rem;padding:.2rem .55rem;border-radius:99px;background:#eee9df;text-transform:capitalize;font-size:.75rem}.conversation-status.status-needs_human{background:#f5ecd7;color:#76551d}.conversation-status.status-resolved{background:#e1eee3;color:#214b2b}.conversation-status-actions{display:flex;gap:.5rem;flex-wrap:wrap;margin:1rem 0}.conversation-item{display:flex;flex-direction:column;align-items:flex-start;gap:.25rem;width:100%;text-align:left}</style>\n<section class="booking-wrap">
   <div class="booking-panel" id="login-panel">
     <h2>Administrator sign in</h2>
     <form id="login-form" class="form-grid">
@@ -37,27 +37,33 @@ async function loadConversations(){
   if(!rows.length){list.append(node("p","muted","No guest conversations yet."));return}
   rows.forEach(item=>{
    const button=document.createElement("button");button.type="button";button.className="conversation-item";
-   button.append(node("strong","",item.guest_name||"Website visitor"),node("span","",String(item.language_code||"en").toUpperCase()+" · "+new Date(item.updated_at).toLocaleString()));
-   button.addEventListener("click",()=>loadMessages(item.conversation_id,button));
-   list.append(button);
+   button.append(node("strong","",item.guest_name||"Website visitor"),node("span","",String(item.language_code||"en").toUpperCase()+" · "+new Date(item.updated_at).toLocaleString()),node("small","conversation-status status-"+(item.conversation_status||"open"),(item.conversation_status||"open").replaceAll("_"," ")));
+   if(item.guest_email)button.append(node("small","",item.guest_email));
+   button.addEventListener("click",()=>loadMessages(item,button));list.append(button);
   });
  }catch(error){list.replaceChildren(node("p","muted",error.message))}
 }
-async function loadMessages(id,selected){
+async function updateConversationStatus(id,status,feedback,button){
+ button.disabled=true;feedback.textContent="Updating conversation…";
+ try{await api("/rest/v1/rpc/admin_update_ai_conversation_status",{method:"POST",body:JSON.stringify({p_conversation_id:id,p_status:status})});feedback.textContent="Conversation marked "+status.replaceAll("_"," ")+".";
+ await loadConversations();
+ }catch(error){feedback.textContent=error.message;button.disabled=false}
+}
+async function loadMessages(item,selected){
  document.querySelectorAll(".conversation-item").forEach(x=>x.classList.remove("active"));selected.classList.add("active");
  const detail=el("conversation-detail");detail.replaceChildren(node("p","muted","Loading messages…"));
  try{
-  const rows=await api("/rest/v1/rpc/admin_get_ai_messages",{method:"POST",body:JSON.stringify({p_conversation_id:id})});
-  detail.replaceChildren(node("h3","","Conversation"));
+  const rows=await api("/rest/v1/rpc/admin_get_ai_messages",{method:"POST",body:JSON.stringify({p_conversation_id:item.conversation_id})});
+  detail.replaceChildren(node("h3","",item.guest_name||"Website visitor"));
+  detail.append(node("p","muted","Language: "+String(item.language_code||"en").toUpperCase()+" · Status: "+(item.conversation_status||"open").replaceAll("_"," ")));
+  if(item.guest_email){const email=document.createElement("a");email.href="mailto:"+encodeURIComponent(item.guest_email)+"?subject="+encodeURIComponent("Your Materuni Hosts enquiry");email.textContent="Email guest · "+item.guest_email;detail.append(email)}
+  else detail.append(node("p","muted","No email address was shared in this conversation."));
+  const actions=document.createElement("div");actions.className="conversation-status-actions";const feedback=node("p","muted","");feedback.setAttribute("aria-live","polite");
+  [["open","Reopen"],["needs_human","Needs human follow-up"],["resolved","Mark resolved"]].forEach(([value,label])=>{const button=document.createElement("button");button.type="button";button.className="button button-secondary";button.textContent=label;button.disabled=item.conversation_status===value;button.addEventListener("click",()=>updateConversationStatus(item.conversation_id,value,feedback,button));actions.append(button)});
+  detail.append(actions,feedback);
   const transcript=document.createElement("div");transcript.className="conversation-transcript";
-  rows.forEach(item=>{
-   const message=document.createElement("article");message.className="conversation-message "+(item.sender_type==="assistant"?"assistant":"guest");
-   message.append(node("small","",item.sender_type==="assistant"?"Concierge":"Guest"),node("p","",item.message),node("time","",new Date(item.created_at).toLocaleString()));
-   transcript.append(message);
-  });
-  detail.append(transcript);
-  const note=document.createElement("p");note.className="muted conversation-note";note.textContent="For a personal follow-up, use the guest’s booking details if provided in a separate booking request, or invite them to contact a local host on WhatsApp.";
-  detail.append(note);
+  rows.forEach(message=>{const article=document.createElement("article");article.className="conversation-message "+(message.sender_type==="assistant"?"assistant":"guest");article.append(node("small","",message.sender_type==="assistant"?"Concierge":"Guest"),node("p","",message.message),node("time","",new Date(message.created_at).toLocaleString()));transcript.append(article)});
+  detail.append(transcript,node("p","muted conversation-note","For a direct personal follow-up, use the guest email above. This inbox does not send replies; status controls help your team track follow-up."));
  }catch(error){detail.replaceChildren(node("p","muted",error.message))}
 }
 el("login-form").addEventListener("submit",async event=>{
