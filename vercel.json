@@ -4,18 +4,13 @@
   "outputDirectory": "dist",
   "redirects": [
     {
-      "source": "/partners.html",
-      "destination": "/partners",
-      "permanent": true
-    },
-    {
       "source": "/sustainability.html",
       "destination": "/sustainability",
       "permanent": true
     },
     {
       "source": "/admin.html",
-      "destination": "/admin",
+      "destination": "/admin/bookings",
       "permanent": true
     }
   ]
