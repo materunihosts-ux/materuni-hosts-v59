@@ -21,6 +21,20 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
    <p id="content-feedback" class="muted" aria-live="polite"></p>
   </div>
   <div class="booking-panel" style="margin-top:1.25rem">
+   <span class="eyebrow">HOMEPAGE COPY</span><h2>Edit homepage messaging</h2>
+   <p class="muted">Update text shown on the homepage. Package prices and booking terms remain controlled by the approved experience catalogue and booking system.</p>
+   <form id="home-copy-form" class="form-grid">
+    <div class="field full"><label for="home-hero-title">Hero headline</label><input id="home-hero-title" maxlength="120" required></div>
+    <div class="field full"><label for="home-hero-intro">Hero introduction</label><textarea id="home-hero-intro" rows="3" maxlength="500" required></textarea></div>
+    <div class="field full"><label for="home-experiences-title">Experiences section heading</label><input id="home-experiences-title" maxlength="120" required></div>
+    <div class="field full"><label for="home-experiences-intro">Experiences section introduction</label><textarea id="home-experiences-intro" rows="3" maxlength="500" required></textarea></div>
+    <div class="field full"><label for="home-story-title">Story section heading</label><input id="home-story-title" maxlength="120" required></div>
+    <div class="field full"><label for="home-story-desc">Story section paragraph</label><textarea id="home-story-desc" rows="4" maxlength="900" required></textarea></div>
+    <div class="field full"><label for="home-story-desc2">Story section second paragraph</label><textarea id="home-story-desc2" rows="3" maxlength="500" required></textarea></div>
+    <div class="field full"><button class="button" id="save-home-copy" type="submit">Publish homepage copy</button><p id="home-copy-feedback" class="muted" aria-live="polite"></p></div>
+   </form>
+  </div>
+  <div class="booking-panel" style="margin-top:1.25rem">
    <span class="eyebrow">OUR APPROACH PAGE</span><h2>Edit sustainability & culture content</h2>
    <p class="muted">These fields update the public Our Approach page. Keep the copy grounded in real practices and avoid unsupported environmental or community impact claims.</p>
    <form id="approach-form" class="form-grid">
@@ -71,6 +85,23 @@ function renderFaq(){
 
 const approachDefaults={"title":"Good travel begins with respect for place.","intro":"A visit to Materuni should feel personal, respectful and grounded in the place itself. Our approach is to create space for guests to learn from local hosts, take part in everyday traditions and enjoy the landscape without treating the village as a backdrop.","sectionTitle":"Local culture is not a performance. It is a living way of life.","sectionIntro":"Rather than rushing from one photo stop to the next, we invite guests to slow down: learn how coffee is prepared, share food, ask questions and hear about the customs and stories that give Materuni its character. Each visit is an opportunity for exchange, with respect for the people and places involved.","ctaTitle":"Come as a guest. Leave as a friend.","ctaText":"Discover Materuni at a thoughtful pace, with a warm welcome from local hosts."};
 const approachFields={title:"approach-title",intro:"approach-intro",sectionTitle:"approach-section-title",sectionIntro:"approach-section-intro",ctaTitle:"approach-cta-title",ctaText:"approach-cta-text"};
+
+const homeCopyFields={hero_title:"home-hero-title",hero_intro:"home-hero-intro",experiences_title:"home-experiences-title",experiences_intro:"home-experiences-intro",story_title:"home-story-title",story_desc:"home-story-desc",story_desc2:"home-story-desc2"};
+async function loadHomeCopy(){
+ const ids=Object.keys(homeCopyFields);
+ const rows=await api("/rest/v1/site_content?select=id,content&id=in.("+ids.map(encodeURIComponent).join(",")+")");
+ for(const row of rows){const id=homeCopyFields[row.id];if(id)el(id).value=row.content||""}
+}
+el("home-copy-form").addEventListener("submit",async event=>{
+ event.preventDefault();const button=el("save-home-copy");button.disabled=true;el("home-copy-feedback").textContent="Publishing homepage text…";
+ try{
+  const rows=Object.entries(homeCopyFields).map(([key,id])=>({id:key,content:el(id).value.trim(),updated_at:new Date().toISOString()}));
+  if(rows.some(row=>!row.content))throw new Error("Please complete all homepage text fields.");
+  await api("/rest/v1/site_content?on_conflict=id",{method:"POST",headers:{"Content-Type":"application/json","Prefer":"resolution=merge-duplicates,return=minimal"},body:JSON.stringify(rows)});
+  el("home-copy-feedback").textContent="Homepage copy published successfully.";
+ }catch(error){el("home-copy-feedback").textContent=error.message}finally{button.disabled=false}
+});
+
 async function loadApproach(){
  const rows=await api("/rest/v1/site_settings?select=setting_key,setting_value&setting_key=eq.approach_content");
  let data=approachDefaults;
@@ -99,7 +130,7 @@ el("login-form").addEventListener("submit",async e=>{
   accessToken=session.access_token;
   const admins=await api("/rest/v1/admin_users?select=user_id&user_id=eq."+encodeURIComponent(session.user.id));
   if(!admins.length){accessToken="";throw new Error("This account is not authorised as an administrator.");}
-  el("login-panel").hidden=true;el("manager").hidden=false;await Promise.all([loadFaq(),loadApproach()]);
+  el("login-panel").hidden=true;el("manager").hidden=false;await Promise.all([loadFaq(),loadApproach(),loadHomeCopy()]);
  }catch(error){el("login-feedback").textContent=error.message}finally{button.disabled=false}
 });
 el("add-faq").addEventListener("click",()=>{if(faqItems.length>=30){el("content-feedback").textContent="A maximum of 30 FAQ entries is allowed.";return}faqItems.push({question:"",answer:""});renderFaq()});
