@@ -1,0 +1,103 @@
+---
+import SiteLayout from "../../layouts/SiteLayout.astro";
+---
+<SiteLayout title="Tour Management | Materuni Hosts" description="Private Materuni Hosts tour and availability management.">
+<section class="page-hero"><span class="eyebrow">PRIVATE ADMIN</span><h1>Tour & availability management</h1><p>Add new experiences whenever your offering grows, then publish dates and available spaces for guests.</p></section>
+<section class="booking-wrap">
+ <div class="booking-panel" id="login-panel">
+  <h2>Administrator sign in</h2>
+  <p class="muted">Only accounts already authorised in Materuni Hosts Admin can manage tours.</p>
+  <form id="login-form" class="form-grid">
+   <div class="field full"><label for="admin-email">Admin email</label><input id="admin-email" type="email" autocomplete="username" required></div>
+   <div class="field full"><label for="admin-password">Password</label><input id="admin-password" type="password" autocomplete="current-password" required></div>
+   <div class="field full"><button class="button" type="submit" id="login-button">Sign in securely</button><p id="login-feedback" class="muted" aria-live="polite"></p></div>
+  </form>
+ </div>
+ <div id="manager" hidden>
+  <div class="booking-panel">
+   <div class="section-heading"><div><span class="eyebrow">TOUR CATALOGUE</span><h2>Add a new experience</h2></div><button class="button button-secondary" id="logout" type="button">Sign out</button></div>
+   <form id="tour-form" class="form-grid">
+    <div class="field"><label for="tour-name">Guest-facing tour name *</label><input id="tour-name" required maxlength="120" placeholder="e.g. Materuni Forest & Birding Walk"></div>
+    <div class="field"><label for="tour-key">Booking key *</label><input id="tour-key" required maxlength="120" placeholder="e.g. Materuni Forest & Birding Walk"></div>
+    <div class="field"><label for="tour-price">Price per person (USD) *</label><input id="tour-price" type="number" min="0" step="0.01" required></div>
+    <div class="field"><label for="tour-order">Display order</label><input id="tour-order" type="number" value="100"></div>
+    <div class="field full"><label for="tour-description">Short description</label><textarea id="tour-description" rows="3"></textarea></div>
+    <div class="field full"><button class="button" type="submit" id="save-tour">Add tour to booking options</button><p id="tour-feedback" class="muted" aria-live="polite"></p></div>
+   </form>
+  </div>
+  <div class="booking-panel" style="margin-top:1.5rem">
+   <span class="eyebrow">PUBLISH AVAILABILITY</span><h2>Create available dates</h2>
+   <form id="slot-form" class="form-grid">
+    <div class="field full"><label for="slot-experience">Experience *</label><select id="slot-experience" required><option value="">Select a tour</option></select></div>
+    <div class="field"><label for="slot-date">Date *</label><input id="slot-date" type="date" required></div>
+    <div class="field"><label for="slot-capacity">Guest capacity *</label><input id="slot-capacity" type="number" min="1" max="100" value="10" required></div>
+    <div class="field"><label for="slot-start">Start time *</label><input id="slot-start" type="time" value="08:00" required></div>
+    <div class="field"><label for="slot-end">End time *</label><input id="slot-end" type="time" value="14:00" required></div>
+    <div class="field full"><button class="button" type="submit">Publish availability</button><p id="slot-feedback" class="muted" aria-live="polite"></p></div>
+   </form>
+  </div>
+  <div class="booking-panel" style="margin-top:1.5rem">
+   <span class="eyebrow">CURRENT TOURS</span><h2>Manage booking options</h2><div id="tour-list" class="muted">Loading tours…</div>
+  </div>
+ </div>
+</section>
+<script>
+const supabaseUrl="https://sskmzswoeljxwojcszta.supabase.co";
+const publishableKey="sb_publishable_G9ru4P_yKzievqiXjXEEbQ_p28cB_NZ";
+let accessToken="";
+let adminId="";
+const el=id=>document.getElementById(id);
+const apiHeaders=()=>({"apikey":publishableKey,"Authorization":"Bearer "+accessToken,"Content-Type":"application/json"});
+async function api(path,options={}){
+ const response=await fetch(supabaseUrl+path,{...options,headers:{...apiHeaders(),...(options.headers||{})}});
+ const body=await response.json().catch(()=>null);
+ if(!response.ok) throw new Error(body?.message||body?.error_description||body?.details||"Request failed. Please try again.");
+ return body;
+}
+async function refreshTours(){
+ const rows=await api("/rest/v1/experience_catalog?select=id,experience_key,display_name,price_usd,is_active,sort_order&order=sort_order.asc");
+ const select=el("slot-experience");
+ select.innerHTML='<option value="">Select a tour</option>';
+ rows.forEach(t=>{const o=document.createElement("option");o.value=t.experience_key;o.textContent=t.display_name+" · $"+Number(t.price_usd).toFixed(0)+(t.is_active?"":" · Hidden");select.append(o)});
+ el("tour-list").innerHTML="";
+ rows.forEach(t=>{
+  const line=document.createElement("div");line.className="notice";line.style.marginTop="0.6rem";
+  const title=document.createElement("strong");title.textContent=t.display_name+" — $"+Number(t.price_usd).toFixed(2);
+  const meta=document.createElement("p");meta.className="muted";meta.textContent=t.experience_key+" · "+(t.is_active?"Visible on booking page":"Hidden from booking page");
+  const toggle=document.createElement("button");toggle.type="button";toggle.className="button button-secondary";toggle.textContent=t.is_active?"Hide tour":"Publish tour";
+  toggle.addEventListener("click",async()=>{toggle.disabled=true;try{await api("/rest/v1/experience_catalog?id=eq."+t.id,{method:"PATCH",body:JSON.stringify({is_active:!t.is_active,updated_at:new Date().toISOString()})});await refreshTours()}catch(e){el("tour-feedback").textContent=e.message;toggle.disabled=false}});
+  line.append(title,meta,toggle);el("tour-list").append(line);
+ });
+}
+el("login-form").addEventListener("submit",async e=>{
+ e.preventDefault();const button=el("login-button");button.disabled=true;el("login-feedback").textContent="Checking account…";
+ try{
+  const response=await fetch(supabaseUrl+"/auth/v1/token?grant_type=password",{method:"POST",headers:{"apikey":publishableKey,"Content-Type":"application/json"},body:JSON.stringify({email:el("admin-email").value.trim(),password:el("admin-password").value})});
+  const session=await response.json();if(!response.ok)throw new Error(session.msg||session.message||"Sign in failed.");
+  accessToken=session.access_token;adminId=session.user.id;
+  const admins=await api("/rest/v1/admin_users?select=user_id&user_id=eq."+adminId);
+  if(!admins.length){accessToken="";throw new Error("This account is not authorised as a Materuni Hosts administrator.");}
+  el("login-panel").hidden=true;el("manager").hidden=false;await refreshTours();
+ }catch(error){el("login-feedback").textContent=error.message}finally{button.disabled=false}
+});
+el("tour-form").addEventListener("submit",async e=>{
+ e.preventDefault();const button=el("save-tour");button.disabled=true;el("tour-feedback").textContent="Saving tour…";
+ const name=el("tour-name").value.trim();const key=el("tour-key").value.trim();
+ try{
+  await api("/rest/v1/experience_catalog",{method:"POST",headers:{"Prefer":"return=minimal"},body:JSON.stringify({display_name:name,experience_key:key,price_usd:Number(el("tour-price").value),sort_order:Number(el("tour-order").value||100),short_description:el("tour-description").value.trim(),is_active:true})});
+  el("tour-form").reset();el("tour-order").value="100";el("tour-feedback").textContent="Tour added. It is now available in the guest booking form.";await refreshTours();
+ }catch(error){el("tour-feedback").textContent=error.message}finally{button.disabled=false}
+});
+el("slot-form").addEventListener("submit",async e=>{
+ e.preventDefault();const feedback=el("slot-feedback");feedback.textContent="Publishing…";
+ try{
+  const start=el("slot-start").value,end=el("slot-end").value;
+  if(end<=start)throw new Error("End time must be later than start time.");
+  await api("/rest/v1/availability_slots",{method:"POST",headers:{"Prefer":"return=minimal"},body:JSON.stringify({experience:el("slot-experience").value,slot_date:el("slot-date").value,start_time:start,end_time:end,capacity:Number(el("slot-capacity").value),booked_count:0,is_active:true})});
+  feedback.textContent="Availability published. Guests can now select this date and time.";
+ }catch(error){feedback.textContent=error.message}
+});
+el("logout").addEventListener("click",async()=>{try{await fetch(supabaseUrl+"/auth/v1/logout",{method:"POST",headers:apiHeaders()})}catch{}accessToken="";adminId="";el("manager").hidden=true;el("login-panel").hidden=false;el("login-form").reset()});
+const minDate=new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,10);el("slot-date").min=minDate;
+</script>
+</SiteLayout>
