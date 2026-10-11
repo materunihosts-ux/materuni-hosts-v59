@@ -67,7 +67,7 @@ function node(tag,cls,value){const n=document.createElement(tag);if(cls)n.classN
 function localDate(d){return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10)}
 async function loadOverview(){
  const feedback=el("snapshot-feedback");feedback.textContent="Refreshing live business data…";el("refresh").disabled=true;
- const today=localDate(new Date()),from=localDate(new Date(Date.now()-30*86400000)),to=localDate(new Date(Date.now()+365*86400000));
+ const today=localDate(new Date()),from=localDate(new Date(Date.now()-30*86400000)),to=localDate(new Date(Date.now()+335*86400000));
  const results=await Promise.allSettled([
   api("/rest/v1/rpc/admin_get_bookings",{method:"POST",body:JSON.stringify({p_start_date:from,p_end_date:to})}),
   api("/rest/v1/experience_catalog?select=id,is_active"),
@@ -98,7 +98,7 @@ async function loadOverview(){
  put("stat-chats",chats,v=>el("stat-chats").textContent=v.length);
  put("stat-notifications",notifications,v=>el("stat-notifications").textContent=v.length);
  el("snapshot-date").textContent="Reporting window: last 30 days to next 365 days · Updated "+new Date().toLocaleString();
- if(!feedback.textContent.includes("could not"))feedback.textContent="Overview refreshed. Check individual sections for full records.";
+ if(feedback.textContent==="Refreshing live business data…")feedback.textContent="Overview refreshed. Check individual sections for full records.";else feedback.textContent="Some dashboard data could not be loaded: "+feedback.textContent;
  el("refresh").disabled=false;
 }
 el("login-form").addEventListener("submit",async e=>{
