@@ -96,7 +96,51 @@ Deno.serve(async (request: Request) => {
 
     const openAiKey = Deno.env.get("OPENAI_API_KEY");
     const model = Deno.env.get("OPENAI_MODEL") || "gpt-4o-mini";
-    let reply = fallback[language];
+    const question = message.toLowerCase();
+    const guidedReplies = [
+      {
+        test: /price|cost|how much|precio|cuesta|prix|kosten|preis/,
+        answers: fallback,
+      },
+      {
+        test: /book|booking|availability|available|date|reserve|reserv|fecha|disponib|réserv|buch|verfügbar/,
+        answers: {
+          en: "You can check available dates and times on our booking page: https://materunihosts.com/booking. Choose your experience and group size, then send a request. A local host will confirm availability before the booking is final.",
+          es: "Puedes consultar fechas y horarios en https://materunihosts.com/booking. Elige tu experiencia y el tamaño del grupo y envía una solicitud. Un anfitrión local confirmará la disponibilidad antes de finalizar la reserva.",
+          fr: "Consultez les dates et horaires sur https://materunihosts.com/booking. Choisissez votre expérience et la taille du groupe, puis envoyez une demande. Un hôte local confirmera la disponibilité avant la réservation définitive.",
+          de: "Verfügbare Termine und Zeiten finden Sie unter https://materunihosts.com/booking. Wählen Sie Ihr Erlebnis und die Gruppengröße und senden Sie eine Anfrage. Ein lokaler Gastgeber bestätigt die Verfügbarkeit, bevor die Buchung verbindlich wird."
+        }
+      },
+      {
+        test: /transport|pickup|pick up|transfer|taxi|traslado|transporte|transport|abhol/,
+        answers: {
+          en: "Pickup and transport are arranged separately and must be confirmed with your host. Add your hotel or pickup point to the booking notes, or message us on WhatsApp: https://wa.me/255612068540.",
+          es: "La recogida y el transporte se coordinan por separado y deben confirmarse con tu anfitrión. Añade tu hotel o punto de recogida en las notas, o escríbenos por WhatsApp: https://wa.me/255612068540.",
+          fr: "Le transport et le point de prise en charge doivent être confirmés séparément avec votre hôte. Indiquez votre hôtel dans les notes ou contactez-nous sur WhatsApp : https://wa.me/255612068540.",
+          de: "Abholung und Transport werden separat organisiert und müssen mit Ihrem Gastgeber bestätigt werden. Geben Sie Ihr Hotel in den Buchungsnotizen an oder schreiben Sie uns über WhatsApp: https://wa.me/255612068540."
+        }
+      },
+      {
+        test: /payment|pay|card|deposit|pago|payer|zahlung|bezahlen/,
+        answers: {
+          en: "There is no live card payment on the website yet. First send your booking request; after the host confirms the details, we will share the payment instructions. No payment is taken when you submit the request.",
+          es: "La web todavía no acepta pagos con tarjeta. Primero envía tu solicitud; cuando el anfitrión confirme los detalles, te enviaremos las instrucciones de pago. No se cobra nada al enviar la solicitud.",
+          fr: "Le site ne propose pas encore de paiement par carte. Envoyez d'abord votre demande ; après confirmation par l'hôte, nous vous communiquerons les modalités de paiement. Aucun paiement n'est effectué lors de l'envoi.",
+          de: "Auf der Website ist derzeit keine Kartenzahlung möglich. Senden Sie zuerst Ihre Anfrage; nach Bestätigung durch den Gastgeber erhalten Sie die Zahlungsinformationen. Beim Absenden der Anfrage wird nichts berechnet."
+        }
+      },
+      {
+        test: /waterfall|waterfall|height|waterfall|cascada|chute|wasserfall/,
+        answers: {
+          en: "Materuni Waterfall is approximately 95 metres high, reached by a guided rainforest walk. You can combine the waterfall with a Chagga coffee experience or choose the full cultural day trip.",
+          es: "La cascada de Materuni tiene aproximadamente 95 metros de altura y se alcanza mediante una caminata guiada por el bosque. Puedes combinarla con una experiencia de café Chagga o elegir la excursión cultural completa.",
+          fr: "La cascade de Materuni mesure environ 95 mètres. On y accède par une randonnée guidée en forêt. Vous pouvez la combiner avec une expérience de café Chagga ou choisir la journée culturelle complète.",
+          de: "Der Materuni-Wasserfall ist etwa 95 Meter hoch und über eine geführte Wanderung durch den Regenwald erreichbar. Sie können ihn mit einem Chagga-Kaffeeerlebnis oder einem ganzen Kulturtag verbinden."
+        }
+      }
+    ];
+    const matched = guidedReplies.find(rule => rule.test.test(question));
+    let reply = matched ? matched.answers[language] : fallback[language];
     let mode = "guided_fallback";
     if (openAiKey) {
       try {
