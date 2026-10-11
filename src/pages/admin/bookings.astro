@@ -37,6 +37,7 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
       </div>
       <div id="booking-list" class="admin-booking-list"><p class="muted">Choose a date range and load bookings.</p></div>
     </div>
+    <div class="booking-panel" style="margin-top:1.5rem"><span class="eyebrow">AUTOMATION HEALTH</span><h2>Notification delivery log</h2><p class="muted">See whether booking acknowledgement emails and WhatsApp alerts were sent, skipped or failed.</p><div id="notification-list" class="admin-notification-list"><p class="muted">Sign in to load notification history.</p></div></div>
   </div>
 </section>
 <script>
@@ -65,6 +66,24 @@ function makeText(tag, className, value) {
   if (className) node.className = className;
   node.textContent = value == null ? "" : String(value);
   return node;
+}
+async function loadNotificationLogs() {
+  const list = el("notification-list");
+  try {
+    const rows = await api("/rest/v1/rpc/admin_get_notification_logs",{method:"POST",body:"{}"});
+    list.replaceChildren();
+    if (!rows.length) { list.append(makeText("p","muted","No notification attempts have been recorded yet.")); return; }
+    rows.slice(0,30).forEach(item => {
+      const line = document.createElement("div"); line.className = "admin-notification-row";
+      const main = document.createElement("div");
+      main.append(makeText("strong","",String(item.notification_type || "Booking update").replaceAll("_"," ")),makeText("span","muted",String(item.recipient || "—")));
+      const meta = document.createElement("div");
+      meta.append(makeText("span","notification-channel",item.channel || "—"),makeText("span","status-pill status-" + String(item.delivery_status || "pending").toLowerCase(),item.delivery_status || "pending"));
+      line.append(main,meta);
+      if (item.error_message) line.append(makeText("p","notification-error",item.error_message));
+      list.append(line);
+    });
+  } catch (error) { list.replaceChildren(makeText("p","muted","Notification history could not be loaded: " + error.message)); }
 }
 async function loadBookings() {
   const button = el("refresh-button");
@@ -173,7 +192,7 @@ el("login-form").addEventListener("submit", async event => {
     const admins = await api("/rest/v1/admin_users?select=user_id&user_id=eq." + encodeURIComponent(session.user.id));
     if (!admins.length) { accessToken = ""; throw new Error("This account is not authorised as an administrator."); }
     el("login-panel").hidden = true; el("manager").hidden = false;
-    await loadBookings();
+    await Promise.all([loadBookings(),loadNotificationLogs()]);
   } catch (error) { el("login-feedback").textContent = error.message; }
   finally { button.disabled = false; }
 });
