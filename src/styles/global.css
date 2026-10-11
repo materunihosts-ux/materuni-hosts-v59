@@ -412,3 +412,12 @@ main:focus{outline:none}
 #booking-form #submit{width:100%;min-height:52px;font-weight:800;letter-spacing:.02em}
 #booking-form #submit:disabled{opacity:.65;cursor:wait}
 @media(max-width:640px){#booking-form{grid-template-columns:1fr}.booking-panel{padding:18px}.page-hero h1{font-size:clamp(36px,10vw,52px)}}
+
+
+/* Logo asset already contains its own circular border. Do not add a second ring. */
+.site-header>.brand,.site-footer>.brand{display:flex;align-items:center;justify-content:center;line-height:0}
+.site-header>.brand .brand-logo,.site-footer>.brand .brand-logo-footer{display:block;object-fit:contain;object-position:50% 50%;margin:0;padding:0;transform:none;max-width:none;max-height:none}
+.site-header>.brand .brand-logo{width:76px;height:76px}
+.site-footer>.brand .brand-logo-footer{width:76px;height:76px}
+@media(max-width:850px){.site-header>.brand .brand-logo{width:66px;height:66px}}
+@media(max-width:560px){.site-header>.brand .brand-logo{width:62px;height:62px}}
