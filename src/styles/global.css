@@ -145,3 +145,8 @@
 /* Official Materuni Hosts logo asset */
 .brand-logo{display:block;width:86px;height:86px;object-fit:cover;border-radius:50%;border:1px solid var(--gold);flex:0 0 auto;background:var(--cream)}
 .site-footer .brand-logo{width:80px;height:80px}
+
+
+.brand-logo-footer{display:block;width:58px;height:58px;object-fit:contain}
+.social-links svg{display:block;width:17px;height:17px;flex:0 0 17px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.social-links a{display:inline-flex;align-items:center;gap:7px}
