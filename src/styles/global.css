@@ -451,3 +451,8 @@ main:focus{outline:none}
 .checkout-step-actions .button{min-width:125px;cursor:pointer}
 .checkout-step-actions .button-secondary{background:transparent;color:var(--forest)!important;border:1px solid var(--sand)}
 @media(max-width:640px){.checkout-step{grid-template-columns:1fr}.checkout-progress li{font-size:10px;padding-inline:4px}.checkout-step-title{font-size:24px}}
+
+.mh-whatsapp-quick{position:fixed;left:22px;bottom:24px;z-index:69;display:inline-flex;align-items:center;gap:9px;padding:13px 17px;background:#234f36;color:#fff;border:1px solid #ffffff35;box-shadow:0 10px 30px #142b1d30;font-size:11px;font-weight:800;letter-spacing:.025em}
+.mh-whatsapp-quick:hover{background:#1A3322;transform:translateY(-1px)}
+.mh-whatsapp-quick span{font-size:15px;color:#e6c98d}
+@media(max-width:600px){.mh-whatsapp-quick{left:12px;bottom:18px;padding:11px 12px;font-size:10px}.mh-concierge{right:12px;bottom:18px}.mh-concierge-launch{padding:10px 12px;font-size:10px}}
