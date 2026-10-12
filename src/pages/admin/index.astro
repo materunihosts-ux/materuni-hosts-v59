@@ -22,29 +22,30 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
     <div class="admin-stat"><span>Confirmed value*</span><strong id="stat-value">—</strong></div>
    </div>
    <p class="muted">*Estimated value of confirmed reservations in the selected period, not payments received.</p>
-   <div class="admin-stats" style="margin-top:1rem">
-    <div class="admin-stat"><span>Active experiences</span><strong id="stat-tours">—</strong></div>
-    <div class="admin-stat"><span>Upcoming slots</span><strong id="stat-slots">—</strong></div>
-    <div class="admin-stat"><span>Guest conversations</span><strong id="stat-chats">—</strong></div>
-    <div class="admin-stat"><span>Notification attempts</span><strong id="stat-notifications">—</strong></div>
-   </div>
+   <details class="admin-more-tools" style="margin-top:1rem">
+    <summary>Operational metrics <span>Experiences, calendar, messages and notifications</span></summary>
+    <div class="admin-stats" style="margin-top:1rem">
+     <div class="admin-stat"><span>Active experiences</span><strong id="stat-tours">—</strong></div>
+     <div class="admin-stat"><span>Upcoming slots</span><strong id="stat-slots">—</strong></div>
+     <div class="admin-stat"><span>Guest conversations</span><strong id="stat-chats">—</strong></div>
+     <div class="admin-stat"><span>Notification attempts</span><strong id="stat-notifications">—</strong></div>
+    </div>
+   </details>
    <p id="snapshot-feedback" class="muted" aria-live="polite"></p>
   </div>
   <div class="booking-panel" style="margin-top:1.25rem">
    <span class="eyebrow">START HERE</span><h2>Your daily tools</h2><p class="muted">Choose the exact area you want to manage. You can update bookings, tours, website text and real photographs here.</p>
    <div class="admin-home-grid">
-    <a class="admin-home-card admin-home-primary" href="/admin/bookings"><span class="admin-home-icon">01</span><span><strong>Bookings</strong><small>View requests, confirm guests and manage reservations</small></span><span class="admin-home-arrow">→</span></a>
-    <a class="admin-home-card admin-home-primary" href="/admin/tours"><span class="admin-home-icon">02</span><span><strong>Tours & calendar</strong><small>Edit tour details, prices, Included / Excluded lists and available dates</small></span><span class="admin-home-arrow">→</span></a>
-    <a class="admin-home-card admin-home-primary" href="/admin/tours#package-editors"><span class="admin-home-icon">05</span><span><strong>Included & Excluded</strong><small>Edit what each package covers and what guests pay separately</small></span><span class="admin-home-arrow">→</span></a>
-    <a class="admin-home-card admin-home-primary" href="/admin/content"><span class="admin-home-icon">03</span><span><strong>Website content</strong><small>Edit homepage text, FAQs, translations and Our Approach page</small></span><span class="admin-home-arrow">→</span></a>
-    <a class="admin-home-card admin-home-primary" href="/admin/media"><span class="admin-home-icon">04</span><span><strong>Photos & images</strong><small>Upload and replace real website photographs</small></span><span class="admin-home-arrow">→</span></a>
+    <a class="admin-home-card admin-home-primary" href="/admin/bookings"><span class="admin-home-icon">01</span><span><strong>Bookings</strong><small>Review requests, confirm reservations and manage changes</small></span><span class="admin-home-arrow">→</span></a>
+    <a class="admin-home-card admin-home-primary" href="/admin/tours"><span class="admin-home-icon">02</span><span><strong>Tours & availability</strong><small>Edit experiences, prices, what's included or excluded, and calendar slots</small></span><span class="admin-home-arrow">→</span></a>
+    <a class="admin-home-card admin-home-primary" href="/admin/content"><span class="admin-home-icon">03</span><span><strong>Website content & languages</strong><small>Edit homepage text, FAQs, page content and translations</small></span><span class="admin-home-arrow">→</span></a>
+    <a class="admin-home-card admin-home-primary" href="/admin/media"><span class="admin-home-icon">04</span><span><strong>Photos & media</strong><small>Upload and replace authentic Materuni photographs</small></span><span class="admin-home-arrow">→</span></a>
    </div>
    <details class="admin-more-tools"><summary>More tools <span>Analytics, guest messages, partners and settings</span></summary>
     <div class="admin-shortcuts">
      <a class="button button-secondary" href="/admin/analytics">Analytics</a>
      <a class="button button-secondary" href="/admin/conversations">Guest messages</a>
      <a class="button button-secondary" href="/admin/partners">Partners</a>
-     <a class="button button-secondary" href="/admin/media">Photo library</a>
      <a class="button button-secondary" href="/admin/email">Email templates</a>
      <a class="button button-secondary" href="/admin/settings">Social & website links</a>
     </div>
