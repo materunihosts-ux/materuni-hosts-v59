@@ -995,3 +995,14 @@ a:not(.button):not(.nav-cta):not(.brand):not(.admin-home-card){text-underline-of
  .booking-estimate-heading{align-items:flex-start;flex-direction:column;gap:5px}
  .admin-home-footer{align-items:flex-start;flex-direction:column}
 }
+
+/* Authentic guest review invitation */
+.review-invite-section{padding-block:clamp(48px,6vw,76px)}
+.review-invite-panel{max-width:1040px;margin-inline:auto;padding:clamp(28px,5vw,58px);background:#f1eadf;border:1px solid var(--mh-border);border-radius:var(--mh-radius-lg);text-align:center}
+.review-invite-panel h2{max-width:22ch;margin:14px auto;font-size:clamp(32px,4vw,46px);line-height:1.1}
+.review-invite-panel p{max-width:66ch;margin:0 auto;color:#59645b;line-height:1.85;font-size:14px}
+.review-invite-panel .actions{justify-content:center;margin-top:24px}
+.review-invite-panel .button-secondary{background:transparent;border:1px solid #8d9a8d;color:var(--forest)!important;box-shadow:none}
+.review-invite-panel .button-secondary:hover{background:var(--forest);color:#fff!important}
+.review-profile-link[hidden]{display:none}
+@media(max-width:560px){.review-invite-panel{text-align:left;padding:26px 21px}.review-invite-panel .actions{display:grid;grid-template-columns:1fr}.review-invite-panel .actions .button{width:100%}}
