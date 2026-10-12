@@ -63,10 +63,13 @@ Deno.serve(async(req:Request)=>{
    }
   }else{outcomes.email="missing_or_invalid_partner_email";await log("email",email||"missing email","skipped",undefined,"Add a valid partner email address before sending.");}
   const phone=clean(partner.whatsapp,40).replace(/[^0-9]/g,"");
-  const waToken=Deno.env.get("WHATSAPP_ACCESS_TOKEN"),phoneId=Deno.env.get("WHATSAPP_PHONE_NUMBER_ID"),waTemplate=Deno.env.get("WHATSAPP_PARTNER_INVITE_TEMPLATE");
+  const {data:waSetting}=await db.from("site_settings").select("setting_value").eq("setting_key","whatsapp_partner_template").maybeSingle();
+  let waConfig:Record<string,string>={};try{waConfig=JSON.parse(waSetting?.setting_value||"{}")}catch{}
+  const waToken=Deno.env.get("WHATSAPP_ACCESS_TOKEN"),phoneId=Deno.env.get("WHATSAPP_PHONE_NUMBER_ID"),waTemplate=clean(waConfig.name||Deno.env.get("WHATSAPP_PARTNER_INVITE_TEMPLATE")||"",100);
+
   if(phone&&waToken&&phoneId&&waTemplate){
    try{
-    const response=await fetch("https://graph.facebook.com/v22.0/"+phoneId+"/messages",{method:"POST",headers:{Authorization:"Bearer "+waToken,"Content-Type":"application/json"},body:JSON.stringify({messaging_product:"whatsapp",to:phone,type:"template",template:{name:waTemplate,language:{code:Deno.env.get("WHATSAPP_TEMPLATE_LANGUAGE")||"en"},components:[{type:"body",parameters:[{type:"text",text:clean(partner.business_name,120)},{type:"text",text:clean(partner.contact_name||"Partner",120)},{type:"text",text:vars.whatsapp}]}]}}),signal:AbortSignal.timeout(12000)});
+    const response=await fetch("https://graph.facebook.com/v22.0/"+phoneId+"/messages",{method:"POST",headers:{Authorization:"Bearer "+waToken,"Content-Type":"application/json"},body:JSON.stringify({messaging_product:"whatsapp",to:phone,type:"template",template:{name:waTemplate,language:{code:clean(waConfig.language||Deno.env.get("WHATSAPP_TEMPLATE_LANGUAGE")||"en",12)},components:[{type:"body",parameters:[{type:"text",text:clean(partner.business_name,120)},{type:"text",text:clean(partner.contact_name||"Partner",120)},{type:"text",text:vars.whatsapp}]}]}}),signal:AbortSignal.timeout(12000)});
     const result=await response.json().catch(()=>({}));
     if(!response.ok)throw new Error(result?.error?.message||"WhatsApp delivery failed.");
     outcomes.whatsapp="sent";await log("whatsapp",phone,"sent",result?.messages?.[0]?.id);
