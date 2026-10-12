@@ -1,0 +1,2 @@
+REVOKE EXECUTE ON FUNCTION public.submit_booking_idempotent(uuid,text,uuid,integer,text,text,text,text,text,text,text,text,text,text) FROM authenticated;
+GRANT EXECUTE ON FUNCTION public.submit_booking_idempotent(uuid,text,uuid,integer,text,text,text,text,text,text,text,text,text,text) TO anon;
