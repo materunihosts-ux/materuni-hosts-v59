@@ -38,6 +38,7 @@ Supabase Edge Functions
 - Add a persistent USD / EUR / TZS display selector.
 - Fetch USD exchange rates from a public exchange-rate endpoint with a six-hour session cache and a bounded timeout.
 - When the rate endpoint is unavailable, prices fall back to USD rather than showing invented conversion rates.
+- Browser-origin allowlists are checked by both public Edge Function handlers through the ALLOWED_ORIGINS Supabase secret. This is defense-in-depth only; it is not authentication.
 - Converted prices are marked as estimates. They do not change database amounts, RPC payloads, provider settlement currency or payment instructions.
 
 ### Booking UX
