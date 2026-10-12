@@ -1025,3 +1025,10 @@ a:not(.button):not(.nav-cta):not(.brand):not(.admin-home-card){text-underline-of
 .hero-copy{min-width:0}
 .hero h1{max-width:14ch}
 @media(max-width:560px){.hero h1{font-size:clamp(39px,11vw,46px);line-height:1.08}.hero-copy{padding:62px 22px}.hero .actions .button{width:100%}}
+
+
+/* Homepage hero heading — consistent, readable line breaks across screen sizes */
+.hero-copy .eyebrow{max-width:100%;line-height:1.7}
+.hero-copy h1.hero-title,.hero-copy h1{display:block;width:100%;max-width:18ch;font-family:var(--serif);font-size:clamp(42px,4.7vw,66px);font-weight:600;line-height:1.06;letter-spacing:-.022em;text-wrap:balance;overflow-wrap:normal;word-break:normal;hyphens:none;color:#fff;margin:20px 0 18px}
+@media(max-width:850px){.hero-copy h1.hero-title,.hero-copy h1{max-width:19ch;font-size:clamp(42px,7.2vw,58px);line-height:1.07}}
+@media(max-width:560px){.hero-copy h1.hero-title,.hero-copy h1{max-width:17ch;font-size:clamp(37px,10vw,44px);line-height:1.09;letter-spacing:-.018em;margin:17px 0 16px}}
