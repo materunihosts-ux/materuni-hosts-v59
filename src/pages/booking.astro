@@ -33,12 +33,12 @@ const $=id=>document.getElementById(id);
 function updateBookingEstimate(){
  const select=$("experience"),count=Number($("count").value),option=select.selectedOptions[0];
  const panel=$("booking-estimate");
- if(!option||!option.value||!Number.isFinite(Number(option.dataset.price))||Number(option.dataset.price)<=0){panel.hidden=true;return}
+ if(!option||!option.value||!Number.isFinite(Number(option.dataset.price))||Number(option.dataset.price)<=0||!Number.isInteger(count)||count<1||count>30){panel.hidden=true;return}
  const unit=Number(option.dataset.price);
- const guests=Number.isInteger(count)&&count>0?count:1;
+ const guests=count;
  const money=value=>new Intl.NumberFormat("en-US",{style:"currency",currency:"USD",maximumFractionDigits:0}).format(value);
  $("estimate-experience").textContent=option.textContent.split(" · $")[0];
- $("estimate-unit").textContent=money(unit)+" / guest";
+ $("estimate-unit").textContent=money(unit);
  $("estimate-total").textContent=money(unit*guests);
  panel.hidden=false;
 }
