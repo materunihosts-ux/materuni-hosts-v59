@@ -32,6 +32,7 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
       <div class="admin-stats" id="booking-stats">
         <div class="admin-stat"><span>Total in range</span><strong id="stat-total">—</strong></div>
         <div class="admin-stat"><span>New requests</span><strong id="stat-new">—</strong></div>
+        <div class="admin-stat"><span>Contacted</span><strong id="stat-contacted">—</strong></div>
         <div class="admin-stat"><span>Confirmed</span><strong id="stat-confirmed">—</strong></div>
         <div class="admin-stat"><span>Cancelled</span><strong id="stat-cancelled">—</strong></div>
       </div>
@@ -60,10 +61,9 @@ async function notifyBookingChange(bookingId, event) {
     return { success: false, error: error.message };
   }
 }
-const localDate = date => {
-  const d = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
-  return d.toISOString().slice(0,10);
-};
+const localDate = date => new Intl.DateTimeFormat("en-CA", {
+  timeZone: "Africa/Dar_es_Salaam", year: "numeric", month: "2-digit", day: "2-digit"
+}).format(date);
 const today = new Date();
 el("from-date").value = localDate(new Date(today.getTime() - 30 * 86400000));
 el("to-date").value = localDate(new Date(today.getTime() + 90 * 86400000));
@@ -119,6 +119,7 @@ async function loadBookings() {
       (!term || [b.guest_name,b.guest_email,b.guest_phone,b.booking_reference,b.experience].some(v => String(v || "").toLowerCase().includes(term))));
     el("stat-total").textContent = bookings.length;
     el("stat-new").textContent = bookings.filter(b => b.booking_status === "New").length;
+    el("stat-contacted").textContent = bookings.filter(b => b.booking_status === "Contacted").length;
     el("stat-confirmed").textContent = bookings.filter(b => b.booking_status === "Confirmed").length;
     el("stat-cancelled").textContent = bookings.filter(b => b.booking_status === "Cancelled").length;
     const list = el("booking-list");
