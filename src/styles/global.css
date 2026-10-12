@@ -1187,3 +1187,9 @@ a:not(.button):not(.nav-cta):not(.brand):not(.admin-home-card){text-underline-of
 @media(prefers-reduced-motion:reduce){
   .site-footer .social-links a,.site-footer>div:not(:first-child)>a{transition:none}
 }
+
+
+/* Keep requested social marks visible until official profile URLs are configured */
+.site-footer .social-links a.social-link-pending{opacity:.68;cursor:default;filter:saturate(.55)}
+.site-footer .social-links a.social-link-pending:hover{transform:none;box-shadow:none;background:rgba(255,255,255,.055);border-color:rgba(230,223,211,.24);color:#f7f4ec}
+.site-footer .social-links a.social-link-pending:focus-visible{outline:none}
