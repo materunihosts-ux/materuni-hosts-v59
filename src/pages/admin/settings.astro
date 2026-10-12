@@ -14,19 +14,19 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
    <div class="field full"><label for="google">Google review URL</label><input id="google" type="url" placeholder="https://g.page/r/..."></div>
    <div class="field full"><hr><span class="eyebrow">PARTNER INVITATION · EMAIL</span><h2>Invitation email template</h2><p class="muted">This template is used when an administrator selects “Send invitation” on a partner record.</p></div>
    <div class="field full"><label for="partner-email-subject">Email subject</label><input id="partner-email-subject" maxlength="180" required value="An invitation to collaborate with Materuni Hosts"></div>
-   <div class="field full"><label for="partner-email-body">Email message</label><textarea id="partner-email-body" rows="12" maxlength="8000" required>Hello {{partner_name}},
+   <div class="field full"><label for="partner-email-body">Email message</label><textarea id="partner-email-body" rows="12" maxlength="8000" required>Hello &#123;&#123;partner_name&#125;&#125;,
 
 Warm greetings from Materuni Hosts.
 
-We would love to explore a thoughtful local partnership with {{partner_name}}. We host authentic Chagga coffee, waterfall, food and village experiences in Materuni Village, and value clear communication and guest care.
+We would love to explore a thoughtful local partnership with &#123;&#123;partner_name&#125;&#125;. We host authentic Chagga coffee, waterfall, food and village experiences in Materuni Village, and value clear communication and guest care.
 
-If you are open to a conversation, simply reply to this email or reach us on WhatsApp at {{whatsapp}}. We would be pleased to share our experiences and discuss how we can work together.
+If you are open to a conversation, simply reply to this email or reach us on WhatsApp at &#123;&#123;whatsapp&#125;&#125;. We would be pleased to share our experiences and discuss how we can work together.
 
 Warm regards,
-{{host_name}}
+&#123;&#123;host_name&#125;&#125;
 Materuni Hosts
-{{reply_email}}
-Come as a guest. Leave as a friend.</textarea><small class="muted">Available placeholders: {{partner_name}}, {{host_name}}, {{reply_email}}, {{whatsapp}}. They are automatically filled when an invitation is sent.</small></div>
+&#123;&#123;reply_email&#125;&#125;
+Come as a guest. Leave as a friend.</textarea><small class="muted">Available placeholders: &#123;&#123;partner_name&#125;&#125;, &#123;&#123;host_name&#125;&#125;, &#123;&#123;reply_email&#125;&#125;, &#123;&#123;whatsapp&#125;&#125;. They are automatically filled when an invitation is sent.</small></div>
    <div class="field full"><hr><span class="eyebrow">PARTNER INVITATION · WHATSAPP</span><h2>WhatsApp template settings</h2><p class="muted">Enter the exact approved Meta WhatsApp Business template name and language. Leave the name empty to keep automatic WhatsApp invitations disabled.</p></div>
    <div class="field"><label for="whatsapp-template-name">Approved Meta template name</label><input id="whatsapp-template-name" maxlength="100" placeholder="e.g. partner_invitation"></div>
    <div class="field"><label for="whatsapp-template-language">Template language code</label><input id="whatsapp-template-language" maxlength="12" value="en" placeholder="en"></div>
