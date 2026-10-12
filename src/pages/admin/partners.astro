@@ -88,8 +88,21 @@ function render(){
   if(p.notes)card.append(node("p","muted",p.notes));
   const actions=node("div","partner-actions","");
   const edit=node("button","button button-secondary","Edit");edit.type="button";edit.addEventListener("click",()=>editPartner(p));
+  const invite=node("button","button","Send invitation");invite.type="button";invite.disabled=!p.email&&!p.whatsapp;
+  invite.addEventListener("click",async()=>{
+   if(!window.confirm("Send the Materuni Hosts partnership invitation to "+p.business_name+" by email and WhatsApp where configured?"))return;
+   invite.disabled=true;invite.textContent="Sending…";
+   try{
+    const response=await fetch(supabaseUrl+"/functions/v1/admin-communications",{method:"POST",headers:{apikey:publishableKey,Authorization:"Bearer "+accessToken,"Content-Type":"application/json"},body:JSON.stringify({action:"partner_invitation",partner_id:p.id})});
+    const result=await response.json().catch(()=>({}));
+    if(!response.ok)throw new Error(result.error||"Invitation could not be sent.");
+    const email=result.outcomes?.email||"not sent",wa=result.outcomes?.whatsapp||"not sent";
+    el("list-feedback").textContent="Invitation for "+p.business_name+" — Email: "+email.replaceAll("_"," ")+" · WhatsApp: "+wa.replaceAll("_"," ")+".";
+    invite.textContent="Invitation processed";
+   }catch(error){el("list-feedback").textContent=error.message;invite.textContent="Retry invitation";invite.disabled=false}
+  });
   const remove=node("button","button button-secondary","Delete");remove.type="button";remove.addEventListener("click",()=>deletePartner(p));
-  actions.append(edit,remove);card.append(actions);root.append(card);
+  actions.append(edit,invite,remove);card.append(actions);root.append(card);
  });
 }
 function exportCsv(){
