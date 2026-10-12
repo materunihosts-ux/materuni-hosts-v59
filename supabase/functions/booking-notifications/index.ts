@@ -155,6 +155,57 @@ Deno.serve(async (request: Request) => {
       await logSkipped("email", "admin_new_booking_alert", "ADMIN_NOTIFICATION_EMAIL", summary, "Admin notification email is not configured.");
     }
 
+    // Guest WhatsApp acknowledgement is deliberately dormant until an approved
+    // Meta template is configured. Email remains the fallback channel.
+    const preferredContact = String(booking.preferred_contact ?? "").trim().toLowerCase();
+    if (phone && preferredContact === "whatsapp") {
+      const guestWaTemplate = Deno.env.get("WHATSAPP_GUEST_BOOKING_TEMPLATE");
+      const guestWaLanguage = Deno.env.get("WHATSAPP_GUEST_BOOKING_TEMPLATE_LANGUAGE") || "en";
+      if (!guestWaTemplate) {
+        outcomes.guest_whatsapp_acknowledgement = "not_configured";
+        await logSkipped("whatsapp", "guest_booking_acknowledgement", phone, summary,
+          "Guest WhatsApp acknowledgement is prepared but disabled until an approved Meta template name is configured.");
+      } else if (!Deno.env.get("WHATSAPP_ACCESS_TOKEN") || !Deno.env.get("WHATSAPP_PHONE_NUMBER_ID")) {
+        outcomes.guest_whatsapp_acknowledgement = "not_configured";
+        await logSkipped("whatsapp", "guest_booking_acknowledgement", phone, summary,
+          "WhatsApp Cloud API credentials are not configured.");
+      } else {
+        const reservation = await claim("whatsapp", "guest_booking_acknowledgement", phone, summary);
+        if (reservation.duplicate) outcomes.guest_whatsapp_acknowledgement = "already_processed";
+        else {
+          try {
+            const recipient = phone.replace(/\\D/g, "");
+            if (recipient.length < 8 || recipient.length > 15) throw new Error("Guest phone number is not in a valid international format.");
+            const response = await fetch(`https://graph.facebook.com/v22.0/${Deno.env.get("WHATSAPP_PHONE_NUMBER_ID")}/messages`, {
+              method: "POST",
+              headers: { Authorization: `Bearer ${Deno.env.get("WHATSAPP_ACCESS_TOKEN")}`, "Content-Type": "application/json" },
+              body: JSON.stringify({
+                messaging_product: "whatsapp", to: recipient, type: "template",
+                template: { name: guestWaTemplate, language: { code: guestWaLanguage },
+                  components: [{ type: "body", parameters: [
+                    { type: "text", text: guestName }, { type: "text", text: experience },
+                    { type: "text", text: bookingDate }, { type: "text", text: String(guests) },
+                    { type: "text", text: reference },
+                  ] }],
+                },
+              }),
+              signal: AbortSignal.timeout(10_000),
+            });
+            const result = await response.json().catch(() => ({}));
+            if (!response.ok) throw new Error(result?.error?.message || `WhatsApp returned ${response.status}`);
+            await finish(reservation.id, "sent", result?.messages?.[0]?.id);
+            outcomes.guest_whatsapp_acknowledgement = "sent";
+          } catch (error) {
+            const messageText = error instanceof Error ? error.message : "WhatsApp delivery failed.";
+            await finish(reservation.id, "failed", undefined, messageText);
+            outcomes.guest_whatsapp_acknowledgement = "failed";
+          }
+        }
+      }
+    } else {
+      outcomes.guest_whatsapp_acknowledgement = phone ? "not_requested" : "no_guest_phone";
+    }
+
     const waToken = Deno.env.get("WHATSAPP_ACCESS_TOKEN");
     const phoneNumberId = Deno.env.get("WHATSAPP_PHONE_NUMBER_ID");
     const adminNumber = Deno.env.get("WHATSAPP_ADMIN_NUMBER");
