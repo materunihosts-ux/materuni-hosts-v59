@@ -92,7 +92,7 @@ fetch(siteContentEndpoint,{headers:{apikey:siteContentKey,Authorization:"Bearer 
 applyHomepageLanguage();
 document.getElementById("site-language")?.addEventListener("change",applyHomepageLanguage);
 
-fetch("https://sskmzswoeljxwojcszta.supabase.co/rest/v1/experience_catalog?select=experience_key,display_name,price_usd,short_description,full_description,image_url,duration_label,inclusions,exclusions,is_active,sort_order&order=sort_order.asc",{headers:{apikey:siteContentKey,Authorization:"Bearer "+siteContentKey},cache:"no-store"})
+fetch(`${supabaseUrl}/rest/v1/experience_catalog?select=experience_key,display_name,price_usd,short_description,full_description,image_url,duration_label,inclusions,exclusions,is_active,sort_order&order=sort_order.asc`,{headers:{apikey:siteContentKey,Authorization:"Bearer "+siteContentKey},cache:"no-store"})
  .then(r=>r.ok?r.json():Promise.reject(new Error("Catalogue unavailable")))
  .then(tours=>{
   if(!Array.isArray(tours))return;
