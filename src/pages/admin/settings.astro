@@ -44,7 +44,7 @@ Come as a guest. Leave as a friend.</textarea><small class="muted">Available pla
 </style>
 <script>
 // @ts-nocheck
-const supabaseUrl="https://sskmzswoeljxwojcszta.supabase.co", publishableKey="sb_publishable_G9ru4P_yKzievqiXjXEEbQ_p28cB_NZ";
+import { supabaseUrl, publishableKey } from "../../lib/supabase-public";
 let token="",emailTemplatesState={};
 const el=id=>document.getElementById(id);
 const headers=()=>({"apikey":publishableKey,"Authorization":"Bearer "+token,"Content-Type":"application/json"});

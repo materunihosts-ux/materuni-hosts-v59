@@ -1,5 +1,6 @@
 ---
 import SiteLayout from "../layouts/SiteLayout.astro";
+import { supabaseUrl } from "../lib/supabase-public";
 const experiences=[
 {key:"Camping & Village Life",name:"Materuni Camping",price:110,tag:"Flagship overnight stay",image:"camping_image/1791601872981-zmji0mykwhd.jpg",desc:"Make Materuni your home for a night. Sleep beneath the Kilimanjaro foothills and share a slower, more personal village experience with local Chagga hosts, from the forest trail and coffee traditions to home-cooked food and evening storytelling.",items:["Overnight camping and gear setup","Waterfall and village experience","Chagga cooking, local dinner and breakfast","Campfire stories and time with local hosts"]},
 {key:"Waterfall & Chagga Culture",name:"Waterfalls & Coffee Tour",price:65,tag:"First-time visitors",image:"waterfall_image/1791601414950-ew7ak42gjka.jpg",desc:"A well-rounded introduction to Materuni: follow a guided forest trail to the 95-metre waterfall, then enjoy a hands-on Chagga coffee experience with local hosts.",items:["Guided rainforest waterfall hike","Bean-to-cup coffee with local hosts","Traditional songs, dance & banana brew","Home-cooked local lunch"]},
@@ -7,7 +8,7 @@ const experiences=[
 {key:"Traditional Chagga Cooking Class",name:"Cooking & Culture",price:70,tag:"For food lovers",image:"cooking_image/1791601646297-7th6jahyw0w.jpg",desc:"Step into the kitchen with local hosts, learn traditional Chagga cooking methods and take part rather than simply watch.",items:["Traditional firewood cooking","Prepare local dishes with hosts","Organic coffee-making","Village walk, dance & banana brew"]},
 {key:"Materuni Waterfall Hike & Cultural Day Trip",name:"Waterfall Hike & Cultural Day Trip",price:75,tag:"Signature day trip",image:"culturalday_image/1791604657693-kcwbk80tcfs.jpg",desc:"For guests who want to give the day more room: combine the waterfall hike with coffee, cultural activities and time to enjoy Materuni at an unhurried pace.",items:["Rainforest hike to Materuni Waterfall","Time to enjoy the waterfall","Coffee experience with village hosts","Local lunch & traditional dance"]},
 {key:"The Ultimate Kilimanjaro Foothills & Materuni Experience",name:"Ultimate",price:135,tag:"Ultimate experience",image:"ultimate_image/1791604660208-7c4yvzvsaf9.jpg",desc:"A multi-experience stay bringing together the waterfall, coffee-making, Chagga cooking and overnight camping in one visit.",items:["Scenic waterfall hike","Hands-on Chagga cooking class","Organic coffee tour","Camping, campfire, dance & meals"]}];
-const base="https://sskmzswoeljxwojcszta.supabase.co/storage/v1/object/public/materuni-images/";
+const base=`${supabaseUrl}/storage/v1/object/public/materuni-images/`;
 ---
 <SiteLayout title="Materuni Camping | Community-Based Chagga Stay in Materuni" description="Stay overnight with Materuni Hosts in a community-based camping experience near Mount Kilimanjaro. Discover Chagga coffee, local food, waterfall walks, culture and thoughtful travel in Materuni Village, Tanzania." preloadImage={base + "hero_image/1791600514716-b2bclfcnhhh.jpg"}>
 <section class="hero"><div class="hero-copy"><span class="eyebrow">MATERUNI VILLAGE · MOSHI · KILIMANJARO, TANZANIA</span><h1 data-i18n="home_hero_title">Stay in Materuni. Experience the heart of Chagga life.</h1><p data-i18n="home_hero_intro">Make a night in the foothills of Kilimanjaro part of your journey. Materuni Camping brings together the outdoors, Chagga coffee and food traditions, village stories and genuine time with local hosts — with thoughtful ways to explore more of Materuni during your stay.</p><div class="actions"><a class="button light" href="/booking?experience=Camping%20%26%20Village%20Life" data-i18n="home_hero_cta">Explore Materuni Camping</a><a class="button secondary" href="/experiences" data-i18n="home_hero_secondary">Discover what is included</a></div></div><div class="hero-image" data-site-image="hero_image" role="img" aria-label="Materuni rainforest and village landscape"></div></section>
@@ -55,9 +56,10 @@ const base="https://sskmzswoeljxwojcszta.supabase.co/storage/v1/object/public/ma
 <section class="band"><span class="eyebrow">YOUR MATERUNI STORY STARTS HERE</span><h2>Make room for a real connection.</h2><p>Share your preferred date, group size and the experience you have in mind. We will check the calendar, discuss practical details and help you prepare for your visit.</p><div class="actions" style="justify-content:center"><a class="button light" href="/booking">Check dates & book</a><a class="button secondary" href="https://wa.me/255612068540" target="_blank" rel="noopener">Chat on WhatsApp</a></div></section>
 <script>
 // @ts-nocheck
-const siteContentEndpoint="https://sskmzswoeljxwojcszta.supabase.co/rest/v1/site_content?select=id,content&id=in.(hero_image,story_image,waterfall_image,coffee_image,cooking_image,culturalday_image,camping_image,ultimate_image,hero_title,hero_intro,experiences_title,experiences_intro,story_title,story_desc,story_desc2)";
-const siteContentKey="sb_publishable_G9ru4P_yKzievqiXjXEEbQ_p28cB_NZ";
-const languageContentUrl="https://sskmzswoeljxwojcszta.supabase.co/rest/v1/site_settings?select=setting_value&setting_key=eq.language_content";
+import { supabaseUrl, publishableKey } from "../lib/supabase-public";
+const siteContentEndpoint=`${supabaseUrl}/rest/v1/site_content?select=id,content&id=in.(hero_image,story_image,waterfall_image,coffee_image,cooking_image,culturalday_image,camping_image,ultimate_image,hero_title,hero_intro,experiences_title,experiences_intro,story_title,story_desc,story_desc2)`;
+const siteContentKey=publishableKey;
+const languageContentUrl=`${supabaseUrl}/rest/v1/site_settings?select=setting_value&setting_key=eq.language_content`;
 const applyHomepageLanguage=async()=>{
  const locale=(localStorage.getItem("materuni-language")||"en").toLowerCase();
  if(!["es","fr","de"].includes(locale))return;
@@ -90,7 +92,7 @@ fetch(siteContentEndpoint,{headers:{apikey:siteContentKey,Authorization:"Bearer 
 applyHomepageLanguage();
 document.getElementById("site-language")?.addEventListener("change",applyHomepageLanguage);
 
-fetch("https://sskmzswoeljxwojcszta.supabase.co/rest/v1/experience_catalog?select=experience_key,display_name,price_usd,short_description,full_description,image_url,duration_label,inclusions,exclusions,is_active,sort_order&order=sort_order.asc",{headers:{apikey:siteContentKey,Authorization:"Bearer "+siteContentKey},cache:"no-store"})
+fetch(`${supabaseUrl}/rest/v1/experience_catalog?select=experience_key,display_name,price_usd,short_description,full_description,image_url,duration_label,inclusions,exclusions,is_active,sort_order&order=sort_order.asc`,{headers:{apikey:siteContentKey,Authorization:"Bearer "+siteContentKey},cache:"no-store"})
  .then(r=>r.ok?r.json():Promise.reject(new Error("Catalogue unavailable")))
  .then(tours=>{
   if(!Array.isArray(tours))return;

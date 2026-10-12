@@ -56,8 +56,7 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
 </style>
 <script>
 // @ts-nocheck
-const supabaseUrl="https://sskmzswoeljxwojcszta.supabase.co";
-const publishableKey="sb_publishable_G9ru4P_yKzievqiXjXEEbQ_p28cB_NZ";
+import { supabaseUrl, publishableKey } from "../../lib/supabase-public";
 let accessToken="",partners=[],editingPartner=null;
 const el=id=>document.getElementById(id);
 const headers=()=>({apikey:publishableKey,Authorization:"Bearer "+accessToken,"Content-Type":"application/json"});
