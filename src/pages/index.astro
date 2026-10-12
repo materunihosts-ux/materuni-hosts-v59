@@ -20,6 +20,28 @@ const base="https://sskmzswoeljxwojcszta.supabase.co/storage/v1/object/public/ma
 </div>
 <section class="section"><div class="section-head"><span class="eyebrow">FIND YOUR MATERUNI MOMENT</span><h2 data-site-content="experiences_title">Six ways to experience the village</h2><p data-site-content="experiences_intro">From a focused coffee visit to a full day outdoors or an overnight stay, choose the pace and experiences that suit your time in the village.</p></div><div class="cards">{experiences.map((e)=><article class="experience-card" data-catalog-key={e.key}><img src={base+e.image} data-site-image={e.image.split("/")[0]} alt={e.name} loading="lazy" decoding="async" width="640" height="420"><div class="card-body"><div class="card-top"><span class="pill">{e.tag}</span><span class="price">${e.price}<small>PER PERSON</small></span></div><h3>{e.name}</h3><p>{e.desc}</p><ul>{e.items.slice(0,3).map(item=><li>{item}</li>)}</ul><a class="button" href={"/booking?experience="+encodeURIComponent(e.name)}>Check availability</a></div></article>)}</div></section>
 <section class="section" style="background:#f0eadf"><div class="split"><img src={base+"story_image/1791601761441-q3iog8mni3r.jpg"} data-site-image="story_image" alt="Local coffee experience with Materuni hosts" loading="lazy" decoding="async" width="640" height="720"><div><span class="eyebrow">MORE THAN A TOUR</span><h2 data-site-content="story_title">A village experience, shared by local hosts.</h2><p data-site-content="story_desc">Materuni is best discovered at a human pace. Learn by doing, listen to stories, taste food prepared in the village and spend time with the people who call this place home.</p><div class="feature-list"><div><strong>Rooted in culture</strong>Meet Chagga traditions through everyday life.</div><div><strong>Made for participation</strong>Learn by doing: roast and prepare coffee, explore village paths and join in where your chosen experience allows.</div><div><strong>Clear inclusions</strong>Know what is part of your experience.</div><div><strong>Personal contact</strong><span data-site-content="story_desc2">Speak directly with your local host.</span></div></div><a class="button" href="/sustainability">Our approach</a></div></div></section>
+<section class="section location-section" id="materuni-location" aria-labelledby="materuni-location-title">
+<style>
+.location-section{background:#FAF7F2}
+.location-section .location-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:clamp(28px,5vw,64px);align-items:center}
+.location-section .location-copy{max-width:480px}
+.location-section .location-map{position:relative;min-height:360px;border:1px solid #E6DFD3;border-radius:18px;overflow:hidden;background:#E6DFD3;box-shadow:0 14px 38px rgba(36,36,33,.09)}
+.location-section .location-map iframe{display:block;width:100%;height:390px;border:0}
+.location-section .location-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}
+.location-section .location-note{font-size:13px;line-height:1.7;color:#55564f;margin-top:14px}
+@media(max-width:760px){.location-section .location-grid{grid-template-columns:1fr}.location-section .location-map{min-height:290px}.location-section .location-map iframe{height:320px}}
+</style>
+<div class="location-grid">
+<div class="location-copy">
+<span class="eyebrow">FIND YOUR WAY TO US</span>
+<h2 id="materuni-location-title">Find Materuni Hosts in Materuni Village.</h2>
+<p>Our home is in Materuni Village, in the green foothills of Mount Kilimanjaro, near Moshi in northern Tanzania. Use the map to locate the village and plan your journey to our community-based camping experience.</p>
+<div class="location-actions"><a class="button" href="https://www.google.com/maps/search/?api=1&amp;query=Materuni%20Village%2C%20Moshi%2C%20Tanzania" target="_blank" rel="noopener noreferrer">Get directions</a><a class="button secondary" href="https://wa.me/255612068540?text=Hello%20Materuni%20Hosts%2C%20please%20share%20your%20exact%20camping%20location." target="_blank" rel="noopener noreferrer">Ask for exact location</a></div>
+<p class="location-note">The map marks Materuni Village as the area, not a verified gate or campsite pin. Contact your host for the precise meeting point before travelling.</p>
+</div>
+<div class="location-map"><iframe title="Map showing Materuni Village near Moshi, Tanzania" src="https://www.google.com/maps?q=Materuni%20Village%2C%20Moshi%2C%20Tanzania&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe></div>
+</div>
+</section>
 <section class="band"><span class="eyebrow">YOUR MATERUNI STORY STARTS HERE</span><h2>Make room for a real connection.</h2><p>Share your preferred date, group size and the experience you have in mind. We will check the calendar, discuss practical details and help you prepare for your visit.</p><div class="actions" style="justify-content:center"><a class="button light" href="/booking">Check dates & book</a><a class="button secondary" href="https://wa.me/255612068540" target="_blank" rel="noopener">Chat on WhatsApp</a></div></section>
 <script>
 // @ts-nocheck
