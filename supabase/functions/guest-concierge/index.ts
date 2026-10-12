@@ -32,7 +32,7 @@ Deno.serve(async (request: Request) => {
   if (request.method !== "POST") return json({ error: "Method not allowed" }, 405);
   try {
     const body = await request.json().catch(() => null);
-    const message = String(body?.message ?? "").replace(/[\\u0000-\\u0008\\u000B\\u000C\\u000E-\\u001F\\u007F]/g, " ").replace(/\\s+/g, " ").trim().slice(0, 1200);
+    const message = String(body?.message ?? "").replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, " ").replace(/\s+/g, " ").trim().slice(0, 1200);
     const language = ["en", "es", "fr", "de"].includes(String(body?.language ?? "en"))
       ? String(body?.language ?? "en") : "en";
     let sessionId = String(body?.session_id ?? "").trim();
