@@ -216,11 +216,16 @@ $("booking-form").addEventListener("submit",async e=>{
     method:"POST",headers,body:JSON.stringify({booking_id:created.booking_id,idempotency_key:idempotencyKey})
    });
    const notificationPayload=await notificationResponse.json().catch(()=>null);
-   const deliveryStates=Object.values(notificationPayload?.notifications||{});
-   const hasDeliveryFailure=deliveryStates.some(state=>["failed","not_configured","no_guest_email"].includes(state));
-   const hasDeliverySuccess=deliveryStates.some(state=>["sent","already_processed"].includes(state));
-   if(!notificationResponse.ok||!notificationPayload?.success||(!hasDeliverySuccess&&hasDeliveryFailure)||hasDeliveryFailure){
-    notice=" Automatic email/WhatsApp delivery is not fully confirmed, but your booking request is safely saved. Our host can verify it using your reference.";
+   const delivery=notificationPayload?.notifications||{};
+   const delivered=state=>["sent","already_processed"].includes(state);
+   const needsAttention=state=>["failed","not_configured"].includes(state);
+   const adminDelivered=[delivery.admin_new_booking_alert,delivery.admin_whatsapp_alert].some(delivered);
+   const adminNeedsAttention=[delivery.admin_new_booking_alert,delivery.admin_whatsapp_alert].some(needsAttention);
+   const guestDelivered=[delivery.guest_booking_acknowledgement,delivery.guest_whatsapp_acknowledgement].some(delivered);
+   const guestNeedsAttention=[delivery.guest_booking_acknowledgement,delivery.guest_whatsapp_acknowledgement].some(needsAttention);
+   if(!notificationResponse.ok||!notificationPayload?.success||
+      (!adminDelivered&&adminNeedsAttention)||(!guestDelivered&&guestNeedsAttention)){
+    notice=" Automatic email/WhatsApp delivery needs attention, but your booking request is safely saved. Our host can verify it using your reference.";
    }
   }catch(notificationError){
    console.warn("Booking saved; notification delivery could not be confirmed.",notificationError);
