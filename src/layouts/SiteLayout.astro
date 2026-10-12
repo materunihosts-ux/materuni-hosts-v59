@@ -1,8 +1,7 @@
 ---
 import "../styles/global.css";
+import { supabaseUrl } from "../lib/supabase-public";
 const { title = "Materuni Hosts | Authentic Chagga Experiences", description = "Discover authentic Chagga coffee, waterfalls, food and village life in Materuni, Kilimanjaro, Tanzania.", noindex = false, preloadImage = null } = Astro.props;
-const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
-const publishableKey = import.meta.env.PUBLIC_SUPABASE_PUBLISHABLE_KEY;
 const canonical = new URL(Astro.url.pathname, "https://materunihosts.com").toString();
 const breadcrumbLabels: Record<string, string> = {
   experiences: "Experiences",
@@ -90,8 +89,7 @@ const structuredData = {
 <label class="language-control" for="site-language"><span class="sr-only">Website language</span><select id="site-language" aria-label="Website language"><option value="en">EN</option><option value="es">ES</option><option value="fr">FR</option><option value="de">DE</option></select></label><button class="menu-toggle" type="button" aria-label="Open menu" aria-controls="primary-navigation" aria-expanded="false">☰</button></header>
 <script>
 // @ts-nocheck
-const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
-const publishableKey = import.meta.env.PUBLIC_SUPABASE_PUBLISHABLE_KEY;
+import { supabaseUrl, publishableKey } from "../lib/supabase-public";
 (() => {
  const supported=["en","es","fr","de"], labels={
   en:{skip:"Skip to content",ask:"Ask a local host",footer:"Community-based Chagga experiences in Materuni Village, Moshi, Tanzania.",explore:"Explore",book:"Book your experience"},
