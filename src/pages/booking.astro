@@ -121,14 +121,165 @@ async function refreshAvailability(){
  }
 }
 loadExperienceCatalog();
-$("date").addEventListener("change",refreshAvailability);
-$("experience").addEventListener("change",refreshAvailability);
-$("count").addEventListener("change",refreshAvailability);
+
+function clearSelectedSlot(message="Choose an experience and date to see live spaces.") {
+  $("slot").value="";
+  $("slot").innerHTML='<option value="">Choose an available time</option>';
+  $("slot").disabled=true;
+  setAvailabilityStatus(message);
+}
+function showFeedback(message,state="error") {
+  const fb=$("feedback");
+  fb.textContent=message;
+  fb.dataset.state=state;
+}
+function safeError(payload,status) {
+  return payload?.message || payload?.details || payload?.hint ||
+    payload?.error_description || payload?.error ||
+    (status===429 ? "Too many requests. Please wait a moment and try again." :
+    status>=500 ? "Our booking service is temporarily unavailable. Please contact us on WhatsApp." :
+    "We could not complete your request. Please check your details and try again.");
+}
+
+async function refreshAvailability(){
+ const requestId=++availabilityRequest;
+ const exp=$("experience").value;
+ const date=$("date").value;
+ const guests=Number($("count").value);
+ const sel=$("slot");
+ const refresh=$("refresh-availability");
+ sel.innerHTML='<option value="">Checking live availability…</option>';
+ sel.disabled=true;
+ refresh.disabled=true;
+ if(!exp||!date){
+  clearSelectedSlot();
+  return;
+ }
+ if(!Number.isInteger(guests)||guests<1||guests>30){
+  clearSelectedSlot("Enter a whole number between 1 and 30 guests.");
+  setAvailabilityStatus("Please enter a whole number between 1 and 30 guests.","error");
+  return;
+ }
+ const localToday=tanzaniaToday();
+ if(date<localToday){
+  clearSelectedSlot("Choose a future date.");
+  setAvailabilityStatus("That date has passed in Tanzania. Please choose today or a future date.","error");
+  return;
+ }
+ setAvailabilityStatus("Checking available times for "+guests+" guest"+(guests===1?"":"s")+"…");
+ refresh.disabled=false;
+ try{
+  const q=new URLSearchParams({
+   select:"id,experience,slot_date,start_time,end_time,capacity,booked_count",
+   experience:"eq."+exp,slot_date:"eq."+date,is_active:"eq.true",order:"start_time.asc"
+  });
+  const response=await fetch(url+"/rest/v1/availability_slots?"+q,{headers,cache:"no-store"});
+  const rows=await response.json().catch(()=>null);
+  if(!response.ok)throw new Error(safeError(rows,response.status));
+  if(!Array.isArray(rows))throw new Error("The availability calendar returned an unexpected response.");
+  if(requestId!==availabilityRequest)return;
+  const localTime=new Intl.DateTimeFormat("en-GB",{timeZone:"Africa/Dar_es_Salaam",hour:"2-digit",minute:"2-digit",hourCycle:"h23"}).format(new Date());
+  const open=rows.filter(slot=>{
+   const remaining=Number(slot.capacity)-Number(slot.booked_count);
+   const start=String(slot.start_time||"").slice(0,5);
+   return Number.isFinite(remaining)&&remaining>=guests&&(date!==localToday||start>localTime);
+  });
+  sel.innerHTML='<option value="">'+(open.length?"Select an available time":"No suitable times available")+'</option>';
+  open.forEach(slot=>{
+   const option=document.createElement("option");
+   option.value=slot.id;
+   option.textContent=String(slot.start_time).slice(0,5)+" – "+String(slot.end_time).slice(0,5)+" · "+(Number(slot.capacity)-Number(slot.booked_count))+" spaces left";
+   sel.append(option);
+  });
+  sel.disabled=!open.length;
+  setAvailabilityStatus(open.length
+   ? open.length+" available time"+(open.length===1?"":"s")+" found."
+   : rows.length
+    ? "No remaining slots fit your group, or today's times have passed. Try another date or a smaller group."
+    : "No times have been added for this date yet. Choose another date or contact our local host.",
+   open.length?"success":"warning");
+ }catch(error){
+  if(requestId!==availabilityRequest)return;
+  sel.innerHTML='<option value="">Availability temporarily unavailable</option>';
+  sel.disabled=true;
+  setAvailabilityStatus(error.message||"Availability could not be checked. Please try again.","error");
+ }
+}
+$("date").addEventListener("change",()=>{clearSelectedSlot("Date changed. Checking the new date…");refreshAvailability();});
+$("experience").addEventListener("change",()=>{clearSelectedSlot("Experience changed. Checking available times…");refreshAvailability();});
+$("count").addEventListener("change",()=>{clearSelectedSlot("Group size changed. Checking available spaces…");refreshAvailability();});
 $("refresh-availability").addEventListener("click",refreshAvailability);
+
 $("booking-form").addEventListener("submit",async e=>{
- e.preventDefault();const btn=$("submit"),fb=$("feedback");if(! $("email").value.trim() && ! $("phone").value.trim()){fb.textContent="Please provide an email address or WhatsApp / phone number so our host can contact you.";return;}btn.disabled=true;btn.textContent="Sending request…";fb.textContent="";
- const guestEmail=$("email").value.trim(),guestPhone=$("phone").value.trim();if(!guestEmail&&guestPhone)$("contact").value="WhatsApp";if(guestEmail&&!guestPhone)$("contact").value="Email";const body={p_experience:$("experience").value,p_slot_id:$("slot").value,p_guest_count:Number($("count").value),p_guest:$("name").value.trim(),p_email:guestEmail,p_phone:guestPhone,p_nationality:$("nationality").value,p_country_of_residence:$("country").value,p_preferred_contact:$("contact").value,p_pickup:$("pickup").value,p_language:$("language").value,p_notes:$("notes").value,p_booking_type:"tour"};
- try{if(!body.p_slot_id)throw new Error("Please select an available time slot.");const r=await fetch(url+"/rest/v1/rpc/submit_booking",{method:"POST",headers,body:JSON.stringify(body)});const data=await r.json();if(!r.ok)throw new Error(data.message||data.details||"Booking request could not be sent. Please contact us on WhatsApp.");const created=Array.isArray(data)?data[0]:data;const bookingReference=created?.booking_reference||"received";let notificationNotice="";try{const notificationResponse=await fetch(url+"/functions/v1/booking-notifications",{method:"POST",headers,body:JSON.stringify({booking_id:created?.booking_id})});const notificationData=await notificationResponse.json().catch(()=>({}));const outcomes=Object.values(notificationData.notifications||{});if(!notificationResponse.ok||!notificationData.success||outcomes.some(status=>status==="failed"||status==="not_configured")){notificationNotice=" Automatic email/WhatsApp delivery could not be fully confirmed, so please also contact our local host directly if you do not hear from us."}}catch(notificationError){console.warn("Booking saved; notification delivery could not be confirmed.",notificationError);notificationNotice=" Automatic email/WhatsApp delivery could not be confirmed, so please also contact our local host directly if you do not hear from us."}fb.textContent="Your request has been received. Reference: "+bookingReference+". A local host will contact you to confirm availability and arrangements. No payment has been taken."+notificationNotice; $("booking-form").reset();$("slot").disabled=true;$("slot").innerHTML='<option value="">Choose a date first</option>'}catch(err){fb.textContent=err.message}finally{btn.disabled=false;btn.textContent="Send booking request"}
+ e.preventDefault();
+ const btn=$("submit");
+ const fb=$("feedback");
+ const guestEmail=$("email").value.trim();
+ const guestPhone=$("phone").value.trim();
+ const guestName=$("name").value.trim();
+ const guestCount=Number($("count").value);
+ const experience=$("experience").value;
+ const date=$("date").value;
+ const slotId=$("slot").value;
+
+ if(!experience){showFeedback("Please choose an experience.");return;}
+ if(!date||date<tanzaniaToday()){showFeedback("Please choose a valid future date.");return;}
+ if(!slotId){showFeedback("Please select an available time slot.");return;}
+ if(!Number.isInteger(guestCount)||guestCount<1||guestCount>30){showFeedback("Guest count must be a whole number between 1 and 30.");return;}
+ if(guestName.length<2){showFeedback("Please enter your full name.");return;}
+ if(!guestEmail&&!guestPhone){showFeedback("Please provide an email address or WhatsApp / phone number.");return;}
+ if(guestEmail&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(guestEmail)){showFeedback("Please enter a valid email address.");return;}
+ if(guestPhone&&!/^\+?[0-9\s()-]{7,20}$/.test(guestPhone)){showFeedback("Please enter a valid phone number.");return;}
+
+ btn.disabled=true;
+ btn.textContent="Sending request…";
+ fb.textContent="";
+ const body={
+  p_experience:experience,p_slot_id:slotId,p_guest_count:guestCount,p_guest:guestName,
+  p_email:guestEmail||null,p_phone:guestPhone||null,
+  p_nationality:$("nationality").value.trim()||null,
+  p_country_of_residence:$("country").value.trim()||null,
+  p_preferred_contact:guestEmail&&!guestPhone?"Email":(!guestEmail&&guestPhone?"WhatsApp":$("contact").value),
+  p_pickup:$("pickup").value.trim()||null,p_language:$("language").value,
+  p_notes:$("notes").value.trim()||null,p_booking_type:"tour"
+ };
+ try{
+  const response=await fetch(url+"/rest/v1/rpc/submit_booking",{
+   method:"POST",headers,body:JSON.stringify(body),cache:"no-store"
+  });
+  const payload=await response.json().catch(()=>null);
+  if(!response.ok)throw new Error(safeError(payload,response.status));
+  const created=Array.isArray(payload)?payload[0]:payload;
+  if(!created?.booking_id)throw new Error("The booking response could not be verified. Please contact our host before submitting again.");
+  const reference=created.booking_reference||created.booking_id;
+  let notice="";
+  try{
+   const notificationResponse=await fetch(url+"/functions/v1/booking-notifications",{
+    method:"POST",headers,body:JSON.stringify({booking_id:created.booking_id})
+   });
+   const notificationPayload=await notificationResponse.json().catch(()=>null);
+   if(!notificationResponse.ok||!notificationPayload?.success){
+    notice=" Your request is saved, but automatic notifications could not be confirmed. Our host can verify it using your reference.";
+   }
+  }catch(notificationError){
+   console.warn("Booking saved; notification delivery could not be confirmed.",notificationError);
+   notice=" Your request is saved, but automatic notifications could not be confirmed. Our host can verify it using your reference.";
+  }
+  showFeedback("Your booking request has been received. Reference: "+reference+". A local host will contact you to confirm availability. No payment has been taken."+notice,"success");
+  $("booking-form").reset();
+  $("date").min=tanzaniaToday();
+  $("date").value=addDays(tanzaniaToday(),1);
+  $("count").value="2";
+  clearSelectedSlot("Your request was received. Choose another experience or date to make a new request.");
+  await refreshAvailability();
+ }catch(error){
+  showFeedback(error.message||"We could not send your booking. Please try again or contact us on WhatsApp.");
+  // Refresh in case another guest took the selected spaces while this form was open.
+  refreshAvailability();
+ }finally{
+  btn.disabled=false;
+  btn.textContent="Send booking request";
+ }
 });
 </script>
 </SiteLayout>
