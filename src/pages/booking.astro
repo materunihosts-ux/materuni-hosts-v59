@@ -218,7 +218,7 @@ $("booking-form").addEventListener("submit",async e=>{
    const notificationPayload=await notificationResponse.json().catch(()=>null);
    const delivery=notificationPayload?.notifications||{};
    const delivered=state=>["sent","already_processed"].includes(state);
-   const needsAttention=state=>["failed","not_configured"].includes(state);
+   const needsAttention=state=>["failed","not_configured","in_progress"].includes(state);
    const adminDelivered=[delivery.admin_new_booking_alert,delivery.admin_whatsapp_alert].some(delivered);
    const adminNeedsAttention=[delivery.admin_new_booking_alert,delivery.admin_whatsapp_alert].some(needsAttention);
    const guestDelivered=[delivery.guest_booking_acknowledgement,delivery.guest_whatsapp_acknowledgement].some(delivered);
