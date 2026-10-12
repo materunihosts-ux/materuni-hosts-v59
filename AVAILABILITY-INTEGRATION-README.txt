@@ -47,3 +47,9 @@ Guest-facing messages
 - Race conflict at submission: “There are not enough spaces for this group. Please refresh availability and choose another time.”
 - Success: “Booking request received — reference: [reference]. Your request is awaiting host confirmation; it is not yet a confirmed reservation and no payment has been taken.”
 - Notification warning: “Your request is safely saved, but automatic email/WhatsApp delivery is not fully confirmed. Our host can verify it using your reference.”
+
+
+## Retry safety / idempotency (2026-10-12)
+Guest submissions now call `submit_booking_idempotent` with a client-generated UUID key. The database serializes requests sharing that key, stores a hash of the normalized payload, and maps the key to the resulting booking. An identical retry returns the same booking reference without consuming capacity twice; reusing the key with different details is rejected. The browser keeps the key and payload fingerprint in session storage across reloads/timeouts and removes it after a verified success.
+
+The migration is `supabase/migrations/202610120001_booking_idempotency.sql` and has been applied to the linked Supabase project. The mapping table has RLS enabled and direct table privileges revoked; only the security-definer RPC can access it. No live test booking was retained. Automated concurrent/browser integration tests are still outstanding.
