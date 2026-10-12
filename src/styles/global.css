@@ -1006,3 +1006,10 @@ a:not(.button):not(.nav-cta):not(.brand):not(.admin-home-card){text-underline-of
 .review-invite-panel .button-secondary:hover{background:var(--forest);color:#fff!important}
 .review-profile-link[hidden]{display:none}
 @media(max-width:560px){.review-invite-panel{text-align:left;padding:26px 21px}.review-invite-panel .actions{display:grid;grid-template-columns:1fr}.review-invite-panel .actions .button{width:100%}}
+
+
+/* Accessible contrast for small labels and interactive hover states */
+.eyebrow{color:#805f2b}
+.hero .eyebrow,.band .eyebrow{color:#e0c17c}
+.site-header nav a:hover{color:#805f2b}
+.button:hover:not(.button-secondary),.nav-cta:hover{color:#242421!important}
