@@ -213,7 +213,7 @@ $("booking-form").addEventListener("submit",async e=>{
   let notice="";
   try{
    const notificationResponse=await fetch(url+"/functions/v1/booking-notifications",{
-    method:"POST",headers,body:JSON.stringify({booking_id:created.booking_id})
+    method:"POST",headers,body:JSON.stringify({booking_id:created.booking_id,idempotency_key:idempotencyKey})
    });
    const notificationPayload=await notificationResponse.json().catch(()=>null);
    const deliveryStates=Object.values(notificationPayload?.notifications||{});
