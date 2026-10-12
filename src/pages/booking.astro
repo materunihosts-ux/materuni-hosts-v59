@@ -3,7 +3,17 @@ import SiteLayout from "../layouts/SiteLayout.astro";
 ---
 <SiteLayout title="Check Materuni Camping Availability | Materuni Hosts" description="Check live dates and spaces for Materuni Camping, our flagship overnight Chagga village stay, plus selected waterfall, coffee and cultural experiences in Materuni Village, Kilimanjaro, Tanzania. Send a booking request directly to local hosts.">
 <section class="page-hero"><span class="eyebrow">PLAN YOUR VISIT</span><h1 data-i18n="booking_page_title">Check availability before you book.</h1><p data-i18n="booking_page_intro">Choose your experience and preferred date. Available times are retrieved from our live Materuni Hosts calendar.</p></section>
-<section class="booking-wrap"><div class="booking-panel"><form id="booking-form" class="form-grid">
+<section class="booking-wrap"><div class="booking-panel">
+<div class="booking-estimate" id="booking-estimate" hidden aria-live="polite" aria-atomic="true">
+ <div class="booking-estimate-heading"><span class="eyebrow">YOUR EXPERIENCE SUMMARY</span><span class="booking-estimate-note">Indicative estimate</span></div>
+ <div class="booking-estimate-grid">
+  <div><span>Selected experience</span><strong id="estimate-experience">Choose an experience</strong></div>
+  <div><span>Price per guest</span><strong id="estimate-unit">—</strong></div>
+  <div class="booking-estimate-total"><span>Estimated group total</span><strong id="estimate-total">—</strong></div>
+ </div>
+ <p>Estimate based on the current published experience price and guest count. Transport and separately agreed extras are not included. Your host will confirm the final arrangements and amount before payment.</p>
+</div>
+<form id="booking-form" class="form-grid">
 <div class="field full"><label for="experience" data-i18n="booking_experience_label">Choose your experience *</label><select id="experience" required><option value="">Loading experiences…</option></select></div>
 <div class="field"><label for="date" data-i18n="booking_date_label">Preferred date *</label><input id="date" type="date" required></div><div class="field"><label for="slot" data-i18n="booking_slot_label">Available time *</label><select id="slot" required disabled><option value="">Choose an experience and date first</option></select><small id="availability-status" class="availability-status" role="status" aria-live="polite">Choose an experience and date to see live spaces.</small><button class="availability-refresh" id="refresh-availability" type="button" disabled data-i18n="booking_refresh">Refresh available times</button></div>
 <div class="field"><label for="count" data-i18n="booking_guests_label">Number of guests *</label><input id="count" type="number" min="1" max="30" value="2" required></div><div class="field"><label for="name" data-i18n="booking_name_label">Full name *</label><input id="name" autocomplete="name" required></div>
@@ -20,6 +30,18 @@ const url="https://sskmzswoeljxwojcszta.supabase.co";
 const key="sb_publishable_G9ru4P_yKzievqiXjXEEbQ_p28cB_NZ";
 const headers={"apikey":key,"Authorization":"Bearer "+key,"Content-Type":"application/json"};
 const $=id=>document.getElementById(id);
+function updateBookingEstimate(){
+ const select=$("experience"),count=Number($("count").value),option=select.selectedOptions[0];
+ const panel=$("booking-estimate");
+ if(!option||!option.value||!Number.isFinite(Number(option.dataset.price))||Number(option.dataset.price)<=0){panel.hidden=true;return}
+ const unit=Number(option.dataset.price);
+ const guests=Number.isInteger(count)&&count>0?count:1;
+ const money=value=>new Intl.NumberFormat("en-US",{style:"currency",currency:"USD",maximumFractionDigits:0}).format(value);
+ $("estimate-experience").textContent=option.textContent.split(" · $")[0];
+ $("estimate-unit").textContent=money(unit)+" / guest";
+ $("estimate-total").textContent=money(unit*guests);
+ panel.hidden=false;
+}
 const tanzaniaToday=()=>new Intl.DateTimeFormat("en-CA",{timeZone:"Africa/Dar_es_Salaam",year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date());
 const addDays=(dateString,days)=>{const d=new Date(dateString+"T12:00:00+03:00");d.setDate(d.getDate()+days);return new Intl.DateTimeFormat("en-CA",{timeZone:"Africa/Dar_es_Salaam",year:"numeric",month:"2-digit",day:"2-digit"}).format(d)};
 $("date").min=tanzaniaToday();
@@ -44,12 +66,14 @@ async function loadExperienceCatalog(){
   catalog.forEach(item=>{
    const option=document.createElement("option");
    option.value=item.experience_key;
+   option.dataset.price=String(Number(item.price_usd)||0);
    option.textContent=item.display_name+" · $"+Number(item.price_usd).toFixed(0)+" per person";
    select.append(option);
   });
   const wanted=(params.get("experience")||"").trim().toLowerCase();
   const match=[...select.options].find(o=>o.text.split(" · $")[0].trim().toLowerCase()===wanted||o.value.trim().toLowerCase()===wanted);
   if(match) select.value=match.value;
+  updateBookingEstimate();
  } catch(error) {
   console.error("Experience catalogue request failed:",error);
   select.innerHTML='<option value="">Experiences could not be loaded — refresh the page</option>';
@@ -148,8 +172,9 @@ async function refreshAvailability(){
  }
 }
 $("date").addEventListener("change",()=>{clearSelectedSlot("Date changed. Checking the new date…");refreshAvailability();});
-$("experience").addEventListener("change",()=>{clearSelectedSlot("Experience changed. Checking available times…");refreshAvailability();});
-$("count").addEventListener("change",()=>{clearSelectedSlot("Group size changed. Checking available spaces…");refreshAvailability();});
+$("experience").addEventListener("change",()=>{updateBookingEstimate();clearSelectedSlot("Experience changed. Checking available times…");refreshAvailability();});
+$("count").addEventListener("input",updateBookingEstimate);
+$("count").addEventListener("change",()=>{updateBookingEstimate();clearSelectedSlot("Group size changed. Checking available spaces…");refreshAvailability();});
 $("refresh-availability").addEventListener("click",refreshAvailability);
 
 $("booking-form").addEventListener("submit",async e=>{
