@@ -567,3 +567,157 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--gold);outline-offse
 @media(max-width:560px){
   .site-header>.brand .brand-logo{width:60px;height:60px;flex-basis:60px}
 }
+
+
+/* Materuni Hosts — unified premium design system */
+:root{
+ --mh-radius-sm:8px;
+ --mh-radius-md:14px;
+ --mh-radius-lg:22px;
+ --mh-shadow-soft:0 8px 24px rgba(26,51,34,.06);
+ --mh-shadow-card:0 14px 36px rgba(26,51,34,.09);
+ --mh-shadow-float:0 20px 55px rgba(18,45,35,.16);
+ --mh-border:rgba(36,36,33,.12);
+ --mh-focus:0 0 0 3px rgba(197,160,89,.28);
+}
+html{scroll-padding-top:110px}
+body{font-size:15px;line-height:1.75;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+p{max-width:72ch}
+h1,h2,h3,h4,h5,h6{ text-wrap:balance}
+h1,h2,.section h2,.page-hero h1{font-family:var(--serif);font-weight:600;letter-spacing:-.025em}
+h3,h4{font-family:var(--serif);font-weight:600;letter-spacing:-.012em}
+h1{line-height:1.04}
+h2{line-height:1.12}
+h3{line-height:1.22}
+small,.small{font-size:.82rem}
+.eyebrow,.section-kicker,.overline{font-family:var(--sans);font-size:10px;font-weight:800;letter-spacing:.19em;line-height:1.5;text-transform:uppercase}
+.hero h1{font-weight:500;letter-spacing:-.035em;line-height:1.02}
+.hero p,.page-hero p{font-size:clamp(14px,1.15vw,16px);line-height:1.85}
+.section{padding-block:clamp(64px,8vw,104px)}
+.section-head{margin-bottom:clamp(30px,4vw,48px)}
+.section-head p{font-size:15px;line-height:1.85}
+.page-hero{padding-block:clamp(68px,8vw,104px)}
+.page-hero h1{font-weight:600;letter-spacing:-.035em}
+a:not(.button):not(.nav-cta):not(.brand){text-underline-offset:4px}
+a:not(.button):not(.nav-cta):not(.brand):focus-visible{text-decoration:underline}
+.button,.nav-cta,button,.button-secondary,.button-danger{
+ font-family:var(--sans);
+ font-size:12px;
+ font-weight:800;
+ letter-spacing:.045em;
+ line-height:1.25;
+ border-radius:var(--mh-radius-sm);
+ min-height:46px;
+ padding:13px 20px;
+ gap:9px;
+ box-shadow:0 3px 9px rgba(26,51,34,.09);
+ transition:background-color .2s ease,color .2s ease,border-color .2s ease,box-shadow .2s ease,transform .2s ease;
+}
+.button:hover,.nav-cta:hover,.button-secondary:hover,.button-danger:hover{transform:translateY(-2px);box-shadow:0 9px 20px rgba(26,51,34,.15)}
+.button:active,.nav-cta:active,button:active{transform:translateY(0)}
+.button.secondary{border:1px solid rgba(255,255,255,.65);background:rgba(255,255,255,.07);backdrop-filter:blur(8px)}
+.button.secondary:hover{background:rgba(255,255,255,.16)}
+.button-secondary{display:inline-flex;align-items:center;justify-content:center;border-radius:var(--mh-radius-sm)}
+.button-danger{display:inline-flex;align-items:center;justify-content:center;border-radius:var(--mh-radius-sm)}
+button:not(.menu-toggle):not(.admin-booking-actions button){cursor:pointer}
+.menu-toggle{border-radius:var(--mh-radius-sm);box-shadow:none}
+.cards{gap:clamp(16px,2vw,26px)}
+.experience-card,.admin-booking-card,.booking-panel,.admin-stat,.choice,.faq-item,.review-card,.panel,.dashboard-card{
+ border-radius:var(--mh-radius-md);
+}
+.experience-card{box-shadow:var(--mh-shadow-soft);border:1px solid var(--mh-border)}
+.experience-card:hover{box-shadow:var(--mh-shadow-card)}
+.experience-card img{background:var(--sand)}
+.card-body{gap:4px}
+.experience-card h3{font-size:clamp(21px,2vw,25px);font-weight:600}
+.experience-card p{font-size:13px;line-height:1.8}
+.experience-card ul{font-size:12px;line-height:1.8}
+.pill,.status-pill{border-radius:999px;font-size:9px;font-weight:800;letter-spacing:.09em;padding:7px 11px}
+.price{font-weight:600;font-variant-numeric:tabular-nums}
+.split img{border-radius:var(--mh-radius-lg);box-shadow:var(--mh-shadow-card)}
+.feature-list div{font-size:13px;line-height:1.7}
+.trust-strip{font-size:11px;font-weight:800;letter-spacing:.07em}
+.band{position:relative;isolation:isolate}
+.band h2{font-weight:600}
+.booking-panel{border:1px solid var(--mh-border);border-radius:var(--mh-radius-lg);box-shadow:var(--mh-shadow-float)}
+.field{gap:8px}
+.field label,.field>label{font-size:11px;font-weight:800;letter-spacing:.045em}
+.field input,.field select,.field textarea,
+input:not([type=checkbox]):not([type=radio]):not([type=submit]),
+select,textarea{
+ min-height:48px;
+ border:1px solid #d8d2c7;
+ border-radius:var(--mh-radius-sm);
+ padding:12px 14px;
+ font-family:var(--sans);
+ font-size:14px;
+ line-height:1.5;
+ transition:border-color .18s ease,box-shadow .18s ease,background-color .18s ease;
+}
+.field textarea,textarea{min-height:120px;resize:vertical}
+.field input:hover,.field select:hover,.field textarea:hover{border-color:#b6a98f}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--gold);box-shadow:var(--mh-focus)}
+input::placeholder,textarea::placeholder{color:#85877f;opacity:1}
+input[type=checkbox],input[type=radio]{accent-color:var(--forest)}
+.notice,.empty{border:1px solid rgba(197,160,89,.24);border-radius:var(--mh-radius-sm);line-height:1.7}
+.choice{border-radius:var(--mh-radius-sm);transition:border-color .18s ease,box-shadow .18s ease,background .18s ease}
+.choice:hover{border-color:var(--gold);box-shadow:var(--mh-shadow-soft)}
+.faq-list{border-top:1px solid var(--mh-border)}
+.faq-item{padding:20px 18px;border:1px solid transparent;border-bottom:1px solid var(--mh-border);transition:background .18s ease,border-color .18s ease}
+.faq-item[open]{background:#fff;border-color:var(--mh-border);border-radius:var(--mh-radius-sm)}
+.faq-item summary{font-size:clamp(18px,2vw,21px);font-weight:600}
+.faq-item p{font-size:14px;line-height:1.85}
+.itinerary-stop{gap:15px}
+.stop-number{font-weight:800;box-shadow:0 3px 8px rgba(26,51,34,.15)}
+.admin-stat{padding:20px;background:#fff;border:1px solid var(--mh-border);border-radius:var(--mh-radius-md);box-shadow:var(--mh-shadow-soft)}
+.admin-stat span{font-size:10px;font-weight:800;letter-spacing:.09em;text-transform:uppercase}
+.admin-stat strong{font-size:30px;font-weight:600;font-variant-numeric:tabular-nums}
+.admin-booking-card{border:1px solid var(--mh-border);border-radius:var(--mh-radius-md);box-shadow:var(--mh-shadow-soft);padding:clamp(16px,2vw,24px)}
+.admin-booking-top h3{font-size:23px;font-weight:600}
+.admin-booking-details{gap:18px}
+.admin-detail-label{font-size:9px;font-weight:800;letter-spacing:.1em}
+.admin-booking-details strong{font-size:13px;line-height:1.55}
+.admin-booking-actions button{border-radius:var(--mh-radius-sm);padding:10px 14px;min-height:40px;font-size:11px;font-weight:800}
+.status-pill{letter-spacing:.045em}
+.admin-notification-row{padding:17px 0}
+.site-footer{padding-top:clamp(48px,6vw,72px);gap:clamp(24px,4vw,48px)}
+.site-footer>div{font-size:13px;line-height:1.8}
+.site-footer strong{font-size:11px;font-weight:800;letter-spacing:.13em;text-transform:uppercase}
+.site-footer p{font-size:13px;line-height:1.8}
+.social-links a{border-radius:var(--mh-radius-sm);border-color:#ffffff42;transition:background .18s ease,border-color .18s ease,transform .18s ease}
+.social-links a:hover{background:#ffffff12;border-color:var(--gold);transform:translateY(-2px)}
+.social-links svg{width:22px;height:22px;flex-basis:22px}
+.site-header{box-shadow:0 3px 16px rgba(26,51,34,.035)}
+.site-header nav a:not(.nav-cta){font-size:11px;font-weight:800;letter-spacing:.025em}
+.nav-cta{border-radius:var(--mh-radius-sm)}
+.brand-logo,.brand-logo-footer{border-radius:50%;object-fit:contain;object-position:center}
+svg{shape-rendering:geometricPrecision}
+:focus-visible{outline:3px solid var(--gold);outline-offset:3px;border-radius:4px}
+::selection{background:rgba(197,160,89,.28);color:var(--forest)}
+@media(max-width:850px){
+ body{font-size:14px}
+ .section{padding-block:64px}
+ .site-header nav{border-radius:0 0 var(--mh-radius-md) var(--mh-radius-md);box-shadow:var(--mh-shadow-float)}
+ .site-header nav a{padding:7px 2px}
+ .site-header nav .nav-cta{padding:13px 16px;text-align:center}
+ .admin-stats{gap:10px}
+}
+@media(max-width:560px){
+ body{font-size:14px;line-height:1.7}
+ .section{padding:54px 20px}
+ .section h2,.page-hero h1{font-size:clamp(32px,9vw,42px)}
+ .hero h1{font-size:clamp(39px,11vw,49px)}
+ .page-hero{padding:60px 20px}
+ .button,.nav-cta{width:auto;min-height:46px}
+ .hero .actions .button{width:100%}
+ .booking-panel{padding:20px 16px}
+ .admin-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .admin-stat{padding:15px}
+ .admin-stat strong{font-size:26px}
+ .admin-booking-details{gap:12px}
+ .site-footer{padding:46px 22px 22px}
+ .social-links a{min-height:44px}
+}
+@media(prefers-reduced-motion:reduce){
+ *,*::before,*::after{scroll-behavior:auto!important;transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important}
+}
