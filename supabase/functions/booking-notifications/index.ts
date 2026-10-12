@@ -23,6 +23,10 @@ const escapeHtml = (value: unknown) =>
   })[character] ?? character);
 
 Deno.serve(async (request: Request) => {
+  const configuredOrigins = (Deno.env.get("ALLOWED_ORIGINS") || "https://materunihosts.com,https://www.materunihosts.com,http://localhost:4321")
+    .split(",").map(value => value.trim()).filter(Boolean);
+  const origin = request.headers.get("origin");
+  if (origin && !configuredOrigins.includes(origin)) return new Response("Origin not allowed", { status: 403 });
   if (request.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   if (Number(request.headers.get("content-length") || "0") > 16_384) return json({ error: "Request is too large." }, 413);
   if (request.method !== "POST") return json({ error: "Method not allowed" }, 405);
