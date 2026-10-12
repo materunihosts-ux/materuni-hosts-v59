@@ -71,7 +71,7 @@ async function loadOverview(){
  const today=localDate(new Date()),from=localDate(new Date(Date.now()-30*86400000)),to=localDate(new Date(Date.now()+335*86400000));
  const results=await Promise.allSettled([
   api("/rest/v1/rpc/admin_get_bookings",{method:"POST",body:JSON.stringify({p_start_date:from,p_end_date:to})}),
-  api("/rest/v1/experience_catalog?select=id,is_active"),
+  api("/rest/v1/experience_catalog?select=id,experience_key,price_usd,is_active"),
   api("/rest/v1/availability_slots?select=id&slot_date=gte."+today+"&is_active=eq.true"),
   api("/rest/v1/rpc/admin_get_ai_conversations",{method:"POST",body:"{}"}),
   api("/rest/v1/rpc/admin_get_notification_logs",{method:"POST",body:"{}"})
@@ -81,7 +81,8 @@ async function loadOverview(){
   const rows=Array.isArray(bookings.value)?bookings.value:[];
   const pending=rows.filter(x=>["New","Pending"].includes(x.booking_status));
   const confirmed=rows.filter(x=>x.booking_status==="Confirmed");
-  const amount=confirmed.reduce((sum,x)=>sum+Number(x.total_price_usd??x.total_amount_usd??x.estimated_total??x.total_price??0),0);
+  const priceByExperience=new Map((tours.status==="fulfilled"?tours.value:[]).map(t=>[t.experience,Number(t.price_usd)||0]));
+  const amount=confirmed.reduce((sum,x)=>sum+(priceByExperience.get(x.experience)||0)*Number(x.guest_count||1),0);
   el("stat-total").textContent=rows.length;el("stat-new").textContent=pending.length;el("stat-confirmed").textContent=confirmed.length;el("stat-value").textContent="$"+amount.toLocaleString("en-US",{maximumFractionDigits:0});
   const recent=el("recent-bookings");recent.replaceChildren();
   rows.slice().sort((a,b)=>String(b.created_at||b.booking_date||"").localeCompare(String(a.created_at||a.booking_date||""))).slice(0,6).forEach(b=>{
