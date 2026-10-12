@@ -25,7 +25,7 @@
 .admin-shortcuts{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 .button-secondary{background:#f4f0e8;color:var(--forest)!important;border:1px solid #ded6c8}
 .button-danger{background:#8b342d;color:#fff!important}
-.admin-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:24px}
+.admin-stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-bottom:24px}
 .admin-stat{padding:16px;background:#f6f2ea;border:1px solid var(--sand);display:flex;flex-direction:column;gap:5px}
 .admin-stat span{font-size:11px;color:var(--muted)}
 .admin-stat strong{font:600 27px var(--serif);color:var(--forest)}
@@ -36,6 +36,7 @@
 .admin-booking-top p{font-size:11px;margin:4px 0 0}
 .status-pill{display:inline-flex;padding:5px 10px;font-size:10px;font-weight:700;border-radius:30px;background:#eee8dc;color:#665a44}
 .status-confirmed{background:#e4efe6;color:#24583a}
+.status-contacted{background:#e8edf3;color:#36516b}
 .status-new,.status-pending{background:#f7edda;color:#805b1d}
 .status-cancelled{background:#f3e4e1;color:#8b342d}
 .admin-booking-details{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;border-top:1px solid var(--sand);padding-top:16px}
