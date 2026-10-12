@@ -43,3 +43,28 @@ Website WhatsApp buttons open a prefilled chat. The guest must press Send in Wha
 6. Inspect notification logs for `sent`, `failed` or `skipped` states.
 
 **Important:** the function is deployed, but real email and WhatsApp delivery is not active until the provider credentials and sender/template setup above are supplied and a live test passes.
+
+## Partner invitation automation (Email + WhatsApp)
+- Supabase Edge Function `admin-communications` is deployed with JWT verification enabled and checks the signed-in user against `public.admin_users` before it can send anything.
+- In Admin → Partners, each partner card has **Send invitation**. It sends the saved partner invitation email and, when WhatsApp is configured, a Meta WhatsApp Business template message.
+- In Admin → Email Studio, edit the **Partner invitation · Boutique collaboration** email template. Its subject and body are stored in `site_settings.email_templates`; supported merge tags include `{{partner_name}}`, `{{host_name}}`, `{{reply_email}}`, and `{{whatsapp}}`.
+- Email/WhatsApp delivery attempts are recorded in `public.communication_logs` and visible in Email Studio → Recent invitation deliveries. The log table is RLS protected; only authorised admins can read it.
+
+### Additional WhatsApp setup
+Keep the existing booking alert secrets above. For partner invitations, configure these Supabase Edge Function secrets:
+- `WHATSAPP_ACCESS_TOKEN` — long-lived Meta WhatsApp Cloud API access token.
+- `WHATSAPP_PHONE_NUMBER_ID` — WhatsApp Business phone number ID.
+- `PUBLIC_WHATSAPP_NUMBER` — Materuni Hosts public contact number (defaults to +255 612 068 540).
+- Optional `HOST_CONTACT_NAME` — name/signature used in invitation email.
+- Optional `EMAIL_REPLY_TO` — reply-to address (defaults to hello@materunihosts.com).
+
+Then open Admin → Email Studio → WhatsApp Business Automation and save the exact approved Meta template name and language code. The approved Meta template must have **three body variables, in this order**: partner business name, contact person, Materuni Hosts WhatsApp number. The template name is a normal setting, not a secret. Meta approval is required before sending.
+
+### Sending behaviour and test
+1. Add a partner record with a valid email and WhatsApp number.
+2. Save the partner invitation email subject/body in Email Studio.
+3. Save the approved WhatsApp template name and language.
+4. Click **Send invitation** on that partner's card. The function reports email and WhatsApp outcomes independently; one channel can succeed while the other is skipped or fails.
+5. Review Email Studio → Recent invitation deliveries for provider IDs, status and any error message.
+
+**Provider boundary:** the application and secure automation are deployed, but real delivery requires a verified Resend sender/API key and the Meta WhatsApp Cloud API credentials plus an approved template. The website cannot create Meta approval or provider credentials itself.
