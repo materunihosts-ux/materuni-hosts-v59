@@ -28,7 +28,7 @@ Deno.serve(async(req:Request)=>{
   if(body?.action!=="partner_invitation")return json({error:"Unsupported communication action."},400);
   const partnerId=clean(body.partner_id,64);
   if(!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(partnerId))return json({error:"A valid partner is required."},400);
-  const {data:partner,error:partnerError}=await db.from("partners").select("id,business_name,contact_name,email,whatsapp,status").eq("id",partnerId).maybeSingle();
+  const {data:partner,error:partnerError}=await db.from("partners").select("id,business_name,contact_name,email,whatsapp,whatsapp_opt_in,status").eq("id",partnerId).maybeSingle();
   if(partnerError)throw partnerError;
   if(!partner)return json({error:"Partner record not found."},404);
   if(partner.status==="archived")return json({error:"Archived partners cannot be invited."},409);
@@ -67,14 +67,14 @@ Deno.serve(async(req:Request)=>{
   let waConfig:Record<string,string>={};try{waConfig=JSON.parse(waSetting?.setting_value||"{}")}catch{}
   const waToken=Deno.env.get("WHATSAPP_ACCESS_TOKEN"),phoneId=Deno.env.get("WHATSAPP_PHONE_NUMBER_ID"),waTemplate=clean(waConfig.name||Deno.env.get("WHATSAPP_PARTNER_INVITE_TEMPLATE")||"",100);
 
-  if(phone&&waToken&&phoneId&&waTemplate){
+  if(phone&&partner.whatsapp_opt_in===true&&waToken&&phoneId&&waTemplate){
    try{
     const response=await fetch("https://graph.facebook.com/v22.0/"+phoneId+"/messages",{method:"POST",headers:{Authorization:"Bearer "+waToken,"Content-Type":"application/json"},body:JSON.stringify({messaging_product:"whatsapp",to:phone,type:"template",template:{name:waTemplate,language:{code:clean(waConfig.language||Deno.env.get("WHATSAPP_TEMPLATE_LANGUAGE")||"en",12)},components:[{type:"body",parameters:[{type:"text",text:clean(partner.business_name,120)},{type:"text",text:clean(partner.contact_name||"Partner",120)},{type:"text",text:vars.whatsapp}]}]}}),signal:AbortSignal.timeout(12000)});
     const result=await response.json().catch(()=>({}));
     if(!response.ok)throw new Error(result?.error?.message||"WhatsApp delivery failed.");
     outcomes.whatsapp="sent";await log("whatsapp",phone,"sent",result?.messages?.[0]?.id);
    }catch(error){const msg=clean(error instanceof Error?error.message:"WhatsApp delivery failed.",500);outcomes.whatsapp="failed";await log("whatsapp",phone,"failed",undefined,msg);}
-  }else{outcomes.whatsapp=phone?"not_configured":"missing_partner_whatsapp";await log("whatsapp",phone||"missing WhatsApp","skipped",undefined,phone?"Meta WhatsApp Cloud API credentials or approved partner invitation template are missing.":"Add the partner WhatsApp number before sending.");}
+  }else{const reason=!phone?"Add the partner WhatsApp number before sending.":partner.whatsapp_opt_in!==true?"Explicit WhatsApp consent has not been recorded for this partner.":"Meta WhatsApp Cloud API credentials or approved partner invitation template are missing.";outcomes.whatsapp=!phone?"missing_partner_whatsapp":partner.whatsapp_opt_in!==true?"consent_required":"not_configured";await log("whatsapp",phone||"missing WhatsApp","skipped",undefined,reason);}
   return json({success:true,partner:partner.business_name,outcomes});
  }catch(error){console.error("admin-communications failed:",error instanceof Error?error.name:"unknown");return json({error:"Communication could not be processed."},500);}
 });
