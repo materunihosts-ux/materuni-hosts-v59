@@ -103,7 +103,21 @@ function render(){
    }catch(error){el("list-feedback").textContent=error.message;invite.textContent="Retry invitation";invite.disabled=false}
   });
   const remove=node("button","button button-secondary","Delete");remove.type="button";remove.addEventListener("click",()=>deletePartner(p));
-  actions.append(edit,invite,remove);card.append(actions);root.append(card);
+  const history=node("button","button button-secondary","Invitation history");history.type="button";
+  history.addEventListener("click",async()=>{
+   history.disabled=true;history.textContent="Loading history…";
+   try{
+    const logs=await api("/rest/v1/communication_logs?select=id,channel,delivery_status,recipient,error_message,created_at,sent_at&partner_id=eq."+encodeURIComponent(p.id)+"&communication_type=eq.partner_invitation&order=created_at.desc&limit=10");
+    let panel=card.querySelector(".partner-history");
+    if(!panel){panel=document.createElement("div");panel.className="partner-history";panel.setAttribute("aria-live","polite");card.append(panel)}
+    panel.replaceChildren();
+    if(!logs.length)panel.append(node("p","muted","No invitation attempts have been logged yet."));
+    logs.forEach(log=>panel.append(node("p","muted",new Date(log.created_at).toLocaleString()+" · "+log.channel+" · "+log.delivery_status+" · "+log.recipient+(log.error_message?" · "+log.error_message:""))));
+    history.textContent="Refresh invitation history";
+   }catch(error){el("list-feedback").textContent=error.message;history.textContent="Retry history"}
+   finally{history.disabled=false}
+  });
+  actions.append(edit,invite,history,remove);card.append(actions);root.append(card);
  });
 }
 function exportCsv(){
