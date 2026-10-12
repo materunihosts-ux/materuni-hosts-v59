@@ -1,22 +1,41 @@
-MATERUNI HOSTS V59 — BUILD STATUS
+MATERUNI HOSTS V59 — VERIFIED BUILD STATUS
+Date: 12 October 2026
+Repository: materunihosts-ux/materuni-hosts-v59
+Verified source commit: 58d4681eb5973c2e76a242e9f06afed082b27b0f
 
-Source: saved V58 project archive.
-Frontend changes: V59 responsive Astro/SEO refactor applied.
-Routes: /, /travel-guide, /partners, /sustainability, /admin.
-Supabase backend: preserved; no schema, RLS, records or Edge Function deployment changes.
+AUTOMATED BUILD — PASS
+GitHub Actions workflow: Astro build check
+Run: https://github.com/materunihosts-ux/materuni-hosts-v59/actions/runs/38229483442
+- Dependency installation: PASS
+- Dependency audit threshold (high): PASS
+- Astro check: PASS
+- Astro production build: PASS
+- dist artifact packaging: PASS
 
-Checks completed:
-- node --check public/assets/site.js: PASS
-- node --check public/assets/language.js: PASS
-- Inline browser scripts in index/admin/partners: PASS
-- HTML structural parse of all five Astro page files: PASS
-- Typography audit: no px units remain in font-size or font shorthand declarations in Astro/CSS/JS: PASS
-- CSS brace balance: PASS
-- ZIP integrity: PASS
+SUPABASE — VERIFIED CONFIGURATION
+Project: sskmzswoeljxwojcszta
+- Partner invitation idempotency column and unique index are present.
+- Duplicate request-key database constraint test: PASS (test rows removed).
+- Rescheduling now preserves the original confirmed_at timestamp and records rescheduled_at separately.
+- Edge Functions active and source-matched to GitHub:
+  - booking-notifications v9 (JWT verification disabled; booking proof and time-window checks are implemented)
+  - guest-concierge v4 (JWT verification disabled; custom session validation is implemented)
+  - admin-communications v4 (JWT verification enabled; admin membership and invitation request idempotency are implemented)
+  - admin-booking-notification v3 (JWT verification enabled; admin membership is implemented)
 
-Not completed:
-- npm install timed out; node_modules unavailable.
-- Astro compiler `npm run check` and `npm run build` not run.
-- No browser screenshot/responsive test or live Supabase booking test run.
+PARTNER COMMUNICATION HARDENING
+- WhatsApp permission requires an explicit opt-in, timestamp and source.
+- Editing a partner restores the saved consent state and source.
+- Failed partner invitations can be retried from Email Studio using the same request ID.
+- Email and WhatsApp delivery outcomes are logged separately.
+- Resend sender credentials and Meta WhatsApp credentials/template approval still require provider-side configuration and a real delivery test.
 
-Deployment instruction: run `npm install`, `npm run check`, and `npm run build` locally or in CI. Deploy only after all three succeed and preview pages/forms have been checked.
+NOT CLEARED FOR PRODUCTION DEPLOYMENT YET
+- Vercel account/team access is unavailable to the connected Vercel integration: team/project discovery returned no projects and the known team scope returned HTTP 403. No Vercel preview or production deployment could be verified.
+- No live browser end-to-end test has been run for guest booking -> Admin inbox -> confirmation/cancellation/reschedule -> real email/WhatsApp delivery.
+- No live provider delivery test has been run. Provider secrets, verified Resend sender, Meta phone number ID, token and approved WhatsApp template cannot be validated from the available connection.
+- No mobile-device/Lighthouse performance or accessibility score is claimed.
+- Upload and verify authentic Materuni photographs before launch.
+
+RELEASE DECISION
+The current GitHub source passes the automated Astro checks, production build and high-severity dependency audit. Supabase migrations and Edge Function versions listed above are deployed and verified. This is a verified build candidate, not a verified 100% production release. Complete Vercel access, provider setup and live end-to-end tests before declaring production readiness.
