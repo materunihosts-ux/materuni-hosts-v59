@@ -269,6 +269,8 @@ $("booking-form").addEventListener("submit",async e=>{
   }
   showFeedback("Booking request received — reference: "+reference+". Your request is awaiting host confirmation; it is not yet a confirmed reservation and no payment has been taken."+notice,notice?"warning":"success");
   $("booking-form").reset();
+  activeCheckoutStep=0;
+  renderCheckoutStep();
   $("date").min=tanzaniaToday();
   $("date").value=addDays(tanzaniaToday(),1);
   $("count").value="2";
