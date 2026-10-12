@@ -84,8 +84,8 @@ const structuredData = {
 <body>
 <a class="skip-link" href="#main-content">Skip to content</a>
 <header class="site-header"><a class="brand" href="/" aria-label="Materuni Hosts home"><img class="brand-logo" src="/materuni-hosts-logo-round.svg" alt="Materuni Hosts logo" width="86" height="86" /></a>
-<nav aria-label="Main navigation"><a class="nav-camping" href="/experiences#camping" data-i18n="nav_camping">Materuni Camping</a><a href="/experiences" data-i18n="nav_experiences">Experiences</a><a href="/sustainability" data-i18n="nav_community">Community & sustainability</a><a href="/reviews" data-i18n="nav_reviews">Guest reviews</a><a href="/faq" data-i18n="nav_faqs">FAQs</a><a class="nav-cta" href="/booking" data-i18n="nav_availability">Check availability</a></nav>
-<label class="language-control" for="site-language"><span class="sr-only">Website language</span><select id="site-language" aria-label="Website language"><option value="en">EN</option><option value="es">ES</option><option value="fr">FR</option><option value="de">DE</option></select></label><button class="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false" onclick="const n=document.querySelector('.site-header nav');const open=n.classList.toggle('open');this.setAttribute('aria-expanded',String(open));this.setAttribute('aria-label',open?'Close menu':'Open menu');this.textContent=open?'×':'☰'">☰</button></header>
+<nav id="primary-navigation" aria-label="Main navigation"><a class="nav-camping" href="/experiences#camping" data-i18n="nav_camping">Materuni Camping</a><a href="/experiences" data-i18n="nav_experiences">Experiences</a><a href="/sustainability" data-i18n="nav_community">Community & sustainability</a><a href="/reviews" data-i18n="nav_reviews">Guest reviews</a><a href="/faq" data-i18n="nav_faqs">FAQs</a><a class="nav-cta" href="/booking" data-i18n="nav_availability">Check availability</a></nav>
+<label class="language-control" for="site-language"><span class="sr-only">Website language</span><select id="site-language" aria-label="Website language"><option value="en">EN</option><option value="es">ES</option><option value="fr">FR</option><option value="de">DE</option></select></label><button class="menu-toggle" type="button" aria-label="Open menu" aria-controls="primary-navigation" aria-expanded="false">☰</button></header>
 <script>
 // @ts-nocheck
 (() => {
@@ -96,6 +96,11 @@ const structuredData = {
   de:{skip:"Zum Inhalt",ask:"Lokalen Gastgeber fragen",footer:"Gemeinschaftsbasierte Chagga-Erlebnisse in Materuni Village, Moshi, Tansania.",explore:"Entdecken",book:"Erlebnis buchen"}
  };
  const select=document.getElementById("site-language"), saved=localStorage.getItem("materuni-language");
+ const menuButton=document.querySelector(".menu-toggle"),mainNav=document.getElementById("primary-navigation");
+ const closeMenu=()=>{mainNav?.classList.remove("open");menuButton?.setAttribute("aria-expanded","false");menuButton?.setAttribute("aria-label","Open menu");if(menuButton)menuButton.textContent="☰"};
+ menuButton?.addEventListener("click",()=>{const open=mainNav?.classList.toggle("open")??false;menuButton.setAttribute("aria-expanded",String(open));menuButton.setAttribute("aria-label",open?"Close menu":"Open menu");menuButton.textContent=open?"×":"☰"});
+ mainNav?.addEventListener("click",event=>{if(event.target instanceof Element&&event.target.closest("a")&&mainNav.classList.contains("open"))closeMenu()});
+ document.addEventListener("keydown",event=>{if(event.key==="Escape"&&mainNav?.classList.contains("open")){closeMenu();menuButton?.focus()}});
  const lang=supported.includes(saved)?saved:(supported.includes((navigator.language||"en").slice(0,2).toLowerCase())?(navigator.language||"en").slice(0,2).toLowerCase():"en");
  function apply(language){
   const t=labels[language]||labels.en;document.documentElement.lang=language;select.value=language;
