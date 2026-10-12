@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-10-12 — v60 modernization branch
+
+- Added a USD / EUR / TZS display selector with bounded exchange-rate lookup, six-hour session caching, USD fallback and estimate labels. Booking and database values remain USD.
+- Added a factual Materuni Waterfall TouristAttraction structured-data entity; no unverified lodging/event schema or fabricated review badges were added.
+- Reworked the guest booking form into three progressive steps while preserving existing field IDs and the transactional submit_booking RPC payload.
+- Added direct WhatsApp booking shortcut.
+- Improved guest booking acknowledgement email with a Google Maps search link and practical preparation guidance; it remains a booking request acknowledgement, not a payment receipt.
+- Added modernization architecture and updated the Supabase work plan with a read-only live RLS policy review.
+- No database schema, production bookings, payment configuration, live availability slots, or deployed Edge Functions were changed in this branch.
+- Remaining work before production: idempotency key + concurrency tests, add-on schema/RPC, month-grid calendar aggregation, PDF generation, provider delivery tests, verified review data, WebP/AVIF image pipeline, and Lighthouse/PageSpeed measurement.
+
+
 All notable project changes are recorded here.
 
 ## 2026-10-12 — v59 setup, booking and security audit
