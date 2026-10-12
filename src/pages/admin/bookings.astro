@@ -23,7 +23,7 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
       <form id="filter-form" class="form-grid">
         <div class="field"><label for="from-date">From</label><input id="from-date" type="date" required></div>
         <div class="field"><label for="to-date">To</label><input id="to-date" type="date" required></div>
-        <div class="field"><label for="status-filter">Status</label><select id="status-filter"><option value="all">All statuses</option><option>New</option><option>Pending</option><option>Confirmed</option><option>Cancelled</option></select></div>
+        <div class="field"><label for="status-filter">Status</label><select id="status-filter"><option value="all">All statuses</option><option>New</option><option>Contacted</option><option>Confirmed</option><option>Cancelled</option></select></div>
         <div class="field"><label for="search-filter">Search guest / reference</label><input id="search-filter" type="search" placeholder="Name, email, reference…"></div>
         <div class="field full"><button class="button" type="submit" id="refresh-button">Load bookings</button><p id="booking-feedback" class="muted" aria-live="polite"></p></div>
       </form>
@@ -118,7 +118,7 @@ async function loadBookings() {
     const filtered = bookings.filter(b => (status === "all" || b.booking_status === status) &&
       (!term || [b.guest_name,b.guest_email,b.guest_phone,b.booking_reference,b.experience].some(v => String(v || "").toLowerCase().includes(term))));
     el("stat-total").textContent = bookings.length;
-    el("stat-new").textContent = bookings.filter(b => b.booking_status === "New" || b.booking_status === "Pending").length;
+    el("stat-new").textContent = bookings.filter(b => b.booking_status === "New").length;
     el("stat-confirmed").textContent = bookings.filter(b => b.booking_status === "Confirmed").length;
     el("stat-cancelled").textContent = bookings.filter(b => b.booking_status === "Cancelled").length;
     const list = el("booking-list");
@@ -143,7 +143,7 @@ async function loadBookings() {
         details.append(item);
       });
       const actions = document.createElement("div"); actions.className = "admin-booking-actions";
-      if (booking.booking_status === "New" || booking.booking_status === "Pending") {
+      if (booking.booking_status === "New" || booking.booking_status === "Contacted") {
         const confirm = makeText("button","button","Confirm booking"); confirm.type = "button";
         confirm.addEventListener("click", async () => {
           if (!window.confirm("Confirm this booking? The availability slot has already been reserved by the request.")) return;
