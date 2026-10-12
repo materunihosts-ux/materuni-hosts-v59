@@ -149,6 +149,67 @@ $("experience").addEventListener("change",()=>{clearSelectedSlot("Experience cha
 $("count").addEventListener("change",()=>{clearSelectedSlot("Group size changed. Checking available spaces…");refreshAvailability();});
 $("refresh-availability").addEventListener("click",refreshAvailability);
 
+// Progressive checkout: keep the existing booking RPC contract and field IDs intact.
+const checkoutForm = $("booking-form");
+const checkoutGroups = [
+  ["experience","date","slot","count"],
+  ["name","email","phone","nationality","country","language","contact"],
+  ["pickup","notes","submit"]
+];
+const checkoutSteps = checkoutGroups.map((ids,index) => {
+  const panel=document.createElement("section");
+  panel.className="checkout-step";
+  panel.dataset.checkoutStep=String(index);
+  panel.setAttribute("aria-label",["Experience and date","Your details","Final details and submit"][index]);
+  const heading=document.createElement("h2");
+  heading.className="checkout-step-title";
+  heading.textContent=["1. Choose your experience","2. Your contact details","3. Final details"][index];
+  panel.append(heading);
+  ids.forEach(id=>{
+    const field=$(id)?.closest(".field");
+    if(field) panel.append(field);
+  });
+  checkoutForm.insertBefore(panel,checkoutForm.querySelector(".checkout-progress")||checkoutForm.firstChild);
+  return panel;
+});
+const progress=document.createElement("ol");
+progress.className="checkout-progress";
+progress.setAttribute("aria-label","Booking steps");
+["Experience","Your details","Review"].forEach((label,index)=>{
+ const item=document.createElement("li");item.textContent=label;item.dataset.stepLabel=String(index);progress.append(item);
+});
+checkoutForm.insertBefore(progress,checkoutForm.firstChild);
+let activeCheckoutStep=0;
+const stepActions=document.createElement("div");
+stepActions.className="checkout-step-actions";
+const back=document.createElement("button");back.type="button";back.className="button button-secondary";back.textContent="Back";
+const next=document.createElement("button");next.type="button";next.className="button";next.textContent="Continue";
+stepActions.append(back,next);
+checkoutGroups[0].length && checkoutSteps[0].append(stepActions);
+function renderCheckoutStep(){
+ checkoutSteps.forEach((panel,index)=>{panel.hidden=index!==activeCheckoutStep});
+ progress.querySelectorAll("li").forEach((item,index)=>{item.classList.toggle("is-current",index===activeCheckoutStep);item.classList.toggle("is-complete",index<activeCheckoutStep);item.setAttribute("aria-current",index===activeCheckoutStep?"step":"false")});
+ back.hidden=activeCheckoutStep===0;
+ next.hidden=activeCheckoutStep===2;
+ if(activeCheckoutStep===1){checkoutSteps[1].append(stepActions)}
+ else if(activeCheckoutStep===0){checkoutSteps[0].append(stepActions)}
+}
+function validateCheckoutStep(index){
+ const ids=checkoutGroups[index];
+ for(const id of ids){
+  const field=$(id);
+  if(field && !field.checkValidity()){field.reportValidity();field.focus();return false}
+ }
+ return true;
+}
+back.addEventListener("click",()=>{activeCheckoutStep=Math.max(0,activeCheckoutStep-1);renderCheckoutStep();});
+next.addEventListener("click",()=>{
+ if(!validateCheckoutStep(activeCheckoutStep))return;
+ activeCheckoutStep=Math.min(2,activeCheckoutStep+1);renderCheckoutStep();
+ checkoutSteps[activeCheckoutStep].querySelector("input,select,textarea,button")?.focus();
+});
+renderCheckoutStep();
+
 $("booking-form").addEventListener("submit",async e=>{
  e.preventDefault();
  const btn=$("submit");
