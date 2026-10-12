@@ -44,3 +44,14 @@ REMAINING HARDENING / TESTS
 5. Monitor booking counters against active booking totals and alert on discrepancies.
 6. Run browser end-to-end tests against a test slot; no live test booking was created during this review.
 
+
+
+IDEMPOTENCY HARDENING (2026-10-12)
+- Added supabase/migrations/202610120001_booking_idempotency.sql.
+- Added public.submit_booking_idempotent(...) and a private-by-privilege mapping table with a unique UUID primary key.
+- The RPC serializes calls by key, hashes the normalized booking payload, returns the original booking for an identical retry, and rejects reuse of a key with changed details.
+- Guest booking page stores the key + payload fingerprint in sessionStorage so identical retries after a timeout/reload reuse the same key. Successful booking removes the stored attempt.
+- Applied the migration to the linked Supabase production project; verified table, RPC signature and anon EXECUTE grant. The mapping table has RLS enabled and no direct grants to public/anon/authenticated.
+- No permanent QA booking was created. A rollback-only SQL retry check was attempted; the SQL runner returned no row output, so treat end-to-end duplicate replay as not independently evidenced until a dedicated integration test runs.
+- Current idempotency mapping row count was 0 after the rollback-only check.
+- Still required: concurrent same-key integration test, changed-payload key-reuse test, full browser booking test and notification delivery test.
