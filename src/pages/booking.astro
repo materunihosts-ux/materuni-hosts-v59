@@ -233,7 +233,12 @@ $("booking-form").addEventListener("submit",async e=>{
  }catch(error){
   const message=error.message||"We could not send your booking. Please try again or contact us on WhatsApp.";
   const isCapacityConflict=/not enough spaces|no longer available|slot.*not found|already passed|inactive/i.test(message);
-  showFeedback(isCapacityConflict?message+" Please refresh availability and choose another time.":message,"error");
+  const isNetworkFailure=error instanceof TypeError || /network|fetch failed|connection|timeout/i.test(message);
+  if(isNetworkFailure){
+   showFeedback("We could not confirm the server response. Your request may already be saved. Please retry without changing the booking details; we will use the same secure request key to avoid creating a duplicate. If the issue continues, contact our host on WhatsApp.","warning");
+  }else{
+   showFeedback(isCapacityConflict?message+" Please refresh availability and choose another time.":message,"error");
+  }
   // Refresh in case another guest took the selected spaces while this form was open.
   refreshAvailability();
  }finally{
