@@ -81,7 +81,7 @@ async function loadOverview(){
   const rows=Array.isArray(bookings.value)?bookings.value:[];
   const pending=rows.filter(x=>["New","Pending"].includes(x.booking_status));
   const confirmed=rows.filter(x=>x.booking_status==="Confirmed");
-  const priceByExperience=new Map((tours.status==="fulfilled"?tours.value:[]).map(t=>[t.experience,Number(t.price_usd)||0]));
+  const priceByExperience=new Map((tours.status==="fulfilled"?tours.value:[]).map(t=>[t.experience_key,Number(t.price_usd)||0]));
   const amount=confirmed.reduce((sum,x)=>sum+(priceByExperience.get(x.experience)||0)*Number(x.guest_count||1),0);
   el("stat-total").textContent=rows.length;el("stat-new").textContent=pending.length;el("stat-confirmed").textContent=confirmed.length;el("stat-value").textContent="$"+amount.toLocaleString("en-US",{maximumFractionDigits:0});
   const recent=el("recent-bookings");recent.replaceChildren();
