@@ -132,6 +132,28 @@ const structuredData = {
 })();
 </script>
 <main id="main-content" tabindex="-1"><slot /></main>
+<dialog class="mh-lightbox" id="mh-lightbox" aria-label="Photo preview">
+  <form method="dialog"><button type="submit" aria-label="Close photo preview">Close ×</button></form>
+  <img id="mh-lightbox-image" alt="" />
+  <p id="mh-lightbox-caption"></p>
+</dialog>
+<script is:inline>
+(() => {
+ const dialog=document.getElementById("mh-lightbox");
+ const preview=document.getElementById("mh-lightbox-image");
+ const caption=document.getElementById("mh-lightbox-caption");
+ if(!dialog||!preview)return;
+ document.addEventListener("click",event=>{
+  const image=event.target.closest("img[data-gallery]");
+  if(!image||!image.currentSrc)return;
+  preview.src=image.currentSrc;
+  preview.alt=image.alt||"Materuni Hosts photograph";
+  caption.textContent=image.alt||"Materuni Hosts";
+  if(typeof dialog.showModal==="function")dialog.showModal();
+ });
+ dialog.addEventListener("click",event=>{if(event.target===dialog)dialog.close()});
+})();
+</script>
 <script is:inline>
 (() => {
   const select = document.getElementById("site-currency");
