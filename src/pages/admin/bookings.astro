@@ -97,7 +97,9 @@ async function loadNotificationLogs() {
     });
   } catch (error) { list.replaceChildren(makeText("p","muted","Notification history could not be loaded: " + error.message)); }
 }
+let bookingLoadRequest = 0;
 async function loadBookings() {
+  const requestId = ++bookingLoadRequest;
   const button = el("refresh-button");
   button.disabled = true;
   el("booking-feedback").textContent = "Loading bookings…";
@@ -109,6 +111,7 @@ async function loadBookings() {
       method: "POST",
       body: JSON.stringify({ p_start_date: from, p_end_date: to })
     });
+    if (requestId !== bookingLoadRequest) return;
     const bookings = Array.isArray(rows) ? rows : [];
     const status = el("status-filter").value;
     const term = el("search-filter").value.trim().toLowerCase();
@@ -240,7 +243,7 @@ async function loadBookings() {
   } catch (error) {
     el("booking-feedback").textContent = error.message;
   } finally {
-    button.disabled = false;
+    if (requestId === bookingLoadRequest) button.disabled = false;
   }
 }
 el("login-form").addEventListener("submit", async event => {
@@ -264,7 +267,11 @@ el("login-form").addEventListener("submit", async event => {
 });
 el("filter-form").addEventListener("submit", event => { event.preventDefault(); loadBookings(); });
 el("status-filter").addEventListener("change", loadBookings);
-el("search-filter").addEventListener("input", loadBookings);
+let bookingSearchTimer;
+el("search-filter").addEventListener("input", () => {
+  clearTimeout(bookingSearchTimer);
+  bookingSearchTimer = setTimeout(loadBookings, 300);
+});
 el("logout").addEventListener("click", async () => {
   try { await fetch(supabaseUrl + "/auth/v1/logout",{method:"POST",headers:headers()}); } catch {}
   accessToken = ""; el("manager").hidden = true; el("login-panel").hidden = false; el("login-form").reset();
