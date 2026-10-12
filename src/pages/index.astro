@@ -100,6 +100,7 @@ fetch("https://sskmzswoeljxwojcszta.supabase.co/rest/v1/experience_catalog?selec
    addDetails(body,t);
    if(link)link.href="/booking?experience="+encodeURIComponent(t.experience_key);
   });
+  window.MateruniUpdatePrices?.(localStorage.getItem("materuni-currency")||"USD");
  })
  .catch(error=>console.warn("Using the built-in homepage catalogue because the live catalogue could not be loaded.",error));
 </script>
