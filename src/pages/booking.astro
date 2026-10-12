@@ -198,7 +198,10 @@ $("booking-form").addEventListener("submit",async e=>{
  }
  const requestBody={...body,p_idempotency_key:idempotencyKey};
  try{
-  const response=await fetch(url+"/rest/v1/rpc/submit_booking_idempotent",{  const payload=await response.json().catch(()=>null);
+  const response=await fetch(url+"/rest/v1/rpc/submit_booking_idempotent",{
+   method:"POST",headers,body:JSON.stringify(requestBody),cache:"no-store"
+  });
+  const payload=await response.json().catch(()=>null);
   if(!response.ok)throw new Error(safeError(payload,response.status));
   const created=Array.isArray(payload)?payload[0]:payload;
   if(!created?.booking_id)throw new Error("The booking response could not be verified. Please contact our host before submitting again.");
