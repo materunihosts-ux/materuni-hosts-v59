@@ -421,3 +421,10 @@ main:focus{outline:none}
 .site-footer>.brand .brand-logo-footer{width:76px;height:76px}
 @media(max-width:850px){.site-header>.brand .brand-logo{width:66px;height:66px}}
 @media(max-width:560px){.site-header>.brand .brand-logo{width:62px;height:62px}}
+
+
+/* Booking feedback: clear, accessible states without relying on colour alone */
+.booking-panel #feedback.booking-alert{display:block;margin:12px 0 0;padding:13px 15px;border-left:3px solid #785319;background:#f4eee4;color:#343a33;font-size:13px;line-height:1.65;overflow-wrap:anywhere}
+.booking-panel #feedback.booking-alert-success{border-color:#21633b;background:#edf5ee;color:#194b2b}
+.booking-panel #feedback.booking-alert-warning{border-color:#9a6b19;background:#fbf4e5;color:#674716}
+.booking-panel #feedback.booking-alert-error{border-color:#9b3028;background:#fbefed;color:#842820}
