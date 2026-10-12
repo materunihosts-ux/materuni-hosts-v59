@@ -169,7 +169,7 @@ const checkoutSteps = checkoutGroups.map((ids,index) => {
     const field=$(id)?.closest(".field");
     if(field) panel.append(field);
   });
-  checkoutForm.insertBefore(panel,checkoutForm.querySelector(".checkout-progress")||checkoutForm.firstChild);
+  checkoutForm.append(panel);
   return panel;
 });
 const progress=document.createElement("ol");
