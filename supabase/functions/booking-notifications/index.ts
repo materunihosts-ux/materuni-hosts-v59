@@ -67,7 +67,7 @@ Deno.serve(async (request: Request) => {
       const { data, error } = await supabase.from("notification_logs").insert({
         booking_id: bookingId, recipient, channel, notification_type: type, message, delivery_status: "pending",
       }).select("id").single();
-      if (!error) return { duplicate: false, id: data.id };
+      if (!error) return { duplicate: false, id: data.id, state: "claimed" };
       if (error.code !== "23505") throw error;
 
       // A pending row normally means another request is delivering this message.
@@ -81,8 +81,8 @@ Deno.serve(async (request: Request) => {
         .in("delivery_status", ["pending", "sent"])
         .maybeSingle();
       if (lookupError) throw lookupError;
-      if (!existing) return { duplicate: true, id: null };
-      if (existing.delivery_status === "sent") return { duplicate: true, id: null };
+      if (!existing) return { duplicate: true, id: null, state: "in_progress" };
+      if (existing.delivery_status === "sent") return { duplicate: true, id: null, state: "already_processed" };
 
       const staleBefore = new Date(Date.now() - 10 * 60 * 1000).toISOString();
       const { data: reclaimed, error: reclaimError } = await supabase.from("notification_logs")
@@ -132,7 +132,7 @@ Deno.serve(async (request: Request) => {
         return;
       }
       const reservation = await claim("email", type, recipient, message);
-      if (reservation.duplicate) { outcomes[type] = "already_processed"; return; }
+      if (reservation.duplicate) { outcomes[type] = reservation.state; return; }
       try {
         const response = await fetch("https://api.resend.com/emails", {
           method: "POST", headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
@@ -205,7 +205,7 @@ Deno.serve(async (request: Request) => {
           "WhatsApp Cloud API credentials are not configured.");
       } else {
         const reservation = await claim("whatsapp", "guest_booking_acknowledgement", phone, summary);
-        if (reservation.duplicate) outcomes.guest_whatsapp_acknowledgement = "already_processed";
+        if (reservation.duplicate) outcomes.guest_whatsapp_acknowledgement = reservation.state;
         else {
           try {
             const recipient = phone.replace(/\D/g, "");
@@ -246,7 +246,7 @@ Deno.serve(async (request: Request) => {
     const templateName = Deno.env.get("WHATSAPP_BOOKING_TEMPLATE");
     if (waToken && phoneNumberId && adminNumber && templateName) {
       const reservation = await claim("whatsapp", "admin_new_booking_alert", adminNumber, summary);
-      if (reservation.duplicate) outcomes.admin_whatsapp_alert = "already_processed";
+      if (reservation.duplicate) outcomes.admin_whatsapp_alert = reservation.state;
       else {
         try {
           const response = await fetch(`https://graph.facebook.com/v22.0/${phoneNumberId}/messages`, {
