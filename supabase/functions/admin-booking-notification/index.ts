@@ -7,7 +7,7 @@ Deno.serve(async req=>{
  if(req.method==="OPTIONS") return new Response("ok",{headers:cors});
  if(req.method!=="POST") return reply({error:"Method not allowed"},405);
  try{
-  const token=(req.headers.get("authorization")||"").replace(/^Bearer\\s+/i,"");
+  const token=(req.headers.get("authorization")||"").replace(/^Bearer\s+/i,"");
   if(!token) return reply({error:"Authentication required."},401);
   const url=Deno.env.get("SUPABASE_URL"), key=Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
   if(!url||!key) return reply({error:"Notification service is not configured."},503);
@@ -25,7 +25,7 @@ Deno.serve(async req=>{
   const expected={confirmed:"Confirmed",cancelled:"Cancelled",rescheduled:"Confirmed"}[event];
   if(!b||b.status!==expected) return reply({error:"Booking state does not match the requested notification."},409);
   const reference=b.booking_reference||b.id, recipient=String(b.email||"").trim();
-  if(!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(recipient)) return reply({success:false,status:"no_valid_guest_email",message:"Booking updated, but no valid guest email is recorded."});
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(recipient)) return reply({success:false,status:"no_valid_guest_email",message:"Booking updated, but no valid guest email is recorded."});
   const slot=Array.isArray(b.availability_slots)?b.availability_slots[0]:b.availability_slots;
   const time=slot?.start_time?String(slot.start_time).slice(0,5):"To be arranged";
   const endTime=slot?.end_time?String(slot.end_time).slice(0,5):"";
@@ -36,6 +36,12 @@ Deno.serve(async req=>{
    .in("delivery_status",["pending","sent"]).maybeSingle();
   if(lookupError) throw lookupError;
   if(existing?.delivery_status==="sent") return reply({success:true,status:"already_sent"});
+  const apiKey=Deno.env.get("RESEND_API_KEY"), from=Deno.env.get("EMAIL_FROM");
+  if(!apiKey||!from){
+   if(existing?.delivery_status==="pending") await db.from("notification_logs").update({delivery_status:"skipped",error_message:"Resend API key or verified sender is not configured."}).eq("id",existing.id);
+   else if(!existing) await db.from("notification_logs").insert({booking_id:id,recipient,channel:"email",notification_type:type,message:summary,delivery_status:"skipped",error_message:"Resend API key or verified sender is not configured."});
+   return reply({success:false,status:"not_configured",message:"Booking updated; email provider is not configured."});
+  }
   if(existing?.delivery_status==="pending"){
    const staleBefore=new Date(Date.now()-10*60*1000).toISOString();
    const {data:reclaimed,error:reclaimError}=await db.from("notification_logs").update({
@@ -43,11 +49,6 @@ Deno.serve(async req=>{
    }).eq("id",existing.id).eq("delivery_status","pending").lt("created_at",staleBefore).select("id").maybeSingle();
    if(reclaimError) throw reclaimError;
    if(!reclaimed) return reply({success:false,status:"in_progress",message:"A notification attempt is already in progress."},409);
-  }
-  const apiKey=Deno.env.get("RESEND_API_KEY"), from=Deno.env.get("EMAIL_FROM");
-  if(!apiKey||!from){
-   if(!existing) await db.from("notification_logs").insert({booking_id:id,recipient,channel:"email",notification_type:type,message:summary,delivery_status:"skipped",error_message:"Resend API key or verified sender is not configured."});
-   return reply({success:false,status:"not_configured",message:"Booking updated; email provider is not configured."});
   }
   const subject={confirmed:"Your Materuni Hosts booking is confirmed",cancelled:"An update to your Materuni Hosts booking",rescheduled:"Your Materuni Hosts booking has been rescheduled"}[event];
   const intro={confirmed:"We are pleased to confirm your booking.",cancelled:"Your booking has been cancelled. If you need help, please contact our local team.",rescheduled:"Your booking date and time have been updated. Please review the details below."}[event];
