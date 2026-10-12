@@ -79,6 +79,13 @@ for (const file of htmlFiles) {
   if (!/<link\s+rel=["']canonical["']\s+href=["']https:\/\//i.test(html)) fail(relative + ": missing canonical URL");
   if (!/<html\b[^>]*\blang=["'][a-z]{2}/i.test(html)) fail(relative + ": missing document language");
   if (/<h1\b/gi.test(html) === false) fail(relative + ": missing primary heading");
+  const imageTags = [...html.matchAll(/<img\b[^>]*>/gi)].map((match) => match[0]);
+  for (const image of imageTags) {
+    if (!/\balt\s*=\s*["'][^"']*["']/i.test(image)) {
+      fail(relative + ": image is missing an alt attribute");
+      break;
+    }
+  }
   if (/href\s*=\s*["'][^"']*REPLACE_/i.test(html)) fail(relative + ": contains a placeholder URL in href");
 }
 if (htmlFiles.length) pass("Checked SEO metadata and primary headings on " + htmlFiles.length + " HTML pages");
