@@ -83,7 +83,7 @@ fetch("https://sskmzswoeljxwojcszta.supabase.co/rest/v1/experience_catalog?selec
     const body=document.createElement("div");body.className="card-body";
     const top=document.createElement("div");top.className="card-top";
     const pill=document.createElement("span");pill.className="pill";pill.textContent=t.duration_label||"Local experience";
-    const price=document.createElement("span");price.className="price";price.append(document.createTextNode("$"+Number(t.price_usd).toFixed(0)));const small=document.createElement("small");small.textContent="PER PERSON";price.append(small);top.append(pill,price);
+    const price=document.createElement("span");price.className="price";price.dataset.priceUsd=String(t.price_usd);price.append(document.createTextNode("$"+Number(t.price_usd).toFixed(0)));const small=document.createElement("small");small.textContent="PER PERSON";price.append(small);top.append(pill,price);
     const title=document.createElement("h3");title.textContent=t.display_name||"Materuni experience";
     const desc=document.createElement("p");desc.textContent=t.full_description||t.short_description||"Ask our local hosts for details.";
     body.append(top,title,desc);addDetails(body,t);
@@ -92,7 +92,7 @@ fetch("https://sskmzswoeljxwojcszta.supabase.co/rest/v1/experience_catalog?selec
    }
    const title=card.querySelector("h3"),price=card.querySelector(".price"),desc=card.querySelector(".card-body>p"),img=card.querySelector("img"),pill=card.querySelector(".pill"),body=card.querySelector(".card-body"),link=card.querySelector("a.button");
    if(title)title.textContent=t.display_name||"Materuni experience";
-   if(price){price.replaceChildren(document.createTextNode("$"+Number(t.price_usd).toFixed(0)));const small=document.createElement("small");small.textContent="PER PERSON";price.append(small)}
+   if(price){price.dataset.priceUsd=String(t.price_usd);price.replaceChildren(document.createTextNode("$"+Number(t.price_usd).toFixed(0)));const small=document.createElement("small");small.textContent="PER PERSON";price.append(small)}
    if(desc&&(t.full_description||t.short_description))desc.textContent=t.full_description||t.short_description;
    if(img&&t.image_url&&/^https:\/\//i.test(t.image_url))img.src=t.image_url;
    if(pill&&t.duration_label)pill.textContent=t.duration_label;
