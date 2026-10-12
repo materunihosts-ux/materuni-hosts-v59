@@ -1,0 +1,12 @@
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+supabase/functions/.env
+supabase/.temp/
+node_modules/
+dist/
+.astro/
+.vercel/
+.netlify/
+.DS_Store
