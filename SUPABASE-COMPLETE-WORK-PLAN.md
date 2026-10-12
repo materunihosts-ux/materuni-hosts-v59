@@ -44,3 +44,19 @@ Never share a Supabase `service_role` key, database password, user password, or 
 ## Deployment caution
 
 V49 is a source package, not a live deployment. Deploy only after the SQL audit confirms compatibility and the local Astro production build passes. Keep the currently working deployment available as rollback until all tests pass.
+
+
+## v60 live security review (2026-10-12)
+
+A read-only pg_policies review confirmed the current access boundaries:
+- bookings SELECT/UPDATE/DELETE policies require the authenticated user's ID to exist in admin_users; public guest submission is through submit_booking, not public booking-table reads.
+- availability_slots public reads are limited to active future slots within the next 365 days; writes are admin-only through is_materuni_admin() policies.
+- experience_catalog public reads are limited to active experiences; mutations are admin-only.
+- marketing_contacts operations are restricted to admin membership.
+- site_content is publicly readable; ensure it contains only public-facing copy and media references, never guest PII.
+- RLS is enabled without policies on guest_profiles, ai_conversations, ai_messages, guest_chat_rate_limits and notification_logs. These are fail-closed for ordinary API roles; service-role Edge Functions bypass RLS and must enforce their own authorization and field selection.
+- site_settings exposes selected public keys, but overlapping permissive SELECT policies were reported by the performance advisor. Consolidate only after reviewing all settings used by the site.
+
+Security Advisor flags public execution of the SECURITY DEFINER submit_booking RPC. This can be intentional for guest checkout, but only if its function body validates all inputs, uses a fixed safe search_path, returns minimal data, and has no admin capabilities. Review every admin SECURITY DEFINER body for an internal admin membership check before changing grants. Do not blindly revoke public execute from the guest booking RPC, because that would break public booking.
+
+Do not add RLS policies to the private AI/notification tables merely to clear the advisor: service-role Edge Functions can continue to access them while browser roles remain denied. Add narrowly scoped policies only if a verified authenticated user-facing use case requires them.
