@@ -21,7 +21,8 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
     <div class="field"><label for="contact-name">Contact person</label><input id="contact-name" maxlength="120"></div>
     <div class="field"><label for="partner-email">Email</label><input id="partner-email" type="email" maxlength="254"></div>
     <div class="field"><label for="partner-whatsapp">WhatsApp / phone</label><input id="partner-whatsapp" type="tel" maxlength="40"></div>
-    <div class="field full"><label><input id="partner-whatsapp-opt-in" type="checkbox"> Partner has explicitly agreed to receive partnership messages on WhatsApp.</label><small class="muted">Record permission only after the partner has clearly agreed. WhatsApp invitations stay disabled without this consent.</small></div>\n    <div class="field full" id="whatsapp-consent-source-field" hidden><label for="whatsapp-consent-source">How was WhatsApp permission obtained? *</label><input id="whatsapp-consent-source" maxlength="160" placeholder="e.g. Verbal agreement on 12 October 2026"></div>
+    <div class="field full"><label><input id="partner-whatsapp-opt-in" type="checkbox"> Partner has explicitly agreed to receive partnership messages on WhatsApp.</label><small class="muted">Record permission only after the partner has clearly agreed. WhatsApp invitations stay disabled without this consent.</small></div>
+    <div class="field full" id="whatsapp-consent-source-field" hidden><label for="whatsapp-consent-source">How was WhatsApp permission obtained? *</label><input id="whatsapp-consent-source" maxlength="160" placeholder="e.g. Verbal agreement on 12 October 2026"></div>
     <div class="field"><label for="partner-type">Partner category</label><select id="partner-type"><option value="accommodation">Accommodation</option><option value="local_guide">Local guide</option><option value="transport">Transport</option><option value="travel_agency">Travel agency</option><option value="activity_provider">Activity provider</option><option value="other">Other</option></select></div>
     <div class="field"><label for="partner-status">Relationship status</label><select id="partner-status"><option value="lead">Lead</option><option value="active">Active</option><option value="paused">Paused</option><option value="archived">Archived</option></select></div>
     <div class="field"><label for="partner-location">Location</label><input id="partner-location" maxlength="160" placeholder="e.g. Materuni / Moshi"></div>
@@ -166,9 +167,11 @@ el("login-form").addEventListener("submit",async e=>{
 el("partner-form").addEventListener("submit",async e=>{
  e.preventDefault();const button=el("save-partner");button.disabled=true;el("form-feedback").textContent="Saving partner…";
  const id=el("partner-id").value;
- const consent=el("partner-whatsapp-opt-in").checked,consentSource=el("whatsapp-consent-source").value.trim();\n const payload={business_name:el("business-name").value.trim(),contact_name:el("contact-name").value.trim()||null,email:el("partner-email").value.trim()||null,whatsapp:el("partner-whatsapp").value.trim()||null,whatsapp_opt_in:consent,whatsapp_opt_in_at:consent?(editingPartner?.whatsapp_opt_in&&editingPartner.whatsapp_opt_in_source===consentSource?editingPartner.whatsapp_opt_in_at:new Date().toISOString()):null,whatsapp_opt_in_source:consent?(consentSource||null):null,partner_type:el("partner-type").value,status:el("partner-status").value,location:el("partner-location").value.trim()||null,website:el("partner-website").value.trim()||null,commission_rate:el("commission-rate").value===""?null:Number(el("commission-rate").value),notes:el("partner-notes").value.trim()||null,updated_at:new Date().toISOString()};
+ const consent=el("partner-whatsapp-opt-in").checked,consentSource=el("whatsapp-consent-source").value.trim();
+ const payload={business_name:el("business-name").value.trim(),contact_name:el("contact-name").value.trim()||null,email:el("partner-email").value.trim()||null,whatsapp:el("partner-whatsapp").value.trim()||null,whatsapp_opt_in:consent,whatsapp_opt_in_at:consent?(editingPartner?.whatsapp_opt_in&&editingPartner.whatsapp_opt_in_source===consentSource?editingPartner.whatsapp_opt_in_at:new Date().toISOString()):null,whatsapp_opt_in_source:consent?(consentSource||null):null,partner_type:el("partner-type").value,status:el("partner-status").value,location:el("partner-location").value.trim()||null,website:el("partner-website").value.trim()||null,commission_rate:el("commission-rate").value===""?null:Number(el("commission-rate").value),notes:el("partner-notes").value.trim()||null,updated_at:new Date().toISOString()};
  try{
-  if(!payload.business_name)throw new Error("Partner name is required.");\n  if(consent&&!consentSource)throw new Error("Record how and when the partner gave WhatsApp permission.");
+  if(!payload.business_name)throw new Error("Partner name is required.");
+  if(consent&&!consentSource)throw new Error("Record how and when the partner gave WhatsApp permission.");
   if(payload.website&&!safeUrl(payload.website))throw new Error("Enter a valid http or https website URL.");
   if(payload.commission_rate!==null&&(!Number.isFinite(payload.commission_rate)||payload.commission_rate<0||payload.commission_rate>100))throw new Error("Commission must be between 0 and 100.");
   if(id){await api("/rest/v1/partners?id=eq."+encodeURIComponent(id),{method:"PATCH",headers:{"Prefer":"return=minimal"},body:JSON.stringify(payload)});el("form-feedback").textContent="Partner updated."}
@@ -176,7 +179,8 @@ el("partner-form").addEventListener("submit",async e=>{
   clearForm();await loadPartners();
  }catch(error){el("form-feedback").textContent=error.message}finally{button.disabled=false}
 });
-el("partner-whatsapp-opt-in").addEventListener("change",()=>{const enabled=el("partner-whatsapp-opt-in").checked;el("whatsapp-consent-source-field").hidden=!enabled;el("whatsapp-consent-source").required=enabled;if(!enabled)el("whatsapp-consent-source").value="";});\nel("reset-form").addEventListener("click",clearForm);
+el("partner-whatsapp-opt-in").addEventListener("change",()=>{const enabled=el("partner-whatsapp-opt-in").checked;el("whatsapp-consent-source-field").hidden=!enabled;el("whatsapp-consent-source").required=enabled;if(!enabled)el("whatsapp-consent-source").value="";});
+el("reset-form").addEventListener("click",clearForm);
 el("refresh").addEventListener("click",loadPartners);
 el("export-csv").addEventListener("click",exportCsv);
 el("partner-search").addEventListener("input",render);el("status-filter").addEventListener("change",render);
