@@ -56,9 +56,7 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
 </style>
 <script>
 // @ts-nocheck
-const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
-const publishableKey = import.meta.env.PUBLIC_SUPABASE_PUBLISHABLE_KEY;
-if (!supabaseUrl || !publishableKey) throw new Error("Supabase public configuration is missing.");
+import { supabaseUrl, publishableKey } from "../../lib/supabase-public";
 let accessToken="",partners=[],editingPartner=null;
 const el=id=>document.getElementById(id);
 const headers=()=>({apikey:publishableKey,Authorization:"Bearer "+accessToken,"Content-Type":"application/json"});
