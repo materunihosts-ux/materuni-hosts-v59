@@ -170,6 +170,9 @@ const structuredData = {
     } catch {
       rates = { USD: 1 };
       rateSource = "USD only";
+      select.value = "USD";
+      localStorage.setItem("materuni-currency", "USD");
+      select.querySelectorAll('option:not([value="USD"])').forEach(option => { option.disabled = true; });
     }
   }
   window.MateruniUpdatePrices = updatePrices;
