@@ -24,6 +24,7 @@ const escapeHtml = (value: unknown) =>
 
 Deno.serve(async (request: Request) => {
   if (request.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
+  if (Number(request.headers.get("content-length") || "0") > 16_384) return json({ error: "Request is too large." }, 413);
   if (request.method !== "POST") return json({ error: "Method not allowed" }, 405);
   try {
     const body = await request.json().catch(() => null);
@@ -45,11 +46,11 @@ Deno.serve(async (request: Request) => {
       return json({ error: "This booking notification link has expired." }, 410);
     }
 
-    const guestName = String(booking.guest ?? "Guest");
-    const experience = String(booking.experience ?? "Materuni experience");
-    const bookingDate = String(booking.booking_date ?? "");
+    const guestName = String(booking.guest ?? "Guest").replace(/[\\u0000-\\u001F\\u007F]/g, " ").trim().slice(0, 120) || "Guest";
+    const experience = String(booking.experience ?? "Materuni experience").replace(/[\\u0000-\\u001F\\u007F]/g, " ").trim().slice(0, 160);
+    const bookingDate = String(booking.booking_date ?? "").slice(0, 40);
     const guests = Number(booking.guest_count ?? booking.guests ?? 1);
-    const phone = String(booking.phone ?? "");
+    const phone = String(booking.phone ?? "").replace(/[^+0-9 ()-]/g, "").slice(0, 30);
     const reference = String(booking.booking_reference ?? booking.id);
     const summary = `Booking ${reference}: ${guestName} · ${experience} · ${bookingDate} · ${guests} guest(s)`;
     const outcomes: Record<string, string> = {};
@@ -101,7 +102,7 @@ Deno.serve(async (request: Request) => {
       try {
         const response = await fetch("https://api.resend.com/emails", {
           method: "POST", headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
-          body: JSON.stringify({ from, to: [recipient], subject, html }),
+          body: JSON.stringify({ from, to: [recipient], subject, html }), signal: AbortSignal.timeout(10_000),
         });
         const result = await response.json().catch(() => ({}));
         if (!response.ok) throw new Error(result?.message || `Resend returned ${response.status}`);
@@ -114,8 +115,10 @@ Deno.serve(async (request: Request) => {
       }
     }
 
-    const guestEmail = String(booking.email ?? "").trim();
-    const adminEmail = String(Deno.env.get("ADMIN_NOTIFICATION_EMAIL") ?? "").trim();
+    const rawGuestEmail = String(booking.email ?? "").trim().slice(0, 254);
+    const guestEmail = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(rawGuestEmail) ? rawGuestEmail : "";
+    const rawAdminEmail = String(Deno.env.get("ADMIN_NOTIFICATION_EMAIL") ?? "").trim().slice(0, 254);
+    const adminEmail = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(rawAdminEmail) ? rawAdminEmail : "";
     const guestHtml = `
       <div style="font-family:Arial,sans-serif;line-height:1.6;color:#242421;max-width:620px;margin:auto">
         <div style="background:#1A3322;color:#fff;padding:26px 30px"><div style="font-size:12px;letter-spacing:3px">MATERUNI HOSTS</div><h1 style="font-family:Georgia,serif;font-weight:500;margin:12px 0 0">Your Materuni experience</h1></div>
@@ -192,7 +195,7 @@ Deno.serve(async (request: Request) => {
 
     return json({ success: true, booking_reference: reference, notifications: outcomes });
   } catch (error) {
-    console.error("booking-notifications error:", error);
+    console.error("booking-notifications failed:", error instanceof Error ? error.name : "unknown_error");
     return json({ error: "Booking notification processing failed." }, 500);
   }
 });
