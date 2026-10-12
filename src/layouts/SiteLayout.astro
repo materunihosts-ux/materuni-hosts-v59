@@ -172,6 +172,7 @@ const structuredData = {
       rateSource = "USD only";
     }
   }
+  window.MateruniUpdatePrices = updatePrices;
   select.value = supported.includes(saved) ? saved : "USD";
   loadRates().then(() => updatePrices(select.value));
   select.addEventListener("change", () => {
