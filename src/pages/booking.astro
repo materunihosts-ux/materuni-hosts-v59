@@ -199,6 +199,17 @@ function validateCheckoutStep(index){
   const field=$(id);
   if(field && !field.checkValidity()){field.reportValidity();field.focus();return false}
  }
+ if(index===0 && !$("slot").value){
+  showFeedback("Please select an available time slot before continuing.");
+  $("slot").focus();
+  return false;
+ }
+ if(index===1){
+  const email=$("email").value.trim(), phone=$("phone").value.trim();
+  if(!email&&!phone){showFeedback("Please provide an email address or WhatsApp / phone number.");$("email").focus();return false;}
+  if(email&&!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)){showFeedback("Please enter a valid email address.");$("email").focus();return false;}
+  if(phone&&!/^\\+?[0-9\\s()-]{7,20}$/.test(phone)){showFeedback("Please enter a valid phone number.");$("phone").focus();return false;}
+ }
  return true;
 }
 back.addEventListener("click",()=>{activeCheckoutStep=Math.max(0,activeCheckoutStep-1);renderCheckoutStep();});
