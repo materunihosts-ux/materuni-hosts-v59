@@ -19,8 +19,8 @@ const faqs = [
   <div class="faq-intro"><span class="eyebrow" data-i18n="faq_section_eyebrow">PLAN WITH CONFIDENCE</span><h2 data-i18n="faq_section_title">Everything you need to know.</h2><p data-i18n="faq_section_intro">If you need help with something not covered here, speak directly with a local host.</p><a class="button" href="https://wa.me/255612068540" target="_blank" rel="noopener noreferrer" data-i18n="faq_whatsapp">Ask us on WhatsApp</a></div>
   <div class="faq-list">{faqs.map(([question,answer])=><details class="faq-item"><summary>{question}</summary><p>{answer}</p></details>)}</div>
   <script>
+  import { supabaseUrl, publishableKey as faqPublicKey } from "../lib/supabase-public";
   document.addEventListener("DOMContentLoaded",()=>{
-    import { supabaseUrl, publishableKey as faqPublicKey } from "../lib/supabase-public";
     const faqSettingsUrl=`${supabaseUrl}/rest/v1/site_settings?select=setting_key,setting_value&setting_key=eq.faq_items`;
     fetch(faqSettingsUrl,{headers:{apikey:faqPublicKey,Authorization:"Bearer "+faqPublicKey}})
       .then(response=>response.ok?response.json():[])
