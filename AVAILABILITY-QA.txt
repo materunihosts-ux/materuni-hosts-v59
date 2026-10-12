@@ -1,11 +1,46 @@
-V57 AVAILABILITY FEATURE — SOURCE QA
-- JavaScript syntax: checked with node --check.
-- Guest UI: availability selector added to booking form.
-- Data source: existing Supabase REST endpoint public.availability_slots.
-- Date/experience filtering: implemented.
-- Active/remaining capacity filtering: implemented; unknown capacity is not displayed as available.
-- Booking payload: includes slot_id and guest_count.
-- Pre-submit refresh: implemented.
-- Database atomic capacity lock: NOT implemented/verified in this frontend package.
-- Live Supabase query and end-to-end booking: NOT executed from this environment.
-- Astro production build: NOT run; npm dependency install previously timed out.
+MATERUNI HOSTS — AVAILABILITY & BOOKING QA (LIVE DATABASE REVIEW)
+
+Reviewed against the current main branch and connected Supabase project.
+
+DATABASE DESIGN VERIFIED
+- public.availability_slots has id, experience, slot_date, start_time, end_time, capacity, booked_count and is_active.
+- public.bookings stores slot_id and guest_count.
+- submit_booking is a SECURITY DEFINER PL/pgSQL RPC with a fixed search_path.
+- submit_booking selects the requested slot FOR UPDATE, validates active state/date/experience/capacity, increments booked_count and inserts the booking in the same transaction.
+- The row lock serializes concurrent requests for the same slot. If the remaining capacity is insufficient when a request obtains the lock, the transaction raises an error and does not overbook.
+- A unique index prevents duplicate experience/date/start-time slots.
+- admin_cancel_booking locks the booking and slot, decrements booked_count and marks the booking Cancelled in one transaction.
+- admin_confirm_booking does not increment capacity a second time; the pending request already holds its spaces.
+- admin_reschedule_booking locks both slots in stable ID order, validates capacity, moves the guest count and updates the booking transactionally.
+
+LIVE DATA INTEGRITY SNAPSHOT
+- 260 availability slot rows inspected.
+- 0 slots had booked_count greater than capacity.
+- 0 slots had negative booked_count.
+- 0 slot counters differed from the sum of guest counts on New, Pending and Confirmed bookings in the audit query.
+- These are point-in-time checks; continue monitoring after deployment and operational changes.
+
+FRONTEND BEHAVIOUR
+- Reads only active slots matching the selected experience/date.
+- Displays a slot only when capacity - booked_count is enough for the selected party.
+- Rejects invalid group sizes and past same-day start times using Africa/Dar_es_Salaam.
+- Clears stale selected slots when experience/date/group size changes.
+- Prevents submission without a selected slot and displays the database's safe error message.
+- Success messaging now makes clear that the request is received but awaiting host confirmation and no payment has been taken.
+- Notification delivery warnings are shown separately from booking-save success.
+- Error alerts use role=alert / assertive announcements; success and warning use status announcements.
+
+IMPORTANT SEMANTICS
+- A New/Pending request reserves capacity immediately. This avoids two guests taking the same remaining places while the host reviews the request.
+- Admin cancellation restores those spaces. Confirming a request must not increment booked_count again.
+- Do not directly edit booked_count or booking status with ad-hoc SQL. Use the secured RPC workflows so booking rows and capacity counters remain in sync.
+- Do not add availability dates or capacities automatically without the host's schedule approval.
+
+REMAINING HARDENING / TESTS
+1. Add an idempotency token to submit_booking so a browser retry after a network timeout cannot create a second booking for the same submission. The current slot lock prevents over-capacity, but it does not identify a repeated request as the same request.
+2. Add automated concurrent integration tests: with capacity 5 and two simultaneous requests for 4 guests, only one may succeed.
+3. Add tests for cancellation, confirmation, rescheduling, and repeated cancellation to prove capacity is changed exactly once.
+4. Review direct INSERT/UPDATE/DELETE grants on bookings and availability_slots; guest clients should use the RPC, not direct writes.
+5. Monitor booking counters against active booking totals and alert on discrepancies.
+6. Run browser end-to-end tests against a test slot; no live test booking was created during this review.
+
