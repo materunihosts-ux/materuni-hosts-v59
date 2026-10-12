@@ -536,3 +536,34 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--gold);outline-offse
  .social-links a{min-width:44px;min-height:44px}
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.experience-card,.button,.nav-cta{transition:none}}
+
+
+/* Consistent circular logo treatment across every shared site placement */
+.brand-logo,
+.brand-logo-footer{
+  display:block;
+  width:78px;
+  height:78px;
+  flex:0 0 78px;
+  aspect-ratio:1 / 1;
+  box-sizing:border-box;
+  object-fit:contain;
+  object-position:center;
+  border-radius:50%;
+  padding:3px;
+  background:var(--cream);
+  border:1.5px solid var(--gold);
+  overflow:hidden;
+}
+.site-header>.brand,
+.site-footer>.brand{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+}
+@media(max-width:850px){
+  .site-header>.brand .brand-logo{width:66px;height:66px;flex-basis:66px}
+}
+@media(max-width:560px){
+  .site-header>.brand .brand-logo{width:60px;height:60px;flex-basis:60px}
+}
