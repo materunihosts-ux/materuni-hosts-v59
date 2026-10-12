@@ -117,7 +117,7 @@ Materuni Hosts`}
 async function loadCommunicationHistory(){
  const root=el("communication-history");root.replaceChildren();
  try{
-  const rows=await api("/rest/v1/communication_logs?select=recipient,channel,communication_type,delivery_status,error_message,created_at,sent_at&order=created_at.desc&limit=30");
+  const rows=await api("/rest/v1/communication_logs?select=partner_id,idempotency_key,recipient,channel,communication_type,delivery_status,error_message,created_at,sent_at&order=created_at.desc&limit=30");
   if(!rows.length){root.textContent="No partner invitation deliveries recorded yet.";return}
   rows.forEach(row=>{
    const line=document.createElement("div");line.className="admin-notification-row";
@@ -130,6 +130,22 @@ async function loadCommunicationHistory(){
    const status=document.createElement("span");status.className="status-pill status-"+String(row.delivery_status||"pending").toLowerCase();status.textContent=row.delivery_status||"pending";
    meta.append(channel,status);line.append(main,meta);
    if(row.error_message){const error=document.createElement("p");error.className="notification-error";error.textContent=row.error_message;line.append(error)}
+   if(row.delivery_status==="failed"&&row.partner_id&&row.idempotency_key){
+    const retry=document.createElement("button");retry.type="button";retry.className="button button-secondary";retry.textContent="Retry failed invitation";
+    retry.addEventListener("click",async()=>{
+     retry.disabled=true;retry.textContent="Retrying…";
+     try{
+      const response=await fetch(supabaseUrl+"/functions/v1/admin-communications",{method:"POST",headers:headers(),body:JSON.stringify({action:"partner_invitation",partner_id:row.partner_id,request_id:row.idempotency_key})});
+      const result=await response.json().catch(()=>({}));
+      if(!response.ok)throw new Error(result.error||"Invitation retry failed.");
+      retry.textContent="Retry processed";
+      const outcomes=result.outcomes||{};
+      const notice=document.createElement("p");notice.className="muted";notice.textContent="Retry — Email: "+(outcomes.email||"not sent").replaceAll("_"," ")+" · WhatsApp: "+(outcomes.whatsapp||"not sent").replaceAll("_"," ")+".";line.append(notice);
+      await loadCommunicationHistory();
+     }catch(error){retry.disabled=false;retry.textContent="Retry failed invitation";const notice=document.createElement("p");notice.className="notification-error";notice.textContent=error.message;line.append(notice)}
+    });
+    line.append(retry);
+   }
    root.append(line);
   });
  }catch(error){root.textContent="Delivery history unavailable: "+error.message}
