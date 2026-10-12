@@ -26,8 +26,7 @@ import SiteLayout from "../layouts/SiteLayout.astro";
 <script>
 // @ts-nocheck
 
-const url="https://sskmzswoeljxwojcszta.supabase.co";
-const key="sb_publishable_G9ru4P_yKzievqiXjXEEbQ_p28cB_NZ";
+import { supabaseUrl as url, publishableKey as key } from "../lib/supabase-public";
 const headers={"apikey":key,"Authorization":"Bearer "+key,"Content-Type":"application/json"};
 const $=id=>document.getElementById(id);
 function updateBookingEstimate(){
