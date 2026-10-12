@@ -59,7 +59,7 @@ const structuredData = {
 <html lang="en">
 <head>
 <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>{title}</title><meta name="description" content={description} /><meta name="theme-color" content="#1A3322" /><link rel="canonical" href={canonical} /><meta property="og:type" content="website" /><meta property="og:site_name" content="Materuni Hosts" /><meta property="og:title" content={title} /><meta property="og:description" content={description} /><meta property="og:url" content={canonical} /><meta property="og:image" content={socialImage} /><meta property="og:locale" content="en_TZ" /><meta property="og:image:alt" content="Materuni Hosts authentic village experiences in Materuni, Tanzania" /><meta name="twitter:card" content="summary_large_image" /><meta name="twitter:title" content={title} /><meta name="twitter:description" content={description} /><meta name="twitter:image" content={socialImage} /><script type="application/ld+json" set:html={JSON.stringify(structuredData)} />{!noindex && <script type="application/ld+json" set:html={JSON.stringify(breadcrumbData)} />}{noindex && <meta name="robots" content="noindex,nofollow" />}{preloadImage && <link rel="preload" as="image" href={preloadImage} fetchpriority="high" />}
+<title>{title}</title><meta name="description" content={description} /><meta name="theme-color" content="#1A3322" /><link rel="canonical" href={canonical} /><meta property="og:type" content="website" /><meta property="og:site_name" content="Materuni Hosts" /><meta property="og:title" content={title} /><meta property="og:description" content={description} /><meta property="og:url" content={canonical} /><meta property="og:image" content={socialImage} /><meta property="og:locale" content="en_TZ" /><meta property="og:image:alt" content="Materuni Hosts authentic village experiences in Materuni, Tanzania" /><meta name="twitter:card" content="summary_large_image" /><meta name="twitter:title" content={title} /><meta name="twitter:description" content={description} /><meta name="twitter:image" content={socialImage} /><script type="application/ld+json" set:html={JSON.stringify(structuredData)} /><script type="application/ld+json" set:html={JSON.stringify({"@context":"https://schema.org","@type":"TouristAttraction","name":"Materuni Waterfall","description":"A scenic waterfall of approximately 95 metres in Materuni Village, near Moshi in Tanzania.","containedInPlace":{"@type":"Place","name":"Materuni Village, Kilimanjaro, Tanzania"},"touristType":["Nature tourism","Cultural tourism"]})} />{!noindex && <script type="application/ld+json" set:html={JSON.stringify(breadcrumbData)} />}{noindex && <meta name="robots" content="noindex,nofollow" />}{preloadImage && <link rel="preload" as="image" href={preloadImage} fetchpriority="high" />}
 <link rel="icon" type="image/svg+xml" href="/materuni-hosts-logo-round.svg" /><link rel="preconnect" href="https://sskmzswoeljxwojcszta.supabase.co" crossorigin /><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
@@ -68,7 +68,7 @@ const structuredData = {
 <a class="skip-link" href="#main-content">Skip to content</a>
 <header class="site-header"><a class="brand" href="/" aria-label="Materuni Hosts home"><img class="brand-logo" src="/materuni-hosts-logo-round.svg" alt="Materuni Hosts logo" width="86" height="86" /></a>
 <nav aria-label="Main navigation"><a href="/experiences">Experiences</a><a href="/itinerary">Build itinerary</a><a href="/reviews">Guest reviews</a><a href="/faq">FAQs</a><a href="/sustainability">Our approach</a><a href="/travel-guide">Travel guide</a><a class="nav-cta" href="/booking">Check availability</a></nav>
-<label class="language-control" for="site-language"><span class="sr-only">Website language</span><select id="site-language" aria-label="Website language"><option value="en">EN</option><option value="es">ES</option><option value="fr">FR</option><option value="de">DE</option></select></label><button class="menu-toggle" aria-label="Open menu" aria-expanded="false" onclick="const n=document.querySelector('.site-header nav');const open=n.classList.toggle('open');this.setAttribute('aria-expanded',String(open))">☰</button></header>
+<div class="header-preferences"><label class="language-control" for="site-language"><span class="sr-only">Website language</span><select id="site-language" aria-label="Website language"><option value="en">EN</option><option value="es">ES</option><option value="fr">FR</option><option value="de">DE</option></select></label><label class="currency-control" for="site-currency"><span class="sr-only">Display currency</span><select id="site-currency" aria-label="Display currency"><option value="USD">USD $</option><option value="EUR">EUR €</option><option value="TZS">TZS</option></select></label></div><button class="menu-toggle" aria-label="Open menu" aria-expanded="false" onclick="const n=document.querySelector('.site-header nav');const open=n.classList.toggle('open');this.setAttribute('aria-expanded',String(open))">☰</button></header>
 <script>
 // @ts-nocheck
 (() => {
@@ -132,6 +132,54 @@ const structuredData = {
 })();
 </script>
 <main id="main-content" tabindex="-1"><slot /></main>
+<script is:inline>
+(() => {
+  const select = document.getElementById("site-currency");
+  if (!select) return;
+  const supported = ["USD", "EUR", "TZS"];
+  const saved = localStorage.getItem("materuni-currency");
+  let rates = { USD: 1 };
+  let rateSource = "USD base";
+  const format = (amount, currency) => new Intl.NumberFormat(
+    currency === "TZS" ? "en-TZ" : "en",
+    { style: "currency", currency, maximumFractionDigits: currency === "TZS" ? 0 : 2 }
+  ).format(amount);
+  function updatePrices(currency) {
+    document.querySelectorAll("[data-price-usd]").forEach(node => {
+      const usd = Number(node.dataset.priceUsd);
+      if (!Number.isFinite(usd)) return;
+      const amount = usd * (rates[currency] || 1);
+      const label = currency === "USD" ? "$" + amount.toFixed(0) : format(amount, currency);
+      const small = node.querySelector("small");
+      node.textContent = label;
+      if (small) { small.textContent = "PER PERSON · ESTIMATE"; node.append(small); }
+      node.setAttribute("aria-label", label + " estimated per person");
+    });
+    document.documentElement.dataset.currency = currency;
+  }
+  async function loadRates() {
+    try {
+      const cached = JSON.parse(sessionStorage.getItem("materuni-fx-rates") || "null");
+      if (cached && Date.now() - cached.time < 21600000) { rates = cached.rates; return; }
+      const response = await fetch("https://open.er-api.com/v6/latest/USD", { signal: AbortSignal.timeout(4500), cache: "no-store" });
+      if (!response.ok) throw new Error("FX rates unavailable");
+      const data = await response.json();
+      if (data.result !== "success" || !data.rates?.EUR || !data.rates?.TZS) throw new Error("FX rates invalid");
+      rates = { USD: 1, EUR: Number(data.rates.EUR), TZS: Number(data.rates.TZS) };
+      sessionStorage.setItem("materuni-fx-rates", JSON.stringify({ time: Date.now(), rates }));
+    } catch {
+      rates = { USD: 1 };
+      rateSource = "USD only";
+    }
+  }
+  select.value = supported.includes(saved) ? saved : "USD";
+  loadRates().then(() => updatePrices(select.value));
+  select.addEventListener("change", () => {
+    localStorage.setItem("materuni-currency", select.value);
+    updatePrices(select.value);
+  });
+})();
+</script>
 
 {!noindex && <div class="mh-concierge" id="mh-concierge">
   <button class="mh-concierge-launch" id="mh-chat-open" type="button" aria-expanded="false" aria-controls="mh-chat-panel"><span class="mh-chat-icon">✦</span><span>Ask a local host</span></button>
