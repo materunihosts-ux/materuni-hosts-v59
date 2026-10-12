@@ -198,8 +198,14 @@ const structuredData = {
     }
   }
   window.MateruniUpdatePrices = updatePrices;
-  select.value = supported.includes(saved) ? saved : "USD";
-  loadRates().then(() => updatePrices(select.value));
+  select.value = "USD";
+  select.querySelectorAll('option:not([value="USD"])').forEach(option => { option.disabled = true; });
+  loadRates().then(() => {
+    if (rates.EUR && rates.TZS) select.querySelectorAll('option:not([value="USD"])').forEach(option => { option.disabled = false; });
+    const preferred = supported.includes(saved) && rates[saved] ? saved : "USD";
+    select.value = preferred;
+    updatePrices(preferred);
+  });
   select.addEventListener("change", () => {
     localStorage.setItem("materuni-currency", select.value);
     updatePrices(select.value);
