@@ -162,22 +162,31 @@ import { supabaseUrl, publishableKey } from "../lib/supabase-public";
  };
  window.MateruniApplyPageTranslations=loadPageTranslations;
  async function loadSocialLinks(){
+  const fallback={
+   instagram_url:"https://instagram.com/materuni_hosts",
+   google_review_url:"https://www.google.com/search?client=ms-android-verizon&hs=zO8V&sca_esv=a125912aa53761da&hl=en-US&cs=1&sxsrf=APpeQntoHc6e12Fz-82CbvndKS8zsNA2Xg%3A1791819618506&kgmid=%2Fg%2F11zxs_tn4c&q=Materuni%20Hosts%20-%20Waterfall%20Tours%20%26%20Village%20Camping&shem=dlvs1%2Cepsd1%2Cltae%2Crimspwouoe&shndl=30&source=sh%2Fx%2Floc%2Funi%2Fm1%2F4&kgs=c4d28f4325867422"
+  };
   const keys=["instagram_url","facebook_url","tripadvisor_url","google_review_url"];
+  let values={...fallback};
   try{
    const response=await fetch(`${supabaseUrl}/rest/v1/site_settings?select=setting_key,setting_value&setting_key=in.(${keys.join(",")})`,{headers:{apikey:publishableKey,Authorization:"Bearer "+publishableKey},cache:"no-store"});
-   if(!response.ok)throw new Error("Social links unavailable");
-   const rows=await response.json(),values=Object.fromEntries(rows.map(row=>[row.setting_key,row.setting_value]));
-   document.querySelectorAll("[data-social-key]").forEach(link=>{
-    const value=values[link.dataset.socialKey];
-    let valid=false;
-    try{const parsed=new URL(value);valid=parsed.protocol==="https:"||parsed.protocol==="http:"}catch{}
-    if(valid){link.href=value;link.hidden=false;link.removeAttribute("aria-hidden")}
-    else{link.hidden=true;link.setAttribute("aria-hidden","true");link.removeAttribute("href")}
-   });
-  }catch(error){
-   document.querySelectorAll("[data-social-key]").forEach(link=>{link.hidden=true;link.setAttribute("aria-hidden","true");link.removeAttribute("href")});
-   console.warn("Optional social links unavailable.",error);
-  }
+   if(response.ok){
+    const rows=await response.json();
+    for(const row of rows){if(typeof row.setting_value==="string"&&row.setting_value.trim())values[row.setting_key]=row.setting_value.trim()}
+   }
+  }catch(error){console.warn("Using saved public social-link fallbacks.",error)}
+  document.querySelectorAll("[data-social-key]").forEach(link=>{
+   const key=link.dataset.socialKey,value=values[key];
+   let valid=false;
+   try{const parsed=new URL(value);valid=(parsed.protocol==="https:"||parsed.protocol==="http:")&&parsed.hostname.includes(".")}catch{}
+   if(valid){
+    link.href=value;link.hidden=false;link.removeAttribute("aria-hidden");link.removeAttribute("aria-disabled");link.removeAttribute("tabindex");link.classList.remove("social-link-pending");link.removeAttribute("title");
+   }else if(key==="facebook_url"||key==="tripadvisor_url"){
+    link.hidden=false;link.removeAttribute("aria-hidden");link.removeAttribute("href");link.setAttribute("aria-disabled","true");link.setAttribute("tabindex","-1");link.classList.add("social-link-pending");link.title="Official Materuni Hosts profile link will be added here";
+   }else{
+    link.hidden=true;link.setAttribute("aria-hidden","true");link.removeAttribute("href");
+   }
+  });
  }
  document.addEventListener("DOMContentLoaded",()=>{loadPageTranslations(lang);loadSocialLinks()},{once:true});
 
