@@ -50,11 +50,14 @@ async function loadExperienceCatalog(){
   const wanted=(params.get("experience")||"").trim().toLowerCase();
   const match=[...select.options].find(o=>o.text.split(" · $")[0].trim().toLowerCase()===wanted||o.value.trim().toLowerCase()===wanted);
   if(match) select.value=match.value;
-  if(select.value && $("date").value) await refreshAvailability();
  } catch(error) {
-  select.innerHTML='<option value="">Experiences temporarily unavailable</option>';
-  $("feedback").textContent=error.message;
+  console.error("Experience catalogue request failed:",error);
+  select.innerHTML='<option value="">Experiences could not be loaded — refresh the page</option>';
+  showFeedback("We could not load the experience list. Please refresh the page or contact us on WhatsApp. "+(error.message||""),"error");
+  return;
  }
+ // Availability is a separate service. A calendar error must never erase a catalogue that loaded successfully.
+ if(select.value && $("date").value) await refreshAvailability();
 }
 loadExperienceCatalog();
 
