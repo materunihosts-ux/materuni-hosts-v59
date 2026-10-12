@@ -23,6 +23,10 @@ const escapeHtml = (value: unknown) =>
   })[character] ?? character);
 
 Deno.serve(async (request: Request) => {
+  const configuredOrigins = (Deno.env.get("ALLOWED_ORIGINS") || "https://materunihosts.com,https://www.materunihosts.com,http://localhost:4321")
+    .split(",").map(value => value.trim()).filter(Boolean);
+  const origin = request.headers.get("origin");
+  if (origin && !configuredOrigins.includes(origin)) return new Response("Origin not allowed", { status: 403 });
   if (request.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   if (Number(request.headers.get("content-length") || "0") > 16_384) return json({ error: "Request is too large." }, 413);
   if (request.method !== "POST") return json({ error: "Method not allowed" }, 405);
@@ -46,7 +50,7 @@ Deno.serve(async (request: Request) => {
       return json({ error: "This booking notification link has expired." }, 410);
     }
 
-    const guestName = String(booking.guest ?? "Guest").replace(/[\\u0000-\\u001F\\u007F]/g, " ").trim().slice(0, 120) || "Guest";
+    const guestName = String(booking.guest ?? "Guest").replace(/[\u0000-\u001F\u007F]/g, " ").trim().slice(0, 120) || "Guest";
     const experience = String(booking.experience ?? "Materuni experience").replace(/[\\u0000-\\u001F\\u007F]/g, " ").trim().slice(0, 160);
     const bookingDate = String(booking.booking_date ?? "").slice(0, 40);
     const guests = Number(booking.guest_count ?? booking.guests ?? 1);
@@ -131,6 +135,8 @@ Deno.serve(async (request: Request) => {
             <p><strong>Status:</strong> Request received — awaiting host confirmation</p>
           </div>
           <p>This is not yet a confirmed reservation and no payment has been taken.</p>
+          <p><strong>Getting here:</strong> <a href="https://www.google.com/maps/search/?api=1&amp;query=Materuni+Village+Moshi+Tanzania">Open Materuni Village in Google Maps</a>. Please confirm your exact meeting point and transport with your host before travelling.</p>
+          <p><strong>Before you visit:</strong> wear comfortable walking shoes, bring a light rain layer, carry drinking water and tell your host in advance about dietary or mobility requirements.</p>
           <p>WhatsApp: +255 612 068 540<br>Email: hello@materunihosts.com</p>
           <p style="font-family:Georgia,serif;font-style:italic">Come as a guest. Leave as a friend.</p>
         </div>

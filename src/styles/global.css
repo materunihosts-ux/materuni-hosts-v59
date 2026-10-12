@@ -428,3 +428,39 @@ main:focus{outline:none}
 .booking-panel #feedback.booking-alert-success{border-color:#21633b;background:#edf5ee;color:#194b2b}
 .booking-panel #feedback.booking-alert-warning{border-color:#9a6b19;background:#fbf4e5;color:#674716}
 .booking-panel #feedback.booking-alert-error{border-color:#9b3028;background:#fbefed;color:#842820}
+
+/* Header preferences and currency display */
+.header-preferences{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.header-preferences select{min-height:38px;padding:7px 9px;border:1px solid var(--sand);border-radius:3px;background:var(--cream);color:var(--forest);font:700 11px var(--sans);letter-spacing:.04em}
+.price[data-price-usd]{white-space:nowrap}
+@media(max-width:1100px){.site-header{padding-inline:20px}.site-header nav{gap:14px;font-size:12px}}
+@media(max-width:850px){.header-preferences{margin-left:auto;margin-right:10px}.site-header nav{top:96px}}
+@media(max-width:560px){.header-preferences select{font-size:10px;padding:6px 5px}.header-preferences{gap:4px;margin-right:5px}}
+
+/* Progressive booking checkout */
+.checkout-progress{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;list-style:none;padding:0;margin:0 0 12px;counter-reset:checkout}
+.checkout-progress li{padding:10px 8px;border-bottom:2px solid var(--sand);color:var(--muted);font-size:11px;font-weight:800;text-align:center;letter-spacing:.04em}
+.checkout-progress li::before{counter-increment:checkout;content:counter(checkout) " · ";font-variant-numeric:tabular-nums}
+.checkout-progress li.is-current{border-color:var(--gold);color:var(--forest)}
+.checkout-progress li.is-complete{border-color:var(--forest);color:var(--forest)}
+.checkout-step{grid-column:1/-1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.checkout-step[hidden]{display:none}
+.checkout-step-title{grid-column:1/-1;margin:4px 0 0;font:600 27px var(--serif);color:var(--forest)}
+.checkout-step .field{min-width:0}
+.checkout-step-actions{grid-column:1/-1;display:flex;justify-content:space-between;gap:12px;margin-top:6px}
+.checkout-step-actions .button{min-width:125px;cursor:pointer}
+.checkout-step-actions .button-secondary{background:transparent;color:var(--forest)!important;border:1px solid var(--sand)}
+@media(max-width:640px){.checkout-step{grid-template-columns:1fr}.checkout-progress li{font-size:10px;padding-inline:4px}.checkout-step-title{font-size:24px}}
+
+.mh-whatsapp-quick{position:fixed;left:22px;bottom:24px;z-index:69;display:inline-flex;align-items:center;gap:9px;padding:13px 17px;background:#234f36;color:#fff;border:1px solid #ffffff35;box-shadow:0 10px 30px #142b1d30;font-size:11px;font-weight:800;letter-spacing:.025em}
+.mh-whatsapp-quick:hover{background:#1A3322;transform:translateY(-1px)}
+.mh-whatsapp-quick span{font-size:15px;color:#e6c98d}
+@media(max-width:600px){.mh-whatsapp-quick{left:12px;bottom:18px;padding:11px 12px;font-size:10px}.mh-concierge{right:12px;bottom:18px}.mh-concierge-launch{padding:10px 12px;font-size:10px}}
+
+.mh-lightbox{width:min(1000px,calc(100vw - 28px));max-width:1000px;max-height:calc(100dvh - 28px);padding:16px;border:1px solid var(--sand);background:var(--cream);color:var(--ink);box-shadow:0 25px 90px #0007}
+.mh-lightbox::backdrop{background:#101a14d9;backdrop-filter:blur(3px)}
+.mh-lightbox form{display:flex;justify-content:flex-end;margin-bottom:8px}
+.mh-lightbox form button{border:1px solid var(--sand);background:#fff;color:var(--forest);padding:9px 14px;font:700 12px var(--sans);cursor:pointer}
+.mh-lightbox img{display:block;width:100%;max-height:calc(100dvh - 110px);object-fit:contain}
+.mh-lightbox p{margin:9px 0 0;color:var(--muted);font-size:12px}
+img[data-gallery]{cursor:zoom-in}
