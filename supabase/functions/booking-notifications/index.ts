@@ -67,9 +67,35 @@ Deno.serve(async (request: Request) => {
       const { data, error } = await supabase.from("notification_logs").insert({
         booking_id: bookingId, recipient, channel, notification_type: type, message, delivery_status: "pending",
       }).select("id").single();
-      if (error?.code === "23505") return { duplicate: true, id: null };
-      if (error) throw error;
-      return { duplicate: false, id: data.id };
+      if (!error) return { duplicate: false, id: data.id };
+      if (error.code !== "23505") throw error;
+
+      // A pending row normally means another request is delivering this message.
+      // If a worker crashed after claiming it, allow one caller to reclaim it
+      // after ten minutes. The conditional UPDATE is atomic and preserves the
+      // partial unique index that prevents concurrent duplicate deliveries.
+      const { data: existing, error: lookupError } = await supabase.from("notification_logs")
+        .select("id, delivery_status, created_at")
+        .eq("booking_id", bookingId).eq("channel", channel)
+        .eq("notification_type", type)
+        .in("delivery_status", ["pending", "sent"])
+        .maybeSingle();
+      if (lookupError) throw lookupError;
+      if (!existing) return { duplicate: true, id: null };
+      if (existing.delivery_status === "sent") return { duplicate: true, id: null };
+
+      const staleBefore = new Date(Date.now() - 10 * 60 * 1000).toISOString();
+      const { data: reclaimed, error: reclaimError } = await supabase.from("notification_logs")
+        .update({
+          recipient, message, created_at: new Date().toISOString(),
+          error_message: null, provider_reference: null, sent_at: null,
+        })
+        .eq("id", existing.id).eq("delivery_status", "pending")
+        .lt("created_at", staleBefore)
+        .select("id").maybeSingle();
+      if (reclaimError) throw reclaimError;
+      if (reclaimed) return { duplicate: false, id: reclaimed.id };
+      return { duplicate: true, id: null };
     }
     async function finish(id: string | null, status: string, providerReference?: string, errorMessage?: string) {
       if (!id) return;
