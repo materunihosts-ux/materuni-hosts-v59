@@ -824,3 +824,142 @@ p{max-width:68ch}
 @media(prefers-reduced-motion:reduce){
  *,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}
 }
+
+
+/* =========================================================
+   MATERUNI HOSTS — INTERNATIONAL QUALITY SYSTEM
+   Shared design, conversion, accessibility and responsive layer
+   ========================================================= */
+:root{
+  color-scheme:light;
+  --mh-content:1200px;
+  --mh-copy:66ch;
+  --mh-radius-sm:4px;
+  --mh-radius-md:7px;
+  --mh-radius-lg:10px;
+  --mh-border:#e5ded2;
+  --mh-shadow-soft:0 5px 18px rgba(28,43,32,.055);
+  --mh-shadow-card:0 14px 34px rgba(28,43,32,.10);
+  --mh-focus:0 0 0 3px rgba(181,138,69,.22);
+}
+html{scroll-padding-top:96px}
+body{min-width:320px}
+main{width:100%;min-width:0}
+section{scroll-margin-top:100px}
+h1,h2,h3,h4{color:var(--forest);font-family:var(--serif);font-weight:600;line-height:1.12;text-wrap:balance}
+p,li{overflow-wrap:anywhere}
+p{max-width:var(--mh-copy)}
+img,video,iframe{max-width:100%}
+img{height:auto}
+button,a,input,select,textarea{touch-action:manipulation}
+a:not(.button):not(.nav-cta):not(.brand):not(.admin-home-card){text-underline-offset:3px}
+.button,.nav-cta{font-family:var(--sans);font-weight:800;letter-spacing:.025em;transition:background-color .18s ease,color .18s ease,border-color .18s ease,transform .18s ease,box-shadow .18s ease}
+.button:disabled,button:disabled{cursor:not-allowed;opacity:.58;transform:none;box-shadow:none}
+.button.secondary{color:#fff!important;border-color:rgba(255,255,255,.68)}
+.button.secondary:hover{background:#fff;color:var(--forest)!important;border-color:#fff}
+.site-header{gap:clamp(8px,1.4vw,20px)}
+.site-header nav{min-width:0}
+.language-control select{min-height:40px;padding:7px 28px 7px 10px;border:1px solid var(--mh-border);border-radius:var(--mh-radius-sm);background:#fff;color:var(--forest);font:800 11px var(--sans)}
+.hero-copy{min-width:0}
+.hero h1,.page-hero h1,.section h2{max-width:20ch}
+.hero p,.page-hero p,.section-head p,.split p{overflow-wrap:normal}
+.section-head p{margin-inline:auto}
+.cards{align-items:stretch}
+.experience-card{height:100%;min-width:0}
+.experience-card img{display:block;width:100%;aspect-ratio:3/2;object-fit:cover}
+.experience-card .card-body{height:100%;min-width:0}
+.experience-card .card-body>p{flex:0 0 auto}
+.experience-card .card-body>ul{padding-left:19px}
+.experience-card .button{align-self:flex-start;margin-top:auto}
+.card-top{align-items:center}
+.price{font-variant-numeric:tabular-nums}
+.split{min-width:0}
+.split>div{min-width:0}
+.feature-list>div{min-width:0}
+.location-section .location-whatsapp-button{background:transparent;border:1px solid #8d9a8d;color:var(--forest)!important;box-shadow:none;min-height:54px}
+.location-section .location-whatsapp-button:hover{background:var(--forest);color:#fff!important;border-color:var(--forest)}
+.location-section .location-actions .button{white-space:normal;text-align:center}
+.booking-wrap{width:100%;max-width:1000px}
+.booking-panel{min-width:0}
+.booking-panel form{min-width:0}
+.form-grid{align-items:start}
+.field{min-width:0}
+.field input,.field select,.field textarea{min-width:0;max-width:100%}
+.field small{line-height:1.55}
+#booking-form #submit{min-width:min(100%,240px)}
+.booking-alert{display:block;padding:13px 15px;margin:8px 0 0;border-radius:var(--mh-radius-sm)}
+.availability-status{overflow-wrap:anywhere}
+.faq-list{max-width:900px;margin-inline:auto}
+.faq-item summary{cursor:pointer;line-height:1.45}
+.review-card{min-width:0;box-shadow:var(--mh-shadow-soft)}
+.admin-home-grid{align-items:stretch}
+.admin-home-card{min-height:104px;box-shadow:var(--mh-shadow-soft)}
+.admin-home-card:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.admin-home-card small{line-height:1.55}
+.admin-stats{align-items:stretch}
+.admin-stat{min-width:0;overflow-wrap:anywhere}
+.admin-stat strong{overflow-wrap:anywhere}
+.admin-booking-card{min-width:0}
+.admin-booking-top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.admin-booking-top>*{min-width:0}
+.site-footer{min-width:0}
+.site-footer a{overflow-wrap:anywhere}
+.social-links{align-items:center}
+.social-links a{min-height:44px;justify-content:center}
+:where(a,button,input,select,textarea,summary,[tabindex]):focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+::placeholder{opacity:1}
+@media(min-width:1200px){
+  .section>.split,.section>.cards,.section>.location-grid{max-width:var(--mh-content);margin-inline:auto}
+}
+@media(max-width:1050px) and (min-width:851px){
+  .site-header{padding-inline:16px}
+  .site-header nav{gap:10px}
+  .site-header nav a:not(.nav-cta){font-size:10px}
+  .brand-logo{width:66px;height:66px;flex-basis:66px}
+}
+@media(max-width:850px){
+  html{scroll-padding-top:82px}
+  .site-header{gap:10px}
+  .site-header nav{max-height:calc(100dvh - 82px);overflow-y:auto}
+  .site-header nav a{min-height:42px;display:flex;align-items:center}
+  .language-control{margin-left:auto}
+  .hero-copy{align-items:flex-start}
+  .hero h1,.page-hero h1,.section h2{max-width:19ch}
+  .location-section .location-grid{gap:28px}
+  .admin-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:560px){
+  html{scroll-padding-top:74px}
+  body{font-size:14px}
+  .site-header{gap:7px;padding-inline:12px}
+  .site-header>.brand .brand-logo{width:54px;height:54px;flex-basis:54px}
+  .language-control select{min-height:38px;padding-inline:8px 23px}
+  .menu-toggle{width:42px;height:42px;flex:0 0 42px}
+  .hero-copy{padding:58px 22px}
+  .hero h1{max-width:13ch;font-size:clamp(40px,11.5vw,52px)}
+  .hero .actions{width:100%;display:grid;grid-template-columns:1fr}
+  .hero .actions .button{width:100%;min-height:50px}
+  .trust-strip{padding:18px 16px;justify-content:flex-start}
+  .trust-strip span{display:flex;align-items:center;gap:7px}
+  .trust-strip svg{width:19px;height:19px;flex:0 0 19px}
+  .section-head{text-align:left}
+  .section-head p{margin-inline:0}
+  .experience-card .card-body{padding:21px}
+  .experience-card .button{width:100%;align-self:stretch}
+  .split img{width:100%;height:auto;aspect-ratio:4/3;object-fit:cover}
+  .location-section .location-map{min-height:300px}
+  .location-section .location-map iframe{height:300px}
+  .location-section .location-actions{grid-template-columns:1fr}
+  .location-section .location-actions .button{width:100%;min-height:50px}
+  .form-grid{gap:15px}
+  .field.full{grid-column:1/-1}
+  .booking-panel{padding:20px 16px}
+  .admin-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .admin-stat{padding:13px}
+  .admin-stat strong{font-size:24px}
+  .admin-home-card{min-height:88px}
+  .site-footer>div{min-width:0}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}
+}
