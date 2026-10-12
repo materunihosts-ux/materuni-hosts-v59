@@ -454,3 +454,31 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--gold);outline-offse
  .experience-card,.experience-card img,.button,.nav-cta{transition:none!important}
  .experience-card:hover,.experience-card:hover>img,.button:hover,.nav-cta:hover{transform:none}
 }
+
+
+/* 2026 navigation refresh: clean horizontal desktop bar, camping-led hierarchy */
+.site-header{height:88px;min-height:88px;padding:0 clamp(18px,4vw,64px);display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:18px;background:rgba(250,247,242,.98);box-shadow:0 5px 22px rgba(26,51,34,.055)}
+.site-header>.brand{position:static;transform:none;width:auto;height:auto;min-width:64px;justify-content:flex-start;flex:0 0 auto}
+.site-header>.brand .brand-logo{width:68px;height:68px;flex:0 0 68px;object-fit:contain}
+.site-header nav{position:static;display:flex;flex:1 1 auto;align-items:center;justify-content:center;flex-direction:row;flex-wrap:nowrap;gap:clamp(12px,1.55vw,24px);padding:0;background:transparent;border:0;font-size:13px;font-weight:650;white-space:nowrap}
+.site-header nav a:not(.nav-cta){padding:10px 0}
+.site-header nav a.nav-camping{color:#8b682f;font-weight:800}
+.site-header nav a.nav-camping:after{right:0;height:2px}
+.site-header nav a.nav-cta{padding:12px 17px;min-height:44px;background:var(--forest);border:1px solid var(--forest);font-size:12px}
+.site-header nav a.nav-cta:hover{background:var(--gold);border-color:var(--gold);color:var(--ink)!important}
+.language-control{position:static;transform:none;flex:0 0 auto;margin-left:2px}
+.menu-toggle{display:none}
+@media(max-width:1050px) and (min-width:851px){.site-header{padding-inline:16px;gap:10px}.site-header nav{gap:11px;font-size:11px}.site-header nav a.nav-cta{padding-inline:12px}.site-header>.brand .brand-logo{width:60px;height:60px;flex-basis:60px}}
+@media(max-width:850px){
+ .site-header{height:76px;min-height:76px;padding:0 18px;display:flex;flex-direction:row;justify-content:space-between;gap:12px}
+ .site-header>.brand{position:static;transform:none;width:auto;height:auto;min-width:0;justify-content:flex-start}
+ .site-header>.brand .brand-logo{width:62px;height:62px;flex-basis:62px}
+ .site-header nav{display:none;position:absolute;top:75px;left:0;right:0;flex-direction:column;align-items:stretch;justify-content:flex-start;gap:5px;padding:16px 22px 22px;background:var(--cream);border-bottom:1px solid var(--sand);box-shadow:0 14px 24px rgba(26,51,34,.09);white-space:normal}
+ .site-header nav.open{display:flex}
+ .site-header nav a:not(.nav-cta){padding:12px 4px}
+ .site-header nav a.nav-camping{color:#8b682f}
+ .site-header nav a.nav-cta{margin-top:8px;justify-content:center}
+ .language-control{position:static;transform:none;margin-left:auto}
+ .menu-toggle{display:grid;place-items:center;position:static;transform:none;width:42px;height:42px;border:1px solid var(--sand);border-radius:2px;background:#fff;font-size:23px;line-height:1;cursor:pointer}
+}
+@media(max-width:560px){.site-header{height:72px;min-height:72px;padding-inline:14px}.site-header nav{top:71px}.site-header>.brand .brand-logo{width:58px;height:58px;flex-basis:58px}.language-control select{min-height:36px}}
