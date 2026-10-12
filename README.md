@@ -191,6 +191,12 @@ Never use a real customer's personal details for test bookings. Use a clearly id
 7. Keep credentials in the hosting/provider secret manager, never in commits or screenshots.
 8. Document schema changes, environment requirements and rollback steps in the same pull request.
 
+## Changelog and security notes
+
+See [CHANGELOG.md](./CHANGELOG.md) for dated project changes. The two guest-facing Edge Functions currently run with JWT verification disabled because the public booking/chat widgets do not require guest login. Their code must therefore retain strict server-side validation, bounded input, rate limiting and provider timeouts. CORS is a browser policy, not authentication. Do not enable JWT verification until the frontend sends a valid Supabase user JWT or a reviewed custom-auth scheme is implemented.
+
+The latest source hardening is committed to GitHub, but it has **not** been deployed to the live Edge Functions yet. Test the source first, then deploy both functions deliberately and verify logs and a test email/chat.
+
 ## Useful project documents
 
 - [Swahili implementation guide](./V59-IMPLEMENTATION-GUIDE-SW.md)
