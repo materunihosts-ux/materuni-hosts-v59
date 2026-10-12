@@ -27,6 +27,8 @@ jobs:
           node -e 'const a=require("./npm-audit.json"); for (const [name,v] of Object.entries(a.vulnerabilities||{})) console.log(name+" | "+v.severity+" | "+v.range+" | fix="+JSON.stringify(v.fixAvailable))'
       - run: npm run check
       - run: npm run build
+      - name: Static website quality gate
+        run: npm run qa
       - name: Enforce dependency security threshold
         run: npm audit --audit-level=high
 
