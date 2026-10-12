@@ -21,6 +21,7 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
     <div class="field"><label for="contact-name">Contact person</label><input id="contact-name" maxlength="120"></div>
     <div class="field"><label for="partner-email">Email</label><input id="partner-email" type="email" maxlength="254"></div>
     <div class="field"><label for="partner-whatsapp">WhatsApp / phone</label><input id="partner-whatsapp" type="tel" maxlength="40"></div>
+    <div class="field full"><label><input id="partner-whatsapp-opt-in" type="checkbox"> Partner has explicitly agreed to receive partnership messages on WhatsApp.</label><small class="muted">Record permission only after the partner has clearly agreed. WhatsApp invitations stay disabled without this consent.</small></div>
     <div class="field"><label for="partner-type">Partner category</label><select id="partner-type"><option value="accommodation">Accommodation</option><option value="local_guide">Local guide</option><option value="transport">Transport</option><option value="travel_agency">Travel agency</option><option value="activity_provider">Activity provider</option><option value="other">Other</option></select></div>
     <div class="field"><label for="partner-status">Relationship status</label><select id="partner-status"><option value="lead">Lead</option><option value="active">Active</option><option value="paused">Paused</option><option value="archived">Archived</option></select></div>
     <div class="field"><label for="partner-location">Location</label><input id="partner-location" maxlength="160" placeholder="e.g. Materuni / Moshi"></div>
@@ -108,7 +109,7 @@ function render(){
 function exportCsv(){
  const rows=filteredPartners();
  if(!rows.length){el("list-feedback").textContent="There are no partner records to export for this filter.";return}
- const columns=["business_name","contact_name","email","whatsapp","partner_type","status","location","website","commission_rate","notes","created_at"];
+ const columns=["business_name","contact_name","email","whatsapp","whatsapp_opt_in","whatsapp_opt_in_at","whatsapp_opt_in_source","partner_type","status","location","website","commission_rate","notes","created_at"];
  const quote=value=>'"'+String(value??"").replace(/"/g,'""')+'"';
  const csv=[columns.join(","),...rows.map(p=>columns.map(key=>quote(p[key])).join(","))].join("\r\n");
  const blob=new Blob(["\uFEFF",csv],{type:"text/csv;charset=utf-8"});
@@ -149,7 +150,7 @@ el("login-form").addEventListener("submit",async e=>{
 el("partner-form").addEventListener("submit",async e=>{
  e.preventDefault();const button=el("save-partner");button.disabled=true;el("form-feedback").textContent="Saving partner…";
  const id=el("partner-id").value;
- const payload={business_name:el("business-name").value.trim(),contact_name:el("contact-name").value.trim()||null,email:el("partner-email").value.trim()||null,whatsapp:el("partner-whatsapp").value.trim()||null,partner_type:el("partner-type").value,status:el("partner-status").value,location:el("partner-location").value.trim()||null,website:el("partner-website").value.trim()||null,commission_rate:el("commission-rate").value===""?null:Number(el("commission-rate").value),notes:el("partner-notes").value.trim()||null,updated_at:new Date().toISOString()};
+ const payload={business_name:el("business-name").value.trim(),contact_name:el("contact-name").value.trim()||null,email:el("partner-email").value.trim()||null,whatsapp:el("partner-whatsapp").value.trim()||null,whatsapp_opt_in:el("partner-whatsapp-opt-in").checked,whatsapp_opt_in_at:el("partner-whatsapp-opt-in").checked?new Date().toISOString():null,whatsapp_opt_in_source:el("partner-whatsapp-opt-in").checked?"admin_recorded":null,partner_type:el("partner-type").value,status:el("partner-status").value,location:el("partner-location").value.trim()||null,website:el("partner-website").value.trim()||null,commission_rate:el("commission-rate").value===""?null:Number(el("commission-rate").value),notes:el("partner-notes").value.trim()||null,updated_at:new Date().toISOString()};
  try{
   if(!payload.business_name)throw new Error("Partner name is required.");
   if(payload.website&&!safeUrl(payload.website))throw new Error("Enter a valid http or https website URL.");
