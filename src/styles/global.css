@@ -436,3 +436,18 @@ main:focus{outline:none}
 @media(max-width:1100px){.site-header{padding-inline:20px}.site-header nav{gap:14px;font-size:12px}}
 @media(max-width:850px){.header-preferences{margin-left:auto;margin-right:10px}.site-header nav{top:96px}}
 @media(max-width:560px){.header-preferences select{font-size:10px;padding:6px 5px}.header-preferences{gap:4px;margin-right:5px}}
+
+/* Progressive booking checkout */
+.checkout-progress{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;list-style:none;padding:0;margin:0 0 12px;counter-reset:checkout}
+.checkout-progress li{padding:10px 8px;border-bottom:2px solid var(--sand);color:var(--muted);font-size:11px;font-weight:800;text-align:center;letter-spacing:.04em}
+.checkout-progress li::before{counter-increment:checkout;content:counter(checkout) " · ";font-variant-numeric:tabular-nums}
+.checkout-progress li.is-current{border-color:var(--gold);color:var(--forest)}
+.checkout-progress li.is-complete{border-color:var(--forest);color:var(--forest)}
+.checkout-step{grid-column:1/-1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.checkout-step[hidden]{display:none}
+.checkout-step-title{grid-column:1/-1;margin:4px 0 0;font:600 27px var(--serif);color:var(--forest)}
+.checkout-step .field{min-width:0}
+.checkout-step-actions{grid-column:1/-1;display:flex;justify-content:space-between;gap:12px;margin-top:6px}
+.checkout-step-actions .button{min-width:125px;cursor:pointer}
+.checkout-step-actions .button-secondary{background:transparent;color:var(--forest)!important;border:1px solid var(--sand)}
+@media(max-width:640px){.checkout-step{grid-template-columns:1fr}.checkout-progress li{font-size:10px;padding-inline:4px}.checkout-step-title{font-size:24px}}
