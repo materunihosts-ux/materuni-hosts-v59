@@ -116,9 +116,9 @@ Deno.serve(async (request: Request) => {
     }
 
     const rawGuestEmail = String(booking.email ?? "").trim().slice(0, 254);
-    const guestEmail = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(rawGuestEmail) ? rawGuestEmail : "";
+    const guestEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(rawGuestEmail) ? rawGuestEmail : "";
     const rawAdminEmail = String(Deno.env.get("ADMIN_NOTIFICATION_EMAIL") ?? "").trim().slice(0, 254);
-    const adminEmail = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(rawAdminEmail) ? rawAdminEmail : "";
+    const adminEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(rawAdminEmail) ? rawAdminEmail : "";
     const guestHtml = `
       <div style="font-family:Arial,sans-serif;line-height:1.6;color:#242421;max-width:620px;margin:auto">
         <div style="background:#1A3322;color:#fff;padding:26px 30px"><div style="font-size:12px;letter-spacing:3px">MATERUNI HOSTS</div><h1 style="font-family:Georgia,serif;font-weight:500;margin:12px 0 0">Your Materuni experience</h1></div>
