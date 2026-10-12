@@ -428,3 +428,11 @@ main:focus{outline:none}
 .booking-panel #feedback.booking-alert-success{border-color:#21633b;background:#edf5ee;color:#194b2b}
 .booking-panel #feedback.booking-alert-warning{border-color:#9a6b19;background:#fbf4e5;color:#674716}
 .booking-panel #feedback.booking-alert-error{border-color:#9b3028;background:#fbefed;color:#842820}
+
+/* Header preferences and currency display */
+.header-preferences{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.header-preferences select{min-height:38px;padding:7px 9px;border:1px solid var(--sand);border-radius:3px;background:var(--cream);color:var(--forest);font:700 11px var(--sans);letter-spacing:.04em}
+.price[data-price-usd]{white-space:nowrap}
+@media(max-width:1100px){.site-header{padding-inline:20px}.site-header nav{gap:14px;font-size:12px}}
+@media(max-width:850px){.header-preferences{margin-left:auto;margin-right:10px}.site-header nav{top:96px}}
+@media(max-width:560px){.header-preferences select{font-size:10px;padding:6px 5px}.header-preferences{gap:4px;margin-right:5px}}
