@@ -1,5 +1,6 @@
 ---
 import SiteLayout from "../layouts/SiteLayout.astro";
+import { supabaseUrl } from "../lib/supabase-public";
 type Experience = [string, number, string, string, string, string[], string[]];
 const items: Experience[]=[
 ["Materuni Camping",110,"Flagship overnight stay","camping_image/1791601872981-zmji0mykwhd.jpg","Make Materuni your home for a night. This signature stay combines an overnight camp with the waterfall, Chagga coffee and cooking traditions, local food and evening storytelling.",["Overnight camping with camping gear setup","Waterfall and village experience","Chagga cooking, local dinner and breakfast","Campfire stories and time with local hosts"],["Professional local guide","Village/entrance fees","Camping gear setup","Dinner, breakfast & drinking water"]],
@@ -10,15 +11,14 @@ const items: Experience[]=[
 ["Ultimate",135,"Ultimate experience","ultimate_image/1791604660208-7c4yvzvsaf9.jpg","Our broadest combination for guests who want several sides of Materuni in one visit: waterfall, coffee-making, Chagga cooking and overnight camping.",["Scenic waterfall hike","Hands-on Chagga cooking class","Organic coffee tour and preparation","Overnight camping, storytelling, dance, lunch, dinner & breakfast"],["Professional local guide","Village/entrance fees","Full camping gear setup","Lunch, dinner, breakfast & drinking water"]]
 ];
 const experienceKeys: Record<string,string> = {"Waterfalls & Coffee Tour":"Waterfall & Chagga Culture","Coffee & Chagga Culture Tour":"Traditional Coffee Experience","Cooking & Culture":"Traditional Chagga Cooking Class","Waterfall Hike & Cultural Day Trip":"Materuni Waterfall Hike & Cultural Day Trip","Overnight Camping":"Camping & Village Life","Ultimate":"The Ultimate Kilimanjaro Foothills & Materuni Experience"};
-const base="https://sskmzswoeljxwojcszta.supabase.co/storage/v1/object/public/materuni-images/";
+const base=`${supabaseUrl}/storage/v1/object/public/materuni-images/`;
 ---
 <SiteLayout title="Materuni Experiences & Prices | Materuni Hosts" description="Explore Materuni waterfall hikes, Chagga coffee experiences, cooking classes and village stays. Compare experiences and prices, then check availability with local hosts.">
 <section class="page-hero"><span class="eyebrow" data-i18n="home_section_eyebrow">THE SIGNATURE MATERUNI STAY</span><h1 data-i18n="experiences_hero_title">Start with Materuni Camping. Make the village part of your story.</h1><p data-i18n="experiences_hero_intro">Our main experience is a community-based overnight stay in Materuni Village. Waterfall walks, Chagga coffee, cooking and cultural activities bring depth to the stay; shorter experiences can also be arranged.</p></section>
 <section class="section"><div class="cards">{items.map((e)=><article class="experience-card" id={e[0] === "Materuni Camping" ? "camping" : undefined} data-experience-key={experienceKeys[e[0]]}><img src={base+e[3]} alt={e[0]} loading="lazy" decoding="async" width="640" height="420"><div class="card-body"><div class="card-top"><span class="pill">{e[2]}</span><span class="price" data-catalog-price>${e[1]}<small>PER PERSON</small></span></div><h3 data-catalog-name>{e[0]}</h3><p data-catalog-description>{e[4]}</p><strong style="font-size:12px;color:#173b2d" data-i18n="exp_experience_label">THE EXPERIENCE</strong><ul>{e[5].map(x=><li>{x}</li>)}</ul><strong style="font-size:12px;color:#173b2d" data-i18n="exp_included_label">WHAT YOUR EXPERIENCE INCLUDES</strong><ul>{e[6].map(x=><li>{x}</li>)}</ul><a class="button" href={"/booking?experience="+encodeURIComponent(experienceKeys[e[0]])} data-i18n="exp_check_availability">Check availability</a></div></article>)}</div><p class="notice" style="margin-top:28px" data-i18n="exp_notice">All prices are per person. The inclusions listed under each experience describe what is covered in that package. Transport from Moshi is not included in the displayed prices unless agreed separately. Please share your pickup point, group size, dietary requirements or accessibility needs with us before your visit so we can discuss the arrangements. A booking request is not a confirmed reservation; your host will confirm the details with you.</p></section>
 <script>
 // @ts-nocheck
-const catalogApi = "https://sskmzswoeljxwojcszta.supabase.co";
-const catalogKey = "sb_publishable_G9ru4P_yKzievqiXjXEEbQ_p28cB_NZ";
+import { supabaseUrl as catalogApi, publishableKey as catalogKey } from "../lib/supabase-public";
 const catalogHeaders = { apikey: catalogKey, Authorization: "Bearer " + catalogKey };
 const cardsRoot = document.querySelector(".cards");
 const safeText = (node, value) => { if (node && typeof value === "string") node.textContent = value; };
