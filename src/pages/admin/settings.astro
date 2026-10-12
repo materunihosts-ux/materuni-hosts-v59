@@ -44,9 +44,7 @@ Come as a guest. Leave as a friend.</textarea><small class="muted">Available pla
 </style>
 <script>
 // @ts-nocheck
-const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
-const publishableKey = import.meta.env.PUBLIC_SUPABASE_PUBLISHABLE_KEY;
-if (!supabaseUrl || !publishableKey) throw new Error("Supabase public configuration is missing.");
+import { supabaseUrl, publishableKey } from "../../lib/supabase-public";
 let token="",emailTemplatesState={};
 const el=id=>document.getElementById(id);
 const headers=()=>({"apikey":publishableKey,"Authorization":"Bearer "+token,"Content-Type":"application/json"});
