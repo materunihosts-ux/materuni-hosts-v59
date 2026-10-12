@@ -1,6 +1,8 @@
 ---
 import "../styles/global.css";
 const { title = "Materuni Hosts | Authentic Chagga Experiences", description = "Discover authentic Chagga coffee, waterfalls, food and village life in Materuni, Kilimanjaro, Tanzania.", noindex = false, preloadImage = null } = Astro.props;
+const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
+const publishableKey = import.meta.env.PUBLIC_SUPABASE_PUBLISHABLE_KEY;
 const canonical = new URL(Astro.url.pathname, "https://materunihosts.com").toString();
 const breadcrumbLabels: Record<string, string> = {
   experiences: "Experiences",
@@ -31,7 +33,7 @@ const breadcrumbData = {
   "@type": "BreadcrumbList",
   itemListElement: breadcrumbItems
 };
-const socialImage = preloadImage ?? "https://sskmzswoeljxwojcszta.supabase.co/storage/v1/object/public/materuni-images/hero_image/1791600514716-b2bclfcnhhh.jpg";
+const socialImage = preloadImage ?? `${supabaseUrl}/storage/v1/object/public/materuni-images/hero_image/1791600514716-b2bclfcnhhh.jpg`;
 const structuredData = {
   "@context": "https://schema.org",
   "@type": "TourOperator",
@@ -88,6 +90,8 @@ const structuredData = {
 <label class="language-control" for="site-language"><span class="sr-only">Website language</span><select id="site-language" aria-label="Website language"><option value="en">EN</option><option value="es">ES</option><option value="fr">FR</option><option value="de">DE</option></select></label><button class="menu-toggle" type="button" aria-label="Open menu" aria-controls="primary-navigation" aria-expanded="false">☰</button></header>
 <script>
 // @ts-nocheck
+const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
+const publishableKey = import.meta.env.PUBLIC_SUPABASE_PUBLISHABLE_KEY;
 (() => {
  const supported=["en","es","fr","de"], labels={
   en:{skip:"Skip to content",ask:"Ask a local host",footer:"Community-based Chagga experiences in Materuni Village, Moshi, Tanzania.",explore:"Explore",book:"Book your experience"},
@@ -122,7 +126,7 @@ const structuredData = {
   const fallback=pageFallbacks[language]||{};
   nodes.forEach(node=>{const value=fallback[node.dataset.i18n];if(typeof value==="string")node.textContent=value});
   try{
-   const response=await fetch("https://sskmzswoeljxwojcszta.supabase.co/rest/v1/site_settings?select=setting_value&setting_key=eq.language_content",{headers:{apikey:"sb_publishable_G9ru4P_yKzievqiXjXEEbQ_p28cB_NZ",Authorization:"Bearer sb_publishable_G9ru4P_yKzievqiXjXEEbQ_p28cB_NZ"},cache:"no-store"});
+   const response=await fetch("${supabaseUrl}/rest/v1/site_settings?select=setting_value&setting_key=eq.language_content",{headers:{apikey:publishableKey,Authorization:"Bearer "+publishableKey},cache:"no-store"});
    if(!response.ok)return;
    const rows=await response.json();const data=JSON.parse(rows?.[0]?.setting_value||"{}");const translations=data?.[language]||{};
    document.querySelectorAll("[data-i18n]").forEach(node=>{const value=translations[node.dataset.i18n];if(typeof value==="string"&&value.trim())node.textContent=value});
