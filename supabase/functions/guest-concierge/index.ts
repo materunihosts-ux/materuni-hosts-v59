@@ -158,6 +158,7 @@ Deno.serve(async (request: Request) => {
             temperature: 0.35,
             max_tokens: 350,
           }),
+          signal: AbortSignal.timeout(12_000),
         });
         const result = await response.json().catch(() => ({}));
         const generated = result?.choices?.[0]?.message?.content;
