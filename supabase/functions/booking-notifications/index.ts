@@ -29,13 +29,21 @@ Deno.serve(async (request: Request) => {
   try {
     const body = await request.json().catch(() => null);
     const bookingId = String(body?.booking_id ?? "").trim();
-    if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(bookingId)) {
+    const idempotencyKey = String(body?.idempotency_key ?? "").trim();
+    const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    if (!uuidPattern.test(bookingId) || !uuidPattern.test(idempotencyKey)) {
       return json({ error: "A valid booking reference is required." }, 400);
     }
     const supabaseUrl = Deno.env.get("SUPABASE_URL");
     const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
     if (!supabaseUrl || !serviceRoleKey) return json({ error: "Notification service is not configured." }, 503);
     const supabase = createClient(supabaseUrl, serviceRoleKey, { auth: { persistSession: false, autoRefreshToken: false } });
+    // The idempotency key proves possession of the booking request and prevents
+    // callers who only know a booking UUID from triggering notifications.
+    const { data: proof, error: proofError } = await supabase.from("booking_idempotency")
+      .select("booking_id").eq("idempotency_key", idempotencyKey).eq("booking_id", bookingId).maybeSingle();
+    if (proofError) throw proofError;
+    if (!proof) return json({ error: "Booking notification authorisation failed." }, 403);
     const { data: booking, error: bookingError } = await supabase.from("bookings")
       .select("id, booking_reference, experience, booking_date, guest_count, guests, guest, email, phone, preferred_contact, pickup, notes, status, created_at")
       .eq("id", bookingId).maybeSingle();
