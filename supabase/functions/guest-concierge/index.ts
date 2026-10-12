@@ -28,20 +28,23 @@ Never ask for passport, card, password or sensitive personal data. Do not claim 
 
 Deno.serve(async (request: Request) => {
   if (request.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
+  if (Number(request.headers.get("content-length") || "0") > 8_192) return json({ error: "Message is too large. Please shorten it and try again." }, 413);
   if (request.method !== "POST") return json({ error: "Method not allowed" }, 405);
   try {
     const body = await request.json().catch(() => null);
-    const message = String(body?.message ?? "").trim().slice(0, 1200);
+    const message = String(body?.message ?? "").replace(/[\\u0000-\\u0008\\u000B\\u000C\\u000E-\\u001F\\u007F]/g, " ").replace(/\\s+/g, " ").trim().slice(0, 1200);
     const language = ["en", "es", "fr", "de"].includes(String(body?.language ?? "en"))
       ? String(body?.language ?? "en") : "en";
     let sessionId = String(body?.session_id ?? "").trim();
-    let sessionToken = String(body?.session_token ?? "").trim();
+    let sessionToken = String(body?.session_token ?? "").trim().slice(0, 128);
     if (!message) return json({ error: "Please enter a message." }, 400);
 
 
     const supabaseUrl = Deno.env.get("SUPABASE_URL");
     const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
     if (!supabaseUrl || !serviceRoleKey) return json({ error: "Guest assistant is temporarily unavailable." }, 503);
+    try { const parsedUrl = new URL(supabaseUrl); if (parsedUrl.protocol !== "https:" && parsedUrl.hostname !== "localhost") throw new Error(); }
+    catch { console.error("guest-concierge configuration error: invalid SUPABASE_URL"); return json({ error: "Guest assistant is temporarily unavailable." }, 503); }
     const supabase = createClient(supabaseUrl, serviceRoleKey, { auth: { persistSession: false, autoRefreshToken: false } });
     const ip = request.headers.get("cf-connecting-ip") || request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "";
     const sha256 = async (value: string) => {
@@ -50,10 +53,12 @@ Deno.serve(async (request: Request) => {
     };
     if (ip) {
       const ipHash = await sha256(ip);
-      const { data: rate } = await supabase.from("guest_chat_rate_limits").select("*").eq("ip_hash", ipHash).maybeSingle();
+      const { data: rate, error: rateReadError } = await supabase.from("guest_chat_rate_limits").select("*").eq("ip_hash", ipHash).maybeSingle();
+      if (rateReadError) throw rateReadError;
       const expired = !rate || Date.now() - new Date(rate.window_started_at).getTime() >= 3600000;
       if (!expired && Number(rate.request_count) >= 100) return json({ error: "Please pause before sending more messages." }, 429);
-      await supabase.from("guest_chat_rate_limits").upsert({ ip_hash: ipHash, window_started_at: expired ? new Date().toISOString() : rate.window_started_at, request_count: expired ? 1 : Number(rate.request_count) + 1, updated_at: new Date().toISOString() }, { onConflict: "ip_hash" });
+      const { error: rateWriteError } = await supabase.from("guest_chat_rate_limits").upsert({ ip_hash: ipHash, window_started_at: expired ? new Date().toISOString() : rate.window_started_at, request_count: expired ? 1 : Number(rate.request_count) + 1, updated_at: new Date().toISOString() }, { onConflict: "ip_hash" });
+      if (rateWriteError) throw rateWriteError;
     }
     let conversation: { id: string; session_id: string } | null = null;
     let newSession = false;
@@ -175,7 +180,7 @@ Deno.serve(async (request: Request) => {
 
     return json({ success: true, session_id: conversation.session_id, session_token: sessionToken, conversation_id: conversation.id, reply, mode });
   } catch (error) {
-    console.error("guest-concierge error:", error);
+    console.error("guest-concierge failed:", error instanceof Error ? error.name : "unknown_error");
     return json({ error: "I’m sorry — the guest assistant is unavailable right now. Please contact us on WhatsApp." }, 500);
   }
 });
