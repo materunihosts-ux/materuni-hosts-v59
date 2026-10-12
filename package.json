@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "npm run check && astro build && npm run qa",
     "preview": "astro preview",
     "check": "astro check",
     "qa": "node scripts/site-quality-gate.mjs"
