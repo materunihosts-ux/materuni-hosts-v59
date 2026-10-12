@@ -182,14 +182,27 @@ $("booking-form").addEventListener("submit",async e=>{
   p_pickup:$("pickup").value.trim()||null,p_language:$("language").value,
   p_notes:$("notes").value.trim()||null,p_booking_type:"tour"
  };
+ // Keep the same key when an identical request is retried after a timeout/reload.
+ const attemptFingerprint=JSON.stringify(body);
+ const attemptStorageKey="materuni-hosts-booking-attempt";
+ let idempotencyKey="";
  try{
-  const response=await fetch(url+"/rest/v1/rpc/submit_booking",{
-   method:"POST",headers,body:JSON.stringify(body),cache:"no-store"
-  });
-  const payload=await response.json().catch(()=>null);
+  const saved=JSON.parse(sessionStorage.getItem(attemptStorageKey)||"null");
+  if(saved?.fingerprint===attemptFingerprint && /^[0-9a-f-]{36}$/i.test(saved.key)){
+   idempotencyKey=saved.key;
+  }
+ }catch(storageError){ console.warn("Booking retry storage unavailable.",storageError); }
+ if(!idempotencyKey){
+  idempotencyKey=crypto.randomUUID();
+  try{sessionStorage.setItem(attemptStorageKey,JSON.stringify({fingerprint:attemptFingerprint,key:idempotencyKey}));}catch(storageError){}
+ }
+ const requestBody={...body,p_idempotency_key:idempotencyKey};
+ try{
+  const response=await fetch(url+"/rest/v1/rpc/submit_booking_idempotent",{  const payload=await response.json().catch(()=>null);
   if(!response.ok)throw new Error(safeError(payload,response.status));
   const created=Array.isArray(payload)?payload[0]:payload;
   if(!created?.booking_id)throw new Error("The booking response could not be verified. Please contact our host before submitting again.");
+  try{const saved=JSON.parse(sessionStorage.getItem(attemptStorageKey)||"null");if(saved?.key===idempotencyKey)sessionStorage.removeItem(attemptStorageKey);}catch(storageError){}
   const reference=created.booking_reference||created.booking_id;
   let notice="";
   try{
