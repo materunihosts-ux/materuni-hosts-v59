@@ -43,6 +43,23 @@ const structuredData = {
   "telephone": "+255612068540",
   "email": "hello@materunihosts.com",
   "priceRange": "USD 50–135 per person",
+  "hasMap": "https://maps.app.goo.gl/mM5qaacFRN5sF7eB7",
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "telephone": "+255612068540",
+    "email": "hello@materunihosts.com",
+    "contactType": "customer service"
+  },
+  "potentialAction": {
+    "@type": "ReserveAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "https://materunihosts.com/booking",
+      "inLanguage": "en",
+      "actionPlatform": ["https://schema.org/DesktopWebPlatform", "https://schema.org/MobileWebPlatform"]
+    },
+    "name": "Request a Materuni experience booking"
+  },
   "address": {
     "@type": "PostalAddress",
     "addressLocality": "Materuni Village",
@@ -59,7 +76,7 @@ const structuredData = {
 <html lang="en">
 <head>
 <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>{title}</title><meta name="description" content={description} /><meta name="theme-color" content="#1A3322" /><link rel="canonical" href={canonical} /><meta property="og:type" content="website" /><meta property="og:site_name" content="Materuni Hosts" /><meta property="og:title" content={title} /><meta property="og:description" content={description} /><meta property="og:url" content={canonical} /><meta property="og:image" content={socialImage} /><meta property="og:locale" content="en_TZ" /><meta property="og:image:alt" content="Materuni Hosts authentic village experiences in Materuni, Tanzania" /><meta name="twitter:card" content="summary_large_image" /><meta name="twitter:title" content={title} /><meta name="twitter:description" content={description} /><meta name="twitter:image" content={socialImage} /><script type="application/ld+json" set:html={JSON.stringify(structuredData)} />{!noindex && <script type="application/ld+json" set:html={JSON.stringify(breadcrumbData)} />}{noindex && <meta name="robots" content="noindex,nofollow" />}{preloadImage && <link rel="preload" as="image" href={preloadImage} fetchpriority="high" />}
+<title>{title}</title><meta name="description" content={description} /><meta name="theme-color" content="#1A3322" /><link rel="canonical" href={canonical} /><meta property="og:type" content="website" /><meta property="og:site_name" content="Materuni Hosts" /><meta property="og:title" content={title} /><meta property="og:description" content={description} /><meta property="og:url" content={canonical} /><meta property="og:image" content={socialImage} /><meta property="og:locale" content="en_TZ" /><meta property="og:image:alt" content="Materuni Hosts authentic village experiences in Materuni, Tanzania" /><meta name="twitter:card" content="summary_large_image" /><meta name="twitter:title" content={title} /><meta name="twitter:description" content={description} /><meta name="twitter:image" content={socialImage} />{!noindex && <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />}{!noindex && <script type="application/ld+json" set:html={JSON.stringify(breadcrumbData)} />}{noindex && <meta name="robots" content="noindex,nofollow" />}{preloadImage && <link rel="preload" as="image" href={preloadImage} fetchpriority="high" />}
 <link rel="icon" type="image/svg+xml" href="/materuni-hosts-logo-round.svg" /><link rel="preconnect" href="https://sskmzswoeljxwojcszta.supabase.co" crossorigin /><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
@@ -90,7 +107,7 @@ const structuredData = {
   localStorage.setItem("materuni-language",language);
   const chat=document.getElementById("mh-chat-language");if(chat&&chat.value!==language){chat.value=language;chat.dispatchEvent(new Event("change"))}
  }
- apply(lang);document.addEventListener("DOMContentLoaded",()=>loadPageTranslations(lang),{once:true});select.addEventListener("change",()=>{apply(select.value);loadPageTranslations(select.value)});
+ apply(lang);select.addEventListener("change",()=>{apply(select.value);loadPageTranslations(select.value)});
  async function loadPageTranslations(language){
   const nodes=[...document.querySelectorAll("[data-i18n]")];
   nodes.forEach(node=>{if(!node.dataset.i18nDefault)node.dataset.i18nDefault=node.textContent||""});
@@ -152,8 +169,7 @@ const structuredData = {
    console.warn("Optional social links unavailable.",error);
   }
  }
- loadPageTranslations(lang);
- loadSocialLinks();
+ document.addEventListener("DOMContentLoaded",()=>{loadPageTranslations(lang);loadSocialLinks()},{once:true});
 
 })();
 </script>
@@ -275,11 +291,4 @@ if (chatEl("mh-chat-open")) {
 <footer class="site-footer"><div><a class="brand brand-light" href="/" aria-label="Materuni Hosts home"><img class="brand-logo-footer" src="/materuni-hosts-logo-round.jpg" alt="Materuni Hosts logo" width="58" height="58" /></a><p>Authentic Chagga experiences in Materuni Village, Moshi, Tanzania.</p><p class="tagline">Come as a guest. Leave as a friend.</p><div class="social-links" aria-label="Social media"><a href="https://www.instagram.com/REPLACE_MATERUNI_HOSTS" data-social-key="instagram_url" hidden aria-hidden="true" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><svg viewBox="0 0 24 24" role="img" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg><span>Instagram</span></a><a href="https://www.facebook.com/REPLACE_MATERUNI_HOSTS" data-social-key="facebook_url" hidden aria-hidden="true" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><svg viewBox="0 0 24 24" role="img" aria-hidden="true"><path fill="currentColor" stroke="none" d="M13.4 21v-8h2.7l.4-3.1h-3.1v-2c0-.9.3-1.5 1.6-1.5h1.7V3.6c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.1H7.2V13H10v8z"/></svg><span>Facebook</span></a><a href="https://www.tripadvisor.com/REPLACE_MATERUNI_HOSTS" data-social-key="tripadvisor_url" hidden aria-hidden="true" target="_blank" rel="noopener noreferrer" aria-label="Tripadvisor"><svg viewBox="0 0 24 24" role="img" aria-hidden="true"><path d="M2.5 8.5 5 5.5h14l2.5 3"/><path d="M3.5 9.5h17"/><circle cx="8" cy="13" r="4.1"/><circle cx="16" cy="13" r="4.1"/><circle cx="8" cy="13" r="1.1" fill="currentColor"/><circle cx="16" cy="13" r="1.1" fill="currentColor"/><path d="m10.7 17.3 1.3 1.6 1.3-1.6"/></svg><span>Tripadvisor</span></a><a href="https://wa.me/255612068540" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><svg viewBox="0 0 24 24" role="img" aria-hidden="true"><path d="M20.2 11.4a8.2 8.2 0 0 1-12 7.2L4 20l1.4-4.2a8.2 8.2 0 1 1 14.8-4.4Z"/><path d="M9 8.3c.5 2.8 2.1 4.4 4.8 5.1l1.1-1.2 2 1c-.2 1.6-1.2 2.3-2.6 2.3-3.8-.5-6.9-3.7-7.3-7.4 0-1.3.8-2.3 2.1-2.5l1 2z"/></svg><span>WhatsApp</span></a></div></div>
 <div><strong>Explore</strong><a href="/experiences">Our experiences</a><a href="/itinerary">Build your itinerary</a><a href="/reviews">Guest reviews</a><a href="/faq">FAQs</a><a href="/sustainability">Our approach</a><a href="/travel-guide">Travel guide</a><a href="/privacy">Privacy</a><a href="/terms">Booking terms</a><a href="/work-with-us">Work with us</a><a href="/booking">Book your experience</a></div>
 <div><strong>Talk to a local host</strong><a href="https://wa.me/255612068540" target="_blank" rel="noopener noreferrer">WhatsApp +255 612 068 540</a><a href="mailto:hello@materunihosts.com">hello@materunihosts.com</a><span>Materuni Village, Moshi · Tanzania</span><a href="https://maps.app.goo.gl/mM5qaacFRN5sF7eB7" target="_blank" rel="noopener noreferrer">Find us on Google Maps</a><a class="host-login-link" href="/admin/">Host dashboard sign in</a></div><div class="copyright">© {new Date().getFullYear()} Materuni Hosts. Thoughtful experiences, rooted in place.</div></footer>
-<script>
-// @ts-nocheck
-
-const settingsEndpoint="https://sskmzswoeljxwojcszta.supabase.co/rest/v1/site_settings?select=setting_key,setting_value";
-const publicKey="sb_publishable_G9ru4P_yKzievqiXjXEEbQ_p28cB_NZ";
-fetch(settingsEndpoint,{headers:{"apikey":publicKey,"Authorization":"Bearer "+publicKey},cache:"no-store"}).then(response=>response.ok?response.json():[]).then(rows=>rows.forEach(row=>{const link=document.querySelector('[data-social-key="'+row.setting_key+'"]');const value=typeof row.setting_value==="string"?row.setting_value.trim():"";if(link&&/^https:\/\//i.test(value)){link.href=value;link.hidden=false;link.removeAttribute("aria-hidden");}})).catch(()=>{});
-</script>
 </body></html>
