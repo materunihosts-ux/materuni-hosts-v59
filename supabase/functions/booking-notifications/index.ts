@@ -46,8 +46,8 @@ Deno.serve(async (request: Request) => {
       return json({ error: "This booking notification link has expired." }, 410);
     }
 
-    const guestName = String(booking.guest ?? "Guest").replace(/[\\u0000-\\u001F\\u007F]/g, " ").trim().slice(0, 120) || "Guest";
-    const experience = String(booking.experience ?? "Materuni experience").replace(/[\\u0000-\\u001F\\u007F]/g, " ").trim().slice(0, 160);
+    const guestName = String(booking.guest ?? "Guest").replace(/[\x00-\x1F\x7F]/g, " ").trim().slice(0, 120) || "Guest";
+    const experience = String(booking.experience ?? "Materuni experience").replace(/[\x00-\x1F\x7F]/g, " ").trim().slice(0, 160);
     const bookingDate = String(booking.booking_date ?? "").slice(0, 40);
     const guests = Number(booking.guest_count ?? booking.guests ?? 1);
     const phone = String(booking.phone ?? "").replace(/[^+0-9 ()-]/g, "").slice(0, 30);
