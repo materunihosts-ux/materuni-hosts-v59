@@ -1013,3 +1013,15 @@ a:not(.button):not(.nav-cta):not(.brand):not(.admin-home-card){text-underline-of
 .hero .eyebrow,.band .eyebrow{color:#e0c17c}
 .site-header nav a:hover{color:#805f2b}
 .button:hover:not(.button-secondary),.nav-cta:hover{color:#242421!important}
+
+
+/* Materuni Hosts: accessible contrast and image delivery fallback */
+.eyebrow{color:#805f2b}
+.hero .eyebrow,.band .eyebrow{color:#e5c681}
+.site-header nav a:hover{color:#805f2b}
+.button:hover,.nav-cta:hover{background:#b58a45;color:#242421!important}
+.button.secondary:hover{color:#242421!important;border-color:#b58a45}
+.hero-image{background-color:#1A3322;background-position:center;background-size:cover}
+.hero-copy{min-width:0}
+.hero h1{max-width:14ch}
+@media(max-width:560px){.hero h1{font-size:clamp(39px,11vw,46px);line-height:1.08}.hero-copy{padding:62px 22px}.hero .actions .button{width:100%}}
