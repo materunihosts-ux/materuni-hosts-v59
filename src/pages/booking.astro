@@ -1,7 +1,7 @@
 ---
 import SiteLayout from "../layouts/SiteLayout.astro";
 ---
-<SiteLayout title="Check Materuni Camping Availability | Materuni Hosts" description="Check live dates and spaces for Materuni Camping, our flagship overnight Chagga village stay, plus selected waterfall, coffee and cultural experiences in Materuni Village, Kilimanjaro, Tanzania. Send a booking request directly to local hosts.">
+<SiteLayout title="Book Materuni Waterfall & Coffee Experiences | Materuni Hosts" description="Check dates and live availability for Materuni Waterfall hikes, Chagga coffee tours, cooking classes and camping in Materuni Village near Moshi, Tanzania. Send a booking request directly to local hosts.">
 <section class="page-hero"><span class="eyebrow">PLAN YOUR VISIT</span><h1 data-i18n="booking_page_title">Check availability before you book.</h1><p data-i18n="booking_page_intro">Choose your experience and preferred date. Available times are retrieved from our live Materuni Hosts calendar.</p></section>
 <section class="booking-wrap"><div class="booking-panel">
 <div class="booking-estimate" id="booking-estimate" hidden aria-live="polite" aria-atomic="true">
@@ -26,8 +26,7 @@ import SiteLayout from "../layouts/SiteLayout.astro";
 <script>
 // @ts-nocheck
 
-const url="https://sskmzswoeljxwojcszta.supabase.co";
-const key="sb_publishable_G9ru4P_yKzievqiXjXEEbQ_p28cB_NZ";
+import { supabaseUrl as url, publishableKey as key } from "../lib/supabase-public";
 const headers={"apikey":key,"Authorization":"Bearer "+key,"Content-Type":"application/json"};
 const $=id=>document.getElementById(id);
 function updateBookingEstimate(){
