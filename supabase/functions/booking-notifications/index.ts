@@ -37,7 +37,7 @@ Deno.serve(async (request: Request) => {
     if (!supabaseUrl || !serviceRoleKey) return json({ error: "Notification service is not configured." }, 503);
     const supabase = createClient(supabaseUrl, serviceRoleKey, { auth: { persistSession: false, autoRefreshToken: false } });
     const { data: booking, error: bookingError } = await supabase.from("bookings")
-      .select("id, booking_reference, experience, booking_date, guest_count, guests, guest, email, phone, pickup, notes, status, created_at")
+      .select("id, booking_reference, experience, booking_date, guest_count, guests, guest, email, phone, preferred_contact, pickup, notes, status, created_at")
       .eq("id", bookingId).maybeSingle();
     if (bookingError) throw bookingError;
     if (!booking || booking.status !== "New") return json({ error: "Booking not found or no longer eligible for notifications." }, 404);
