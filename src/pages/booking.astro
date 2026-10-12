@@ -191,8 +191,7 @@ function renderCheckoutStep(){
  progress.querySelectorAll("li").forEach((item,index)=>{item.classList.toggle("is-current",index===activeCheckoutStep);item.classList.toggle("is-complete",index<activeCheckoutStep);item.setAttribute("aria-current",index===activeCheckoutStep?"step":"false")});
  back.hidden=activeCheckoutStep===0;
  next.hidden=activeCheckoutStep===2;
- if(activeCheckoutStep===1){checkoutSteps[1].append(stepActions)}
- else if(activeCheckoutStep===0){checkoutSteps[0].append(stepActions)}
+ checkoutSteps[activeCheckoutStep].append(stepActions);
 }
 function validateCheckoutStep(index){
  const ids=checkoutGroups[index];
