@@ -68,6 +68,9 @@ function showFeedback(message,state="error") {
   const fb=$("feedback");
   fb.textContent=message;
   fb.dataset.state=state;
+  fb.className="booking-alert booking-alert-"+state;
+  fb.setAttribute("role",state==="error"?"alert":"status");
+  fb.setAttribute("aria-live",state==="error"?"assertive":"polite");
 }
 function safeError(payload,status) {
   return payload?.message || payload?.details || payload?.hint ||
@@ -194,14 +197,17 @@ $("booking-form").addEventListener("submit",async e=>{
     method:"POST",headers,body:JSON.stringify({booking_id:created.booking_id})
    });
    const notificationPayload=await notificationResponse.json().catch(()=>null);
-   if(!notificationResponse.ok||!notificationPayload?.success){
-    notice=" Your request is saved, but automatic notifications could not be confirmed. Our host can verify it using your reference.";
+   const deliveryStates=Object.values(notificationPayload?.notifications||{});
+   const hasDeliveryFailure=deliveryStates.some(state=>["failed","not_configured","no_guest_email"].includes(state));
+   const hasDeliverySuccess=deliveryStates.some(state=>["sent","already_processed"].includes(state));
+   if(!notificationResponse.ok||!notificationPayload?.success||(!hasDeliverySuccess&&hasDeliveryFailure)||hasDeliveryFailure){
+    notice=" Automatic email/WhatsApp delivery is not fully confirmed, but your booking request is safely saved. Our host can verify it using your reference.";
    }
   }catch(notificationError){
    console.warn("Booking saved; notification delivery could not be confirmed.",notificationError);
    notice=" Your request is saved, but automatic notifications could not be confirmed. Our host can verify it using your reference.";
   }
-  showFeedback("Your booking request has been received. Reference: "+reference+". A local host will contact you to confirm availability. No payment has been taken."+notice,"success");
+  showFeedback("Booking request received — reference: "+reference+". Your request is awaiting host confirmation; it is not yet a confirmed reservation and no payment has been taken."+notice,notice?"warning":"success");
   $("booking-form").reset();
   $("date").min=tanzaniaToday();
   $("date").value=addDays(tanzaniaToday(),1);
@@ -209,7 +215,9 @@ $("booking-form").addEventListener("submit",async e=>{
   clearSelectedSlot("Your request was received. Choose another experience or date to make a new request.");
   await refreshAvailability();
  }catch(error){
-  showFeedback(error.message||"We could not send your booking. Please try again or contact us on WhatsApp.");
+  const message=error.message||"We could not send your booking. Please try again or contact us on WhatsApp.";
+  const isCapacityConflict=/not enough spaces|no longer available|slot.*not found|already passed|inactive/i.test(message);
+  showFeedback(isCapacityConflict?message+" Please refresh availability and choose another time.":message,"error");
   // Refresh in case another guest took the selected spaces while this form was open.
   refreshAvailability();
  }finally{
