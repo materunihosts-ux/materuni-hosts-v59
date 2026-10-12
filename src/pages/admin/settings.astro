@@ -45,7 +45,7 @@ Come as a guest. Leave as a friend.</textarea><small class="muted">Available pla
 <script>
 // @ts-nocheck
 const supabaseUrl="https://sskmzswoeljxwojcszta.supabase.co", publishableKey="sb_publishable_G9ru4P_yKzievqiXjXEEbQ_p28cB_NZ";
-let token="";
+let token="",emailTemplatesState={};
 const el=id=>document.getElementById(id);
 const headers=()=>({"apikey":publishableKey,"Authorization":"Bearer "+token,"Content-Type":"application/json"});
 async function request(path,options={}){const r=await fetch(supabaseUrl+path,{...options,headers:{...headers(),...(options.headers||{})}});const body=await r.json().catch(()=>null);if(!r.ok)throw new Error(body?.message||body?.details||body?.hint||"Request failed");return body}
@@ -61,8 +61,8 @@ el("login-form").addEventListener("submit",async e=>{
   if(!admins.length)throw new Error("This account is not authorised as an administrator");
   const rows=await request("/rest/v1/site_settings?select=setting_key,setting_value");
   for(const [id,key] of Object.entries(fields)){const row=rows.find(x=>x.setting_key===key);el(id).value=row?.setting_value||""}
-  const emailTemplates=parseSetting(rows.find(x=>x.setting_key==="email_templates")?.setting_value);
-  const partnerEmail=emailTemplates.partner||{};
+  emailTemplatesState=parseSetting(rows.find(x=>x.setting_key==="email_templates")?.setting_value);
+  const partnerEmail=emailTemplatesState.partner||{};
   if(partnerEmail.subject)el("partner-email-subject").value=partnerEmail.subject;
   if(partnerEmail.body)el("partner-email-body").value=partnerEmail.body;
   const whatsapp=parseSetting(rows.find(x=>x.setting_key==="whatsapp_partner_template")?.setting_value);
@@ -76,7 +76,8 @@ el("settings-form").addEventListener("submit",async e=>{
  e.preventDefault();const b=el("save");b.disabled=true;el("feedback").textContent="Saving settings…";
  try{
   const rows=Object.entries(fields).map(([id,key])=>({setting_key:key,setting_value:el(id).value.trim(),updated_at:new Date().toISOString()}));
-  const emailTemplates={partner:{subject:el("partner-email-subject").value.trim(),body:el("partner-email-body").value.trim()}};
+  const emailTemplates={...emailTemplatesState,partner:{subject:el("partner-email-subject").value.trim(),body:el("partner-email-body").value.trim()}};
+  emailTemplatesState=emailTemplates;
   const whatsappTemplate={name:el("whatsapp-template-name").value.trim(),language:el("whatsapp-template-language").value.trim()||"en"};
   rows.push({setting_key:"email_templates",setting_value:JSON.stringify(emailTemplates),updated_at:new Date().toISOString()});
   rows.push({setting_key:"whatsapp_partner_template",setting_value:JSON.stringify(whatsappTemplate),updated_at:new Date().toISOString()});
