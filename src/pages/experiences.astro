@@ -44,6 +44,7 @@ function appendProductMeta(body, tour) {
     meta.append(list);
   };
   addList("SIGNATURE MOMENTS", Array.isArray(tour.signature_moments) ? tour.signature_moments.slice(0,3) : []);
+  addList("WHAT YOUR EXPERIENCE INCLUDES", tour.inclusions);
   addList("YOUR UNIQUE EXPERIENCE", tour.unique_amenities);
   if (meta.childNodes.length) body.append(meta);
 }
