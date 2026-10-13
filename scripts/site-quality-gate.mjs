@@ -38,7 +38,7 @@ else {
 }
 
 const expectedRoutes = [
-  "/", "/experiences", "/booking", "/itinerary", "/reviews", "/faq",
+  "/", "/experiences", "/camping", "/day-trips", "/booking", "/itinerary", "/reviews", "/faq",
   "/sustainability", "/travel-guide", "/work-with-us", "/privacy", "/terms", "/admin"
 ];
 for (const route of expectedRoutes) {
