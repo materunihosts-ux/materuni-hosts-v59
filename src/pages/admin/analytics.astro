@@ -80,10 +80,11 @@ async function loadAnalytics(){
     sourceRows.push(...page);
     if(page.length<1000)break;
    }
-   const counts={"Camping page":0,"Day Trips page":0,"Other / untracked":0};
+   const counts={"Homepage leading package":0,"Camping page":0,"Day Trips page":0,"Other / untracked":0};
    sourceRows.forEach(row=>{
     const note=String(row.notes||"");
-    if(note.includes("[Enquiry source: Camping landing page"))counts["Camping page"]++;
+    if(note.includes("[Enquiry source: Homepage leading package"))counts["Homepage leading package"]++;
+    else if(note.includes("[Enquiry source: Camping landing page"))counts["Camping page"]++;
     else if(note.includes("[Enquiry source: Day Trips landing page"))counts["Day Trips page"]++;
     else counts["Other / untracked"]++;
    });
