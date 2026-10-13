@@ -103,8 +103,10 @@ function render(){
     const result=await response.json().catch(()=>({}));
     if(!response.ok)throw new Error(result.error||"Invitation could not be sent.");
     const email=result.outcomes?.email||"not sent",wa=result.outcomes?.whatsapp||"not sent";
-    el("list-feedback").textContent="Invitation for "+p.business_name+" — Email: "+email.replaceAll("_"," ")+" · WhatsApp: "+wa.replaceAll("_"," ")+".";
-    const complete=["sent","already_sent"].includes(email)&&["sent","already_sent"].includes(wa);
+    el("list-feedback").textContent="Invitation for "+p.business_name+" — Email: "+email.replaceAll("_"," ")+" · WhatsApp: "+wa.replaceAll("_"," ")+"."+(complete?" At least one channel was delivered; skipped channels need no retry unless you add the missing setup or consent.":" No channel has completed delivery, or a delivery is still pending; review the status before retrying.");
+    const delivered=["sent","already_sent"].some(status=>status===email||status===wa);
+     const resolved=["sent","already_sent","skipped"].includes(email)&&["sent","already_sent","skipped"].includes(wa);
+     const complete=delivered&&resolved;
     if(complete){
      invitationRequestId="";
      try{sessionStorage.removeItem(invitationStorageKey)}catch{}
