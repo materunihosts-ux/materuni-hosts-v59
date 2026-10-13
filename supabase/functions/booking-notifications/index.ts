@@ -228,12 +228,18 @@ Deno.serve(async (request: Request) => {
     const guestSubject = renderReceivedTemplate(
       receivedTemplate?.subject,
       "We received your Materuni Hosts booking request",
-      180,
-    );
+      240,
+    ).replace(/[\r\n\x00-\x1F\x7F]+/g, " ").trim().slice(0, 180);
     const guestMessage = renderReceivedTemplate(receivedTemplate?.body, defaultReceivedBody, 12_000);
-    const reservationDisclaimer = /not\s+(?:yet\s+)?a\s+confirmed\s+reservation|not\s+confirmed/i.test(guestMessage)
-      ? ""
-      : "<p><strong>This is a booking request, not a confirmed reservation. No payment has been taken.</strong></p>";
+    const hasReservationStatus = /not\s+(?:yet\s+)?a\s+confirmed\s+reservation|not\s+confirmed/i.test(guestMessage);
+    const hasNoPaymentNotice = /no\s+payment\s+(?:has\s+been|was)\s+taken|payment\s+has\s+not\s+been\s+taken/i.test(guestMessage);
+    const disclaimerParts = [
+      ...(hasReservationStatus ? [] : ["This is a booking request, not a confirmed reservation."]),
+      ...(hasNoPaymentNotice ? [] : ["No payment has been taken."]),
+    ];
+    const reservationDisclaimer = disclaimerParts.length
+      ? "<p><strong>" + escapeHtml(disclaimerParts.join(" ")) + "</strong></p>"
+      : "";
     const guestHtml = [
       '<div style="font-family:Arial,sans-serif;line-height:1.6;color:#242421;max-width:620px;margin:auto">',
       '<div style="background:#1A3322;color:#fff;padding:26px 30px"><div style="font-size:12px;letter-spacing:3px">MATERUNI HOSTS</div><h1 style="font-family:Georgia,serif;font-weight:500;margin:12px 0 0">Your Materuni experience</h1></div>',
