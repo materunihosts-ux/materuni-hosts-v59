@@ -23,13 +23,20 @@ const hero = base + "camping_image/1791601872981-zmji0mykwhd.jpg";
  // @ts-nocheck
  import { supabaseUrl, publishableKey } from "../lib/supabase-public";
  const pageFields={"hero_title":".camp-hero h1","hero_intro":".camp-hero .camp-copy>p","story_title":".story h2","story_intro":".story>div>p","offers_title":".section>.heading h2","offers_intro":".section>.heading p","final_title":".camp .final h2","final_intro":".camp .final>p","final_cta":".camp .final a.button.light"};
+ let landingContent=null;
+ function applyLandingCopy(){
+  const locale=(localStorage.getItem("materuni-language")||"en").toLowerCase();
+  if(locale!=="en"||!landingContent)return;
+  Object.entries(pageFields).forEach(([key,selector])=>{const value=landingContent[key];const node=document.querySelector(selector);if(node&&typeof value==="string"&&value.trim())node.textContent=value});
+ }
  fetch(`${supabaseUrl}/rest/v1/site_settings?select=setting_value&setting_key=eq.landing_pages_content`,{headers:{apikey:publishableKey,Authorization:"Bearer "+publishableKey},cache:"no-store"})
   .then(response=>response.ok?response.json():[])
   .then(rows=>{
    const raw=rows?.[0]?.setting_value;if(!raw)return;
    const saved=typeof raw==="string"?JSON.parse(raw):raw;const content=saved?.camping;if(!content||typeof content!=="object")return;
-   Object.entries(pageFields).forEach(([key,selector])=>{const value=content[key];const node=document.querySelector(selector);if(node&&typeof value==="string"&&value.trim())node.textContent=value});
+   landingContent=content;applyLandingCopy();
   }).catch(error=>console.warn("Optional landing-page content unavailable; showing built-in copy.",error));
+ document.getElementById("site-language")?.addEventListener("change",applyLandingCopy);
 </script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Service","name":"Materuni Village Overnight Camping","description":"An overnight village camping stay with local Chagga hosts in Materuni, including a guided waterfall and cultural experience.","provider":{"@type":"Organization","name":"Materuni Hosts","url":"https://materunihosts.com"},"areaServed":{"@type":"Place","name":"Materuni Village, Kilimanjaro Region, Tanzania"},"offers":[{"@type":"Offer","price":"110","priceCurrency":"USD","description":"Per person"},{"@type":"Offer","price":"135","priceCurrency":"USD","description":"Ultimate Foothills Experience, per person"}]}</script>
 </SiteLayout>
