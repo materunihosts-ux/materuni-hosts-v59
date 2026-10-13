@@ -1,0 +1,1 @@
+REVOKE EXECUTE ON FUNCTION public.submit_booking(text,uuid,integer,text,text,text,text,text,text,text,text,text,text) FROM PUBLIC, authenticated; GRANT EXECUTE ON FUNCTION public.submit_booking(text,uuid,integer,text,text,text,text,text,text,text,text,text,text) TO anon;

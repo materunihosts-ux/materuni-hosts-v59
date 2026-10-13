@@ -1,0 +1,1 @@
+REVOKE EXECUTE ON FUNCTION public.admin_get_ai_messages(uuid) FROM PUBLIC, anon; GRANT EXECUTE ON FUNCTION public.admin_get_ai_messages(uuid) TO authenticated;

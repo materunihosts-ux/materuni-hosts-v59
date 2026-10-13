@@ -1,0 +1,1 @@
+alter table public.experience_catalog add column if not exists exclusions jsonb not null default '[]'::jsonb;
