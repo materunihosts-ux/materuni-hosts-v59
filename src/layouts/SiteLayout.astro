@@ -2,6 +2,7 @@
 import "../styles/global.css";
 import { supabaseUrl } from "../lib/supabase-public";
 const { title = "Materuni Hosts | Authentic Chagga Experiences", description = "Discover authentic Chagga coffee, waterfalls, food and village life in Materuni, Kilimanjaro, Tanzania.", noindex = false, preloadImage = null } = Astro.props;
+const isAdmin = Astro.url.pathname.startsWith("/admin");
 const canonical = new URL(Astro.url.pathname, "https://materunihosts.com").toString();
 const breadcrumbLabels: Record<string, string> = {
   experiences: "Experiences",
@@ -84,6 +85,7 @@ const structuredData = {
 
 <style is:global>
 body.admin-shell .site-header,body.admin-shell .site-footer,body.admin-shell .mh-concierge{display:none!important}
+body.admin-shell{min-height:100vh}body.admin-shell .admin-main{width:100%;max-width:1440px;margin:0 auto;padding:clamp(18px,3vw,42px);min-height:calc(100vh - 58px)}body.admin-shell .admin-main>.page-hero{margin:0 0 22px;padding:0;background:transparent}body.admin-shell .admin-main .booking-wrap{width:100%;max-width:none;margin:0;padding:0}body.admin-shell .admin-main .booking-panel{border:1px solid #e1d9cc;border-radius:16px;box-shadow:0 12px 36px rgba(26,51,34,.07)}body.admin-shell .admin-main .button{min-height:42px}
 body.admin-shell{background:#f4f0e8}
 body.admin-shell .admin-topbar{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:14px clamp(18px,4vw,56px);background:#1A3322;color:#FAF7F2;border-bottom:1px solid #C5A059}
 body.admin-shell .admin-brand{font-family:Manrope,sans-serif;font-weight:800;letter-spacing:.02em;color:inherit;text-decoration:none}
@@ -96,9 +98,9 @@ body.admin-shell #main-content{min-height:calc(100vh - 58px)}
 </head>
 <body class={Astro.url.pathname.startsWith("/admin") ? "admin-shell" : "public-shell"}>
 <a class="skip-link" href="#main-content">Skip to content</a>
-<header class="site-header"><a class="brand" href="/" aria-label="Materuni Hosts home"><img class="brand-logo" src="/materuni-hosts-logo-round.svg" alt="Materuni Hosts logo" width="86" height="86" /></a>
+{!isAdmin && <header class="site-header"><a class="brand" href="/" aria-label="Materuni Hosts home"><img class="brand-logo" src="/materuni-hosts-logo-round.svg" alt="Materuni Hosts logo" width="86" height="86" /></a>
 <nav id="primary-navigation" aria-label="Main navigation"><a href="/" data-i18n="nav_home" aria-current={Astro.url.pathname === "/" ? "page" : undefined}>Home</a><a class="nav-camping" href="/experiences#camping" data-i18n="nav_camping">Materuni Camping</a><a href="/experiences" data-i18n="nav_experiences">Experiences</a><a href="/sustainability" data-i18n="nav_community">Community & sustainability</a><a href="/reviews" data-i18n="nav_reviews">Guest reviews</a><a href="/faq" data-i18n="nav_faqs">FAQs</a><a class="nav-cta" href="/booking" data-i18n="nav_availability">Check availability</a></nav>
-<label class="language-control" for="site-language"><span class="sr-only">Website language</span><select id="site-language" aria-label="Website language"><option value="en">EN</option><option value="es">ES</option><option value="fr">FR</option><option value="de">DE</option></select></label><button class="menu-toggle" type="button" aria-label="Open menu" aria-controls="primary-navigation" aria-expanded="false">☰</button></header>
+<label class="language-control" for="site-language"><span class="sr-only">Website language</span><select id="site-language" aria-label="Website language"><option value="en">EN</option><option value="es">ES</option><option value="fr">FR</option><option value="de">DE</option></select></label><button class="menu-toggle" type="button" aria-label="Open menu" aria-controls="primary-navigation" aria-expanded="false">☰</button></header>}
 <script>
 // @ts-nocheck
 import { supabaseUrl, publishableKey } from "../lib/supabase-public";
@@ -205,9 +207,9 @@ import { supabaseUrl, publishableKey } from "../lib/supabase-public";
 
 })();
 </script>
-{Astro.url.pathname.startsWith("/admin") && <div class="admin-topbar"><a class="admin-brand" href="/admin/" aria-label="Materuni Hosts admin home">Materuni Hosts <span>ADMIN</span></a><a class="admin-view-site" href="/" target="_blank" rel="noopener noreferrer">View main website ↗</a></div>}<main id="main-content" tabindex="-1"><slot /></main>
+{isAdmin && <div class="admin-topbar"><a class="admin-brand" href="/admin/" aria-label="Materuni Hosts admin home">Materuni Hosts <span>ADMIN</span></a><a class="admin-view-site" href="/" target="_blank" rel="noopener noreferrer">View main website ↗</a></div>}<main id="main-content" class={isAdmin ? "admin-main" : "public-main"} tabindex="-1"><slot /></main>
 
-{!noindex && <div class="mh-concierge" id="mh-concierge">
+{!noindex && !isAdmin && <div class="mh-concierge" id="mh-concierge">
   <button class="mh-concierge-launch" id="mh-chat-open" type="button" aria-expanded="false" aria-controls="mh-chat-panel"><span class="mh-chat-icon">✦</span><span>Ask a local host</span></button>
   <section class="mh-chat-panel" id="mh-chat-panel" hidden aria-label="Materuni Hosts guest concierge">
     <header class="mh-chat-header"><div><strong>Materuni Hosts</strong><small id="mh-chat-subtitle">Local experience concierge</small></div><button id="mh-chat-close" type="button" aria-label="Close chat">×</button></header>
@@ -225,8 +227,9 @@ const conciergeEndpoint = `${supabaseUrl}/functions/v1/guest-concierge`;
 const conciergeKey = "sb_publishable_G9ru4P_yKzievqiXjXEEbQ_p28cB_NZ";
 const chatEl = id => document.getElementById(id);
 const chatStore = { id: "materuni_chat_session", token: "materuni_chat_token" };
-let chatSessionId = sessionStorage.getItem(chatStore.id) || "";
-let chatSessionToken = sessionStorage.getItem(chatStore.token) || "";
+const safeSession = { get(key) { try { return sessionStorage.getItem(key) || ""; } catch { return ""; } }, set(key,value) { try { sessionStorage.setItem(key,value); } catch {} }, remove(key) { try { sessionStorage.removeItem(key); } catch {} } };
+let chatSessionId = safeSession.get(chatStore.id);
+let chatSessionToken = safeSession.get(chatStore.token);
 const chatGreetings = {
   en: "Hello! I’m your Materuni Hosts concierge. I can help you choose an experience, understand prices and plan your visit. What would you like to know?",
   es: "¡Hola! Soy tu asistente de Materuni Hosts. Puedo ayudarte a elegir una experiencia, conocer los precios y planificar tu visita. ¿Qué te gustaría saber?",
@@ -253,7 +256,7 @@ function chatBubble(role, message, mode) {
   list.scrollTop = list.scrollHeight;
   return bubble;
 }
-if (chatEl("mh-chat-open")) {
+if (chatEl("mh-chat-open") && chatEl("mh-chat-panel") && languageSelect && chatEl("mh-chat-messages") && chatEl("mh-chat-form")) {
   chatBubble("assistant", chatGreetings[languageSelect.value] || chatGreetings.en);
   chatEl("mh-chat-open").addEventListener("click", () => {
     const panel = chatEl("mh-chat-panel");
@@ -296,12 +299,12 @@ if (chatEl("mh-chat-open")) {
       const data = await response.json().catch(() => ({}));
       if (response.status === 401 && !retry) {
         chatSessionId = ""; chatSessionToken = "";
-        sessionStorage.removeItem(chatStore.id); sessionStorage.removeItem(chatStore.token);
+        safeSession.remove(chatStore.id); safeSession.remove(chatStore.token);
         return requestReply(true);
       }
       if (!response.ok) throw new Error(data.error || "The chat is temporarily unavailable.");
-      if (data.session_id) { chatSessionId = data.session_id; sessionStorage.setItem(chatStore.id, chatSessionId); }
-      if (data.session_token) { chatSessionToken = data.session_token; sessionStorage.setItem(chatStore.token, chatSessionToken); }
+      if (data.session_id) { chatSessionId = data.session_id; safeSession.set(chatStore.id, chatSessionId); }
+      if (data.session_token) { chatSessionToken = data.session_token; safeSession.set(chatStore.token, chatSessionToken); }
       return data;
     }
     try {
@@ -320,7 +323,7 @@ if (chatEl("mh-chat-open")) {
 }
 </script>
 
-<footer class="site-footer"><div><a class="brand brand-light" href="/" aria-label="Materuni Hosts home"><img class="brand-logo-footer" src="/materuni-hosts-logo-round.svg" alt="Materuni Hosts — official round logo" width="72" height="72" loading="lazy" decoding="async" /></a><p>Authentic Chagga experiences in Materuni Village, Moshi, Tanzania.</p><p class="tagline">Come as a guest. Leave as a friend.</p><div class="social-links" aria-label="Follow Materuni Hosts"><a data-social-key="instagram_url" hidden aria-hidden="true" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><svg viewBox="0 0 24 24" role="img" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg><span>Instagram</span></a><a data-social-key="facebook_url" hidden aria-hidden="true" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><svg viewBox="0 0 24 24" role="img" aria-hidden="true"><path fill="currentColor" stroke="none" d="M13.4 21v-8h2.7l.4-3.1h-3.1v-2c0-.9.3-1.5 1.6-1.5h1.7V3.6c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.1H7.2V13H10v8z"/></svg><span>Facebook</span></a><a data-social-key="tripadvisor_url" hidden aria-hidden="true" target="_blank" rel="noopener noreferrer" aria-label="Tripadvisor"><svg viewBox="0 0 24 24" role="img" aria-hidden="true"><path d="M2.5 8.5 5 5.5h14l2.5 3"/><path d="M3.5 9.5h17"/><circle cx="8" cy="13" r="4.1"/><circle cx="16" cy="13" r="4.1"/><circle cx="8" cy="13" r="1.1" fill="currentColor"/><circle cx="16" cy="13" r="1.1" fill="currentColor"/><path d="m10.7 17.3 1.3 1.6 1.3-1.6"/></svg><span>Tripadvisor</span></a><a data-social-key="google_review_url" hidden aria-hidden="true" target="_blank" rel="noopener noreferrer" aria-label="Google reviews"><svg viewBox="0 0 24 24" role="img" aria-hidden="true"><path d="M20.2 12.2c0-.6-.1-1.2-.2-1.8H12v3.4h4.6a4 4 0 0 1-1.7 2.6v2.2h2.8c1.6-1.5 2.5-3.7 2.5-6.4Z" fill="currentColor" stroke="none"/><path d="M12 20.5c2.3 0 4.2-.8 5.6-2.1l-2.8-2.2c-.8.5-1.7.9-2.8.9-2.2 0-4.1-1.5-4.8-3.5H4.3v2.3a8.5 8.5 0 0 0 7.7 4.6Z" fill="currentColor" stroke="none"/><path d="M7.2 13.6a5.1 5.1 0 0 1 0-3.2V8.1H4.3a8.5 8.5 0 0 0 0 7.8l2.9-2.3Z" fill="currentColor" stroke="none"/><path d="M12 6.9c1.3 0 2.4.4 3.3 1.3l2.5-2.5A8.3 8.3 0 0 0 12 3.5a8.5 8.5 0 0 0-7.7 4.6l2.9 2.3c.7-2 2.6-3.5 4.8-3.5Z" fill="currentColor" stroke="none"/></svg><span>Google</span></a><a href="https://wa.me/255612068540" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><svg viewBox="0 0 24 24" role="img" aria-hidden="true"><path d="M20.2 11.4a8.2 8.2 0 0 1-12 7.2L4 20l1.4-4.2a8.2 8.2 0 1 1 14.8-4.4Z"/><path d="M9 8.3c.5 2.8 2.1 4.4 4.8 5.1l1.1-1.2 2 1c-.2 1.6-1.2 2.3-2.6 2.3-3.8-.5-6.9-3.7-7.3-7.4 0-1.3.8-2.3 2.1-2.5l1 2z"/></svg><span>WhatsApp</span></a></div></div>
+{!isAdmin && <footer class="site-footer"><div><a class="brand brand-light" href="/" aria-label="Materuni Hosts home"><img class="brand-logo-footer" src="/materuni-hosts-logo-round.svg" alt="Materuni Hosts — official round logo" width="72" height="72" loading="lazy" decoding="async" /></a><p>Authentic Chagga experiences in Materuni Village, Moshi, Tanzania.</p><p class="tagline">Come as a guest. Leave as a friend.</p><div class="social-links" aria-label="Follow Materuni Hosts"><a data-social-key="instagram_url" hidden aria-hidden="true" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><svg viewBox="0 0 24 24" role="img" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg><span>Instagram</span></a><a data-social-key="facebook_url" hidden aria-hidden="true" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><svg viewBox="0 0 24 24" role="img" aria-hidden="true"><path fill="currentColor" stroke="none" d="M13.4 21v-8h2.7l.4-3.1h-3.1v-2c0-.9.3-1.5 1.6-1.5h1.7V3.6c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.1H7.2V13H10v8z"/></svg><span>Facebook</span></a><a data-social-key="tripadvisor_url" hidden aria-hidden="true" target="_blank" rel="noopener noreferrer" aria-label="Tripadvisor"><svg viewBox="0 0 24 24" role="img" aria-hidden="true"><path d="M2.5 8.5 5 5.5h14l2.5 3"/><path d="M3.5 9.5h17"/><circle cx="8" cy="13" r="4.1"/><circle cx="16" cy="13" r="4.1"/><circle cx="8" cy="13" r="1.1" fill="currentColor"/><circle cx="16" cy="13" r="1.1" fill="currentColor"/><path d="m10.7 17.3 1.3 1.6 1.3-1.6"/></svg><span>Tripadvisor</span></a><a data-social-key="google_review_url" hidden aria-hidden="true" target="_blank" rel="noopener noreferrer" aria-label="Google reviews"><svg viewBox="0 0 24 24" role="img" aria-hidden="true"><path d="M20.2 12.2c0-.6-.1-1.2-.2-1.8H12v3.4h4.6a4 4 0 0 1-1.7 2.6v2.2h2.8c1.6-1.5 2.5-3.7 2.5-6.4Z" fill="currentColor" stroke="none"/><path d="M12 20.5c2.3 0 4.2-.8 5.6-2.1l-2.8-2.2c-.8.5-1.7.9-2.8.9-2.2 0-4.1-1.5-4.8-3.5H4.3v2.3a8.5 8.5 0 0 0 7.7 4.6Z" fill="currentColor" stroke="none"/><path d="M7.2 13.6a5.1 5.1 0 0 1 0-3.2V8.1H4.3a8.5 8.5 0 0 0 0 7.8l2.9-2.3Z" fill="currentColor" stroke="none"/><path d="M12 6.9c1.3 0 2.4.4 3.3 1.3l2.5-2.5A8.3 8.3 0 0 0 12 3.5a8.5 8.5 0 0 0-7.7 4.6l2.9 2.3c.7-2 2.6-3.5 4.8-3.5Z" fill="currentColor" stroke="none"/></svg><span>Google</span></a><a href="https://wa.me/255612068540" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><svg viewBox="0 0 24 24" role="img" aria-hidden="true"><path d="M20.2 11.4a8.2 8.2 0 0 1-12 7.2L4 20l1.4-4.2a8.2 8.2 0 1 1 14.8-4.4Z"/><path d="M9 8.3c.5 2.8 2.1 4.4 4.8 5.1l1.1-1.2 2 1c-.2 1.6-1.2 2.3-2.6 2.3-3.8-.5-6.9-3.7-7.3-7.4 0-1.3.8-2.3 2.1-2.5l1 2z"/></svg><span>WhatsApp</span></a></div></div>
 <div><strong>Explore</strong><a href="/experiences">Our experiences</a><a href="/itinerary">Build your itinerary</a><a href="/reviews">Guest reviews</a><a href="/faq">FAQs</a><a href="/sustainability">Our approach</a><a href="/travel-guide">Travel guide</a><a href="/privacy">Privacy</a><a href="/terms">Booking terms</a><a href="/work-with-us">Work with us</a><a href="/booking">Book your experience</a></div>
-<div><strong>Talk to a local host</strong><a href="https://wa.me/255612068540" target="_blank" rel="noopener noreferrer">WhatsApp +255 612 068 540</a><a href="mailto:hello@materunihosts.com">hello@materunihosts.com</a><span>Materuni Village, Moshi · Tanzania</span><a href="https://www.google.com/maps/search/?api=1&query=Materuni%20Hosts%20-%20Waterfall%20Tours%20%26%20Village%20Camping%2C%20Materuni%20Village%2C%20Moshi%2C%20Tanzania" target="_blank" rel="noopener noreferrer">Find us on Google Maps</a><a class="host-login-link" href="/admin/">Host dashboard sign in</a></div><div class="copyright">Materuni Hosts. All rights reserved.</div></footer>
+<div><strong>Talk to a local host</strong><a href="https://wa.me/255612068540" target="_blank" rel="noopener noreferrer">WhatsApp +255 612 068 540</a><a href="mailto:hello@materunihosts.com">hello@materunihosts.com</a><span>Materuni Village, Moshi · Tanzania</span><a href="https://www.google.com/maps/search/?api=1&query=Materuni%20Hosts%20-%20Waterfall%20Tours%20%26%20Village%20Camping%2C%20Materuni%20Village%2C%20Moshi%2C%20Tanzania" target="_blank" rel="noopener noreferrer">Find us on Google Maps</a><a class="host-login-link" href="/admin/">Host dashboard sign in</a></div><div class="copyright">Materuni Hosts. All rights reserved.</div></footer>}
 </body></html>
