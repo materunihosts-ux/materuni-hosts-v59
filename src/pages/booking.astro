@@ -99,11 +99,24 @@ function showFeedback(message,state="error") {
   fb.setAttribute("aria-live",state==="error"?"assertive":"polite");
 }
 function safeError(payload,status) {
-  return payload?.message || payload?.details || payload?.hint ||
-    payload?.error_description || payload?.error ||
-    (status===429 ? "Too many requests. Please wait a moment and try again." :
-    status>=500 ? "Our booking service is temporarily unavailable. Please contact us on WhatsApp." :
-    "We could not complete your request. Please check your details and try again.");
+  const serverMessage = String(payload?.message || payload?.details || payload?.hint || payload?.error_description || payload?.error || "").trim();
+  const message = serverMessage.toLowerCase();
+  if (status === 429 || message.includes("too many booking requests") || message.includes("too many requests")) {
+    return "We have received several requests from this contact in a short time. Please wait a little, or speak with our local host on WhatsApp.";
+  }
+  if (message.includes("not enough spaces") || message.includes("no longer available") || message.includes("slot was not found")) {
+    return "Those spaces may have just been taken. Please refresh the available times and choose another slot.";
+  }
+  if (message.includes("already passed") || message.includes("valid future date")) {
+    return "That time is no longer available. Please choose a later date or time.";
+  }
+  if (message.includes("experience") && message.includes("match")) {
+    return "Please choose a time listed for your selected experience, then try again.";
+  }
+  if (status >= 500) {
+    return "Our booking service is having a moment. Your details have not been confirmed; please try again shortly or contact our local host on WhatsApp.";
+  }
+  return "We could not complete your request. Please check your details and selected time, then try again.";
 }
 
 async function refreshAvailability(){
@@ -247,9 +260,10 @@ $("booking-form").addEventListener("submit",async e=>{
    const adminNeedsAttention=[delivery.admin_new_booking_alert,delivery.admin_whatsapp_alert].some(needsAttention);
    const guestDelivered=[delivery.guest_booking_acknowledgement,delivery.guest_whatsapp_acknowledgement].some(delivered);
    const guestNeedsAttention=[delivery.guest_booking_acknowledgement,delivery.guest_whatsapp_acknowledgement].some(needsAttention);
-   if(!notificationResponse.ok||!notificationPayload?.success||
-      (!adminDelivered&&adminNeedsAttention)||(!guestDelivered&&guestNeedsAttention)){
-    notice=" Automatic email/WhatsApp delivery needs attention, but your booking request is safely saved. Our host can verify it using your reference.";
+   const adminDeliveryConfirmed = adminDelivered;
+   const guestDeliveryConfirmed = guestDelivered;
+   if(!notificationResponse.ok||!notificationPayload?.success||!adminDeliveryConfirmed||!guestDeliveryConfirmed){
+    notice=" Your booking request is safely saved, but we could not confirm every expected email or WhatsApp notification. Our local host will check your request using the reference above.";
    }
   }catch(notificationError){
    console.warn("Booking saved; notification delivery could not be confirmed.",notificationError);
