@@ -83,7 +83,10 @@ if (fs.existsSync(sitemapPath)) {
   }
   if (urls.length) pass("All " + urls.length + " sitemap URLs resolve to built pages");
 
-  const sitemapPaths = new Set(urls.map((url) => new URL(url).pathname.replace(/\\/$/, "") || "/"));
+  const sitemapPaths = new Set(urls.map((url) => {
+    const pathname = new URL(url).pathname;
+    return pathname.length > 1 && pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;
+  }));
   for (const requiredPath of ["/", "/experiences", "/camping", "/day-trips", "/booking"]) {
     if (!sitemapPaths.has(requiredPath)) fail("Sitemap is missing an important public route: " + requiredPath);
   }
