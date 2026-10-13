@@ -1,0 +1,101 @@
+---
+import SiteLayout from "../../layouts/SiteLayout.astro";
+---
+<SiteLayout title="Leading Pages Editor | Materuni Hosts Admin" description="Edit Materuni Camping and Day Trips landing pages." noindex={true}>
+<section class="page-hero"><span class="eyebrow">PRIVATE ADMIN · WEBSITE EDITOR</span><h1>Leading pages editor</h1><p>Edit the guest-facing content on Materuni Camping and Day Trips. Changes are saved to the existing website settings table; package prices remain managed in Tours.</p></section>
+<section class="booking-wrap">
+ <div class="booking-panel" id="login-panel">
+  <h2>Administrator sign in</h2><p class="muted">Only approved Materuni Hosts administrators can publish page content.</p>
+  <form id="login-form" class="form-grid">
+   <div class="field full"><label for="admin-email">Admin email</label><input id="admin-email" type="email" autocomplete="username" required></div>
+   <div class="field full"><label for="admin-password">Password</label><input id="admin-password" type="password" autocomplete="current-password" required></div>
+   <div class="field full"><button class="button" id="login-button" type="submit">Sign in securely</button><p id="login-feedback" class="muted" aria-live="polite"></p></div>
+  </form>
+ </div>
+ <div id="manager" hidden>
+  <div class="booking-panel">
+   <div class="section-heading"><div><span class="eyebrow">CONTENT CONTROL</span><h2>Materuni Camping</h2><p class="muted">Edit the camping landing page headline, introduction, story, package section and closing call to action.</p></div><div class="admin-shortcuts"><a class="button button-secondary" href="/camping" target="_blank" rel="noopener">Preview page ↗</a><a class="button button-secondary" href="/admin/">Dashboard</a></div></div>
+   <form id="camping-form" class="form-grid"></form>
+   <div class="actions" style="margin-top:1rem"><button class="button" id="save-camping" type="button">Publish Camping page</button></div><p id="camping-feedback" class="muted" aria-live="polite"></p>
+  </div>
+  <div class="booking-panel" style="margin-top:1.25rem">
+   <div class="section-heading"><div><span class="eyebrow">DAY EXPERIENCES</span><h2>Materuni Day Trips</h2><p class="muted">Edit the day-trip landing page introduction, options section and closing call to action.</p></div><a class="button button-secondary" href="/day-trips" target="_blank" rel="noopener">Preview page ↗</a></div>
+   <form id="day-form" class="form-grid"></form>
+   <div class="actions" style="margin-top:1rem"><button class="button" id="save-day" type="button">Publish Day Trips page</button></div><p id="day-feedback" class="muted" aria-live="polite"></p>
+  </div>
+  <div class="booking-panel" style="margin-top:1.25rem"><h2>Publishing notes</h2><ul><li>Use factual descriptions and avoid unverified claims, awards or review statistics.</li><li>Keep published package prices and availability in the Tours and Availability section.</li><li>Changes are visible on the public pages after saving; use Preview to check the result.</li></ul><button class="button button-secondary" id="logout" type="button">Sign out</button></div>
+ </div>
+</section>
+<script>
+ // @ts-nocheck
+ import { supabaseUrl, publishableKey } from "../../lib/supabase-public";
+ let accessToken="";
+ const el=id=>document.getElementById(id);
+ const headers=()=>({apikey:publishableKey,Authorization:"Bearer "+accessToken,"Content-Type":"application/json"});
+ async function api(path,options={}){const response=await fetch(supabaseUrl+path,{...options,headers:{...headers(),...(options.headers||{})}});const data=await response.json().catch(()=>null);if(!response.ok)throw new Error(data?.message||data?.details||data?.error_description||"Request failed.");return data}
+ const fields={
+  camping:[
+   ["hero_title","Hero headline","input",140,"Stay a little longer. Feel a little closer."],
+   ["hero_intro","Hero introduction","textarea",700,"Trade a rushed stop for a night in Materuni. Wake beneath the green slopes of Kilimanjaro, share Chagga food and coffee traditions, follow forest paths and spend the evening around camp with your local hosts."],
+   ["story_title","Story section heading","input",140,"A village evening, not just an overnight stop."],
+   ["story_intro","Story section introduction","textarea",900,"Camping is the centre of this experience. The day gives you time to discover the waterfall and village; the evening creates space for food, conversation and the rhythms of local life. It is an invitation to slow down and experience Materuni with care."],
+   ["offers_title","Package section heading","input",160,"Make one night the heart of your Materuni visit."],
+   ["offers_intro","Package section introduction","textarea",700,"Choose the overnight camping stay or combine it with more foothills and village experiences. Your host can help shape the details around your dates and group."],
+   ["final_title","Closing headline","input",160,"Let Materuni be more than a day on your itinerary."],
+   ["final_intro","Closing introduction","textarea",500,"Tell us when you would like to stay and we will help you plan the next step."],
+   ["final_cta","Closing booking button","input",100,"Check camping availability"]
+  ],
+  day:[
+   ["hero_title","Hero headline","input",140,"A day in Materuni, made memorable."],
+   ["hero_intro","Hero introduction","textarea",700,"Walk to a forest waterfall, learn how Chagga coffee is prepared, taste local food and meet the people who make Materuni special. Choose the experience that fits your day, then let your local host help with the details."],
+   ["intro_band","Introductory paragraph","textarea",500,"All experiences take place in and around Materuni Village, near Moshi in the Kilimanjaro foothills. Published prices are per person; transport is arranged separately unless agreed with your host."],
+   ["options_title","Experience options heading","input",160,"Choose the day trip that feels like you."],
+   ["options_intro","Experience options introduction","textarea",700,"From the waterfall trail to hands-on coffee and cooking, each visit offers a different way to connect with village life."],
+   ["final_title","Closing headline","input",140,"Make a little space for Materuni."],
+   ["final_intro","Closing introduction","textarea",500,"Tell us which experience caught your eye. We will help you check the date and plan your visit."],
+   ["final_cta","Closing booking button","input",100,"Check day-trip availability"]
+  ]
+ };
+ const landingDefaults={};
+ function renderForm(page){
+  const form=el(page+"-form");form.replaceChildren();
+  for(const [key,label,type,max,initial] of fields[page]){
+   const wrap=document.createElement("div");wrap.className="field full";
+   const caption=document.createElement("label");caption.htmlFor=page+"-"+key;caption.textContent=label;
+   const input=document.createElement(type==="textarea"?"textarea":"input");input.id=page+"-"+key;input.maxLength=max;input.required=true;
+   if(type==="textarea")input.rows=3;
+   input.value=landingDefaults[page]?.[key]||initial;
+   wrap.append(caption,input);form.append(wrap);
+  }
+ }
+ async function loadLandingContent(){
+  const rows=await api("/rest/v1/site_settings?select=setting_value&setting_key=eq.landing_pages_content");
+  if(rows?.[0]?.setting_value){try{const saved=typeof rows[0].setting_value==="string"?JSON.parse(rows[0].setting_value):rows[0].setting_value;if(saved&&typeof saved==="object"){for(const page of ["camping","day"])landingDefaults[page]={...landingDefaults[page],...(saved[page]||{})}}}catch{throw new Error("Saved landing-page content could not be read. Please review the site settings before editing.")}}
+  renderForm("camping");renderForm("day");
+ }
+ async function publish(page){
+  const button=el("save-"+page),feedback=el(page+"-feedback");button.disabled=true;feedback.textContent="Saving page content…";
+  try{
+   const current={};for(const [key,label,type,max,initial] of fields[page]){const value=el(page+"-"+key).value.trim();if(!value)throw new Error(label+" cannot be empty.");if(value.length>max)throw new Error(label+" is too long.");current[key]=value}
+   const rows=await api("/rest/v1/site_settings?select=setting_value&setting_key=eq.landing_pages_content");
+   let saved={camping:{},day:{}};if(rows?.[0]?.setting_value){const parsed=typeof rows[0].setting_value==="string"?JSON.parse(rows[0].setting_value):rows[0].setting_value;if(parsed&&typeof parsed==="object")saved={...saved,...parsed}}
+   saved[page]=current;
+   await api("/rest/v1/site_settings?on_conflict=setting_key",{method:"POST",headers:{"Prefer":"resolution=merge-duplicates,return=minimal"},body:JSON.stringify({setting_key:"landing_pages_content",setting_value:JSON.stringify(saved),updated_at:new Date().toISOString()})});
+   landingDefaults[page]=current;feedback.textContent="Published successfully. Open Preview to review the public page.";
+  }catch(error){feedback.textContent=error.message||"Unable to save this page."}finally{button.disabled=false}
+ }
+ el("login-form").addEventListener("submit",async event=>{
+  event.preventDefault();const button=el("login-button");button.disabled=true;el("login-feedback").textContent="Verifying administrator…";
+  try{
+   const response=await fetch(supabaseUrl+"/auth/v1/token?grant_type=password",{method:"POST",headers:{apikey:publishableKey,"Content-Type":"application/json"},body:JSON.stringify({email:el("admin-email").value.trim(),password:el("admin-password").value})});
+   const session=await response.json();if(!response.ok)throw new Error(session.msg||session.message||"Sign in failed.");
+   accessToken=session.access_token;const admins=await api("/rest/v1/admin_users?select=user_id&user_id=eq."+encodeURIComponent(session.user.id));
+   if(!admins.length){accessToken="";throw new Error("This account is not authorised as an administrator.");}
+   await loadLandingContent();el("login-panel").hidden=true;el("manager").hidden=false;
+  }catch(error){el("login-feedback").textContent=error.message}finally{button.disabled=false}
+ });
+ el("save-camping").addEventListener("click",()=>publish("camping"));
+ el("save-day").addEventListener("click",()=>publish("day"));
+ el("logout").addEventListener("click",async()=>{try{await fetch(supabaseUrl+"/auth/v1/logout",{method:"POST",headers:headers()})}catch{}accessToken="";el("manager").hidden=true;el("login-panel").hidden=false;el("login-form").reset()});
+</script>
+</SiteLayout>
