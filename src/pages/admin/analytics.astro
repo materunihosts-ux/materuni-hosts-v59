@@ -73,7 +73,13 @@ async function loadAnalytics(){
    const end=new Date(to+"T00:00:00+03:00");end.setDate(end.getDate()+1);
    const until=end.toISOString();
    const query=new URLSearchParams({select:"notes",and:"(created_at.gte."+since+",created_at.lt."+until+")",order:"created_at.asc",limit:"1000"});
-   const sourceRows=await api("/rest/v1/bookings?"+query.toString());
+   const sourceRows=[];
+   for(let offset=0;offset<10000;offset+=1000){
+    const page=await api("/rest/v1/bookings?"+query.toString(),{headers:{Range:offset+"-"+(offset+999),"Range-Unit":"items"}});
+    if(!Array.isArray(page))throw new Error("Booking source data was not returned as a list.");
+    sourceRows.push(...page);
+    if(page.length<1000)break;
+   }
    const counts={"Camping page":0,"Day Trips page":0,"Other / untracked":0};
    sourceRows.forEach(row=>{
     const note=String(row.notes||"");
