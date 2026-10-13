@@ -82,6 +82,14 @@ if (fs.existsSync(sitemapPath)) {
     if (!routeFile(pathname)) fail("Sitemap route has no built HTML page: " + pathname);
   }
   if (urls.length) pass("All " + urls.length + " sitemap URLs resolve to built pages");
+
+  const sitemapPaths = new Set(urls.map((url) => new URL(url).pathname.replace(/\\/$/, "") || "/"));
+  for (const requiredPath of ["/", "/experiences", "/camping", "/day-trips", "/booking"]) {
+    if (!sitemapPaths.has(requiredPath)) fail("Sitemap is missing an important public route: " + requiredPath);
+  }
+  if (sitemapPaths.has("/camping") && sitemapPaths.has("/day-trips")) {
+    pass("Sitemap includes the flagship camping and day-trip landing pages");
+  }
 }
 
 const htmlFiles = [];
