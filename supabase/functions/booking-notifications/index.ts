@@ -175,24 +175,75 @@ Deno.serve(async (request: Request) => {
     const guestEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(rawGuestEmail) ? rawGuestEmail : "";
     const rawAdminEmail = String(Deno.env.get("ADMIN_NOTIFICATION_EMAIL") ?? "").trim().slice(0, 254);
     const adminEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(rawAdminEmail) ? rawAdminEmail : "";
-    const guestHtml = `
-      <div style="font-family:Arial,sans-serif;line-height:1.6;color:#242421;max-width:620px;margin:auto">
-        <div style="background:#1A3322;color:#fff;padding:26px 30px"><div style="font-size:12px;letter-spacing:3px">MATERUNI HOSTS</div><h1 style="font-family:Georgia,serif;font-weight:500;margin:12px 0 0">Your Materuni experience</h1></div>
-        <div style="padding:28px 30px;background:#FAF7F2">
-          <p>Hello ${escapeHtml(guestName)},</p>
-          <p>Thank you for sending a booking request. We have received your details and a local host will contact you to confirm availability and arrangements.</p>
-          <div style="background:#fff;padding:18px;border:1px solid #E6DFD3">
-            <p><strong>Reference:</strong> ${escapeHtml(reference)}</p><p><strong>Experience:</strong> ${escapeHtml(experience)}</p>
-            <p><strong>Date:</strong> ${escapeHtml(bookingDate)}</p><p><strong>Guests:</strong> ${guests}</p>
-            <p><strong>Status:</strong> Request received — awaiting host confirmation</p>
-          </div>
-          <p>This is not yet a confirmed reservation and no payment has been taken.</p>
-          <p>WhatsApp: +255 612 068 540<br>Email: hello@materunihosts.com</p>
-          <p style="font-family:Georgia,serif;font-style:italic">Come as a guest. Leave as a friend.</p>
-        </div>
-      </div>`;
+    // Read the saved "received" template from Email Studio. If settings are
+    // unavailable or invalid, retain a safe built-in acknowledgement.
+    const { data: templateSetting, error: templateError } = await supabase.from("site_settings")
+      .select("setting_value").eq("setting_key", "email_templates").maybeSingle();
+    if (templateError) console.warn("Email Studio templates unavailable; using the built-in booking acknowledgement.");
+    let emailTemplates: Record<string, { subject?: string; body?: string }> = {};
+    try {
+      const parsed = JSON.parse(templateSetting?.setting_value || "{}");
+      if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
+        emailTemplates = parsed as Record<string, { subject?: string; body?: string }>;
+      }
+    } catch {
+      emailTemplates = {};
+    }
+    const receivedTemplate = emailTemplates.received;
+    const templateValues: Record<string, string> = {
+      guest_name: guestName,
+      partner_name: guestName,
+      experience,
+      booking_date: bookingDate,
+      guest_count: String(guests),
+      booking_reference: reference,
+      host_name: String(Deno.env.get("HOST_CONTACT_NAME") || "Your local host").slice(0, 120),
+      reply_email: String(Deno.env.get("EMAIL_REPLY_TO") || "hello@materunihosts.com").slice(0, 254),
+      whatsapp: String(Deno.env.get("PUBLIC_WHATSAPP_NUMBER") || "+255 612 068 540").slice(0, 40),
+    };
+    const renderReceivedTemplate = (value: unknown, fallback: string, maxLength: number) => {
+      const source = typeof value === "string" && value.trim() ? value : fallback;
+      return source.replace(/\{\{([a-z_]+)\}\}/g, (_match, key: string) => templateValues[key] ?? "").slice(0, maxLength);
+    };
+    const defaultReceivedBody = [
+      "Hello {{guest_name}},",
+      "",
+      "Thank you for sending your request to Materuni Hosts.",
+      "",
+      "Your request details:",
+      "Experience: {{experience}}",
+      "Preferred date: {{booking_date}}",
+      "Group size: {{guest_count}}",
+      "Reference: {{booking_reference}}",
+      "",
+      "Please note that this is a request received, not a confirmed reservation. Our team will check the arrangements and contact you to confirm availability and next steps.",
+      "",
+      "Questions? Reply to this email or WhatsApp {{whatsapp}}.",
+      "",
+      "Warm regards,",
+      "{{host_name}}",
+      "Materuni Hosts",
+      "{{reply_email}}",
+    ].join("\n");
+    const guestSubject = renderReceivedTemplate(
+      receivedTemplate?.subject,
+      "We received your Materuni Hosts booking request",
+      180,
+    );
+    const guestMessage = renderReceivedTemplate(receivedTemplate?.body, defaultReceivedBody, 12_000);
+    const reservationDisclaimer = /not\s+(?:yet\s+)?a\s+confirmed\s+reservation|not\s+confirmed/i.test(guestMessage)
+      ? ""
+      : "<p><strong>This is a booking request, not a confirmed reservation. No payment has been taken.</strong></p>";
+    const guestHtml = [
+      '<div style="font-family:Arial,sans-serif;line-height:1.6;color:#242421;max-width:620px;margin:auto">',
+      '<div style="background:#1A3322;color:#fff;padding:26px 30px"><div style="font-size:12px;letter-spacing:3px">MATERUNI HOSTS</div><h1 style="font-family:Georgia,serif;font-weight:500;margin:12px 0 0">Your Materuni experience</h1></div>',
+      '<div style="padding:28px 30px;background:#FAF7F2">',
+      guestMessage.split("\n").map((line) => line ? "<p>" + escapeHtml(line) + "</p>" : "<br>").join(""),
+      reservationDisclaimer,
+      "</div></div>",
+    ].join("");
     if (guestEmail) {
-      await sendEmail(guestEmail, "guest_booking_acknowledgement", "We received your Materuni Hosts booking request", guestHtml, summary);
+      await sendEmail(guestEmail, "guest_booking_acknowledgement", guestSubject, guestHtml, summary);
     } else outcomes.guest_booking_acknowledgement = "no_guest_email";
 
     if (adminEmail) {
