@@ -207,7 +207,7 @@ $("booking-form").addEventListener("submit",async e=>{
   p_country_of_residence:$("country").value.trim()||null,
   p_preferred_contact:guestEmail&&!guestPhone?"Email":(!guestEmail&&guestPhone?"WhatsApp":$("contact").value),
   p_pickup:$("pickup").value.trim()||null,p_language:$("language").value,
-  p_notes:$("notes").value.trim()||null,p_booking_type:"tour"
+  p_notes:(()=>{const notes=$("notes").value.trim();const source=params.get("source");const sourceLabel=source==="camping"?"Camping landing page":source==="day-trips"?"Day Trips landing page":"";const campaign=(params.get("utm_campaign")||"").replace(/[\\u0000-\\u001f]/g,"").slice(0,100);const attribution=[sourceLabel,campaign?"Campaign: "+campaign:""].filter(Boolean).join(" | ");return [notes,attribution?"[Enquiry source: "+attribution+"]":""].filter(Boolean).join("\\n")||null;})(),p_booking_type:"tour"
  };
  // Keep the same key when an identical request is retried after a timeout/reload.
  const attemptFingerprint=JSON.stringify(body);
