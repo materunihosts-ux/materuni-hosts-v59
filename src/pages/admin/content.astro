@@ -35,8 +35,8 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
    </form>
   </div>
   <div class="booking-panel" style="margin-top:1.25rem">
-   <span class="eyebrow">MULTILINGUAL CONTENT</span><h2>Homepage translations</h2>
-   <p class="muted">Manage translated homepage text for Spanish, French and German. The language selector uses these saved translations; blank fields fall back to English. Translate carefully and keep prices and booking conditions consistent.</p>
+   <span class="eyebrow">MULTILINGUAL CONTENT</span><h2>Website translations</h2>
+   <p class="muted">Manage Spanish, French and German text across the homepage, experiences, booking, itinerary and FAQ pages. The language selector uses these saved translations; blank fields fall back to the English page copy. Keep prices and booking conditions consistent.</p>
    <div class="form-grid">
     <div class="field"><label for="translation-language">Edit language</label><select id="translation-language"><option value="es">Spanish · Español</option><option value="fr">French · Français</option><option value="de">German · Deutsch</option></select></div>
     <div class="field"><label>Translation status</label><p id="translation-status" class="muted" role="status">Load translations after signing in.</p></div>
@@ -219,7 +219,7 @@ el("save-translations").addEventListener("click",async()=>{
   const next={};for(const [key,meta] of Object.entries(translationKeys)){const value=el("translation-"+key).value.trim();if(value.length>meta.max)throw new Error(meta.label+" is too long.");if(key==="faq_items_json"&&value){let entries;try{entries=JSON.parse(value)}catch{throw new Error("Translated FAQ must be valid JSON.")}if(!Array.isArray(entries)||entries.length<1||entries.length>30||!entries.every(item=>item&&typeof item.question==="string"&&typeof item.answer==="string"&&item.question.trim()&&item.answer.trim()))throw new Error("Translated FAQ must be an array of 1–30 question and answer objects.")}next[key]=value}
   languageContent[locale]=next;
   await api("/rest/v1/site_settings?on_conflict=setting_key",{method:"POST",headers:{"Prefer":"resolution=merge-duplicates,return=minimal"},body:JSON.stringify({setting_key:"language_content",setting_value:JSON.stringify(languageContent),updated_at:new Date().toISOString()})});
-  renderTranslations();el("translation-feedback").textContent="Translations published. Visitors selecting "+locale.toUpperCase()+" will see the saved homepage copy.";
+  renderTranslations();el("translation-feedback").textContent="Translations published. Visitors selecting "+locale.toUpperCase()+" will see the saved page translations.";
  }catch(error){el("translation-feedback").textContent=error.message}finally{button.disabled=false}
 });
 async function loadApproach(){
