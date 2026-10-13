@@ -58,8 +58,14 @@ for (const [route, source] of [["/camping", "source=camping"], ["/day-trips", "s
   }
 }
 const bookingPage = routeFile("/booking");
-if (bookingPage && !read(bookingPage).includes("Enquiry source")) fail("Booking form must store landing-page enquiry attribution");
-else if (bookingPage) pass("Booking form includes landing-page attribution capture");
+if (bookingPage) {
+  const assetDirectory = path.join(root, "_astro");
+  const scripts = fs.existsSync(assetDirectory)
+    ? fs.readdirSync(assetDirectory).filter((name) => name.endsWith(".js")).map((name) => read(path.join(assetDirectory, name))).join("\\n")
+    : "";
+  if (!scripts.includes("Enquiry source")) fail("Booking form must store landing-page enquiry attribution");
+  else pass("Booking form includes landing-page attribution capture");
+}
 const analyticsPage = routeFile("/admin/analytics");
 if (analyticsPage && !read(analyticsPage).includes("Where enquiries come from")) fail("Admin analytics must show landing-page enquiry sources");
 else if (analyticsPage) pass("Admin analytics includes landing-page enquiry source reporting");
