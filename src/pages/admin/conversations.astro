@@ -45,8 +45,16 @@ async function loadConversations(){
 }
 async function updateConversationStatus(id,status,feedback,button){
  button.disabled=true;feedback.textContent="Updating conversation…";
- try{await api("/rest/v1/rpc/admin_update_ai_conversation_status",{method:"POST",body:JSON.stringify({p_conversation_id:id,p_status:status})});feedback.textContent="Conversation marked "+status.replaceAll("_"," ")+".";
- await loadConversations();
+ try{
+  await api("/rest/v1/rpc/admin_update_ai_conversation_status",{method:"POST",body:JSON.stringify({p_conversation_id:id,p_status:status})});
+  const detail=el("conversation-detail");
+  const statusLine=detail.querySelector(".conversation-current-status");
+  if(statusLine)statusLine.textContent="Status: "+status.replaceAll("_"," ");
+  detail.querySelectorAll("[data-conversation-status]").forEach(control=>{
+   control.disabled=control.dataset.conversationStatus===status;
+  });
+  feedback.textContent="Conversation marked "+status.replaceAll("_"," ")+".";
+  await loadConversations();
  }catch(error){feedback.textContent=error.message;button.disabled=false}
 }
 async function loadMessages(item,selected){
@@ -55,11 +63,13 @@ async function loadMessages(item,selected){
  try{
   const rows=await api("/rest/v1/rpc/admin_get_ai_messages",{method:"POST",body:JSON.stringify({p_conversation_id:item.conversation_id})});
   detail.replaceChildren(node("h3","",item.guest_name||"Website visitor"));
-  detail.append(node("p","muted","Language: "+String(item.language_code||"en").toUpperCase()+" · Status: "+(item.conversation_status||"open").replaceAll("_"," ")));
+  const statusLine=node("p","muted","Language: "+String(item.language_code||"en").toUpperCase()+" · Status: "+(item.conversation_status||"open").replaceAll("_"," "));
+  statusLine.classList.add("conversation-current-status");
+  detail.append(statusLine);
   if(item.guest_email){const email=document.createElement("a");email.href="mailto:"+encodeURIComponent(item.guest_email)+"?subject="+encodeURIComponent("Your Materuni Hosts enquiry");email.textContent="Email guest · "+item.guest_email;detail.append(email)}
   else detail.append(node("p","muted","No email address was shared in this conversation."));
   const actions=document.createElement("div");actions.className="conversation-status-actions";const feedback=node("p","muted","");feedback.setAttribute("aria-live","polite");
-  [["open","Reopen"],["needs_human","Needs human follow-up"],["resolved","Mark resolved"]].forEach(([value,label])=>{const button=document.createElement("button");button.type="button";button.className="button button-secondary";button.textContent=label;button.disabled=item.conversation_status===value;button.addEventListener("click",()=>updateConversationStatus(item.conversation_id,value,feedback,button));actions.append(button)});
+  [["open","Reopen"],["needs_human","Needs human follow-up"],["resolved","Mark resolved"]].forEach(([value,label])=>{const button=document.createElement("button");button.type="button";button.className="button button-secondary";button.textContent=label;button.dataset.conversationStatus=value;button.disabled=item.conversation_status===value;button.addEventListener("click",()=>updateConversationStatus(item.conversation_id,value,feedback,button));actions.append(button)});
   detail.append(actions,feedback);
   const transcript=document.createElement("div");transcript.className="conversation-transcript";
   rows.forEach(message=>{const article=document.createElement("article");article.className="conversation-message "+(message.sender_type==="assistant"?"assistant":"guest");article.append(node("small","",message.sender_type==="assistant"?"Concierge":"Guest"),node("p","",message.message),node("time","",new Date(message.created_at).toLocaleString()));transcript.append(article)});
