@@ -16,7 +16,24 @@ Deno.serve(async req=>{
   if(userError||!userData.user) return reply({error:"Invalid session."},401);
   const {data:admin,error:adminError}=await db.from("admin_users").select("user_id").eq("user_id",userData.user.id).maybeSingle();
   if(adminError||!admin) return reply({error:"Admin access required."},403);
-  const body=await req.json().catch(()=>null), id=String(body?.booking_id||""), event=String(body?.event||"");
+  // Read the request with a hard byte limit; Content-Length may be missing or spoofed.
+  const reader=req.body?.getReader(), chunks:Uint8Array[]=[];
+  let totalBytes=0;
+  if(reader){
+   while(true){
+    const {done,value}=await reader.read();
+    if(done)break;
+    totalBytes+=value.byteLength;
+    if(totalBytes>16384){await reader.cancel();return reply({error:"Request is too large."},413);}
+    chunks.push(value);
+   }
+  }
+  const bytes=new Uint8Array(totalBytes);let offset=0;
+  for(const chunk of chunks){bytes.set(chunk,offset);offset+=chunk.byteLength;}
+  let body:Record<string,unknown>|null;
+  try{body=JSON.parse(new TextDecoder().decode(bytes));}
+  catch{return reply({error:"Invalid JSON request."},400);}
+  const id=String(body?.booking_id||""), event=String(body?.event||"");
   if(!uuid.test(id)||!["confirmed","cancelled","rescheduled"].includes(event)) return reply({error:"Invalid booking notification request."},400);
   const {data:b,error}=await db.from("bookings")
    .select("id,booking_reference,experience,booking_date,guest_count,guests,guest,email,phone,status,availability_slots(start_time,end_time)")
@@ -74,7 +91,18 @@ Deno.serve(async req=>{
   ].join("\n\n");
   let logId=existing?.id;
   if(logId){const {error:updateError}=await db.from("notification_logs").update({delivery_status:"pending",error_message:null,message:summary,recipient}).eq("id",logId);if(updateError)throw updateError;}
-  else {const {data:log,error:logError}=await db.from("notification_logs").insert({booking_id:id,recipient,channel:"email",notification_type:type,message:summary,delivery_status:"pending"}).select("id").single();if(logError)throw logError;logId=log.id;}
+  else {
+   const {data:log,error:logError}=await db.from("notification_logs")
+    .insert({booking_id:id,recipient,channel:"email",notification_type:type,message:summary,delivery_status:"pending"})
+    .select("id").single();
+   if(logError){
+    // A concurrent admin request may have claimed this same event after our lookup.
+    // The unique index is the final guard against sending duplicate messages.
+    if(logError.code==="23505")return reply({success:false,status:"in_progress",message:"A notification attempt is already in progress."},409);
+    throw logError;
+   }
+   logId=log.id;
+  }
   const html='<div style="font-family:Arial,sans-serif;line-height:1.7;color:#242421;max-width:620px;margin:auto"><header style="background:#1A3322;color:white;padding:26px"><div style="letter-spacing:3px;font-size:12px">MATERUNI HOSTS</div><h1 style="font-family:Georgia,serif;font-weight:500">Booking update</h1></header><main style="background:#FAF7F2;padding:28px">'+messageBody.split("\n").map(line=>line?'<p>'+esc(line)+'</p>':'').join('')+'</main></div>';
   try{
    const response=await fetch("https://api.resend.com/emails",{method:"POST",headers:{Authorization:"Bearer "+apiKey,"Content-Type":"application/json"},body:JSON.stringify({from,to:[recipient],subject,html}),signal:AbortSignal.timeout(10000)});
