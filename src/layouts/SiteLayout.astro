@@ -81,11 +81,23 @@ const structuredData = {
 <link rel="icon" type="image/svg+xml" href="/materuni-hosts-logo-round.svg" /><link rel="preconnect" href={supabaseUrl} crossorigin /><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
+
+<style is:global>
+body.admin-shell .site-header,body.admin-shell .site-footer,body.admin-shell .mh-concierge{display:none!important}
+body.admin-shell{background:#f4f0e8}
+body.admin-shell .admin-topbar{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:14px clamp(18px,4vw,56px);background:#1A3322;color:#FAF7F2;border-bottom:1px solid #C5A059}
+body.admin-shell .admin-brand{font-family:Manrope,sans-serif;font-weight:800;letter-spacing:.02em;color:inherit;text-decoration:none}
+body.admin-shell .admin-brand span{font-size:.65rem;letter-spacing:.16em;color:#C5A059;margin-left:.55rem}
+body.admin-shell .admin-view-site{color:#FAF7F2;text-decoration:none;border:1px solid rgba(250,247,242,.45);border-radius:999px;padding:.6rem .95rem;font-size:.82rem;font-weight:700}
+body.admin-shell .admin-view-site:hover{background:rgba(250,247,242,.12)}
+body.admin-shell #main-content{min-height:calc(100vh - 58px)}
+@media(max-width:600px){body.admin-shell .admin-topbar{padding:12px 16px}body.admin-shell .admin-view-site{font-size:.75rem;padding:.55rem .7rem}}
+</style>
 </head>
-<body>
+<body class={Astro.url.pathname.startsWith("/admin") ? "admin-shell" : "public-shell"}>
 <a class="skip-link" href="#main-content">Skip to content</a>
 <header class="site-header"><a class="brand" href="/" aria-label="Materuni Hosts home"><img class="brand-logo" src="/materuni-hosts-logo-round.svg" alt="Materuni Hosts logo" width="86" height="86" /></a>
-<nav id="primary-navigation" aria-label="Main navigation"><a class="nav-camping" href="/experiences#camping" data-i18n="nav_camping">Materuni Camping</a><a href="/experiences" data-i18n="nav_experiences">Experiences</a><a href="/sustainability" data-i18n="nav_community">Community & sustainability</a><a href="/reviews" data-i18n="nav_reviews">Guest reviews</a><a href="/faq" data-i18n="nav_faqs">FAQs</a><a class="nav-cta" href="/booking" data-i18n="nav_availability">Check availability</a></nav>
+<nav id="primary-navigation" aria-label="Main navigation"><a href="/" data-i18n="nav_home" aria-current={Astro.url.pathname === "/" ? "page" : undefined}>Home</a><a class="nav-camping" href="/experiences#camping" data-i18n="nav_camping">Materuni Camping</a><a href="/experiences" data-i18n="nav_experiences">Experiences</a><a href="/sustainability" data-i18n="nav_community">Community & sustainability</a><a href="/reviews" data-i18n="nav_reviews">Guest reviews</a><a href="/faq" data-i18n="nav_faqs">FAQs</a><a class="nav-cta" href="/booking" data-i18n="nav_availability">Check availability</a></nav>
 <label class="language-control" for="site-language"><span class="sr-only">Website language</span><select id="site-language" aria-label="Website language"><option value="en">EN</option><option value="es">ES</option><option value="fr">FR</option><option value="de">DE</option></select></label><button class="menu-toggle" type="button" aria-label="Open menu" aria-controls="primary-navigation" aria-expanded="false">☰</button></header>
 <script>
 // @ts-nocheck
@@ -193,7 +205,7 @@ import { supabaseUrl, publishableKey } from "../lib/supabase-public";
 
 })();
 </script>
-<main id="main-content" tabindex="-1"><slot /></main>
+{Astro.url.pathname.startsWith("/admin") && <div class="admin-topbar"><a class="admin-brand" href="/admin/" aria-label="Materuni Hosts admin home">Materuni Hosts <span>ADMIN</span></a><a class="admin-view-site" href="/" target="_blank" rel="noopener noreferrer">View main website ↗</a></div>}<main id="main-content" tabindex="-1"><slot /></main>
 
 {!noindex && <div class="mh-concierge" id="mh-concierge">
   <button class="mh-concierge-launch" id="mh-chat-open" type="button" aria-expanded="false" aria-controls="mh-chat-panel"><span class="mh-chat-icon">✦</span><span>Ask a local host</span></button>
