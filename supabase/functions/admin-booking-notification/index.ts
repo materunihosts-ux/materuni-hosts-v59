@@ -63,7 +63,7 @@ Deno.serve(async req=>{
    booking_date:String(b.booking_date||""),guest_count:String(count),booking_reference:String(reference),
    host_name:"Your local host",reply_email:"hello@materunihosts.com",whatsapp:"+255 612 068 540"
   };
-  const merge=(value:string)=>value.replace(/\\{\\{([a-z_]+)\\}\\}/g,(_,key)=>mergeValues[key]??"");
+  const merge=(value:string)=>value.replace(/\{\{([a-z_]+)\}\}/g,(_,key)=>mergeValues[key]??"");
   const subject=merge(String(savedTemplate?.subject||subjectFallback)).slice(0,180);
   const customBody=String(savedTemplate?.body||"").trim();
   const messageBody=customBody?merge(customBody):[
@@ -71,7 +71,7 @@ Deno.serve(async req=>{
    "Date: "+b.booking_date,"Time: "+time+(endTime?" – "+endTime:"")+" (Tanzania time)",
    "Guests: "+count,"Status: "+expected,"For assistance, reply to this email or WhatsApp +255 612 068 540.",
    "Warm regards,","Materuni Hosts"
-  ].join("\\n\\n");
+  ].join("\n\n");
   let logId=existing?.id;
   if(logId){const {error:updateError}=await db.from("notification_logs").update({delivery_status:"pending",error_message:null,message:summary,recipient}).eq("id",logId);if(updateError)throw updateError;}
   else {const {data:log,error:logError}=await db.from("notification_logs").insert({booking_id:id,recipient,channel:"email",notification_type:type,message:summary,delivery_status:"pending"}).select("id").single();if(logError)throw logError;logId=log.id;}
