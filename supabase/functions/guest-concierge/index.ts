@@ -10,16 +10,16 @@ const json = (body: Record<string, unknown>, status = 200) =>
   new Response(JSON.stringify(body), { status, headers: corsHeaders });
 
 const fallback: Record<string, string> = {
-  en: "I can help you plan your Materuni visit. Our six experiences are Waterfalls & Coffee Tour ($65), Coffee & Chagga Culture Tour ($50), Cooking & Culture ($70), Waterfall Hike & Cultural Day Trip ($75), Overnight Camping ($110) and Ultimate ($135) per person. Which date are you considering, and how many guests will be travelling?",
-  es: "Puedo ayudarte a planificar tu visita a Materuni. Ofrecemos seis experiencias: Waterfalls & Coffee Tour ($65), Coffee & Chagga Culture ($50), Cooking & Culture ($70), Waterfall Hike & Cultural Day Trip ($75), Overnight Camping ($110) y Ultimate ($135) por persona. ¿Qué fecha tienes en mente y cuántas personas viajarán?",
-  fr: "Je peux vous aider à organiser votre visite à Materuni. Nos six expériences sont : Waterfalls & Coffee Tour (65 $), Coffee & Chagga Culture (50 $), Cooking & Culture (70 $), Waterfall Hike & Cultural Day Trip (75 $), Overnight Camping (110 $) et Ultimate (135 $) par personne. Quelle date envisagez-vous et combien de personnes voyageront ?",
-  de: "Ich helfe Ihnen gern bei der Planung Ihres Besuchs in Materuni. Unsere sechs Erlebnisse sind: Waterfalls & Coffee Tour (65 $), Coffee & Chagga Culture (50 $), Cooking & Culture (70 $), Waterfall Hike & Cultural Day Trip (75 $), Overnight Camping (110 $) und Ultimate (135 $) pro Person. Für welches Datum planen Sie und wie viele Gäste reisen mit?"
+  en: "I can help you plan your Materuni visit. Our six experiences are From Bean to Cup ($65), Waterfall & Heritage Trail ($75), Cook, Taste & Share ($85), Complete Materuni Day ($75), Stay Beyond the Waterfall ($110) and Materuni Signature Escape ($135) per person. Which date are you considering, and how many guests will be travelling?",
+  es: "Puedo ayudarte a planificar tu visita a Materuni. Ofrecemos seis experiencias: From Bean to Cup ($65), Waterfall & Heritage Trail ($75), Cook, Taste & Share ($85), Complete Materuni Day ($75), Stay Beyond the Waterfall ($110) y Materuni Signature Escape ($135) por persona. ¿Qué fecha tienes en mente y cuántas personas viajarán?",
+  fr: "Je peux vous aider à organiser votre visite à Materuni. Nos six expériences sont : From Bean to Cup (65 $), Waterfall & Heritage Trail (75 $), Cook, Taste & Share (85 $), Complete Materuni Day (75 $), Stay Beyond the Waterfall (110 $) et Materuni Signature Escape (135 $) par personne. Quelle date envisagez-vous et combien de personnes voyageront ?",
+  de: "Ich helfe Ihnen gern bei der Planung Ihres Besuchs in Materuni. Unsere sechs Erlebnisse sind: From Bean to Cup (65 $), Waterfall & Heritage Trail (75 $), Cook, Taste & Share (85 $), Complete Materuni Day (75 $), Stay Beyond the Waterfall (110 $) und Materuni Signature Escape (135 $) pro Person. Für welches Datum planen Sie und wie viele Gäste reisen mit?"
 };
 
 const systemPrompt = `You are the friendly guest concierge for Materuni Hosts, a boutique local experience host in Materuni Village near Moshi, Kilimanjaro, Tanzania.
 Your job is to help visitors choose an experience and move naturally toward an availability check or itinerary request.
 Use the visitor's language: English, Spanish, French or German. Be warm, concise and specific.
-Only use these approved per-person prices: Waterfalls & Coffee Tour $65; Coffee & Chagga Culture Tour $50; Cooking & Culture $70; Waterfall Hike & Cultural Day Trip $75; Overnight Camping $110; Ultimate $135.
+Only use these approved per-person prices: From Bean to Cup $65; Waterfall & Heritage Trail $75; Cook, Taste & Share $85; Complete Materuni Day $75; Stay Beyond the Waterfall $110; Materuni Signature Escape $135.
 The Materuni waterfall is approximately 95 metres high. The experiences are hosted in Materuni Village and focus on Chagga coffee, food, culture, nature and village life.
 Important booking rules: a website booking is a request, not a confirmed reservation; the host must confirm availability and arrangements; no online payment is taken at this stage; transport/pickup must be confirmed separately. Do not invent schedules, available spaces, transport inclusions, policies, licences, awards, ratings, reviews or claims of registration.
 Ask only one useful follow-up at a time, usually travel date, group size, preferred experience or pickup point.
@@ -28,10 +28,35 @@ Never ask for passport, card, password or sensitive personal data. Do not claim 
 
 Deno.serve(async (request: Request) => {
   if (request.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
-  if (Number(request.headers.get("content-length") || "0") > 8_192) return json({ error: "Message is too large. Please shorten it and try again." }, 413);
   if (request.method !== "POST") return json({ error: "Method not allowed" }, 405);
   try {
-    const body = await request.json().catch(() => null);
+    const reader = request.body?.getReader();
+    const chunks: Uint8Array[] = [];
+    let totalBytes = 0;
+    if (reader) {
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        totalBytes += value.byteLength;
+        if (totalBytes > 8_192) {
+          await reader.cancel();
+          return json({ error: "Message is too large. Please shorten it and try again." }, 413);
+        }
+        chunks.push(value);
+      }
+    }
+    const requestBytes = new Uint8Array(totalBytes);
+    let offset = 0;
+    for (const chunk of chunks) {
+      requestBytes.set(chunk, offset);
+      offset += chunk.byteLength;
+    }
+    let body: Record<string, unknown> | null;
+    try {
+      body = JSON.parse(new TextDecoder().decode(requestBytes));
+    } catch {
+      return json({ error: "Please send a valid message request." }, 400);
+    }
     const message = String(body?.message ?? "").replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, " ").replace(/\s+/g, " ").trim().slice(0, 1200);
     const language = ["en", "es", "fr", "de"].includes(String(body?.language ?? "en"))
       ? String(body?.language ?? "en") : "en";
@@ -135,7 +160,7 @@ Deno.serve(async (request: Request) => {
         }
       },
       {
-        test: /waterfall|waterfall|height|waterfall|cascada|chute|wasserfall/,
+        test: /waterfall|height|cascada|chute|wasserfall/,
         answers: {
           en: "Materuni Waterfall is approximately 95 metres high, reached by a guided rainforest walk. You can combine the waterfall with a Chagga coffee experience or choose the full cultural day trip.",
           es: "La cascada de Materuni tiene aproximadamente 95 metros de altura y se alcanza mediante una caminata guiada por el bosque. Puedes combinarla con una experiencia de café Chagga o elegir la excursión cultural completa.",
