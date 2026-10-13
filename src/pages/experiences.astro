@@ -16,7 +16,7 @@ const base=`${supabaseUrl}/storage/v1/object/public/materuni-images/`;
 ---
 <SiteLayout title="Materuni Experiences & Prices | Materuni Hosts" description="Explore Materuni waterfall hikes, Chagga coffee experiences, cooking classes and village stays. Compare experiences and prices, then check availability with local hosts.">
 <section class="page-hero"><span class="eyebrow" data-i18n="home_section_eyebrow">THE SIGNATURE MATERUNI STAY</span><h1 data-i18n="experiences_hero_title">Start with Materuni Camping. Make the village part of your story.</h1><p data-i18n="experiences_hero_intro">Our main experience is a community-based overnight stay in Materuni Village. Waterfall walks, Chagga coffee, cooking and cultural activities bring depth to the stay; shorter experiences can also be arranged.</p></section>
-<section class="section"><div class="cards">{items.map((e)=><article class="experience-card" id={e[0] === "Stay Beyond the Waterfall" ? "camping" : undefined} data-experience-key={experienceKeys[e[0]]}><img src={base+e[3]} alt={e[0]} loading="lazy" decoding="async" width="640" height="420"><div class="card-body"><div class="card-top"><span class="pill">{e[2]}</span><span class="price" data-catalog-price>${e[1]}<small>PER PERSON</small></span></div><h3 data-catalog-name>{e[0]}</h3><p data-catalog-description>{e[4]}</p><strong style="font-size:12px;color:#173b2d" data-i18n="exp_experience_label">THE EXPERIENCE</strong><ul>{e[5].map(x=><li>{x}</li>)}</ul><strong style="font-size:12px;color:#173b2d" data-i18n="exp_included_label">WHAT YOUR EXPERIENCE INCLUDES</strong><ul>{e[6].map(x=><li>{x}</li>)}</ul><strong data-exclusions-title="true" style="display:block;margin-top:1rem;font-size:12px;color:#173b2d" data-i18n="exp_excluded_label">NOT INCLUDED</strong><ul data-exclusions-list="true">{defaultExclusions.map(x=><li>{x}</li>)}</ul><a class="button" href={"/booking?experience="+encodeURIComponent(experienceKeys[e[0]])} data-i18n="exp_check_availability">Check availability</a></div></article>)}</div><p class="notice" style="margin-top:28px" data-i18n="exp_notice">All prices are per person. The inclusions listed under each experience describe what is covered in that package. Transport from Moshi is not included in the displayed prices unless agreed separately. Please share your pickup point, group size, dietary requirements or accessibility needs with us before your visit so we can discuss the arrangements. A booking request is not a confirmed reservation; your host will confirm the details with you.</p></section>
+<section class="section"><div class="cards">{items.map((e)=><article class="experience-card" id={e[0] === "Stay Beyond the Waterfall" ? "camping" : undefined} data-experience-key={experienceKeys[e[0]]}><img src={base+e[3]} alt={e[0]} loading="lazy" decoding="async" width="640" height="420"><div class="card-body"><div class="card-top"><span class="pill">{e[2]}</span><span class="price" data-catalog-price>${e[1]}<small data-i18n="exp_per_person">PER PERSON</small></span></div><h3 data-catalog-name>{e[0]}</h3><p data-catalog-description>{e[4]}</p><strong style="font-size:12px;color:#173b2d" data-i18n="exp_experience_label">THE EXPERIENCE</strong><ul>{e[5].map(x=><li>{x}</li>)}</ul><strong style="font-size:12px;color:#173b2d" data-i18n="exp_included_label">WHAT YOUR EXPERIENCE INCLUDES</strong><ul>{e[6].map(x=><li>{x}</li>)}</ul><strong data-exclusions-title="true" style="display:block;margin-top:1rem;font-size:12px;color:#173b2d" data-i18n="exp_excluded_label">NOT INCLUDED</strong><ul data-exclusions-list="true">{defaultExclusions.map(x=><li>{x}</li>)}</ul><a class="button" href={"/booking?experience="+encodeURIComponent(experienceKeys[e[0]])} data-i18n="exp_check_availability">Check availability</a></div></article>)}</div><p class="notice" style="margin-top:28px" data-i18n="exp_notice">All prices are per person. The inclusions listed under each experience describe what is covered in that package. Transport from Moshi is not included in the displayed prices unless agreed separately. Please share your pickup point, group size, dietary requirements or accessibility needs with us before your visit so we can discuss the arrangements. A booking request is not a confirmed reservation; your host will confirm the details with you.</p></section>
 <style>
 .catalog-product-tagline{display:block;margin:.35rem 0 .15rem;color:#a27b3e;font-size:.75rem;font-weight:800;letter-spacing:.09em;text-transform:uppercase}
 .catalog-best-for{font-size:.72rem!important;font-weight:700;color:#1a3322!important;letter-spacing:.03em}
@@ -35,7 +35,7 @@ const safeText = (node, value) => { if (node && typeof value === "string") node.
 function appendProductMeta(body, tour) {
   const meta = document.createElement("div"); meta.dataset.productMeta = "true";
   if (tour.product_tagline) { const tagline = document.createElement("span"); tagline.className = "catalog-product-tagline"; tagline.textContent = tour.product_tagline; meta.append(tagline); }
-  if (tour.best_for) { const best = document.createElement("p"); best.className = "catalog-best-for"; best.textContent = "BEST FOR · " + tour.best_for; meta.append(best); }
+  if (tour.best_for) { const best = document.createElement("p"); best.className = "catalog-best-for"; const label = document.createElement("span"); label.dataset.i18n = "exp_best_for"; label.textContent = "BEST FOR"; best.append(label, document.createTextNode(" · " + tour.best_for)); meta.append(best); }
   const addList = (labelText, values) => {
     if (!Array.isArray(values) || !values.length) return;
     const label = document.createElement("strong"); label.className = "catalog-detail-heading"; label.textContent = labelText; meta.append(label);
@@ -43,7 +43,7 @@ function appendProductMeta(body, tour) {
     values.forEach(value => { if (typeof value !== "string" || !value.trim()) return; const li = document.createElement("li"); li.textContent = value; list.append(li); });
     meta.append(list);
   };
-  addList("SIGNATURE MOMENTS", Array.isArray(tour.signature_moments) ? tour.signature_moments.slice(0,3) : []);
+  addList("SIGNATURE MOMENTS", Array.isArray(tour.signature_moments) ? tour.signature_moments.slice(0,3) : []); meta.querySelectorAll(".catalog-detail-heading").forEach(label => { if (label.textContent === "SIGNATURE MOMENTS") label.dataset.i18n = "exp_signature_moments"; if (label.textContent === "YOUR UNIQUE EXPERIENCE") label.dataset.i18n = "exp_unique_experience"; });
   addList("WHAT YOUR EXPERIENCE INCLUDES", tour.inclusions);
   addList("YOUR UNIQUE EXPERIENCE", tour.unique_amenities);
   if (meta.childNodes.length) body.append(meta);
@@ -65,7 +65,7 @@ function makeCatalogCard(tour) {
   duration.textContent = tour.duration_label || "Local experience";
   const price = document.createElement("span"); price.className = "price";
   price.textContent = "$" + Number(tour.price_usd).toFixed(0) + " ";
-  const per = document.createElement("small"); per.textContent = "PER PERSON"; price.append(per);
+  const per = document.createElement("small"); per.dataset.i18n = "exp_per_person"; per.textContent = "PER PERSON"; price.append(per);
   top.append(duration, price);
   const heading = document.createElement("h3"); heading.textContent = tour.display_name || "Materuni experience";
   const description = document.createElement("p"); description.textContent = tour.full_description || tour.short_description || "Ask our local hosts for details about this experience.";
@@ -138,7 +138,7 @@ async function syncPublicCatalogue() {
         if (old) old.remove();
         if (Array.isArray(shared) && shared.length) {
           const panel = document.createElement("section"); panel.dataset.sharedInclusions = "true"; panel.className = "shared-standard";
-          const heading = document.createElement("h2"); heading.textContent = "Included in every Materuni Hosts experience";
+          const heading = document.createElement("h2"); heading.dataset.i18n = "exp_shared_inclusions"; heading.textContent = "Included in every Materuni Hosts experience";
           const list = document.createElement("ul");
           shared.forEach(value => { if (typeof value !== "string" || !value.trim()) return; const li = document.createElement("li"); li.textContent = value; list.append(li); });
           panel.append(heading, list); cardsRoot.insertAdjacentElement("afterend", panel);
