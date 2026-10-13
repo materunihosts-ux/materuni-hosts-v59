@@ -75,7 +75,7 @@ Deno.serve(async req=>{
   let logId=existing?.id;
   if(logId){const {error:updateError}=await db.from("notification_logs").update({delivery_status:"pending",error_message:null,message:summary,recipient}).eq("id",logId);if(updateError)throw updateError;}
   else {const {data:log,error:logError}=await db.from("notification_logs").insert({booking_id:id,recipient,channel:"email",notification_type:type,message:summary,delivery_status:"pending"}).select("id").single();if(logError)throw logError;logId=log.id;}
-  const html='<div style="font-family:Arial,sans-serif;line-height:1.7;color:#242421;max-width:620px;margin:auto"><header style="background:#1A3322;color:white;padding:26px"><div style="letter-spacing:3px;font-size:12px">MATERUNI HOSTS</div><h1 style="font-family:Georgia,serif;font-weight:500">Booking update</h1></header><main style="background:#FAF7F2;padding:28px">'+messageBody.split("\\n").map(line=>line?'<p>'+esc(line)+'</p>':'').join('')+'</main></div>';
+  const html='<div style="font-family:Arial,sans-serif;line-height:1.7;color:#242421;max-width:620px;margin:auto"><header style="background:#1A3322;color:white;padding:26px"><div style="letter-spacing:3px;font-size:12px">MATERUNI HOSTS</div><h1 style="font-family:Georgia,serif;font-weight:500">Booking update</h1></header><main style="background:#FAF7F2;padding:28px">'+messageBody.split("\n").map(line=>line?'<p>'+esc(line)+'</p>':'').join('')+'</main></div>';
   try{
    const response=await fetch("https://api.resend.com/emails",{method:"POST",headers:{Authorization:"Bearer "+apiKey,"Content-Type":"application/json"},body:JSON.stringify({from,to:[recipient],subject,html}),signal:AbortSignal.timeout(10000)});
    const result=await response.json().catch(()=>({}));
