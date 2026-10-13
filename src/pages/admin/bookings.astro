@@ -160,6 +160,27 @@ async function loadBookings() {
           catch (error) { el("booking-feedback").textContent = error.message; cancel.disabled = false; }
         });
         actions.append(cancel);
+        if (booking.booking_status === "New") {
+          const contacted = makeText("button","button button-secondary","Mark as contacted");
+          contacted.type = "button";
+          contacted.addEventListener("click", async () => {
+            if (!window.confirm("Mark this guest as contacted? The booking will remain reserved and will not be confirmed yet.")) return;
+            contacted.disabled = true;
+            try {
+              await api("/rest/v1/bookings?id=eq."+encodeURIComponent(booking.booking_id), {
+                method:"PATCH",
+                headers:{"Prefer":"return=minimal"},
+                body:JSON.stringify({status:"Contacted"})
+              });
+              el("booking-feedback").textContent = "Booking marked as Contacted. Reserved availability has not changed.";
+              await loadBookings();
+            } catch (error) {
+              el("booking-feedback").textContent = error.message;
+              contacted.disabled = false;
+            }
+          });
+          actions.append(contacted);
+        }
       } else if (booking.booking_status === "Confirmed") {
         const cancel = makeText("button","button button-secondary","Cancel booking"); cancel.type = "button";
         cancel.addEventListener("click", async () => {
