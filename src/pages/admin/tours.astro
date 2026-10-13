@@ -109,7 +109,7 @@ async function refreshTours(){
   const actions=document.createElement("div");actions.className="actions";const save=document.createElement("button");save.type="button";save.className="button";save.textContent="Save tour changes";const toggle=document.createElement("button");toggle.type="button";toggle.className="button button-secondary";toggle.textContent=t.is_active?"Hide tour":"Publish tour";
    save.addEventListener("click",async()=>{save.disabled=true;try{const p=Number(price.value);if(!name.value.trim()||!Number.isFinite(p)||p<0)throw new Error("Enter a tour name and a valid non-negative price.");if(image.value&&!image.value.trim().toLowerCase().startsWith("https://"))throw new Error("Image URL must begin with https://");await api("/rest/v1/experience_catalog?id=eq."+encodeURIComponent(t.id),{method:"PATCH",body:JSON.stringify({display_name:name.value.trim(),price_usd:p,short_description:short.value.trim(),full_description:full.value.trim(),duration_label:duration.value.trim(),image_url:image.value.trim()||null,inclusions:inclusions.value.split("\n").map(x=>x.trim()).filter(Boolean),exclusions:exclusions.value.split("\n").map(x=>x.trim()).filter(Boolean),updated_at:new Date().toISOString()})});el("tour-feedback").textContent="Tour updated. Refresh the public experience page to review it.";await refreshTours()}catch(e){el("tour-feedback").textContent=e.message;save.disabled=false}});
   toggle.addEventListener("click",async()=>{toggle.disabled=true;try{await api("/rest/v1/experience_catalog?id=eq."+encodeURIComponent(t.id),{method:"PATCH",body:JSON.stringify({is_active:!t.is_active,updated_at:new Date().toISOString()})});await refreshTours()}catch(e){el("tour-feedback").textContent=e.message;toggle.disabled=false}});
-  actions.append(save,toggle);line.append(title,form,actions);el("tour-list").append(line);
+  actions.append(save,toggle);const editor=document.createElement("details");editor.className="admin-package-editor";const summary=document.createElement("summary");summary.textContent="Edit package details · price, description, photo, included and excluded";editor.append(summary,form,actions);line.append(title,editor);el("tour-list").append(line);
  });
 }
 el("login-form").addEventListener("submit",async e=>{
@@ -149,4 +149,7 @@ el("slot-form").addEventListener("submit",async e=>{
 el("logout").addEventListener("click",async()=>{try{await fetch(supabaseUrl+"/auth/v1/logout",{method:"POST",headers:apiHeaders()})}catch{}accessToken="";adminId="";el("manager").hidden=true;el("login-panel").hidden=false;el("login-form").reset()});
 const minDate=new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,10);el("slot-date").min=minDate;
 </script>
+<style>
+.admin-package-editor{margin-top:.75rem;padding:.85rem 1rem;border:1px solid #e6dfd3;border-radius:12px;background:#faf7f2}.admin-package-editor summary{cursor:pointer;font-weight:600;color:#1a3322}.admin-package-editor[open] summary{margin-bottom:1rem}.admin-package-editor .form-grid{margin-top:.5rem}
+</style>
 </SiteLayout>
