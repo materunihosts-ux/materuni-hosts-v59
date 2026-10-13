@@ -1,6 +1,6 @@
 ---
 import SiteLayout from "../layouts/SiteLayout.astro";
-import { supabaseUrl } from "../lib/supabase-public";
+import { supabaseUrl, publishableKey } from "../lib/supabase-public";
 const base = `${supabaseUrl}/storage/v1/object/public/materuni-images/`;
 const hero = base + "camping_image/1791601872981-zmji0mykwhd.jpg";
 ---
@@ -19,5 +19,17 @@ const hero = base + "camping_image/1791601872981-zmji0mykwhd.jpg";
 <section class="section"><div class="heading"><span class="kicker">GOOD TO KNOW</span><h2 data-i18n="camping_faq_title">Before you arrive</h2><p>We want you to know what to expect, so you can arrive relaxed and ready to enjoy the village.</p></div><div class="faq"><details><summary>Is camping suitable for first-time visitors?</summary><p>Yes. Share your travel dates, group size and questions with your host. We will explain the arrangements and what to bring before confirming.</p></details><details><summary>Is transport included?</summary><p>Transport is not included in the displayed rate unless arranged separately. Tell us your pickup point when you enquire.</p></details><details><summary>What should I bring?</summary><p>Bring comfortable walking shoes, a light rain layer and personal toiletries. Your host can clarify the camping setup for your selected date.</p></details><details><summary>How do I secure a date?</summary><p>Send a booking request with your preferred date and group size. A local host will check availability and confirm the details with you.</p></details></div></section>
 <section class="final"><span class="kicker">COME AS A GUEST. LEAVE AS A FRIEND.</span><h2 data-i18n="camping_final_title">Let Materuni be more than a day on your itinerary.</h2><p>Tell us when you would like to stay and we will help you plan the next step.</p><div class="actions" style="justify-content:center"><a class="button light" href="/booking?source=camping&experience=Camping%20%26%20Village%20Life" data-i18n="camping_final_cta">Check camping availability</a><a class="button secondary" href="https://wa.me/255612068540" target="_blank" rel="noopener noreferrer">WhatsApp your host</a></div></section>
 </div>
+<script>
+ // @ts-nocheck
+ import { supabaseUrl, publishableKey } from "../lib/supabase-public";
+ const pageFields={"hero_title":".camp-hero h1","hero_intro":".camp-hero .camp-copy>p","story_title":".story h2","story_intro":".story>div>p","offers_title":".section>.heading h2","offers_intro":".section>.heading p","final_title":".camp .final h2","final_intro":".camp .final>p","final_cta":".camp .final a.button.light"};
+ fetch(`${supabaseUrl}/rest/v1/site_settings?select=setting_value&setting_key=eq.landing_pages_content`,{headers:{apikey:publishableKey,Authorization:"Bearer "+publishableKey},cache:"no-store"})
+  .then(response=>response.ok?response.json():[])
+  .then(rows=>{
+   const raw=rows?.[0]?.setting_value;if(!raw)return;
+   const saved=typeof raw==="string"?JSON.parse(raw):raw;const content=saved?.camping;if(!content||typeof content!=="object")return;
+   Object.entries(pageFields).forEach(([key,selector])=>{const value=content[key];const node=document.querySelector(selector);if(node&&typeof value==="string"&&value.trim())node.textContent=value});
+  }).catch(error=>console.warn("Optional landing-page content unavailable; showing built-in copy.",error));
+</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Service","name":"Materuni Village Overnight Camping","description":"An overnight village camping stay with local Chagga hosts in Materuni, including a guided waterfall and cultural experience.","provider":{"@type":"Organization","name":"Materuni Hosts","url":"https://materunihosts.com"},"areaServed":{"@type":"Place","name":"Materuni Village, Kilimanjaro Region, Tanzania"},"offers":[{"@type":"Offer","price":"110","priceCurrency":"USD","description":"Per person"},{"@type":"Offer","price":"135","priceCurrency":"USD","description":"Ultimate Foothills Experience, per person"}]}</script>
 </SiteLayout>
