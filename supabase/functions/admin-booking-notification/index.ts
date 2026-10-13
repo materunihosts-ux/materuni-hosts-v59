@@ -50,12 +50,32 @@ Deno.serve(async req=>{
    if(reclaimError) throw reclaimError;
    if(!reclaimed) return reply({success:false,status:"in_progress",message:"A notification attempt is already in progress."},409);
   }
-  const subject={confirmed:"Your Materuni Hosts booking is confirmed",cancelled:"An update to your Materuni Hosts booking",rescheduled:"Your Materuni Hosts booking has been rescheduled"}[event];
+  const subjectFallback={confirmed:"Your Materuni Hosts booking is confirmed",cancelled:"An update to your Materuni Hosts booking",rescheduled:"Your Materuni Hosts booking has been rescheduled"}[event];
   const intro={confirmed:"We are pleased to confirm your booking.",cancelled:"Your booking has been cancelled. If you need help, please contact our local team.",rescheduled:"Your booking date and time have been updated. Please review the details below."}[event];
+  const {data:templateSetting,error:templateError}=await db.from("site_settings").select("setting_value").eq("setting_key","email_templates").maybeSingle();
+  if(templateError) throw templateError;
+  let templates:Record<string,{subject?:string;body?:string}>={};
+  try{templates=JSON.parse(templateSetting?.setting_value||"{}")}catch{templates={};}
+  const templateKey=event==="confirmed"?"confirmed":event==="cancelled"?"followup":"confirmed";
+  const savedTemplate=templates[templateKey];
+  const mergeValues:Record<string,string>={
+   guest_name:guest,partner_name:guest,experience:String(b.experience||"Materuni experience"),
+   booking_date:String(b.booking_date||""),guest_count:String(count),booking_reference:String(reference),
+   host_name:"Your local host",reply_email:"hello@materunihosts.com",whatsapp:"+255 612 068 540"
+  };
+  const merge=(value:string)=>value.replace(/\\{\\{([a-z_]+)\\}\\}/g,(_,key)=>mergeValues[key]??"");
+  const subject=merge(String(savedTemplate?.subject||subjectFallback)).slice(0,180);
+  const customBody=String(savedTemplate?.body||"").trim();
+  const messageBody=customBody?merge(customBody):[
+   "Hello "+guest+",",intro,"Reference: "+reference,"Experience: "+b.experience,
+   "Date: "+b.booking_date,"Time: "+time+(endTime?" – "+endTime:"")+" (Tanzania time)",
+   "Guests: "+count,"Status: "+expected,"For assistance, reply to this email or WhatsApp +255 612 068 540.",
+   "Warm regards,","Materuni Hosts"
+  ].join("\\n\\n");
   let logId=existing?.id;
   if(logId){const {error:updateError}=await db.from("notification_logs").update({delivery_status:"pending",error_message:null,message:summary,recipient}).eq("id",logId);if(updateError)throw updateError;}
   else {const {data:log,error:logError}=await db.from("notification_logs").insert({booking_id:id,recipient,channel:"email",notification_type:type,message:summary,delivery_status:"pending"}).select("id").single();if(logError)throw logError;logId=log.id;}
-  const html='<div style="font-family:Arial,sans-serif;line-height:1.7;color:#242421;max-width:620px;margin:auto"><header style="background:#1A3322;color:white;padding:26px"><div style="letter-spacing:3px;font-size:12px">MATERUNI HOSTS</div><h1 style="font-family:Georgia,serif;font-weight:500">Booking update</h1></header><main style="background:#FAF7F2;padding:28px"><p>Hello '+esc(guest)+',</p><p>'+intro+'</p><p><b>Reference:</b> '+esc(reference)+'<br><b>Experience:</b> '+esc(b.experience)+'<br><b>Date:</b> '+esc(b.booking_date)+'<br><b>Time:</b> '+esc(time)+(endTime?' – '+esc(endTime):'')+' (Tanzania time)<br><b>Guests:</b> '+count+'<br><b>Status:</b> '+esc(expected)+'</p><p>For assistance, reply to this email or WhatsApp +255 612 068 540.</p><p>Warm regards,<br>Materuni Hosts</p></main></div>';
+  const html='<div style="font-family:Arial,sans-serif;line-height:1.7;color:#242421;max-width:620px;margin:auto"><header style="background:#1A3322;color:white;padding:26px"><div style="letter-spacing:3px;font-size:12px">MATERUNI HOSTS</div><h1 style="font-family:Georgia,serif;font-weight:500">Booking update</h1></header><main style="background:#FAF7F2;padding:28px">'+messageBody.split("\\n").map(line=>line?'<p>'+esc(line)+'</p>':'').join('')+'</main></div>';
   try{
    const response=await fetch("https://api.resend.com/emails",{method:"POST",headers:{Authorization:"Bearer "+apiKey,"Content-Type":"application/json"},body:JSON.stringify({from,to:[recipient],subject,html}),signal:AbortSignal.timeout(10000)});
    const result=await response.json().catch(()=>({}));
