@@ -32,6 +32,7 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
       <div class="admin-stat analytics-value"><span>Estimated confirmed value</span><strong id="confirmed-value">—</strong><small>USD · not cash received</small></div>
     </div>
     <div class="booking-panel" style="margin-top:1.5rem"><span class="eyebrow">DEMAND</span><h2>Most requested experiences</h2><div id="popular-experiences" class="popular-experiences"><p class="muted">Choose a date range to view demand.</p></div></div>
+    <div class="booking-panel" style="margin-top:1.5rem"><span class="eyebrow">ACQUISITION</span><h2>Where enquiries come from</h2><p class="muted">Tracks tagged website enquiries from the new Camping and Day Trips landing pages. Older and untagged requests appear as Other / untracked.</p><div id="enquiry-sources" class="popular-experiences"><p class="muted">Choose a date range to view enquiry sources.</p></div></div>
   </div>
 </section>
 <script>
@@ -66,6 +67,38 @@ async function loadAnalytics(){
    const bar=document.createElement("span");bar.style.width=(Number(item.bookings||0)/max*100)+"%";track.append(bar);
    row.append(label,track);list.append(row);
   });
+  // Read only the booking notes needed to measure which sales landing page generated the enquiry.
+  try{
+   const since=new Date(from+"T00:00:00+03:00").toISOString();
+   const end=new Date(to+"T00:00:00+03:00");end.setDate(end.getDate()+1);
+   const until=end.toISOString();
+   const query=new URLSearchParams({select:"notes",created_at:"gte."+since});
+   query.append("created_at","lt."+until);
+   query.set("order","created_at.asc");
+   const sourceRows=await api("/rest/v1/bookings?"+query.toString());
+   const counts={"Camping page":0,"Day Trips page":0,"Other / untracked":0};
+   sourceRows.forEach(row=>{
+    const note=String(row.notes||"");
+    if(note.includes("[Enquiry source: Camping landing page"))counts["Camping page"]++;
+    else if(note.includes("[Enquiry source: Day Trips landing page"))counts["Day Trips page"]++;
+    else counts["Other / untracked"]++;
+   });
+   const sourceList=el("enquiry-sources");sourceList.replaceChildren();
+   const maxSource=Math.max(1,...Object.values(counts));
+   Object.entries(counts).forEach(([name,count])=>{
+    const row=document.createElement("div");row.className="popular-row";
+    const label=document.createElement("div");label.className="popular-label";
+    const title=document.createElement("strong");title.textContent=name;
+    const amount=document.createElement("span");amount.textContent=count+" enquiries";
+    label.append(title,amount);
+    const track=document.createElement("div");track.className="popular-track";
+    const bar=document.createElement("span");bar.style.width=(count/maxSource*100)+"%";track.append(bar);
+    row.append(label,track);sourceList.append(row);
+   });
+  }catch(sourceError){
+   el("enquiry-sources").textContent="Source breakdown is temporarily unavailable; the main booking analytics are still current.";
+   console.warn("Enquiry source analytics unavailable:",sourceError);
+  }
   el("feedback").textContent="Analytics updated for "+from+" to "+to+".";
  }catch(error){el("feedback").textContent=error.message}
  finally{button.disabled=false}
