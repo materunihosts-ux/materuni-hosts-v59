@@ -24,10 +24,32 @@ const escapeHtml = (value: unknown) =>
 
 Deno.serve(async (request: Request) => {
   if (request.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
-  if (Number(request.headers.get("content-length") || "0") > 16_384) return json({ error: "Request is too large." }, 413);
   if (request.method !== "POST") return json({ error: "Method not allowed" }, 405);
   try {
-    const body = await request.json().catch(() => null);
+    // Enforce the limit while reading the stream; Content-Length alone can be absent or spoofed.
+    const reader = request.body?.getReader();
+    const chunks: Uint8Array[] = [];
+    let totalBytes = 0;
+    if (reader) {
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        totalBytes += value.byteLength;
+        if (totalBytes > 16_384) {
+          await reader.cancel();
+          return json({ error: "Request is too large." }, 413);
+        }
+        chunks.push(value);
+      }
+    }
+    const requestBytes = new Uint8Array(totalBytes);
+    let offset = 0;
+    for (const chunk of chunks) {
+      requestBytes.set(chunk, offset);
+      offset += chunk.byteLength;
+    }
+    const bodyText = new TextDecoder().decode(requestBytes);
+    const body = bodyText ? JSON.parse(bodyText) : null;
     const bookingId = String(body?.booking_id ?? "").trim();
     const idempotencyKey = String(body?.idempotency_key ?? "").trim();
     const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
@@ -262,6 +284,7 @@ Deno.serve(async (request: Request) => {
                 ] }],
               },
             }),
+            signal: AbortSignal.timeout(10_000),
           });
           const result = await response.json().catch(() => ({}));
           if (!response.ok) throw new Error(result?.error?.message || `WhatsApp returned ${response.status}`);
