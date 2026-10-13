@@ -14,7 +14,10 @@ const interpolate=(value:string,vars:Record<string,string>)=>value.replace(/\{\{
 Deno.serve(async(req:Request)=>{
  if(req.method==="OPTIONS")return new Response("ok",{headers});
  if(req.method!=="POST")return json({error:"Method not allowed"},405);
- if(Number(req.headers.get("content-length")||"0")>12000)return json({error:"Request too large"},413);
+ // Content-Length is only an early rejection hint; enforce the limit while reading
+ // because chunked requests may omit it and clients can provide an incorrect value.
+ const declaredLength=Number(req.headers.get("content-length")||"0");
+ if(Number.isFinite(declaredLength)&&declaredLength>12000)return json({error:"Request too large"},413);
  try{
   const jwt=(req.headers.get("authorization")||"").match(/^Bearer\s+(.+)$/i)?.[1];
   if(!jwt)return json({error:"Administrator sign-in required."},401);
@@ -25,8 +28,35 @@ Deno.serve(async(req:Request)=>{
   if(userError||!userData?.user)return json({error:"Administrator session is invalid."},401);
   const {data:admin,error:adminError}=await db.from("admin_users").select("user_id").eq("user_id",userData.user.id).maybeSingle();
   if(adminError||!admin)return json({error:"This account is not authorised to send communications."},403);
-  const body=await req.json().catch(()=>null);
-  if(body?.action!=="partner_invitation")return json({error:"Unsupported communication action."},400);
+  const reader=req.body?.getReader();
+  const chunks:Uint8Array[]=[];
+  let totalBytes=0;
+  if(reader){
+   while(true){
+    const {done,value}=await reader.read();
+    if(done)break;
+    totalBytes+=value.byteLength;
+    if(totalBytes>12000){
+     await reader.cancel();
+     return json({error:"Request too large"},413);
+    }
+    chunks.push(value);
+   }
+  }
+  const requestBytes=new Uint8Array(totalBytes);
+  let offset=0;
+  for(const chunk of chunks){
+   requestBytes.set(chunk,offset);
+   offset+=chunk.byteLength;
+  }
+  let body:Record<string,unknown>|null;
+  try{
+   body=JSON.parse(new TextDecoder().decode(requestBytes));
+  }catch{
+   return json({error:"Invalid JSON request."},400);
+  }
+  if(!body||typeof body!=="object"||Array.isArray(body))return json({error:"Invalid JSON request."},400);
+  if(body.action!=="partner_invitation")return json({error:"Unsupported communication action."},400);
   const partnerId=clean(body.partner_id,64),requestId=clean(body.request_id,64);
   if(!uuid.test(partnerId)||!uuid.test(requestId))return json({error:"A valid partner and invitation request ID are required."},400);
   const {data:partner,error:partnerError}=await db.from("partners")
@@ -58,8 +88,16 @@ Deno.serve(async(req:Request)=>{
    if(lookupError)throw lookupError;
    if(!existing)return {id:null,state:"in_progress"};
    if(existing.delivery_status==="sent")return {id:null,state:"already_sent"};
-   if(existing.delivery_status==="skipped")return {id:null,state:"skipped"};
    const now=new Date().toISOString();
+   // A skipped delivery may become eligible later (for example, after provider
+   // configuration or explicit WhatsApp consent is added). Reclaim it atomically.
+   if(existing.delivery_status==="skipped"){
+    const {data:reclaimed,error:reclaimError}=await db.from("communication_logs")
+     .update({...payload,created_at:now}).eq("id",existing.id).eq("delivery_status","skipped")
+     .select("id").maybeSingle();
+    if(reclaimError)throw reclaimError;
+    return reclaimed?{id:reclaimed.id,state:"claimed"}:{id:null,state:"in_progress"};
+   }
    if(existing.delivery_status==="failed"){
     const {data:retry,error:retryError}=await db.from("communication_logs").update({...payload,created_at:now})
      .eq("id",existing.id).eq("delivery_status","failed").select("id").maybeSingle();
