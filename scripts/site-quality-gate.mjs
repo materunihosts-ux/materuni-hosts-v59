@@ -47,6 +47,23 @@ for (const route of expectedRoutes) {
   else pass("Built route: " + route);
 }
 
+for (const [route, source] of [["/camping", "source=camping"], ["/day-trips", "source=day-trips"]]) {
+  const file = routeFile(route);
+  if (file) {
+    const html = read(file);
+    if (!html.includes(source)) fail(route + ": booking links must preserve landing-page attribution");
+    else pass(route + ": enquiry links preserve source attribution");
+    if (!html.includes('application/ld+json')) fail(route + ": missing structured service/offer data");
+    else pass(route + ": structured service/offer data is present");
+  }
+}
+const bookingPage = routeFile("/booking");
+if (bookingPage && !read(bookingPage).includes("Enquiry source")) fail("Booking form must store landing-page enquiry attribution");
+else if (bookingPage) pass("Booking form includes landing-page attribution capture");
+const analyticsPage = routeFile("/admin/analytics");
+if (analyticsPage && !read(analyticsPage).includes("Where enquiries come from")) fail("Admin analytics must show landing-page enquiry sources");
+else if (analyticsPage) pass("Admin analytics includes landing-page enquiry source reporting");
+
 if (fs.existsSync(sitemapPath)) {
   const sitemap = read(sitemapPath);
   if (/\/admin\/?(?:<|$)/i.test(sitemap)) fail("Private admin route must not appear in sitemap.xml");
