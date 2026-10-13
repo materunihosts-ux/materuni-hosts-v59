@@ -73,7 +73,7 @@ Deno.serve(async req=>{
   if(templateError) throw templateError;
   let templates:Record<string,{subject?:string;body?:string}>={};
   try{templates=JSON.parse(templateSetting?.setting_value||"{}")}catch{templates={};}
-  const templateKey=event==="confirmed"?"confirmed":event==="cancelled"?"followup":"confirmed";
+  const templateKey=event;
   const savedTemplate=templates[templateKey];
   const mergeValues:Record<string,string>={
    guest_name:guest,partner_name:guest,experience:String(b.experience||"Materuni experience"),
