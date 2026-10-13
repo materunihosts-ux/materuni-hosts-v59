@@ -1,6 +1,6 @@
 ---
 import SiteLayout from "../layouts/SiteLayout.astro";
-import { supabaseUrl } from "../lib/supabase-public";
+import { supabaseUrl, publishableKey } from "../lib/supabase-public";
 const base = `${supabaseUrl}/storage/v1/object/public/materuni-images/`;
 const hero = base + "waterfall_image/1791601414950-ew7ak42gjka.jpg";
 ---
@@ -21,5 +21,17 @@ const hero = base + "waterfall_image/1791601414950-ew7ak42gjka.jpg";
 <section class="section"><div class="heading"><span class="kicker">QUESTIONS BEFORE YOU BOOK?</span><h2 data-i18n="day_faq_title">Useful things to know</h2></div><div class="faq"><details><summary>How long does a Materuni day trip take?</summary><p>Duration depends on the experience, walking pace and time you wish to spend in the village. Tell us how much time you have and we can suggest a suitable option.</p></details><details><summary>Can I combine the waterfall and coffee tour?</summary><p>Yes. The Waterfall Hike & Cultural Day Trip combines the guided waterfall walk with coffee and cultural activities.</p></details><details><summary>Is transport included?</summary><p>Transport is not included in published package prices unless arranged separately. Share your pickup point when you enquire.</p></details><details><summary>Can you accommodate dietary needs?</summary><p>Please tell us about dietary requirements or allergies in your booking request so your host can discuss arrangements before confirming.</p></details></div></section>
 <section class="final"><span class="kicker">YOUR DAY, YOUR WAY</span><h2 data-i18n="day_final_title">Make a little space for Materuni.</h2><p>Tell us which experience caught your eye. We will help you check the date and plan your visit.</p><div class="actions" style="justify-content:center"><a class="button light" href="/booking?source=day-trips" data-i18n="day_final_cta">Check day-trip availability</a><a class="button secondary" href="https://wa.me/255612068540?text=Hello%20Materuni%20Hosts%2C%20I%27m%20interested%20in%20Materuni%20day%20trips.%20Please%20share%20the%20options. " target="_blank" rel="noopener noreferrer">Ask a local host</a></div></section>
 </div>
+<script>
+ // @ts-nocheck
+ import { supabaseUrl, publishableKey } from "../lib/supabase-public";
+ const pageFields={"hero_title":".day .hero h1","hero_intro":".day .hero-copy>p","intro_band":".day .intro p","options_title":"#day-trip-options .heading h2","options_intro":"#day-trip-options .heading p","final_title":".day .final h2","final_intro":".day .final>p","final_cta":".day .final a.button.light"};
+ fetch(`${supabaseUrl}/rest/v1/site_settings?select=setting_value&setting_key=eq.landing_pages_content`,{headers:{apikey:publishableKey,Authorization:"Bearer "+publishableKey},cache:"no-store"})
+  .then(response=>response.ok?response.json():[])
+  .then(rows=>{
+   const raw=rows?.[0]?.setting_value;if(!raw)return;
+   const saved=typeof raw==="string"?JSON.parse(raw):raw;const content=saved?.day;if(!content||typeof content!=="object")return;
+   Object.entries(pageFields).forEach(([key,selector])=>{const value=content[key];const node=document.querySelector(selector);if(node&&typeof value==="string"&&value.trim())node.textContent=value});
+  }).catch(error=>console.warn("Optional landing-page content unavailable; showing built-in copy.",error));
+</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Service","name":"Materuni Day Trips","description":"Guided day experiences in Materuni Village near Moshi, including waterfall hikes, Chagga coffee traditions and local cooking.","provider":{"@type":"Organization","name":"Materuni Hosts","url":"https://materunihosts.com"},"areaServed":{"@type":"Place","name":"Materuni Village, Kilimanjaro Region, Tanzania"},"hasOfferCatalog":{"@type":"OfferCatalog","name":"Materuni day trip experiences","itemListElement":[{"@type":"Offer","name":"Waterfall Hike & Cultural Day Trip","price":"75","priceCurrency":"USD","description":"Per person"},{"@type":"Offer","name":"Traditional Coffee Experience","price":"65","priceCurrency":"USD","description":"Per person"},{"@type":"Offer","name":"Traditional Chagga Cooking Class","price":"85","priceCurrency":"USD","description":"Per person"},{"@type":"Offer","name":"Materuni Waterfall & Chagga Culture","price":"75","priceCurrency":"USD","description":"Per person"}]}}</script>
 </SiteLayout>
