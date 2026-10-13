@@ -18,6 +18,15 @@ const base=`${supabaseUrl}/storage/v1/object/public/materuni-images/`;
 <span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 2 19 5v6c0 5-3 8-7 11-4-3-7-6-7-11V5l7-3Z"/><path d="m8.5 12 2.2 2.2 4.8-5"/></svg>CLEAR PER-PERSON PRICING</span>
 <span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M20.8 8.8c0 5.3-8.8 11-8.8 11s-8.8-5.7-8.8-11A4.8 4.8 0 0 1 12 6.2a4.8 4.8 0 0 1 8.8 2.6Z"/><path d="M8.5 10.5h7"/></svg>A PERSONAL LOCAL WELCOME</span>
 </div>
+<style>
+.catalog-product-tagline{display:block;margin:.35rem 0 .15rem;color:#a27b3e;font-size:.75rem;font-weight:800;letter-spacing:.09em;text-transform:uppercase}
+.catalog-best-for{font-size:.72rem!important;font-weight:700;color:#1a3322!important;letter-spacing:.03em}
+.catalog-detail-heading{display:block;margin:.85rem 0 .2rem;color:#1a3322;font-size:.68rem;letter-spacing:.12em}
+.shared-standard{margin:32px 0 0;padding:24px 28px;background:#f4efe6;border:1px solid #e6dfd3;border-radius:16px}
+.shared-standard h3{margin:0 0 14px;color:#1a3322;font:600 clamp(22px,3vw,30px) "Cormorant Garamond",serif}
+.shared-standard ul{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 24px;margin:0;padding-left:18px;color:#425347;font-size:13px;line-height:1.7}
+@media(max-width:620px){.shared-standard{padding:20px}.shared-standard ul{grid-template-columns:1fr}}
+</style>
 <section class="section"><div class="section-head"><span class="eyebrow" data-i18n="home_section_eyebrow">THE SIGNATURE MATERUNI STAY</span><h2 data-i18n="home_section_title">One camping experience. Many ways to connect.</h2><p data-i18n="home_section_intro">Materuni Camping is our main experience: an overnight stay enriched by the waterfall, Chagga coffee, local cooking, village culture and time around the campfire. You can also ask your host about shorter visits and extra activities.</p></div><div class="cards">{experiences.map((e)=><article class="experience-card" id={e.key === "Camping & Village Life" ? "camping" : undefined} data-catalog-key={e.key}><img src={base+e.image} data-site-image={e.image.split("/")[0]} alt={e.name} loading="lazy" decoding="async" width="640" height="420"><div class="card-body"><div class="card-top"><span class="pill">{e.tag}</span><span class="price">${e.price}<small>PER PERSON</small></span></div><h3>{e.name}</h3><p>{e.desc}</p><ul>{e.items.slice(0,3).map(item=><li>{item}</li>)}</ul><a class="button" href={"/booking?experience="+encodeURIComponent(e.key)}>Check availability</a></div></article>)}</div></section>
 <section class="section" style="background:#f0eadf"><div class="split"><img src={base+"story_image/1791601761441-q3iog8mni3r.jpg"} data-site-image="story_image" alt="Local coffee experience with Materuni hosts" loading="lazy" decoding="async" width="640" height="720"><div><span class="eyebrow" data-i18n="home_story_eyebrow">COMMUNITY · CULTURE · CONSERVATION</span><h2 data-i18n="home_story_title" data-site-content="story_title">A stay shaped by the people and place of Materuni.</h2><p data-i18n="home_story_intro" data-site-content="story_desc">We believe travel should create meaningful connections and respect the places that welcome us. Through community-based hosting, guests are invited to discover Chagga heritage, local food and everyday village life while travelling thoughtfully in the Kilimanjaro foothills.</p><div class="feature-list"><div><strong data-i18n="story_community_title">Community at the centre</strong><span data-i18n="story_community_body">Meet local hosts and experience Materuni through local knowledge and participation.</span></div><div><strong data-i18n="story_culture_title">Living Chagga culture</strong><span data-i18n="story_culture_body">Explore coffee traditions, food, stories and cultural practices with respect.</span></div><div><strong data-i18n="story_environment_title">Care for the environment</strong><span data-i18n="story_environment_body">Enjoy the forest and mountain setting responsibly, leaving nature as you found it.</span></div><div><strong data-i18n="story_sustainability_title">Thoughtful sustainability</strong><span data-i18n="story_sustainability_body">Choose slower, more meaningful experiences that value local people, culture and the environment.</span></div></div><a class="button" href="/sustainability" data-i18n="home_story_cta">Our approach</a></div></div></section>
 <section class="section review-invite-section" aria-labelledby="guest-review-title">
@@ -92,7 +101,7 @@ fetch(siteContentEndpoint,{headers:{apikey:siteContentKey,Authorization:"Bearer 
 applyHomepageLanguage();
 document.getElementById("site-language")?.addEventListener("change",applyHomepageLanguage);
 
-fetch(`${supabaseUrl}/rest/v1/experience_catalog?select=experience_key,display_name,price_usd,short_description,full_description,image_url,duration_label,inclusions,exclusions,is_active,sort_order&order=sort_order.asc`,{headers:{apikey:siteContentKey,Authorization:"Bearer "+siteContentKey},cache:"no-store"})
+fetch(`${supabaseUrl}/rest/v1/experience_catalog?select=experience_key,display_name,price_usd,short_description,full_description,image_url,duration_label,inclusions,exclusions,product_tagline,best_for,signature_moments,unique_amenities,is_active,sort_order&order=sort_order.asc`,{headers:{apikey:siteContentKey,Authorization:"Bearer "+siteContentKey},cache:"no-store"})
  .then(r=>r.ok?r.json():Promise.reject(new Error("Catalogue unavailable")))
  .then(tours=>{
   if(!Array.isArray(tours))return;
@@ -104,10 +113,14 @@ fetch(`${supabaseUrl}/rest/v1/experience_catalog?select=experience_key,display_n
    return list;
   };
   const addDetails=(body,tour)=>{
-   const inclusions=Array.isArray(tour.inclusions)?tour.inclusions:[];
-   if(inclusions.length){const heading=document.createElement("strong");heading.textContent="WHAT'S INCLUDED";heading.className="catalog-detail-heading";body.append(heading,makeList(inclusions))}
+   if(tour.product_tagline){const identity=document.createElement("span");identity.className="catalog-product-tagline";identity.textContent=tour.product_tagline;body.append(identity)}
+   if(tour.best_for){const best=document.createElement("p");best.className="catalog-best-for";best.textContent="BEST FOR · "+tour.best_for;body.append(best)}
+   const moments=Array.isArray(tour.signature_moments)?tour.signature_moments:[];
+   if(moments.length){const heading=document.createElement("strong");heading.textContent="SIGNATURE MOMENTS";heading.className="catalog-detail-heading";body.append(heading,makeList(moments.slice(0,3)))}
+   const amenities=Array.isArray(tour.unique_amenities)?tour.unique_amenities:[];
+   if(amenities.length){const heading=document.createElement("strong");heading.textContent="YOUR UNIQUE EXPERIENCE";heading.className="catalog-detail-heading";body.append(heading,makeList(amenities))}
    const exclusions=Array.isArray(tour.exclusions)?tour.exclusions:[];
-   if(exclusions.length){const heading=document.createElement("strong");heading.textContent="WHAT'S NOT INCLUDED";heading.className="catalog-detail-heading";body.append(heading,makeList(exclusions))}
+   if(exclusions.length){const heading=document.createElement("strong");heading.textContent="NOT INCLUDED";heading.className="catalog-detail-heading";body.append(heading,makeList(exclusions))}
   };
   const existing=new Map();
   root.querySelectorAll("[data-catalog-key]").forEach(card=>existing.set(card.dataset.catalogKey,card));
@@ -135,11 +148,25 @@ fetch(`${supabaseUrl}/rest/v1/experience_catalog?select=experience_key,display_n
    if(desc&&(t.full_description||t.short_description))desc.textContent=t.full_description||t.short_description;
    if(img&&t.image_url&&/^https:\/\//i.test(t.image_url))img.src=t.image_url;
    if(pill&&t.duration_label)pill.textContent=t.duration_label;
-   body.querySelectorAll(".catalog-detail-heading, .catalog-detail-heading + ul").forEach(node=>node.remove());
+   body.querySelectorAll(".catalog-product-tagline,.catalog-best-for,.catalog-detail-heading, .catalog-detail-heading + ul").forEach(node=>node.remove());
+   const legacyList=body.querySelector("ul");if(legacyList)legacyList.remove();
    addDetails(body,t);
    if(link)link.href="/booking?experience="+encodeURIComponent(t.experience_key);
   });
  })
  .catch(error=>console.warn("Using the built-in homepage catalogue because the live catalogue could not be loaded.",error));
+
+fetch(`${supabaseUrl}/rest/v1/site_settings?select=setting_value&setting_key=eq.experience_shared_inclusions`,{headers:{apikey:siteContentKey,Authorization:"Bearer "+siteContentKey},cache:"no-store"})
+ .then(response=>response.ok?response.json():[])
+ .then(rows=>{
+  const raw=rows?.[0]?.setting_value;if(!raw)return;
+  const items=typeof raw==="string"?JSON.parse(raw):raw;if(!Array.isArray(items)||!items.length)return;
+  const cards=document.querySelector(".cards");if(!cards)return;
+  const section=document.createElement("div");section.className="shared-standard";
+  const heading=document.createElement("h3");heading.textContent="Included in every Materuni Hosts experience";
+  const list=document.createElement("ul");
+  items.forEach(item=>{if(typeof item!=="string"||!item.trim())return;const li=document.createElement("li");li.textContent=item;list.append(li)});
+  section.append(heading,list);cards.insertAdjacentElement("afterend",section);
+ }).catch(error=>console.warn("Shared experience inclusions unavailable.",error));
 </script>
 </SiteLayout>
