@@ -2,100 +2,183 @@
 import SiteLayout from "../../layouts/SiteLayout.astro";
 ---
 <SiteLayout title="Leading Pages Editor | Materuni Hosts Admin" description="Edit Materuni Camping and Day Trips landing pages." noindex={true}>
-<section class="page-hero"><span class="eyebrow">PRIVATE ADMIN · WEBSITE EDITOR</span><h1>Leading pages editor</h1><p>Edit the guest-facing content on Materuni Camping and Day Trips. Changes are saved to the existing website settings table; package prices remain managed in Tours.</p></section>
+<section class="page-hero">
+ <span class="eyebrow">PRIVATE ADMIN · WEBSITE EDITOR</span>
+ <h1>Leading pages editor</h1>
+ <p>Control the first impression guests see on Materuni Camping and Day Trips. Edit, preview and publish each page separately.</p>
+</section>
 <section class="booking-wrap">
- <div class="booking-panel" id="login-panel">
-  <h2>Administrator sign in</h2><p class="muted">Only approved Materuni Hosts administrators can publish page content.</p>
+ <div class="booking-panel login-card" id="login-panel">
+  <span class="eyebrow">SECURE ACCESS</span><h2>Administrator sign in</h2>
+  <p class="muted">Only approved Materuni Hosts administrators can publish website content.</p>
   <form id="login-form" class="form-grid">
    <div class="field full"><label for="admin-email">Admin email</label><input id="admin-email" type="email" autocomplete="username" required></div>
    <div class="field full"><label for="admin-password">Password</label><input id="admin-password" type="password" autocomplete="current-password" required></div>
-   <div class="field full"><button class="button" id="login-button" type="submit">Sign in securely</button><p id="login-feedback" class="muted" aria-live="polite"></p></div>
+   <div class="field full"><button class="button" id="login-button" type="submit">Sign in securely</button><p id="login-feedback" class="feedback" aria-live="polite"></p></div>
   </form>
  </div>
  <div id="manager" hidden>
-  <div class="booking-panel">
-   <div class="section-heading"><div><span class="eyebrow">CONTENT CONTROL</span><h2>Materuni Camping</h2><p class="muted">Edit the camping landing page headline, introduction, story, package section and closing call to action.</p></div><div class="admin-shortcuts"><a class="button button-secondary" href="/camping" target="_blank" rel="noopener">Preview page ↗</a><a class="button button-secondary" href="/admin/">Dashboard</a></div></div>
-   <form id="camping-form" class="form-grid"></form>
-   <div class="actions" style="margin-top:1rem"><button class="button" id="save-camping" type="button">Publish Camping page</button></div><p id="camping-feedback" class="muted" aria-live="polite"></p>
+  <div class="editor-toolbar">
+   <div><span class="eyebrow">CONTENT WORKSPACE</span><h2>Choose a page to edit</h2><p class="muted">Your edits are saved separately. Publishing one page will not overwrite the other.</p></div>
+   <div class="admin-shortcuts"><a class="button button-secondary" href="/admin/">Dashboard</a><button class="button button-secondary" id="logout" type="button">Sign out</button></div>
   </div>
-  <div class="booking-panel" style="margin-top:1.25rem">
-   <div class="section-heading"><div><span class="eyebrow">DAY EXPERIENCES</span><h2>Materuni Day Trips</h2><p class="muted">Edit the day-trip landing page introduction, options section and closing call to action.</p></div><a class="button button-secondary" href="/day-trips" target="_blank" rel="noopener">Preview page ↗</a></div>
-   <form id="day-form" class="form-grid"></form>
-   <div class="actions" style="margin-top:1rem"><button class="button" id="save-day" type="button">Publish Day Trips page</button></div><p id="day-feedback" class="muted" aria-live="polite"></p>
+  <div class="page-tabs" role="tablist" aria-label="Choose landing page">
+   <button class="page-tab active" type="button" role="tab" aria-selected="true" aria-controls="editor-panel" id="tab-camping" data-page="camping"><span>01</span><strong>Materuni Camping</strong><small>Overnight stays & village life</small></button>
+   <button class="page-tab" type="button" role="tab" aria-selected="false" aria-controls="editor-panel" id="tab-day" data-page="day"><span>02</span><strong>Materuni Day Trips</strong><small>Waterfall, coffee & culture</small></button>
   </div>
-  <div class="booking-panel" style="margin-top:1.25rem"><h2>Publishing notes</h2><ul><li>Use factual descriptions and avoid unverified claims, awards or review statistics.</li><li>Keep published package prices and availability in the Tours and Availability section.</li><li>Changes are visible on the public pages after saving; use Preview to check the result.</li></ul><button class="button button-secondary" id="logout" type="button">Sign out</button></div>
+  <div class="editor-layout" id="editor-panel" role="tabpanel" aria-labelledby="tab-camping">
+   <section class="booking-panel editor-form-panel">
+    <div class="editor-panel-head"><div><span class="eyebrow" id="editor-kicker">LEADING EXPERIENCE</span><h2 id="editor-title">Materuni Camping</h2><p class="muted" id="editor-description">Shape the story of an overnight in Materuni.</p></div><a class="button button-secondary" id="open-public-page" href="/camping" target="_blank" rel="noopener">Open live page ↗</a></div>
+    <div class="editor-progress"><span id="completion-label">0 of 9 fields completed</span><span id="completion-value">0%</span><div class="progress-track"><span id="completion-bar"></span></div></div>
+    <form id="landing-form" class="landing-form" novalidate></form>
+    <div class="editor-actions">
+     <div class="save-state"><span class="save-dot" id="save-dot"></span><span id="save-state" aria-live="polite">Loading saved content…</span></div>
+     <div class="admin-shortcuts"><button class="button button-secondary" id="reset-page" type="button">Discard edits</button><button class="button" id="publish-page" type="button">Publish page</button></div>
+    </div>
+    <p class="feedback" id="page-feedback" aria-live="polite"></p>
+   </section>
+   <aside class="preview-column">
+    <div class="preview-card">
+     <div class="preview-head"><div><span class="eyebrow">LIVE CONTENT PREVIEW</span><h3>Guest view</h3></div><span class="preview-live">Updates as you type</span></div>
+     <div class="preview-hero"><span class="preview-kicker" id="preview-kicker">MATERUNI HOSTS · KILIMANJARO</span><h2 id="preview-title">Stay a little longer. Feel a little closer.</h2><p id="preview-intro">Your opening paragraph will appear here.</p></div>
+     <div class="preview-section"><span class="eyebrow">PAGE STORY</span><h3 id="preview-story-title">A village evening, not just an overnight stop.</h3><p id="preview-story-intro">Your story section will appear here.</p></div>
+     <div class="preview-section preview-offer"><span class="eyebrow">EXPERIENCES</span><h3 id="preview-offers-title">Make one night the heart of your Materuni visit.</h3><p id="preview-offers-intro">Your package introduction will appear here.</p></div>
+     <div class="preview-footer"><h3 id="preview-final-title">Let Materuni be more than a day on your itinerary.</h3><p id="preview-final-intro">Your closing message will appear here.</p><span class="preview-cta" id="preview-final-cta">Check camping availability</span></div>
+    </div>
+    <div class="preview-note"><strong>Important</strong><p>This preview shows your editable text, not the full live page design. Use “Open live page” to review photos, packages, mobile layout and booking links.</p><a id="open-booking-page" href="/booking?source=camping" target="_blank" rel="noopener">Open booking form ↗</a></div>
+   </aside>
+  </div>
+  <div class="editor-footnote"><strong>What this editor controls</strong><p>Headlines, introductions, story copy, section headings and closing calls to action. Package names, prices, inclusions, exclusions and availability remain in <a href="/admin/tours">Tours & Availability</a>, so guest-facing prices stay connected to the booking catalogue.</p></div>
  </div>
 </section>
 <script>
  // @ts-nocheck
  import { supabaseUrl, publishableKey } from "../../lib/supabase-public";
  let accessToken="";
+ let activePage="camping";
+ let savedContent={camping:{},day:{}};
+ let currentContent={camping:{},day:{}};
+ let isSaving=false;
  const el=id=>document.getElementById(id);
- const headers=()=>({apikey:publishableKey,Authorization:"Bearer "+accessToken,"Content-Type":"application/json"});
- async function api(path,options={}){const response=await fetch(supabaseUrl+path,{...options,headers:{...headers(),...(options.headers||{})}});const data=await response.json().catch(()=>null);if(!response.ok)throw new Error(data?.message||data?.details||data?.error_description||"Request failed.");return data}
+ const pageMeta={
+  camping:{title:"Materuni Camping",kicker:"LEADING EXPERIENCE · OVERNIGHT STAYS",description:"Shape the story of an overnight in Materuni.",publicUrl:"/camping",bookingUrl:"/booking?source=camping",previewKicker:"MATERUNI HOSTS · KILIMANJARO"},
+  day:{title:"Materuni Day Trips",kicker:"VILLAGE EXPERIENCES · DAY VISITS",description:"Help guests choose how they want to experience Materuni.",publicUrl:"/day-trips",bookingUrl:"/booking?source=day-trips",previewKicker:"DAY EXPERIENCES · MATERUNI VILLAGE"}
+ };
  const fields={
   camping:[
-   ["hero_title","Hero headline","input",140,"Stay a little longer. Feel a little closer."],
-   ["hero_intro","Hero introduction","textarea",700,"Trade a rushed stop for a night in Materuni. Wake beneath the green slopes of Kilimanjaro, share Chagga food and coffee traditions, follow forest paths and spend the evening around camp with your local hosts."],
-   ["story_title","Story section heading","input",140,"A village evening, not just an overnight stop."],
-   ["story_intro","Story section introduction","textarea",900,"Camping is the centre of this experience. The day gives you time to discover the waterfall and village; the evening creates space for food, conversation and the rhythms of local life. It is an invitation to slow down and experience Materuni with care."],
-   ["offers_title","Package section heading","input",160,"Make one night the heart of your Materuni visit."],
-   ["offers_intro","Package section introduction","textarea",700,"Choose the overnight camping stay or combine it with more foothills and village experiences. Your host can help shape the details around your dates and group."],
-   ["final_title","Closing headline","input",160,"Let Materuni be more than a day on your itinerary."],
-   ["final_intro","Closing introduction","textarea",500,"Tell us when you would like to stay and we will help you plan the next step."],
-   ["final_cta","Closing booking button","input",100,"Check camping availability"]
+   {key:"hero_title",label:"Main page headline",hint:"The first message a guest reads. Keep it memorable and clear.",section:"01 · First impression",max:140,type:"input",initial:"Stay a little longer. Feel a little closer."},
+   {key:"hero_intro",label:"Opening introduction",hint:"Explain the overnight stay and what makes spending a night in the village special.",section:"01 · First impression",max:700,type:"textarea",initial:"Trade a rushed stop for a night in Materuni. Wake beneath the green slopes of Kilimanjaro, share Chagga food and coffee traditions, follow forest paths and spend the evening around camp with your local hosts."},
+   {key:"story_title",label:"Story section heading",hint:"A short heading that introduces the village experience.",section:"02 · The story",max:140,type:"input",initial:"A village evening, not just an overnight stop."},
+   {key:"story_intro",label:"Story section text",hint:"Describe the experience in a warm, accurate and human way.",section:"02 · The story",max:900,type:"textarea",initial:"Camping is the centre of this experience. The day gives you time to discover the waterfall and village; the evening creates space for food, conversation and the rhythms of local life. It is an invitation to slow down and experience Materuni with care."},
+   {key:"offers_title",label:"Package section heading",hint:"Introduce the overnight and extended foothills options.",section:"03 · Choose your stay",max:160,type:"input",initial:"Make one night the heart of your Materuni visit."},
+   {key:"offers_intro",label:"Package section introduction",hint:"Guide guests towards the package that fits their dates and interests.",section:"03 · Choose your stay",max:700,type:"textarea",initial:"Choose the overnight camping stay or combine it with more foothills and village experiences. Your host can help shape the details around your dates and group."},
+   {key:"final_title",label:"Closing call-to-action heading",hint:"Finish with a clear reason to take the next step.",section:"04 · Invite a booking",max:160,type:"input",initial:"Let Materuni be more than a day on your itinerary."},
+   {key:"final_intro",label:"Closing message",hint:"Tell guests what to do next without promising unconfirmed availability.",section:"04 · Invite a booking",max:500,type:"textarea",initial:"Tell us when you would like to stay and we will help you plan the next step."},
+   {key:"final_cta",label:"Booking button text",hint:"Use a short action phrase, for example “Check camping availability”.",section:"04 · Invite a booking",max:100,type:"input",initial:"Check camping availability"}
   ],
   day:[
-   ["hero_title","Hero headline","input",140,"A day in Materuni, made memorable."],
-   ["hero_intro","Hero introduction","textarea",700,"Walk to a forest waterfall, learn how Chagga coffee is prepared, taste local food and meet the people who make Materuni special. Choose the experience that fits your day, then let your local host help with the details."],
-   ["intro_band","Introductory paragraph","textarea",500,"All experiences take place in and around Materuni Village, near Moshi in the Kilimanjaro foothills. Published prices are per person; transport is arranged separately unless agreed with your host."],
-   ["options_title","Experience options heading","input",160,"Choose the day trip that feels like you."],
-   ["options_intro","Experience options introduction","textarea",700,"From the waterfall trail to hands-on coffee and cooking, each visit offers a different way to connect with village life."],
-   ["final_title","Closing headline","input",140,"Make a little space for Materuni."],
-   ["final_intro","Closing introduction","textarea",500,"Tell us which experience caught your eye. We will help you check the date and plan your visit."],
-   ["final_cta","Closing booking button","input",100,"Check day-trip availability"]
+   {key:"hero_title",label:"Main page headline",hint:"The first message a guest reads about Materuni day experiences.",section:"01 · First impression",max:140,type:"input",initial:"A day in Materuni, made memorable."},
+   {key:"hero_intro",label:"Opening introduction",hint:"Summarise the waterfall, coffee, food and village experiences.",section:"01 · First impression",max:700,type:"textarea",initial:"Walk to a forest waterfall, learn how Chagga coffee is prepared, taste local food and meet the people who make Materuni special. Choose the experience that fits your day, then let your local host help with the details."},
+   {key:"intro_band",label:"Introductory paragraph",hint:"Set the location and clarify what published prices cover.",section:"02 · Plan your visit",max:500,type:"textarea",initial:"All experiences take place in and around Materuni Village, near Moshi in the Kilimanjaro foothills. Published prices are per person; transport is arranged separately unless agreed with your host."},
+   {key:"options_title",label:"Experience options heading",hint:"Introduce the day-trip packages.",section:"03 · Choose an experience",max:160,type:"input",initial:"Choose the day trip that feels like you."},
+   {key:"options_intro",label:"Experience options introduction",hint:"Explain the different ways guests can explore Materuni.",section:"03 · Choose an experience",max:700,type:"textarea",initial:"From the waterfall trail to hands-on coffee and cooking, each visit offers a different way to connect with village life."},
+   {key:"final_title",label:"Closing call-to-action heading",hint:"Invite guests to choose an experience and check a date.",section:"04 · Invite a booking",max:140,type:"input",initial:"Make a little space for Materuni."},
+   {key:"final_intro",label:"Closing message",hint:"Keep this helpful and welcoming.",section:"04 · Invite a booking",max:500,type:"textarea",initial:"Tell us which experience caught your eye. We will help you check the date and plan your visit."},
+   {key:"final_cta",label:"Booking button text",hint:"Use a short, clear action phrase.",section:"04 · Invite a booking",max:100,type:"input",initial:"Check day-trip availability"}
   ]
  };
- const landingDefaults={};
- function renderForm(page){
-  const form=el(page+"-form");form.replaceChildren();
-  for(const [key,label,type,max,initial] of fields[page]){
-   const wrap=document.createElement("div");wrap.className="field full";
-   const caption=document.createElement("label");caption.htmlFor=page+"-"+key;caption.textContent=label;
-   const input=document.createElement(type==="textarea"?"textarea":"input");input.id=page+"-"+key;input.maxLength=max;input.required=true;
-   if(type==="textarea")input.rows=3;
-   input.value=landingDefaults[page]?.[key]||initial;
-   wrap.append(caption,input);form.append(wrap);
+ const headers=()=>({apikey:publishableKey,Authorization:"Bearer "+accessToken,"Content-Type":"application/json"});
+ async function api(path,options={}){const response=await fetch(supabaseUrl+path,{...options,headers:{...headers(),...(options.headers||{})}});const data=await response.json().catch(()=>null);if(!response.ok)throw new Error(data?.message||data?.details||data?.hint||data?.error_description||"Request failed.");return data}
+ function defaultsFor(page){return Object.fromEntries(fields[page].map(field=>[field.key,field.initial]))}
+ function setFeedback(message,isError=false){el("page-feedback").textContent=message;el("page-feedback").classList.toggle("error",isError)}
+ function renderFields(){
+  const form=el("landing-form");form.replaceChildren();
+  let lastSection="";
+  for(const field of fields[activePage]){
+   if(field.section!==lastSection){const heading=document.createElement("h3");heading.className="field-section-title";heading.textContent=field.section;form.append(heading);lastSection=field.section}
+   const wrap=document.createElement("div");wrap.className="landing-field";
+   const label=document.createElement("label");label.htmlFor="copy-"+field.key;label.textContent=field.label;
+   const control=document.createElement(field.type==="textarea"?"textarea":"input");control.id="copy-"+field.key;control.name=field.key;control.maxLength=field.max;control.required=true;
+   if(field.type==="textarea"){control.rows=4;control.maxLength=field.max}else control.type="text";
+   control.value=currentContent[activePage][field.key]??field.initial;
+   const help=document.createElement("div");help.className="field-help";help.textContent=field.hint;
+   const meta=document.createElement("div");meta.className="field-meta";
+   const count=document.createElement("span");count.className="char-count";count.id="count-"+field.key;
+   const limit=document.createElement("span");limit.textContent="Maximum "+field.max+" characters";
+   meta.append(count,limit);wrap.append(label,control,help,meta);form.append(wrap);
+   control.addEventListener("input",()=>{currentContent[activePage][field.key]=control.value;count.textContent=control.value.length+" / "+field.max;updatePreview();updateCompletion();markDirty()});
+   count.textContent=control.value.length+" / "+field.max;
   }
+  updatePreview();updateCompletion();updateSaveState();
+ }
+ function updatePreview(){
+  const values=currentContent[activePage],meta=pageMeta[activePage];
+  el("editor-title").textContent=meta.title;el("editor-kicker").textContent=meta.kicker;el("editor-description").textContent=meta.description;
+  el("open-public-page").href=meta.publicUrl;el("open-booking-page").href=meta.bookingUrl;
+  el("preview-kicker").textContent=meta.previewKicker;
+  const pairs=[["hero_title","preview-title"],["hero_intro","preview-intro"],["story_title","preview-story-title"],["story_intro","preview-story-intro"],["offers_title","preview-offers-title"],["offers_intro","preview-offers-intro"],["final_title","preview-final-title"],["final_intro","preview-final-intro"],["final_cta","preview-final-cta"]];
+  for(const [key,id] of pairs){const node=el(id);node.textContent=values[key]||"Your content will appear here.";node.closest(".preview-section,.preview-footer,.preview-hero")?.classList.toggle("preview-empty",!values[key]?.trim())}
+  const story=fields[activePage].find(f=>f.key==="intro_band");if(story){el("preview-story-title").textContent=values.options_title||"Plan your visit";el("preview-story-intro").textContent=values.intro_band||"Your introductory paragraph will appear here.";el("preview-offers-title").textContent=values.options_title||"Choose an experience";el("preview-offers-intro").textContent=values.options_intro||"Your experience introduction will appear here."}
+ }
+ function updateCompletion(){
+  const list=fields[activePage],complete=list.filter(f=>(el("copy-"+f.key)?.value||"").trim().length>0).length;
+  const percent=Math.round(complete/list.length*100);el("completion-label").textContent=complete+" of "+list.length+" fields completed";el("completion-value").textContent=percent+"%";el("completion-bar").style.width=percent+"%";
+ }
+ function isDirty(page=activePage){return fields[page].some(f=>(currentContent[page][f.key]??f.initial)!==(savedContent[page][f.key]??f.initial))}
+ function markDirty(){updateSaveState()}
+ function updateSaveState(){
+  const dirty=isDirty();el("save-state").textContent=dirty?"Unsaved changes":"All changes saved";el("save-dot").classList.toggle("dirty",dirty);el("publish-page").disabled=isSaving||!dirty;el("reset-page").disabled=isSaving||!dirty;
+ }
+ function switchPage(page){
+  if(page===activePage)return;
+  if(isDirty()&&!confirm("You have unpublished edits on this page. Switch pages and keep those edits as a draft?"))return;
+  activePage=page;document.querySelectorAll(".page-tab").forEach(tab=>{const selected=tab.dataset.page===page;tab.classList.toggle("active",selected);tab.setAttribute("aria-selected",String(selected))});
+  el("editor-panel").setAttribute("aria-labelledby",page==="camping"?"tab-camping":"tab-day");
+  el("preview-note")?.classList.toggle("day-preview",page==="day");setFeedback("");renderFields();
  }
  async function loadLandingContent(){
-  const rows=await api("/rest/v1/site_settings?select=setting_value&setting_key=eq.landing_pages_content");
-  if(rows?.[0]?.setting_value){try{const saved=typeof rows[0].setting_value==="string"?JSON.parse(rows[0].setting_value):rows[0].setting_value;if(saved&&typeof saved==="object"){for(const page of ["camping","day"])landingDefaults[page]={...landingDefaults[page],...(saved[page]||{})}}}catch{throw new Error("Saved landing-page content could not be read. Please review the site settings before editing.")}}
-  renderForm("camping");renderForm("day");
+  const rows=await api("/rest/v1/site_settings?select=setting_value,updated_at&setting_key=eq.landing_pages_content");
+  let saved={camping:{},day:{}};
+  if(rows?.[0]?.setting_value){const raw=rows[0].setting_value;const parsed=typeof raw==="string"?JSON.parse(raw):raw;if(!parsed||typeof parsed!=="object")throw new Error("Saved page content is not in the expected format.");saved={...saved,...parsed}}
+  for(const page of ["camping","day"]){savedContent[page]={...defaultsFor(page),...(saved[page]||{})};currentContent[page]={...savedContent[page]}}
+  renderFields();el("save-state").textContent="Saved content loaded";el("last-saved").textContent=rows?.[0]?.updated_at?"Last saved "+new Date(rows[0].updated_at).toLocaleString():"Using recommended starter copy";
  }
- async function publish(page){
-  const button=el("save-"+page),feedback=el(page+"-feedback");button.disabled=true;feedback.textContent="Saving page content…";
+ async function publishPage(){
+  if(isSaving||!isDirty())return;
+  const page=activePage,button=el("publish-page");const invalid=fields[page].find(f=>!(currentContent[page][f.key]||"").trim()||(currentContent[page][f.key]||"").length>f.max);
+  if(invalid){setFeedback("Please complete “"+invalid.label+"” (maximum "+invalid.max+" characters).",true);el("copy-"+invalid.key)?.focus();return}
+  isSaving=true;button.textContent="Publishing…";updateSaveState();setFeedback("Saving "+pageMeta[page].title+"…");
   try{
-   const current={};for(const [key,label,type,max,initial] of fields[page]){const value=el(page+"-"+key).value.trim();if(!value)throw new Error(label+" cannot be empty.");if(value.length>max)throw new Error(label+" is too long.");current[key]=value}
    const rows=await api("/rest/v1/site_settings?select=setting_value&setting_key=eq.landing_pages_content");
-   let saved={camping:{},day:{}};if(rows?.[0]?.setting_value){const parsed=typeof rows[0].setting_value==="string"?JSON.parse(rows[0].setting_value):rows[0].setting_value;if(parsed&&typeof parsed==="object")saved={...saved,...parsed}}
-   saved[page]=current;
-   await api("/rest/v1/site_settings?on_conflict=setting_key",{method:"POST",headers:{"Prefer":"resolution=merge-duplicates,return=minimal"},body:JSON.stringify({setting_key:"landing_pages_content",setting_value:JSON.stringify(saved),updated_at:new Date().toISOString()})});
-   landingDefaults[page]=current;feedback.textContent="Published successfully. Open Preview to review the public page.";
-  }catch(error){feedback.textContent=error.message||"Unable to save this page."}finally{button.disabled=false}
+   let latest={camping:{},day:{}};
+   if(rows?.[0]?.setting_value){const raw=rows[0].setting_value;const parsed=typeof raw==="string"?JSON.parse(raw):raw;if(parsed&&typeof parsed==="object")latest={...latest,...parsed}}
+   latest[page]={...currentContent[page]};
+   const response=await api("/rest/v1/site_settings?on_conflict=setting_key",{method:"POST",headers:{"Prefer":"resolution=merge-duplicates,return=representation"},body:JSON.stringify({setting_key:"landing_pages_content",setting_value:JSON.stringify(latest),updated_at:new Date().toISOString()})});
+   savedContent[page]={...currentContent[page]};
+   el("last-saved").textContent="Last saved "+new Date().toLocaleString();
+   setFeedback(pageMeta[page].title+" has been published. Open the live page to review it.");
+  }catch(error){setFeedback(error.message||"Unable to publish this page. Your draft is still here.",true)}
+  finally{isSaving=false;button.textContent="Publish page";updateSaveState()}
  }
+ function discardEdits(){if(!isDirty()||!confirm("Discard your unpublished changes to this page?"))return;currentContent[activePage]={...savedContent[activePage]};setFeedback("Unpublished edits discarded.");renderFields()}
  el("login-form").addEventListener("submit",async event=>{
   event.preventDefault();const button=el("login-button");button.disabled=true;el("login-feedback").textContent="Verifying administrator…";
   try{
    const response=await fetch(supabaseUrl+"/auth/v1/token?grant_type=password",{method:"POST",headers:{apikey:publishableKey,"Content-Type":"application/json"},body:JSON.stringify({email:el("admin-email").value.trim(),password:el("admin-password").value})});
    const session=await response.json();if(!response.ok)throw new Error(session.msg||session.message||"Sign in failed.");
    accessToken=session.access_token;const admins=await api("/rest/v1/admin_users?select=user_id&user_id=eq."+encodeURIComponent(session.user.id));
-   if(!admins.length){accessToken="";throw new Error("This account is not authorised as an administrator.");}
+   if(!admins.length){accessToken="";throw new Error("This account is not authorised as an administrator.")}
    await loadLandingContent();el("login-panel").hidden=true;el("manager").hidden=false;
-  }catch(error){el("login-feedback").textContent=error.message}finally{button.disabled=false}
+  }catch(error){el("login-feedback").textContent=error.message||"Sign in failed."}finally{button.disabled=false}
  });
- el("save-camping").addEventListener("click",()=>publish("camping"));
- el("save-day").addEventListener("click",()=>publish("day"));
- el("logout").addEventListener("click",async()=>{try{await fetch(supabaseUrl+"/auth/v1/logout",{method:"POST",headers:headers()})}catch{}accessToken="";el("manager").hidden=true;el("login-panel").hidden=false;el("login-form").reset()});
+ document.querySelectorAll(".page-tab").forEach(tab=>tab.addEventListener("click",()=>switchPage(tab.dataset.page)));
+ el("publish-page").addEventListener("click",publishPage);el("reset-page").addEventListener("click",discardEdits);
+ el("logout").addEventListener("click",async()=>{if(isDirty()&&!confirm("You have unpublished edits. Sign out and lose this draft?"))return;try{await fetch(supabaseUrl+"/auth/v1/logout",{method:"POST",headers:headers()})}catch{}accessToken="";el("manager").hidden=true;el("login-panel").hidden=false;el("login-form").reset()});
+ window.addEventListener("beforeunload",event=>{if(isDirty()){event.preventDefault();event.returnValue=""}});
 </script>
+<style>
+.editor-toolbar{display:flex;align-items:flex-end;justify-content:space-between;gap:1rem;margin:0 0 1.1rem}.editor-toolbar h2{margin:.2rem 0}.editor-toolbar p{margin:.35rem 0 0}.page-tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem;margin-bottom:1rem}.page-tab{display:grid;grid-template-columns:auto 1fr;column-gap:.85rem;align-items:center;text-align:left;padding:1rem 1.1rem;border:1px solid #ddd3c5;border-radius:14px;background:#fff;color:#242421;cursor:pointer;font:inherit}.page-tab>span{grid-row:span 2;display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:#f1ece3;color:#1A3322;font-weight:800}.page-tab strong{font-size:.95rem}.page-tab small{color:#6e7068;font-size:.76rem}.page-tab.active{border-color:#1A3322;box-shadow:inset 0 0 0 1px #1A3322;background:#f9f7f1}.editor-layout{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(300px,.9fr);gap:1rem;align-items:start}.editor-form-panel{min-width:0}.editor-panel-head{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;margin-bottom:1rem}.editor-panel-head h2{margin:.2rem 0}.editor-panel-head p{margin:.35rem 0}.editor-progress{padding:.85rem 0 1.1rem;border-top:1px solid #eee7dc;border-bottom:1px solid #eee7dc;display:grid;grid-template-columns:1fr auto;gap:.35rem;font-size:.76rem;color:#686a62}.progress-track{grid-column:1/-1;height:6px;background:#eee9df;border-radius:20px;overflow:hidden}.progress-track span{display:block;height:100%;width:0;background:#1A3322;border-radius:20px;transition:width .2s}.landing-form{display:grid;grid-template-columns:1fr 1fr;gap:.95rem 1rem;padding-top:1rem}.field-section-title{grid-column:1/-1;margin:.35rem 0 -.3rem;padding-bottom:.45rem;border-bottom:1px solid #e9e2d7;color:#1A3322;font:600 1.15rem 'Cormorant Garamond',serif}.landing-field{min-width:0}.landing-field:has(textarea){grid-column:1/-1}.landing-field label{display:block;margin-bottom:.35rem;font-size:.83rem;font-weight:800;color:#292c26}.landing-field input,.landing-field textarea{width:100%;box-sizing:border-box;border:1px solid #d8d0c4;border-radius:9px;padding:.75rem .8rem;background:#fff;color:#242421;font:500 .9rem Manrope,sans-serif;line-height:1.55}.landing-field input:focus,.landing-field textarea:focus{outline:2px solid #C5A059;outline-offset:1px;border-color:#1A3322}.landing-field textarea{resize:vertical;min-height:106px}.field-help{margin-top:.32rem;color:#74756d;font-size:.72rem;line-height:1.5}.field-meta{display:flex;justify-content:space-between;gap:.5rem;margin-top:.25rem;color:#85857d;font-size:.66rem}.char-count{font-variant-numeric:tabular-nums}.editor-actions{position:sticky;bottom:8px;z-index:3;display:flex;align-items:center;justify-content:space-between;gap:.8rem;margin:1.2rem -1.1rem -1.1rem;padding:.85rem 1.1rem;background:rgba(250,247,242,.96);border-top:1px solid #e5ddcf;border-radius:0 0 16px 16px;backdrop-filter:blur(10px)}.save-state{display:flex;align-items:center;gap:.5rem;font-size:.75rem;color:#64665e}.save-dot{width:8px;height:8px;border-radius:50%;background:#4c8058}.save-dot.dirty{background:#c28b35}.feedback{min-height:1.2rem;margin:.6rem 0 0;font-size:.78rem;color:#42694a}.feedback.error{color:#a13b30}.preview-column{position:sticky;top:12px;display:grid;gap:.8rem}.preview-card{overflow:hidden;border:1px solid #e1d9cc;border-radius:16px;background:#fff;box-shadow:0 12px 32px rgba(26,51,34,.06)}.preview-head{display:flex;align-items:center;justify-content:space-between;gap:.5rem;padding:1rem 1.1rem;border-bottom:1px solid #eee8de}.preview-head h3{margin:.2rem 0 0;font:600 1.2rem 'Cormorant Garamond',serif}.preview-live{font-size:.64rem;color:#4e7556;background:#edf4ed;border-radius:99px;padding:.35rem .55rem}.preview-hero{padding:1.5rem 1.2rem 1.6rem;background:#1A3322;color:#FAF7F2}.preview-kicker{font-size:.6rem;letter-spacing:.13em;color:#D5BD83;font-weight:800}.preview-hero h2{font:500 clamp(1.8rem,3vw,2.5rem)/1.05 'Cormorant Garamond',serif;margin:.8rem 0}.preview-hero p,.preview-section p,.preview-footer p{font-size:.77rem;line-height:1.75;margin:0;color:inherit;white-space:pre-wrap}.preview-section{padding:1.1rem 1.2rem;border-bottom:1px solid #eee8de}.preview-section h3,.preview-footer h3{font:600 1.35rem/1.12 'Cormorant Garamond',serif;margin:.35rem 0 .55rem;color:#1A3322}.preview-section p{color:#62645d}.preview-offer{background:#f7f3eb}.preview-footer{padding:1.2rem;background:#eee8dc}.preview-footer p{color:#57594f}.preview-cta{display:inline-block;margin-top:.9rem;padding:.65rem .9rem;border-radius:99px;background:#1A3322;color:#FAF7F2;font-size:.7rem;font-weight:800}.preview-empty{opacity:.65}.preview-note,.editor-footnote{padding:1rem 1.1rem;border:1px solid #e4dccf;border-radius:12px;background:#f7f3eb}.preview-note strong,.editor-footnote strong{font-size:.8rem;color:#1A3322}.preview-note p,.editor-footnote p{margin:.35rem 0;font-size:.74rem;line-height:1.65;color:#66685f}.preview-note a,.editor-footnote a{font-size:.75rem;font-weight:800;color:#1A3322}.editor-footnote{margin-top:1rem}.login-card{max-width:640px;margin:0 auto}.login-card h2{margin:.25rem 0}.login-card .feedback{margin:0}
+@media(max-width:900px){.editor-layout{grid-template-columns:1fr}.preview-column{position:static;grid-row:1}.editor-form-panel{grid-row:2}.preview-card{max-width:none}.editor-panel-head{flex-wrap:wrap}}
+@media(max-width:620px){.editor-toolbar{align-items:flex-start;flex-direction:column}.page-tabs{grid-template-columns:1fr}.page-tab{padding:.8rem}.editor-panel-head{display:block}.editor-panel-head>a{margin-top:.65rem}.landing-form{grid-template-columns:1fr}.landing-field:has(textarea){grid-column:auto}.editor-actions{align-items:stretch;flex-direction:column;margin-left:-.8rem;margin-right:-.8rem;padding:.8rem}.editor-actions .admin-shortcuts{display:grid;grid-template-columns:1fr 1fr}.editor-actions .button{width:100%;white-space:normal}.save-state{font-size:.72rem}.preview-column{grid-row:1}.editor-form-panel{grid-row:2}}
+</style>
 </SiteLayout>
