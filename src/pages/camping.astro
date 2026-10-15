@@ -4,7 +4,7 @@ import { Image, getImage } from "astro:assets";
 import { supabaseUrl } from "../lib/supabase-public";
 const base = `${supabaseUrl}/storage/v1/object/public/materuni-images/`;
 const heroSource = base + "camping_image/1791601872981-zmji0mykwhd.jpg";
-const heroOptimized = await getImage({ src: heroSource, width: 1600, format: "webp", quality: 76 });
+const heroOptimized = await getImage({ src: heroSource, width: 1200, format: "webp", quality: 76 });
 const offerImage = await getImage({ src: heroSource, width: 700, format: "webp", quality: 76 });
 const hero = heroOptimized.src;
 ---
