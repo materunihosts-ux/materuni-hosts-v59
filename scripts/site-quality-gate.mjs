@@ -39,7 +39,7 @@ else {
 
 const expectedRoutes = [
   "/", "/experiences", "/camping", "/day-trips", "/booking", "/itinerary", "/reviews", "/faq",
-  "/sustainability", "/travel-guide", "/work-with-us", "/privacy", "/terms", "/admin"
+  "/sustainability", "/travel-guide", "/work-with-us", "/privacy", "/terms", "/itinerary", "/admin"
 ];
 for (const route of expectedRoutes) {
   const file = routeFile(route);
@@ -56,6 +56,21 @@ for (const [route, source] of [["/camping", "source=camping"], ["/day-trips", "s
     if (!html.includes('application/ld+json')) fail(route + ": missing structured service/offer data");
     else pass(route + ": structured service/offer data is present");
   }
+}
+
+const homeFile = routeFile("/");
+if (homeFile) {
+  const homeHtml = read(homeFile);
+  if (/facebook/i.test(homeHtml)) fail("Public homepage must not expose retired Facebook profile links or labels");
+  else pass("Public homepage contains no retired Facebook profile reference");
+}
+const itineraryFile = routeFile("/itinerary");
+if (itineraryFile) {
+  const itineraryHtml = read(itineraryFile);
+  if (!/Build Your Materuni Itinerary/i.test(itineraryHtml)) fail("Itinerary Builder route must retain its own page title");
+  if (!/navigator\.share|share/i.test(itineraryHtml)) fail("Itinerary Builder must retain its sharing workflow");
+  if (!/application\/pdf|\.pdf|PDF/i.test(itineraryHtml)) fail("Itinerary Builder must retain its PDF output workflow");
+  if (/Build Your Materuni Itinerary/i.test(itineraryHtml) && /navigator\.share|share/i.test(itineraryHtml) && /application\/pdf|\.pdf|PDF/i.test(itineraryHtml)) pass("Itinerary Builder retains sharing and PDF output");
 }
 const bookingPage = routeFile("/booking");
 if (bookingPage) {
