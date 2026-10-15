@@ -167,7 +167,7 @@ import { supabaseUrl, publishableKey } from "../lib/supabase-public";
   const fallback=pageFallbacks[language]||{};
   nodes.forEach(node=>{const value=fallback[node.dataset.i18n];if(typeof value==="string")node.textContent=value});
   try{
-   const response=await fetch(`${supabaseUrl}/rest/v1/site_settings?select=setting_value&setting_key=eq.language_content`,{headers:{apikey:publishableKey,Authorization:"Bearer "+publishableKey},cache:"no-store"});
+   const response=await fetch(`${supabaseUrl}/rest/v1/site_settings?select=setting_value&setting_key=eq.language_content`,{headers:{apikey:publishableKey,Authorization:"Bearer "+publishableKey},cache:"default"});
    if(!response.ok)return;
    const rows=await response.json();const data=JSON.parse(rows?.[0]?.setting_value||"{}");const translations=data?.[language]||{};
    document.querySelectorAll("[data-i18n]").forEach(node=>{const value=translations[node.dataset.i18n];if(typeof value==="string"&&value.trim())node.textContent=value});
@@ -228,7 +228,7 @@ import { supabaseUrl, publishableKey } from "../lib/supabase-public";
   const keys=["instagram_url","tripadvisor_url","google_review_url"];
   let values={...fallback};
   try{
-   const response=await fetch(`${supabaseUrl}/rest/v1/site_settings?select=setting_key,setting_value&setting_key=in.(${keys.join(",")})`,{headers:{apikey:publishableKey,Authorization:"Bearer "+publishableKey},cache:"no-store"});
+   const response=await fetch(`${supabaseUrl}/rest/v1/site_settings?select=setting_key,setting_value&setting_key=in.(${keys.join(",")})`,{headers:{apikey:publishableKey,Authorization:"Bearer "+publishableKey},cache:"default"});
    if(response.ok){
     const rows=await response.json();
     for(const row of rows){if(typeof row.setting_value==="string"&&row.setting_value.trim())values[row.setting_key]=row.setting_value.trim()}
