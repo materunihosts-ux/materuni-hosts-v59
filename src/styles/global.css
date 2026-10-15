@@ -1467,3 +1467,8 @@ body.public-shell .trust-strip svg{
  body.public-shell .trust-strip span{font-size:14px;letter-spacing:.025em;gap:9px}
  body.public-shell .trust-strip svg{width:33px;height:33px;flex-basis:33px;padding:7px}
 }
+
+
+/* Accessibility: improve gold text contrast on light editorial surfaces */
+.section:not(.hero) .eyebrow,.page-hero .eyebrow,.section-head .eyebrow{color:#755523}
+.pill{color:#6b4e21}
