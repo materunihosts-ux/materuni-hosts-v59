@@ -112,6 +112,34 @@ if (fs.existsSync(sitemapPath)) {
   }
 }
 
+
+const publicSourceRoot = path.resolve("src/pages");
+const sourceFiles = [];
+const walkSources = (directory) => {
+  if (!fs.existsSync(directory)) return;
+  for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
+    const full = path.join(directory, entry.name);
+    if (entry.isDirectory()) {
+      if (entry.name !== "admin") walkSources(full);
+    } else if (entry.isFile() && entry.name.endsWith(".astro")) sourceFiles.push(full);
+  }
+};
+walkSources(publicSourceRoot);
+let checkedImages = 0;
+for (const file of sourceFiles) {
+  const source = read(file);
+  const images = [...source.matchAll(/<img\\b[^>]*>/gis)].map((match) => match[0]);
+  for (const image of images) {
+    checkedImages++;
+    const relative = path.relative(process.cwd(), file);
+    if (!/\\balt\\s*=\\s*["'][^"']*["']/i.test(image)) fail(relative + ": public image is missing alt text");
+    if (!/\\bwidth\\s*=/.test(image) || !/\\bheight\\s*=/.test(image)) fail(relative + ": public image needs width and height to reduce layout shift");
+    if (!/\\bloading\\s*=\\s*["'](?:lazy|eager)["']/i.test(image)) fail(relative + ": public image needs an explicit loading strategy");
+    if (!/\\bdecoding\\s*=\\s*["'](?:async|sync|auto)["']/i.test(image)) fail(relative + ": public image needs an explicit decoding strategy");
+  }
+}
+if (checkedImages) pass("Checked alt text, dimensions and loading/decoding hints on " + checkedImages + " public source images");
+
 const htmlFiles = [];
 const walk = (directory) => {
   for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
