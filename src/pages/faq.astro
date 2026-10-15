@@ -1,5 +1,7 @@
 ---
 import SiteLayout from "../layouts/SiteLayout.astro";
+import { supabaseUrl } from "../lib/supabase-public";
+const faqPreview = `${supabaseUrl}/storage/v1/object/public/materuni-images/story_image/1791601761441-q3iog8mni3r.jpg`;
 const faqs = [
   ["Where is Materuni Village?", "Materuni Village is in the Kilimanjaro region of northern Tanzania, near Moshi, on the forested slopes of Mount Kilimanjaro. It is a village visit rather than a town-centre attraction, so agree your transport and pickup point before travelling."],
   ["Which experiences can I book?", "Our five featured experiences are Materuni Camping ($110), Materuni Waterfall & Chagga Culture ($75), Traditional Coffee Experience ($65), Traditional Chagga Cooking Class ($85) and Ultimate ($135), all priced per person."],
@@ -13,7 +15,7 @@ const faqs = [
   ["Can I change or cancel a booking?", "Send us your booking reference as soon as possible by WhatsApp or email. We will review the booking status and explain the options available. Any change is subject to availability and confirmation by your host."]
 ];
 ---
-<SiteLayout title="Frequently Asked Questions | Materuni Hosts" description="Booking, prices, transport and practical information for Materuni Village experiences near Moshi, Tanzania.">
+<SiteLayout title="Frequently Asked Questions | Materuni Hosts" description="Booking, prices, transport and practical information for Materuni Village experiences near Moshi, Tanzania." preloadImage={faqPreview}>
 <section class="page-hero"><span class="eyebrow" data-i18n="faq_eyebrow">GOOD TO KNOW BEFORE YOU VISIT</span><h1 data-i18n="faq_page_title">Plan your visit with confidence.</h1><p data-i18n="faq_page_intro">Practical answers about Materuni, experience prices, availability, transport and what happens after you send a booking request.</p></section>
 <section class="section faq-section">
   <div class="faq-intro"><span class="eyebrow" data-i18n="faq_section_eyebrow">PLAN WITH CONFIDENCE</span><h2 data-i18n="faq_section_title">Everything you need to know.</h2><p data-i18n="faq_section_intro">If you need help with something not covered here, speak directly with a local host.</p><a class="button" href="https://wa.me/255612068540" target="_blank" rel="noopener noreferrer" data-i18n="faq_whatsapp">Ask us on WhatsApp</a></div>
