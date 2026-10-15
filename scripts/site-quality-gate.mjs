@@ -39,7 +39,7 @@ else {
 
 const expectedRoutes = [
   "/", "/experiences", "/camping", "/day-trips", "/booking", "/itinerary", "/reviews", "/faq",
-  "/sustainability", "/travel-guide", "/work-with-us", "/privacy", "/terms", "/itinerary", "/admin"
+  "/sustainability", "/travel-guide", "/work-with-us", "/privacy", "/terms", "/admin"
 ];
 for (const route of expectedRoutes) {
   const file = routeFile(route);
