@@ -174,7 +174,7 @@ for (const file of htmlFiles) {
       }
     }
   }
-  const const optimizedImageRoutes = ["/", "/experiences", "/camping", "/day-trips", "/sustainability"];
+  const optimizedImageRoutes = ["/", "/experiences", "/camping", "/day-trips", "/sustainability"];
 for (const route of optimizedImageRoutes) {
   const optimizedFile = routeFile(route);
   if (optimizedFile) {
