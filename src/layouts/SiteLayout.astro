@@ -35,6 +35,13 @@ if (!noindex) {
     });
   });
 }
+
+const breadcrumbData = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: breadcrumbItems
+};
+const socialImage = preloadImage ?? `${supabaseUrl}/storage/v1/object/public/materuni-images/hero_image/1791600514716-b2bclfcnhhh.jpg`;
 const webPageData = {
   "@context": "https://schema.org",
   "@type": "WebPage",
@@ -56,12 +63,6 @@ const webPageData = {
     "url": socialImage
   }
 };
-const breadcrumbData = {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  itemListElement: breadcrumbItems
-};
-const socialImage = preloadImage ?? `${supabaseUrl}/storage/v1/object/public/materuni-images/hero_image/1791600514716-b2bclfcnhhh.jpg`;
 const structuredData = {
   "@context": "https://schema.org",
   "@type": "TourOperator",
