@@ -1222,3 +1222,22 @@ a:not(.button):not(.nav-cta):not(.brand):not(.admin-home-card){text-underline-of
 @media(max-width:560px){
   .site-footer a.brand-light{width:76px;height:76px;min-width:76px;flex-basis:76px;padding:3px}
 }
+
+
+/* Mobile interaction targets: comfortable tap size without changing the desktop layout. */
+@media(max-width:850px){
+ .site-header .menu-toggle{min-width:44px;min-height:44px;display:grid;place-items:center}
+ .site-header nav a{min-height:44px;display:flex;align-items:center}
+ .language-control select{min-height:44px;min-width:52px}
+ .button,.nav-cta{min-height:46px}
+ .booking-panel .field input,.booking-panel .field select,.booking-panel .field textarea{min-height:48px}
+ .availability-refresh{min-height:44px;padding:11px 14px}
+}
+@media(max-width:560px){
+ .site-header{padding-left:14px;padding-right:14px}
+ .hero-copy{padding:64px 22px}
+ .page-hero{padding:66px 20px}
+ .booking-wrap{padding:38px 14px}
+ .booking-panel{padding:18px 16px}
+ .experience-card .card-body{padding:20px}
+}
