@@ -1241,3 +1241,68 @@ a:not(.button):not(.nav-cta):not(.brand):not(.admin-home-card){text-underline-of
  .booking-panel{padding:18px 16px}
  .experience-card .card-body{padding:20px}
 }
+
+
+/* Final experience polish: consistent focus, calmer surfaces and responsive rhythm. */
+:root{
+  --mh-shadow-soft:0 12px 34px rgba(26,51,34,.075);
+  --mh-shadow-hover:0 18px 42px rgba(26,51,34,.13);
+  --mh-radius-card:16px;
+}
+html{scroll-padding-top:108px;scroll-behavior:smooth}
+body{overflow-x:clip;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+::selection{background:#d8c39a;color:#1a3322}
+:where(a,button,input,select,textarea,[tabindex]):focus-visible{
+  outline:3px solid #bd914b;
+  outline-offset:3px;
+}
+:where(button,a).button,.nav-cta{transition:transform .18s ease,background-color .18s ease,border-color .18s ease,box-shadow .18s ease}
+.button:not(:disabled):hover,.nav-cta:hover{box-shadow:0 8px 20px rgba(26,51,34,.16)}
+.site-header{box-shadow:0 5px 24px rgba(25,43,31,.055);backdrop-filter:saturate(145%) blur(14px)}
+.site-header nav a:not(.nav-cta){position:relative;text-decoration:none}
+.site-header nav a:not(.nav-cta)::after{
+  content:"";position:absolute;left:0;right:100%;bottom:2px;height:1px;
+  background:#b58a45;transition:right .2s ease
+}
+.site-header nav a:not(.nav-cta):hover::after,
+.site-header nav a[aria-current="page"]::after{right:0}
+.page-hero{position:relative;isolation:isolate}
+.page-hero h1{letter-spacing:-.018em;text-wrap:balance}
+.page-hero p{font-size:clamp(14px,1.15vw,16px);line-height:1.85}
+.section{scroll-margin-top:110px}
+.booking-panel,.experience-card,.review-invite-panel{
+  border-radius:var(--mh-radius-card);
+  box-shadow:var(--mh-shadow-soft);
+}
+.experience-card{overflow:hidden;transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease}
+.experience-card:hover{transform:translateY(-4px);box-shadow:var(--mh-shadow-hover);border-color:#d4c4a8}
+.experience-card>img{display:block;width:100%;aspect-ratio:8/5;object-fit:cover;background:#e6dfd3}
+.experience-card .button{width:100%;min-height:50px}
+.booking-panel{border-color:#e5ddcf}
+.field input,.field select,.field textarea{
+  border-radius:8px;
+  transition:border-color .18s ease,box-shadow .18s ease,background-color .18s ease
+}
+.field input:focus,.field select:focus,.field textarea:focus{
+  border-color:#a77d3e;background:#fff;box-shadow:0 0 0 3px rgba(197,160,89,.18)
+}
+.field label{line-height:1.5}
+.notice,.empty{border-radius:10px}
+img{color:#687168}
+.site-footer{box-shadow:inset 0 1px rgba(255,255,255,.035)}
+.skip-link:focus{z-index:1000}
+@media(max-width:850px){
+  html{scroll-padding-top:88px}
+  .site-header nav{box-shadow:0 18px 28px rgba(26,51,34,.10)}
+}
+@media(max-width:560px){
+  .page-hero h1{font-size:clamp(34px,9vw,46px);line-height:1.08}
+  .section{scroll-margin-top:82px}
+  .experience-card:hover{transform:none}
+}
+@media(hover:none){
+  .experience-card:hover{transform:none;box-shadow:var(--mh-shadow-soft)}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
