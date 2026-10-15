@@ -1,7 +1,9 @@
 ---
 import SiteLayout from "../layouts/SiteLayout.astro";
+import { supabaseUrl } from "../lib/supabase-public";
+const termsPreview = `${supabaseUrl}/storage/v1/object/public/materuni-images/waterfall_image/1791601414950-ew7ak42gjka.jpg`;
 ---
-<SiteLayout title="Booking Terms | Materuni Hosts" description="Important booking, payment and practical information for Materuni Hosts experiences.">
+<SiteLayout title="Booking Terms | Materuni Hosts" description="Important booking, payment and practical information for Materuni Hosts experiences." preloadImage={termsPreview}>
 <section class="page-hero"><span class="eyebrow">BEFORE YOU BOOK</span><h1>Simple, clear booking terms.</h1><p>What to expect when planning a Materuni experience with a local host.</p></section>
 <section class="section legal-copy">
   <h2>Booking requests</h2>
