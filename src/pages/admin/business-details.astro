@@ -1,0 +1,83 @@
+---
+import SiteLayout from "../../layouts/SiteLayout.astro";
+---
+<SiteLayout title="Business Details | Materuni Hosts Admin" description="Manage verified host, transport, camping and guest policy information." noindex={true}>
+<section class="page-hero"><span class="eyebrow">PRIVATE ADMIN</span><h1>Business details & guest policies</h1><p>Keep operational details in one place. Only publish facts you have verified.</p></section>
+<section class="booking-wrap">
+ <div class="booking-panel" id="login-panel"><h2>Administrator sign in</h2><form id="login-form" class="form-grid"><div class="field full"><label for="email">Admin email</label><input id="email" type="email" autocomplete="username" required></div><div class="field full"><label for="password">Password</label><input id="password" type="password" autocomplete="current-password" required></div><div class="field full"><button class="button" id="login-button" type="submit">Sign in securely</button><p id="login-feedback" class="muted" aria-live="polite"></p></div></form></div>
+ <div id="manager" hidden>
+  <div class="booking-panel">
+   <div class="section-heading"><div><span class="eyebrow">BUSINESS INFORMATION</span><h2>Editable operating details</h2><p><a href="/admin">Dashboard</a> · <a href="/admin/settings">Website & communication settings</a> · <a href="/admin/bookings">Bookings</a></p></div><button class="button button-secondary" id="logout" type="button">Sign out</button></div>
+   <form id="details-form" class="form-grid">
+    <div class="field full group"><h2>Host profiles</h2><p class="muted">Add real names, introductions and languages. Leave a field blank until confirmed.</p></div>
+    <div class="field"><label for="host_name">Host name</label><input id="host_name" maxlength="120" placeholder="Full name"></div>
+    <div class="field"><label for="host_role">Role</label><input id="host_role" maxlength="120" placeholder="e.g. Local host"></div>
+    <div class="field full"><label for="host_bio">Host introduction</label><textarea id="host_bio" rows="4" maxlength="2000"></textarea></div>
+    <div class="field"><label for="host_languages">Languages spoken</label><input id="host_languages" maxlength="300" placeholder="e.g. English, Kiswahili"></div>
+    <div class="field"><label for="host_photo_url">Host photo URL</label><input id="host_photo_url" type="url" placeholder="https://…"></div>
+    <div class="field full"><label for="host_credentials">Verified qualifications / credentials</label><textarea id="host_credentials" rows="3" maxlength="1500" placeholder="Only enter credentials you can verify"></textarea></div>
+
+    <div class="field full group"><h2>Transport information</h2><p class="muted">Rates are not assumed. Add confirmed prices and specify whether they are per vehicle or per person.</p></div>
+    <div class="field"><label for="transport_moshi">Moshi rate / details</label><input id="transport_moshi" maxlength="300" placeholder="Quote on request, or confirmed rate"></div>
+    <div class="field"><label for="transport_arusha">Arusha rate / details</label><input id="transport_arusha" maxlength="300"></div>
+    <div class="field"><label for="transport_kia">Kilimanjaro Airport rate / details</label><input id="transport_kia" maxlength="300"></div>
+    <div class="field"><label for="transport_basis">Rate basis</label><input id="transport_basis" maxlength="160" placeholder="Per vehicle / per person"></div>
+    <div class="field"><label for="transport_trip_type">Trip type</label><input id="transport_trip_type" maxlength="160" placeholder="One-way / return"></div>
+    <div class="field"><label for="transport_vehicle">Vehicle details</label><input id="transport_vehicle" maxlength="250"></div>
+    <div class="field full"><label for="transport_times">Estimated journey times / route notes</label><textarea id="transport_times" rows="3" maxlength="1200"></textarea></div>
+
+    <div class="field full group"><h2>Camping accommodation</h2><p class="muted">Describe only the facilities currently provided to guests.</p></div>
+    <div class="field"><label for="camp_type">Accommodation type</label><input id="camp_type" maxlength="180" placeholder="Confirm exact setup"></div>
+    <div class="field"><label for="camp_bedding">Bedding</label><input id="camp_bedding" maxlength="180"></div>
+    <div class="field"><label for="camp_toilet">Toilet facilities</label><input id="camp_toilet" maxlength="250"></div>
+    <div class="field"><label for="camp_shower">Shower facilities</label><input id="camp_shower" maxlength="250"></div>
+    <div class="field"><label for="camp_power">Electricity / charging</label><input id="camp_power" maxlength="180"></div>
+    <div class="field"><label for="camp_amenities">Other amenities</label><input id="camp_amenities" maxlength="500"></div>
+    <div class="field full"><label for="camp_notes">Practical notes for guests</label><textarea id="camp_notes" rows="3" maxlength="1200"></textarea></div>
+
+    <div class="field full group"><h2>Booking, payment & cancellation policies</h2><p class="muted">These are shown as business information only after you enter and approve the actual terms.</p></div>
+    <div class="field"><label for="deposit_policy">Deposit / payment terms</label><textarea id="deposit_policy" rows="3" maxlength="1500"></textarea></div>
+    <div class="field"><label for="cancellation_policy">Cancellation / refund terms</label><textarea id="cancellation_policy" rows="3" maxlength="1500"></textarea></div>
+    <div class="field full"><label for="weather_policy">Weather and safety changes</label><textarea id="weather_policy" rows="3" maxlength="1500"></textarea></div>
+    <div class="field"><label for="response_promise">Guest response-time promise</label><input id="response_promise" maxlength="180" placeholder="Leave blank unless consistently guaranteed"></div>
+    <div class="field"><label for="safety_facts">Verified safety arrangements</label><textarea id="safety_facts" rows="3" maxlength="1500"></textarea></div>
+
+    <div class="field full group"><h2>Community impact & public profiles</h2><p class="muted">Use measurable, supportable details. Do not enter estimates as facts.</p></div>
+    <div class="field full"><label for="community_contribution">Community contribution explanation</label><textarea id="community_contribution" rows="4" maxlength="1800"></textarea></div>
+    <div class="field"><label for="community_percentage">Contribution percentage (if measured)</label><input id="community_percentage" maxlength="40" placeholder="Leave blank if not measured"></div>
+    <div class="field"><label for="tripadvisor_profile">Tripadvisor profile URL</label><input id="tripadvisor_profile" type="url" placeholder="https://www.tripadvisor.com/..."></div>
+    <div class="field full"><label for="internal_notes">Private admin notes (not for public display)</label><textarea id="internal_notes" rows="3" maxlength="2000"></textarea></div>
+    <div class="field full"><p class="notice">Saving stores these values in the protected admin settings workflow. This page does not automatically publish every field on the public website. Review the wording and confirm the facts before publishing them.</p><button class="button" id="save" type="submit">Save business details</button><p id="feedback" class="muted" aria-live="polite"></p></div>
+   </form>
+  </div>
+ </div>
+</section>
+<style>
+#details-form .group{grid-column:1/-1;border-top:1px solid var(--line,#ded8cd);padding-top:1.1rem;margin-top:.6rem}
+#details-form .group h2{margin:.2rem 0;font-size:1.35rem}
+#details-form textarea{min-height:100px;line-height:1.6}
+#details-form .notice{grid-column:1/-1}
+@media(max-width:620px){#details-form .field{min-width:0}#details-form textarea{min-height:120px}}
+</style>
+<script>
+// @ts-nocheck
+import { supabaseUrl, publishableKey } from "../../lib/supabase-public";
+let token="";
+const el=id=>document.getElementById(id);
+const headers=()=>({"apikey":publishableKey,"Authorization":"Bearer "+token,"Content-Type":"application/json"});
+async function request(path,options={}){const r=await fetch(supabaseUrl+path,{...options,headers:{...headers(),...(options.headers||{})}});const body=await r.json().catch(()=>null);if(!r.ok)throw new Error(body?.message||body?.details||body?.hint||"Request failed");return body}
+const groups={
+ host_profile:["host_name","host_role","host_bio","host_languages","host_photo_url","host_credentials"],
+ transport_details:["transport_moshi","transport_arusha","transport_kia","transport_basis","transport_trip_type","transport_vehicle","transport_times"],
+ camping_details:["camp_type","camp_bedding","camp_toilet","camp_shower","camp_power","camp_amenities","camp_notes"],
+ booking_policies:["deposit_policy","cancellation_policy","weather_policy","response_promise","safety_facts"],
+ community_profile:["community_contribution","community_percentage","tripadvisor_profile"],
+ admin_private_notes:["internal_notes"]
+};
+function decode(value){try{return JSON.parse(value||"{}")}catch{return {}}}
+function fill(rows){for(const [key,ids] of Object.entries(groups)){const data=decode(rows.find(x=>x.setting_key===key)?.setting_value);for(const id of ids)el(id).value=typeof data[id]==="string"?data[id]:""}}
+el("login-form").addEventListener("submit",async e=>{e.preventDefault();const b=el("login-button");b.disabled=true;el("login-feedback").textContent="Checking account…";try{const r=await fetch(supabaseUrl+"/auth/v1/token?grant_type=password",{method:"POST",headers:{"apikey":publishableKey,"Content-Type":"application/json"},body:JSON.stringify({email:el("email").value.trim(),password:el("password").value})});const s=await r.json();if(!r.ok||!s.access_token||!s.user?.id)throw new Error(s.msg||s.message||"Sign in failed");token=s.access_token;const admins=await request("/rest/v1/admin_users?select=user_id&user_id=eq."+encodeURIComponent(s.user.id));if(!admins.length)throw new Error("This account is not authorised as an administrator");const rows=await request("/rest/v1/site_settings?select=setting_key,setting_value");fill(rows);el("login-panel").hidden=true;el("manager").hidden=false}catch(err){token="";el("login-feedback").textContent=err.message}finally{b.disabled=false}});
+el("details-form").addEventListener("submit",async e=>{e.preventDefault();const b=el("save");b.disabled=true;el("feedback").textContent="Saving…";try{const now=new Date().toISOString();const rows=Object.entries(groups).map(([key,ids])=>({setting_key:key,setting_value:JSON.stringify(Object.fromEntries(ids.map(id=>[id,el(id).value.trim()]))),updated_at:now}));await request("/rest/v1/site_settings?on_conflict=setting_key",{method:"POST",headers:{"Prefer":"resolution=merge-duplicates,return=minimal"},body:JSON.stringify(rows)});el("feedback").textContent="Business details saved successfully."}catch(err){el("feedback").textContent="Could not save: "+err.message}finally{b.disabled=false}});
+el("logout").addEventListener("click",async()=>{try{await fetch(supabaseUrl+"/auth/v1/logout",{method:"POST",headers:headers()})}catch{}token="";el("manager").hidden=true;el("login-panel").hidden=false;el("login-form").reset();el("details-form").reset()});
+</script>
+</SiteLayout>
