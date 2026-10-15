@@ -158,6 +158,22 @@ for (const file of htmlFiles) {
   if (!/<link\s+rel=["']canonical["']\s+href=["']https:\/\//i.test(html)) fail(relative + ": missing canonical URL");
   if (!/<html\b[^>]*\blang=["'][a-z]{2}/i.test(html)) fail(relative + ": missing document language");
   if (/<h1\b/gi.test(html) === false) fail(relative + ": missing primary heading");
+  const isPrivateRoute = relative.startsWith("admin/") || relative === "admin.html";
+  const isNotFoundRoute = relative === "404.html";
+  if (!isPrivateRoute && !isNotFoundRoute && /<meta\s+name=["']robots["']\s+content=["'][^"']*noindex/i.test(html)) fail(relative + ": public page must remain indexable");
+  if (!isPrivateRoute && !isNotFoundRoute) {
+    const anchors = [...html.matchAll(/<a\b[^>]*>/gi)].map((match) => match[0]);
+    for (const anchor of anchors) {
+      if (!/\bhref\s*=\s*["'][^"']+["']/i.test(anchor)) {
+        fail(relative + ": public link is missing a crawlable href");
+        break;
+      }
+      if (/\bhref\s*=\s*["']\s*(?:javascript:|#\s*["'])/i.test(anchor)) {
+        fail(relative + ": public link has a non-crawlable destination");
+        break;
+      }
+    }
+  }
   const imageTags = [...html.matchAll(/<img\b[^>]*>/gi)].map((match) => match[0]);
   for (const image of imageTags) {
     if (!/\balt\s*=\s*["'][^"']*["']/i.test(image)) {
