@@ -9,7 +9,6 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
   <div class="section-heading"><div><span class="eyebrow">PUBLIC PROFILES</span><h2>Social media & review links</h2><p><a href="/admin">Dashboard</a> · <a href="/admin/business-details">Business details & policies</a> · <a href="/admin/bookings">Bookings</a> · <a href="/admin/analytics">Analytics</a> · <a href="/admin/conversations">Guest conversations</a> · <a href="/admin/tours">Tours & availability</a> · <a href="/admin/partners">Partners</a></p></div><button class="button button-secondary" id="logout" type="button">Sign out</button></div>
   <form id="settings-form" class="form-grid">
    <div class="field full"><label for="instagram">Instagram URL</label><input id="instagram" type="url" placeholder="https://www.instagram.com/..."></div>
-   <div class="field full"><label for="facebook">Facebook URL</label><input id="facebook" type="url" placeholder="https://www.facebook.com/..."></div>
    <div class="field full"><label for="tripadvisor">Tripadvisor URL</label><input id="tripadvisor" type="url" placeholder="https://www.tripadvisor.com/..."></div>
    <div class="field full"><label for="google">Google review URL</label><input id="google" type="url" placeholder="https://g.page/r/..."></div>
    <div class="field full"><hr><span class="eyebrow">PARTNER INVITATION · EMAIL</span><h2>Invitation email template</h2><p class="muted">This template is used when an administrator selects “Send invitation” on a partner record.</p></div>
@@ -50,7 +49,7 @@ const el=id=>document.getElementById(id);
 const headers=()=>({"apikey":publishableKey,"Authorization":"Bearer "+token,"Content-Type":"application/json"});
 async function request(path,options={}){const r=await fetch(supabaseUrl+path,{...options,headers:{...headers(),...(options.headers||{})}});const body=await r.json().catch(()=>null);if(!r.ok)throw new Error(body?.message||body?.details||body?.hint||"Request failed");return body}
 const parseSetting=value=>{if(typeof value!=="string")return value||{};try{return JSON.parse(value)}catch{return {}}};
-const fields={instagram:"instagram_url",facebook:"facebook_url",tripadvisor:"tripadvisor_url",google:"google_review_url"};
+const fields={instagram:"instagram_url",tripadvisor:"tripadvisor_url",google:"google_review_url"};
 el("login-form").addEventListener("submit",async e=>{
  e.preventDefault();const b=el("login-button");b.disabled=true;el("login-feedback").textContent="Checking account…";
  try{
