@@ -1,8 +1,9 @@
 ---
 import SiteLayout from "../layouts/SiteLayout.astro";
 import { supabaseUrl, publishableKey } from "../lib/supabase-public";
-const base = `${supabaseUrl}/storage/v1/object/public/materuni-images/`;
-const hero = base + "camping_image/1791601872981-zmji0mykwhd.jpg";
+const base = `${supabaseUrl}/storage/v1/render/image/public/materuni-images/`;
+const image=(path: string,width: number=800)=>`${base}${path}?width=${width}&quality=75&format=webp`;
+const hero = image("camping_image/1791601872981-zmji0mykwhd.jpg",1600);
 ---
 <SiteLayout title="Materuni Camping | Overnight Village Stay near Kilimanjaro" description="Stay overnight in Materuni Village with local Chagga hosts. Discover waterfall trails, coffee traditions, village food and a relaxed evening around camp in the Kilimanjaro foothills." preloadImage={hero}>
 <style>
