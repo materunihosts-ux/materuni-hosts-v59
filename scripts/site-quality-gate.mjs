@@ -174,7 +174,17 @@ for (const file of htmlFiles) {
       }
     }
   }
-  const imageTags = [...html.matchAll(/<img\b[^>]*>/gi)].map((match) => match[0]);
+  const optimizedImageRoutes = ["/", "/experiences", "/camping", "/day-trips", "/sustainability"];
+for (const route of optimizedImageRoutes) {
+  const optimizedFile = routeFile(route);
+  if (optimizedFile) {
+    const optimizedHtml = read(optimizedFile);
+    const renderedImages = [...optimizedHtml.matchAll(/<img\\b[^>]*>/gi)].map((match) => match[0]);
+    if (renderedImages.some((image) => /storage\\/v1\\/object\\/public\\/materuni-images/i.test(image))) fail(route + ": visible photography must use optimized local build assets");
+    else if (renderedImages.length) pass(route + ": visible photography is served from optimized build assets");
+  }
+}
+const imageTags = [...html.matchAll(/<img\b[^>]*>/gi)].map((match) => match[0]);
   for (const image of imageTags) {
     if (!/\balt\s*=\s*["'][^"']*["']/i.test(image)) {
       fail(relative + ": image is missing an alt attribute");
