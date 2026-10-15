@@ -141,6 +141,14 @@ for (const file of htmlFiles) {
 }
 if (htmlFiles.length) pass("Checked SEO metadata and primary headings on " + htmlFiles.length + " HTML pages");
 
+const notFoundPage = path.join(root, "404.html");
+if (!fs.existsSync(notFoundPage)) fail("Missing branded 404.html page");
+else {
+  const notFoundHtml = read(notFoundPage);
+  if (!/<meta\s+name=["']robots["']\s+content=["']noindex,nofollow["']/i.test(notFoundHtml)) fail("404 page must render noindex,nofollow");
+  else pass("Branded 404 page exists and is excluded from search indexing");
+}
+
 const adminFile = routeFile("/admin");
 if (adminFile && !/<meta\s+name=["']robots["']\s+content=["']noindex,nofollow["']/i.test(read(adminFile))) {
   fail("Admin dashboard must render noindex,nofollow");
