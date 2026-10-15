@@ -169,4 +169,110 @@ fetch(`${supabaseUrl}/rest/v1/site_settings?select=setting_value&setting_key=eq.
  }).catch(error=>console.warn("Shared experience inclusions unavailable.",error));
 </script>
 <section class="section" style="background:#f5f0e7"><div class="section-head"><span class="eyebrow" data-i18n="home_host_eyebrow">LOCAL HOSTING · REAL GUEST FEEDBACK</span><h2 data-i18n="home_host_title">Meet Materuni through the people who call it home.</h2><p data-i18n="home_host_intro">Your visit brings you into contact with local hosts, village paths, Chagga coffee traditions and food prepared as part of the experience. Host names and approved portraits will be added here as each profile is confirmed; we do not use invented biographies or stock host photographs.</p><div class="actions"><a class="button" href="/reviews" data-i18n="home_host_review_cta">Read about guest feedback</a><a class="button button-secondary" href="https://g.page/r/CXy6M_Suiip9EBM/review" target="_blank" rel="noopener noreferrer" data-i18n="home_host_leave_review">Leave a Google review ↗</a></div></div><div class="split" style="align-items:center"><img src={base+"story_image/1791601761441-q3iog8mni3r.jpg"} alt="A local Materuni village experience" loading="lazy" decoding="async" width="640" height="520" style="width:100%;border-radius:16px;object-fit:cover"/><div><span class="eyebrow">COMMUNITY AT THE CENTRE</span><h3 data-i18n="home_host_body">Travel at a village pace.</h3><p data-i18n="home_host_impact_note">Experiences are built around local guiding, coffee and food traditions, and time to learn about everyday life in Materuni. We will publish verified community-impact figures when the local fee allocation has been confirmed.</p><p class="muted" data-i18n="home_host_currency">Indicative TZS guide (15 Oct 2026; 1 USD ≈ TZS 2,640): $65 ≈ TZS 172,000 · $75 ≈ TZS 198,000 · $85 ≈ TZS 224,000 · $110 ≈ TZS 290,000 · $135 ≈ TZS 356,000. TZS amounts are rounded estimates; your host confirms the final amount before payment.</p></div></div></section>
+
+<style is:global>
+/* Materuni Hosts — visible editorial homepage redesign */
+body.public-shell .hero{
+  position:relative;isolation:isolate;display:flex;align-items:center;min-height:clamp(680px,82vh,900px);
+  background:#142d20;overflow:hidden
+}
+body.public-shell .hero-image{
+  position:absolute;inset:0;z-index:-2;min-height:100%;
+  background-position:center 48%;background-size:cover;
+  transform:scale(1.015)
+}
+body.public-shell .hero:after{
+  content:"";position:absolute;inset:0;z-index:-1;
+  background:linear-gradient(90deg,rgba(10,28,19,.91) 0%,rgba(10,28,19,.76) 42%,rgba(10,28,19,.25) 100%),
+  linear-gradient(0deg,rgba(10,28,19,.34),transparent 55%)
+}
+body.public-shell .hero-copy{
+  width:min(100%,1160px);margin:0 auto;padding:clamp(90px,13vh,150px) clamp(24px,8vw,112px);
+  min-height:inherit;justify-content:center
+}
+body.public-shell .hero-copy:before{
+  content:"MATERUNI HOSTS";display:block;color:#d8b879;font:700 11px var(--sans);
+  letter-spacing:.32em;margin-bottom:18px
+}
+body.public-shell .hero .eyebrow{color:#e3c58d;letter-spacing:.24em}
+body.public-shell .hero h1{
+  max-width:780px;font-size:clamp(54px,7.3vw,100px);line-height:.94;letter-spacing:-.035em;
+  margin:20px 0 24px;text-wrap:balance
+}
+body.public-shell .hero p{max-width:590px;font-size:clamp(15px,1.35vw,18px);line-height:1.85;color:#f1eee6}
+body.public-shell .hero .actions{gap:13px;margin-top:32px}
+body.public-shell .hero .button{min-height:52px;padding:15px 24px;border-radius:3px}
+body.public-shell .hero .button.light{background:#d0ae70;color:#172d20!important}
+body.public-shell .hero .button.light:hover{background:#f4e5c5}
+body.public-shell .hero .button.secondary{border-color:rgba(255,255,255,.62);background:rgba(255,255,255,.08);backdrop-filter:blur(8px)}
+body.public-shell .trust-strip{
+  position:relative;z-index:2;margin:-1px auto 0;padding:24px clamp(18px,5vw,70px);
+  background:#f0eadf;border-bottom:1px solid #e1d7c7;gap:18px 44px
+}
+body.public-shell .trust-strip span{display:flex;align-items:center;gap:10px;font-size:10px;letter-spacing:.12em}
+body.public-shell .trust-strip svg{width:20px;height:20px;color:#a17c42;flex:none}
+body.public-shell .section{padding:clamp(72px,8vw,116px) clamp(22px,7vw,104px)}
+body.public-shell .section-head{max-width:760px;margin-bottom:54px}
+body.public-shell .section-head h2{font-size:clamp(40px,5.2vw,64px);line-height:1.02;letter-spacing:-.025em}
+body.public-shell .section-head p{max-width:650px;margin:16px auto 0;font-size:15px;line-height:1.85}
+body.public-shell .cards{grid-template-columns:repeat(3,minmax(0,1fr));gap:26px;align-items:stretch}
+body.public-shell .experience-card{
+  position:relative;overflow:hidden;border:1px solid #e8e0d4;border-radius:8px;
+  box-shadow:0 12px 36px rgba(28,43,31,.07);transition:transform .28s ease,box-shadow .28s ease
+}
+body.public-shell .experience-card:hover{transform:translateY(-7px);box-shadow:0 22px 48px rgba(28,43,31,.14)}
+body.public-shell .experience-card img{height:clamp(220px,23vw,310px);object-fit:cover;transition:transform .55s ease}
+body.public-shell .experience-card:hover img{transform:scale(1.035)}
+body.public-shell .card-body{padding:clamp(20px,2.3vw,30px)}
+body.public-shell .card-top{align-items:center;margin-bottom:12px}
+body.public-shell .pill{background:#f3ead9;color:#795b2e;padding:7px 10px;font-size:9px;letter-spacing:.13em}
+body.public-shell .price{font-size:34px;color:#1a3322}
+body.public-shell .experience-card h3{font-size:clamp(23px,2.1vw,29px);line-height:1.08;margin:8px 0 13px}
+body.public-shell .experience-card p{font-size:13px;line-height:1.8;color:#626b62}
+body.public-shell .experience-card ul{margin:0 0 24px;padding:0;list-style:none;display:grid;gap:9px}
+body.public-shell .experience-card li{position:relative;padding-left:19px;font-size:12px;line-height:1.6;color:#475449}
+body.public-shell .experience-card li:before{content:"";position:absolute;left:0;top:.55em;width:7px;height:7px;border-radius:50%;background:#c5a059}
+body.public-shell .experience-card .button{width:100%;min-height:47px;border-radius:3px;letter-spacing:.07em;text-transform:uppercase;font-size:10px}
+body.public-shell .shared-standard{border-radius:8px;padding:30px 34px;margin-top:34px;background:#f1ece2}
+body.public-shell .split{gap:clamp(34px,6vw,84px)}
+body.public-shell .split>img{border-radius:7px;box-shadow:0 22px 55px rgba(26,51,34,.13)}
+body.public-shell .feature-list div{padding:18px 0 0;border-top:1px solid #d9cfbf}
+body.public-shell .review-invite-panel{max-width:1000px;margin:auto;padding:clamp(34px,6vw,70px);background:#1a3322;color:#fff;border-radius:8px;text-align:center}
+body.public-shell .review-invite-panel h2{color:#fff;font-size:clamp(38px,5vw,58px);line-height:1.04}
+body.public-shell .review-invite-panel p{max-width:680px;margin:18px auto;color:#e2e7e0;line-height:1.85}
+body.public-shell .location-map{border-radius:8px}
+@media(max-width:900px){
+ body.public-shell .hero{min-height:720px}
+ body.public-shell .hero-copy{padding:100px 34px}
+ body.public-shell .hero h1{max-width:680px;font-size:clamp(54px,9vw,78px)}
+ body.public-shell .cards{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:600px){
+ body.public-shell .hero{min-height:690px;align-items:flex-end}
+ body.public-shell .hero-image{background-position:58% center}
+ body.public-shell .hero:after{background:linear-gradient(0deg,rgba(8,25,16,.94) 0%,rgba(8,25,16,.68) 56%,rgba(8,25,16,.18) 100%)}
+ body.public-shell .hero-copy{padding:100px 23px 66px}
+ body.public-shell .hero-copy:before{font-size:9px;letter-spacing:.24em}
+ body.public-shell .hero h1{font-size:clamp(48px,13vw,68px);line-height:.96;margin:16px 0}
+ body.public-shell .hero p{font-size:14px;line-height:1.75}
+ body.public-shell .hero .actions{display:grid;grid-template-columns:1fr;gap:10px;width:100%}
+ body.public-shell .hero .button{width:100%;min-height:49px}
+ body.public-shell .trust-strip{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:20px}
+ body.public-shell .trust-strip span{font-size:9px;line-height:1.5}
+ body.public-shell .section{padding:68px 19px}
+ body.public-shell .section-head{margin-bottom:34px}
+ body.public-shell .section-head h2{font-size:42px}
+ body.public-shell .cards{grid-template-columns:1fr;gap:19px}
+ body.public-shell .experience-card img{height:255px}
+ body.public-shell .card-body{padding:22px}
+ body.public-shell .experience-card h3{font-size:27px}
+ body.public-shell .split>img{height:320px}
+ body.public-shell .review-invite-panel{padding:34px 22px}
+}
+@media(prefers-reduced-motion:reduce){
+ body.public-shell .experience-card,body.public-shell .experience-card img{transition:none}
+ body.public-shell .experience-card:hover,body.public-shell .experience-card:hover img{transform:none}
+}
+</style>
+
 </SiteLayout>
