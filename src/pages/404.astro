@@ -1,0 +1,38 @@
+---
+import SiteLayout from "../layouts/SiteLayout.astro";
+---
+
+<SiteLayout
+  title="Page Not Found | Materuni Hosts"
+  description="The page you are looking for could not be found. Return to Materuni Hosts to explore local Chagga experiences, waterfall walks and village camping."
+  noindex={true}
+>
+  <main class="not-found" id="main-content">
+    <div class="not-found-mark" aria-hidden="true">404</div>
+    <span class="eyebrow">A SMALL DETOUR</span>
+    <h1>This path does not lead where you expected.</h1>
+    <p class="not-found-copy">
+      The page may have moved or the address may be incomplete. Your Materuni experience is still just a step away.
+    </p>
+    <div class="not-found-actions">
+      <a class="button" href="/">Return to the homepage</a>
+      <a class="button button-secondary" href="/experiences">Explore experiences</a>
+    </div>
+    <p class="not-found-help">
+      Need a hand? <a href="https://wa.me/255612068540?text=Hello%20Materuni%20Hosts%2C%20I%20need%20help%20finding%20a%20page%20on%20your%20website." target="_blank" rel="noopener noreferrer">Speak with a local host on WhatsApp</a>.
+    </p>
+  </main>
+  <style>
+    .not-found{position:relative;isolation:isolate;min-height:68vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;overflow:hidden;padding:clamp(64px,10vw,120px) 22px;background:radial-gradient(ellipse at 50% 0%,#e9dfca 0%,#f7f3eb 52%,#faf7f2 100%)}
+    .not-found-mark{position:absolute;z-index:-1;top:50%;left:50%;transform:translate(-50%,-58%);font:700 clamp(190px,36vw,440px)/.8 "Cormorant Garamond",Georgia,serif;letter-spacing:-.08em;color:rgba(26,51,34,.045);pointer-events:none;user-select:none}
+    .not-found .eyebrow{color:#805f2b}
+    .not-found h1{max-width:13ch;margin:18px auto 14px;font:600 clamp(42px,6vw,72px)/1.02 "Cormorant Garamond",Georgia,serif;letter-spacing:-.025em;color:#1a3322;text-wrap:balance}
+    .not-found-copy{max-width:52ch;margin:0 auto;color:#5d685f;font-size:15px;line-height:1.85}
+    .not-found-actions{display:flex;justify-content:center;flex-wrap:wrap;gap:12px;margin-top:28px}
+    .not-found-actions .button{min-height:50px;padding-inline:22px}
+    .not-found-actions .button-secondary{background:transparent;border:1px solid #8b998d;color:#1a3322!important}
+    .not-found-help{margin:28px 0 0;color:#6a716a;font-size:13px}
+    .not-found-help a{color:#1a3322;font-weight:800;text-decoration:underline;text-underline-offset:3px}
+    @media(max-width:560px){.not-found{min-height:62vh;padding:70px 22px}.not-found-actions{display:grid;width:100%;max-width:330px}.not-found-actions .button{width:100%}.not-found-mark{font-size:58vw}}
+  </style>
+</SiteLayout>
