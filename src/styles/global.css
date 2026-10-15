@@ -325,7 +325,6 @@ main:focus{outline:none}
 .site-footer .social-links a:hover{background:rgba(197,160,89,.16);border-color:#C5A059;transform:translateY(-2px)}
 .site-footer .social-links a:focus-visible{outline:3px solid #E5C681;outline-offset:3px}
 .site-footer .social-links svg{display:block;width:25px;height:25px;min-width:25px;flex:0 0 25px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.site-footer .social-links a[aria-label="Facebook"] svg{fill:currentColor;stroke:none}
 @media(max-width:560px){.site-footer .social-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.site-footer .social-links a{min-width:0;width:100%;min-height:52px;padding:10px 11px;font-size:12px}.site-footer .social-links svg{width:25px;height:25px;flex-basis:25px}}
 
 
@@ -1305,4 +1304,141 @@ img{color:#687168}
 }
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
+
+
+/* Materuni Hosts — refined navigation, social identity and page-wide details */
+body.public-shell .site-header{
+  min-height:88px;height:auto;padding:10px clamp(18px,5vw,76px);
+  gap:20px;background:rgba(250,247,242,.97);
+  box-shadow:0 5px 22px rgba(26,51,34,.055);
+}
+body.public-shell .site-header .brand-logo{width:74px;height:74px;display:block;object-fit:contain}
+body.public-shell .site-header nav{gap:clamp(13px,1.7vw,25px);font-size:12px;letter-spacing:.015em}
+body.public-shell .site-header nav a:not(.nav-cta){position:relative;padding:12px 0;color:#34473a;transition:color .2s ease}
+body.public-shell .site-header nav a:not(.nav-cta):after{
+ content:"";position:absolute;left:0;right:100%;bottom:5px;height:1px;background:#c5a059;transition:right .22s ease
+}
+body.public-shell .site-header nav a:not(.nav-cta):hover:after,
+body.public-shell .site-header nav a[aria-current="page"]:after{right:0}
+body.public-shell .site-header nav a[aria-current="page"]{color:#9a743b}
+body.public-shell .site-header .nav-cta{
+ min-height:44px;padding:12px 18px;border-radius:3px;background:#1a3322;
+ box-shadow:0 5px 14px rgba(26,51,34,.13);font-size:11px;letter-spacing:.06em;text-transform:uppercase
+}
+body.public-shell .site-header .nav-cta:hover{background:#a98245;box-shadow:0 7px 18px rgba(26,51,34,.17)}
+body.public-shell .language-control select{
+ min-height:40px;min-width:58px;border-radius:3px;border:1px solid #c5a059;
+ box-shadow:0 3px 10px rgba(26,51,34,.08);font-size:11px;letter-spacing:.08em
+}
+body.public-shell .menu-toggle{
+ width:44px;height:44px;display:none;place-items:center;border:1px solid #d9cfbf;
+ border-radius:3px;background:#fff;color:#1a3322;font-size:23px;line-height:1;
+ box-shadow:0 4px 12px rgba(26,51,34,.07);transition:background .2s ease,border-color .2s ease
+}
+body.public-shell .menu-toggle:hover{background:#f1eadf;border-color:#c5a059}
+body.public-shell .site-footer{
+ position:relative;grid-template-columns:minmax(230px,1.5fr) minmax(150px,.85fr) minmax(210px,1fr);
+ gap:clamp(25px,4vw,58px);padding-top:76px;padding-bottom:28px
+}
+body.public-shell .site-footer:before{
+ content:"";position:absolute;top:0;left:clamp(22px,7vw,100px);right:clamp(22px,7vw,100px);
+ height:2px;background:linear-gradient(90deg,#c5a059,rgba(197,160,89,.08))
+}
+body.public-shell .site-footer>div{min-width:0;gap:12px}
+body.public-shell .site-footer>div:first-child{gap:13px}
+body.public-shell .site-footer>div:first-child>p:first-of-type{font-size:13px;line-height:1.8}
+body.public-shell .site-footer>div>strong{
+ display:flex;align-items:center;gap:10px;font:600 25px/1.1 Cormorant Garamond,serif;
+ margin:0 0 7px;color:#f8f4eb
+}
+body.public-shell .site-footer>div>strong:after{content:"";width:25px;height:1px;background:#c5a059}
+body.public-shell .site-footer>div>a:not(.brand){width:fit-content;max-width:100%;font-size:12px;line-height:1.65;color:#d5ddd6;transition:color .2s ease,transform .2s ease}
+body.public-shell .site-footer>div>a:not(.brand):hover{color:#e2c58f;transform:translateX(3px)}
+body.public-shell .site-footer .brand-logo-footer{width:76px;height:76px;object-fit:contain}
+body.public-shell .site-footer .social-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));max-width:360px;gap:10px;margin-top:12px}
+body.public-shell .site-footer .social-links a{
+ min-width:0;width:100%;min-height:54px;padding:10px 12px;gap:11px;
+ border:1px solid rgba(230,223,211,.24);border-radius:5px;
+ background:rgba(255,255,255,.055);font-size:11px;letter-spacing:.025em
+}
+body.public-shell .site-footer .social-links svg{
+ width:29px;height:29px;min-width:29px;flex-basis:29px;padding:5px;
+ border-radius:50%;background:rgba(255,255,255,.1);color:#f7f4eb;
+ transition:transform .2s ease,background .2s ease
+}
+body.public-shell .site-footer .social-links a:nth-child(1) svg{color:#f5c4b6;background:rgba(214,91,116,.16)}
+body.public-shell .site-footer .social-links a:nth-child(2) svg{color:#bce2c4;background:rgba(75,157,104,.18)}
+body.public-shell .site-footer .social-links a:nth-child(3) svg{color:#c6d9ff;background:rgba(79,126,207,.2)}
+body.public-shell .site-footer .social-links a:nth-child(4) svg{color:#aee7c0;background:rgba(50,165,102,.18)}
+body.public-shell .site-footer .social-links a:hover svg{transform:scale(1.08)}
+body.public-shell .site-footer .social-links a:hover{background:rgba(197,160,89,.13);border-color:#c5a059;transform:translateY(-2px)}
+body.public-shell .site-footer .copyright{margin-top:10px;padding-top:22px;font-size:11px;letter-spacing:.04em}
+body.public-shell .page-hero{
+ position:relative;isolation:isolate;overflow:hidden;
+ padding:clamp(65px,8vw,105px) clamp(22px,7vw,100px);
+ background:linear-gradient(135deg,#f2ede4 0%,#faf7f2 60%,#e8dfd0 100%);
+ border-bottom:1px solid #e6dfd3
+}
+body.public-shell .page-hero:after{
+ content:"";position:absolute;z-index:-1;width:340px;height:340px;right:-100px;bottom:-190px;
+ border:1px solid rgba(197,160,89,.28);border-radius:50%;
+ box-shadow:0 0 0 34px rgba(197,160,89,.035),0 0 0 70px rgba(197,160,89,.025)
+}
+body.public-shell .page-hero h1{max-width:900px;font-size:clamp(43px,6vw,76px);line-height:.99;letter-spacing:-.025em}
+body.public-shell .page-hero p{max-width:680px;font-size:15px;line-height:1.9;color:#5d675e}
+body.public-shell .section-head .eyebrow,body.public-shell .page-hero .eyebrow{color:#98723b}
+body.public-shell .button,body.public-shell button.button{
+ min-height:46px;padding:13px 21px;border-radius:3px;box-shadow:0 5px 14px rgba(26,51,34,.09);
+ text-transform:none;letter-spacing:.025em
+}
+body.public-shell .button:focus-visible,body.public-shell button:focus-visible,
+body.public-shell input:focus-visible,body.public-shell select:focus-visible,body.public-shell textarea:focus-visible{
+ outline:3px solid #c5a059;outline-offset:3px
+}
+body.public-shell .booking-panel,body.public-shell .content-panel,body.public-shell .faq-item{
+ border-radius:7px;box-shadow:0 10px 30px rgba(26,51,34,.055)
+}
+body.public-shell .field input,body.public-shell .field select,body.public-shell .field textarea{
+ min-height:46px;border:1px solid #d9d1c4;border-radius:3px;background:#fff;
+ transition:border-color .2s ease,box-shadow .2s ease
+}
+body.public-shell .field input:focus,body.public-shell .field select:focus,body.public-shell .field textarea:focus{
+ border-color:#a98245;box-shadow:0 0 0 3px rgba(197,160,89,.13);outline:0
+}
+body.public-shell .section{scroll-margin-top:100px}
+@media(max-width:1050px){
+ body.public-shell .site-header{padding-inline:20px;gap:12px}
+ body.public-shell .site-header nav{gap:12px;font-size:11px}
+ body.public-shell .site-header .brand-logo{width:65px;height:65px}
+}
+@media(max-width:850px){
+ body.public-shell .site-header{height:82px;min-height:82px;padding:8px 18px}
+ body.public-shell .site-header nav{top:81px;padding:24px 22px 26px;gap:0;background:#faf7f2;box-shadow:0 18px 30px rgba(26,51,34,.12)}
+ body.public-shell .site-header nav a:not(.nav-cta){padding:14px 5px;border-bottom:1px solid #e9e1d5;font-size:13px}
+ body.public-shell .site-header nav a:not(.nav-cta):after{display:none}
+ body.public-shell .site-header nav .nav-cta{margin-top:14px;min-height:48px}
+ body.public-shell .site-header .brand-logo{width:64px;height:64px}
+ body.public-shell .menu-toggle{display:grid;margin-left:4px}
+ body.public-shell .language-control{right:74px}
+ body.public-shell .site-footer{grid-template-columns:1fr 1fr;gap:34px 26px;padding-top:58px}
+ body.public-shell .site-footer>div:first-child{grid-column:1/-1}
+ body.public-shell .site-footer .social-links{max-width:420px}
+}
+@media(max-width:560px){
+ body.public-shell .site-header{height:72px;min-height:72px;padding:7px 14px}
+ body.public-shell .site-header nav{top:71px;padding:18px 20px 22px}
+ body.public-shell .site-header .brand-logo{width:58px;height:58px}
+ body.public-shell .menu-toggle{width:41px;height:41px;font-size:21px}
+ body.public-shell .language-control{right:66px}
+ body.public-shell .language-control select{min-height:36px}
+ body.public-shell .site-footer{grid-template-columns:1fr;gap:30px;padding:54px 22px 22px}
+ body.public-shell .site-footer>div:first-child{grid-column:auto}
+ body.public-shell .site-footer .social-links{grid-template-columns:repeat(2,minmax(0,1fr));max-width:100%}
+ body.public-shell .site-footer .social-links a{min-height:52px;font-size:11px}
+ body.public-shell .page-hero{padding:62px 22px}
+ body.public-shell .page-hero h1{font-size:clamp(42px,12vw,58px)}
+}
+@media(prefers-reduced-motion:reduce){
+ body.public-shell *,body.public-shell *:before,body.public-shell *:after{scroll-behavior:auto!important;transition-duration:.01ms!important;animation-duration:.01ms!important}
 }
