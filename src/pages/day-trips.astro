@@ -2,7 +2,7 @@
 import SiteLayout from "../layouts/SiteLayout.astro";
 import { supabaseUrl, publishableKey } from "../lib/supabase-public";
 const base = `${supabaseUrl}/storage/v1/render/image/public/materuni-images/`;
-const image=(path,width=800)=>`${base}${path}?width=${width}&quality=75&format=webp`;
+const image=(path: string,width: number=800)=>`${base}${path}?width=${width}&quality=75&format=webp`;
 const hero = image("waterfall_image/1791998303073-materuni-waterfall-hike.jpg",1600);
 ---
 <SiteLayout title="Materuni Day Trips | Waterfall, Coffee & Chagga Culture" description="Plan a day trip in Materuni Village near Moshi. Explore the 95-metre waterfall, Chagga coffee traditions, local cooking and village culture with local hosts." preloadImage={hero}>
