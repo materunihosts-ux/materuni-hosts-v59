@@ -1477,3 +1477,9 @@ body.public-shell .trust-strip svg{
 /* Final contrast corrections for small text on light surfaces */
 body.public-shell .site-header nav a[aria-current="page"]{color:#755523}
 body.public-shell .catalog-product-tagline{color:#755523}
+
+
+/* WCAG AA: strengthen form placeholder text on light input surfaces */
+body.public-shell input::placeholder,
+body.public-shell textarea::placeholder,
+body.public-shell select:invalid{color:#626960;opacity:1}
