@@ -69,7 +69,7 @@ if (itineraryFile) {
   const itineraryHtml = read(itineraryFile);
   const itinerarySourcePath = path.resolve("src/pages/itinerary.astro");
   const itinerarySource = fs.existsSync(itinerarySourcePath) ? read(itinerarySourcePath) : "";
-  if (!/Build Your Materuni Itinerary/i.test(itineraryHtml)) fail("Itinerary Builder route must retain its own page title");
+  if (!/<title>[^<]*Materuni Itinerary[^<]*<\/title>/i.test(itineraryHtml)) fail("Itinerary Builder route must retain its own SEO title");
   if (!/navigator\.share|navigator\[['"]share['"]\]/i.test(itinerarySource)) fail("Itinerary Builder source must retain its native share workflow");
   if (!/application\/pdf|\.pdf|PDF/i.test(itinerarySource)) fail("Itinerary Builder source must retain its PDF output workflow");
   if (/Build Your Materuni Itinerary/i.test(itineraryHtml) && /navigator\.share|navigator\[['"]share['"]\]/i.test(itinerarySource) && /application\/pdf|\.pdf|PDF/i.test(itinerarySource)) pass("Itinerary Builder retains source-level sharing and PDF output");
