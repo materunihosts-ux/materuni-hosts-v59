@@ -72,7 +72,7 @@ if (itineraryFile) {
   if (!/<title>[^<]*Materuni Itinerary[^<]*<\/title>/i.test(itineraryHtml)) fail("Itinerary Builder route must retain its own SEO title");
   if (!/navigator\.share|navigator\[['"]share['"]\]/i.test(itinerarySource)) fail("Itinerary Builder source must retain its native share workflow");
   if (!/application\/pdf|\.pdf|PDF/i.test(itinerarySource)) fail("Itinerary Builder source must retain its PDF output workflow");
-  if (/Build Your Materuni Itinerary/i.test(itineraryHtml) && /navigator\.share|navigator\[['"]share['"]\]/i.test(itinerarySource) && /application\/pdf|\.pdf|PDF/i.test(itinerarySource)) pass("Itinerary Builder retains source-level sharing and PDF output");
+  if (/<title>[^<]*Materuni Itinerary[^<]*<\/title>/i.test(itineraryHtml) && /navigator\.share|navigator\[['"]share['"]\]/i.test(itinerarySource) && /application\/pdf|\.pdf|PDF/i.test(itinerarySource)) pass("Itinerary Builder retains SEO title, source-level sharing and PDF output");
 }
 const bookingPage = routeFile("/booking");
 if (bookingPage) {
