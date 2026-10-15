@@ -18,11 +18,10 @@ import SiteLayout from "../layouts/SiteLayout.astro";
 <div class="field full"><label for="experience" data-i18n="booking_experience_label">Choose your experience *</label><select id="experience" required><option value="">Loading experiences…</option></select></div>
 <div class="field"><label for="date" data-i18n="booking_date_label">Preferred date *</label><input id="date" type="date" required></div><div class="field"><label for="slot" data-i18n="booking_slot_label">Available time *</label><select id="slot" required disabled><option value="">Choose an experience and date first</option></select><small id="availability-status" class="availability-status" role="status" aria-live="polite">Choose an experience and date to see live spaces.</small><button class="availability-refresh" id="refresh-availability" type="button" disabled data-i18n="booking_refresh">Refresh available times</button></div>
 <div class="field"><label for="count" data-i18n="booking_guests_label">Number of guests *</label><input id="count" type="number" min="1" max="30" value="2" required></div><div class="field"><label for="name" data-i18n="booking_name_label">Full name *</label><input id="name" autocomplete="name" required></div>
-<div class="field"><label for="email" data-i18n="booking_email_label">Email address</label><input id="email" type="email" autocomplete="email"></div><div class="field"><label for="phone" data-i18n="booking_phone_label">WhatsApp / phone</label><input id="phone" type="tel" autocomplete="tel"><small class="muted" data-i18n="booking_contact_hint">Provide at least one contact method: email or phone.</small></div><div class="field"><label for="nationality" data-i18n="booking_nationality_label">Nationality</label><input id="nationality"></div>
-<div class="field"><label for="country" data-i18n="booking_country_label">Country of residence</label><input id="country"></div><div class="field"><label for="language" data-i18n="booking_language_label">Preferred language</label><select id="language"><option value="English">English</option><option value="Spanish">Español</option><option value="French">Français</option><option value="German">Deutsch</option></select></div>
-<div class="field"><label for="contact" data-i18n="booking_contact_label">Preferred contact</label><select id="contact"><option value="WhatsApp">WhatsApp</option><option value="Email">Email</option></select></div><div class="field"><label for="pickup" data-i18n="booking_pickup_label">Pickup point / transport</label><input id="pickup" placeholder="Moshi hotel, meeting point…" data-i18n-placeholder="booking_pickup_placeholder"></div>
+<div class="field"><label for="email" data-i18n="booking_email_label">Email address</label><input id="email" type="email" autocomplete="email"></div><div class="field"><label for="phone" data-i18n="booking_phone_label">WhatsApp / phone</label><input id="phone" type="tel" autocomplete="tel"><small class="muted" data-i18n="booking_contact_hint">Provide at least one contact method: email or phone.</small></div><div class="field"><label for="language" data-i18n="booking_language_label">Preferred language</label><select id="language"><option value="English">English</option><option value="Spanish">Español</option><option value="French">Français</option><option value="German">Deutsch</option></select></div>
+<div class="field"><label for="pickup-origin">Transfer request (optional)</label><select id="pickup-origin"><option value="">No transfer / self-arranged</option><option value="Moshi">Request pickup from Moshi</option><option value="Arusha">Request pickup from Arusha</option><option value="Kilimanjaro International Airport (KIA)">Request pickup from KIA</option></select><small class="muted">Transfer is not included in the experience price. Your host will confirm availability and a separate quote before you agree.</small></div><div class="field"><label for="pickup" data-i18n="booking_pickup_label">Hotel, address or flight details</label><input id="pickup" placeholder="Hotel name, flight number or meeting point…" data-i18n-placeholder="booking_pickup_placeholder"></div>
 <div class="field full"><label for="notes" data-i18n="booking_notes_label">Special requests, dietary needs or accessibility notes</label><textarea id="notes" data-i18n-placeholder="booking_notes_placeholder"></textarea></div>
-<div class="field full"><div class="notice booking-terms-note" role="note"><strong data-i18n="booking_notice_title">A request is not a payment or confirmed booking.</strong><p data-i18n="booking_notice">Sending this form is free and does not charge you or commit you to a booking. A Materuni Hosts representative will first check availability and contact you with the proposed itinerary, final price, any transport or optional extras, and the applicable payment, cancellation and weather arrangements. Please review and agree to those details before making any payment. Your booking is confirmed only when Materuni Hosts sends written confirmation.</p><p data-i18n="booking_notice_contact">Please provide at least one working email address or WhatsApp number so we can respond to your request.</p></div><button class="button" id="submit" type="submit" data-i18n="booking_submit_label">Send booking request</button><p id="feedback" aria-live="polite" class="muted"></p></div>
+<div class="field full"><div class="notice booking-terms-note" role="note"><strong data-i18n="booking_notice_title">A request is not a payment or confirmed booking.</strong><p data-i18n="booking_notice">Sending this form is free and does not charge you or commit you to a booking. A Materuni Hosts representative will first check availability and contact you with the proposed itinerary, final price, any transport or optional extras, and the applicable payment, cancellation and weather arrangements. Please review and agree to those details before making any payment. Your booking is confirmed only when Materuni Hosts sends written confirmation.</p><p data-i18n="booking_notice_contact">Please provide at least one working email address or WhatsApp number so we can respond to your request. A host will review your details and reply as soon as possible; for time-sensitive plans, contact us directly on WhatsApp.</p></div><button class="button" id="submit" type="submit" data-i18n="booking_submit_label">Send booking request</button><p id="feedback" aria-live="polite" class="muted"></p></div>
 </form></div></section>
 <script>
 // @ts-nocheck
@@ -58,7 +57,7 @@ function setAvailabilityStatus(message,state="info"){
 async function loadExperienceCatalog(){
  const select=$("experience");
  try {
-  const q=new URLSearchParams({select:"experience_key,display_name,price_usd",is_active:"eq.true",order:"sort_order.asc"});
+  const q=new URLSearchParams({select:"experience_key,display_name,price_usd,duration_label",is_active:"eq.true",order:"sort_order.asc"});
   const response=await fetch(url+"/rest/v1/experience_catalog?"+q,{headers,cache:"no-store"});
   if(!response.ok) throw new Error("Experiences could not be loaded. Please refresh the page.");
   const catalog=await response.json();
@@ -67,7 +66,7 @@ async function loadExperienceCatalog(){
    const option=document.createElement("option");
    option.value=item.experience_key;
    option.dataset.price=String(Number(item.price_usd)||0);
-   option.textContent=item.display_name+" · $"+Number(item.price_usd).toFixed(0)+" per person";
+   option.textContent=item.display_name+" · $"+Number(item.price_usd).toFixed(0)+" per person"+(item.duration_label?" · "+item.duration_label:"");
    select.append(option);
   });
   const wanted=(params.get("experience")||"").trim().toLowerCase();
@@ -217,10 +216,9 @@ $("booking-form").addEventListener("submit",async e=>{
  const body={
   p_experience:experience,p_slot_id:slotId,p_guest_count:guestCount,p_guest:guestName,
   p_email:guestEmail||null,p_phone:guestPhone||null,
-  p_nationality:$("nationality").value.trim()||null,
-  p_country_of_residence:$("country").value.trim()||null,
-  p_preferred_contact:guestEmail&&!guestPhone?"Email":(!guestEmail&&guestPhone?"WhatsApp":$("contact").value),
-  p_pickup:$("pickup").value.trim()||null,p_language:$("language").value,
+  p_nationality:null,p_country_of_residence:null,
+  p_preferred_contact:guestEmail&&!guestPhone?"Email":"WhatsApp",
+  p_pickup:[$("pickup-origin").value,$("pickup").value.trim()].filter(Boolean).join(" — ")||null,p_language:$("language").value,
   p_notes:(()=>{const notes=$("notes").value.trim();const source=params.get("source");const sourceLabel=source==="camping"?"Camping landing page":source==="day-trips"?"Day Trips landing page":source==="homepage"?"Homepage leading package":"";const campaign=(params.get("utm_campaign")||"").replace(/[\u0000-\u001f]/g,"").slice(0,100);const attribution=[sourceLabel,campaign?"Campaign: "+campaign:""].filter(Boolean).join(" | ");return [notes,attribution?"[Enquiry source: "+attribution+"]":""].filter(Boolean).join("\n")||null;})(),p_booking_type:"tour"
  };
  // Keep the same key when an identical request is retried after a timeout/reload.
