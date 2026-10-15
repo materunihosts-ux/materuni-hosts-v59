@@ -76,7 +76,8 @@ function renderTargets(){
     }catch(optimiseError){console.warn("Using original image after optimisation fallback.",optimiseError)}
     if(uploadFile.size>8*1024*1024)throw new Error("The optimised image is still larger than 8 MB. Choose a smaller photograph.");
     status.textContent="Uploading optimised image…";
-    const safeName=(file.name.replace(/\.[^.]+$/,"").toLowerCase().replace(/[^a-z0-9.-]+/g,"-").replace(/^-+|-+$/g,"").slice(-60)||"materuni-photo")+".webp";
+    const extension=uploadFile.type==="image/webp"?"webp":uploadFile.type==="image/png"?"png":"jpg";
+    const safeName=(file.name.replace(/\.[^.]+$/,"").toLowerCase().replace(/[^a-z0-9.-]+/g,"-").replace(/^-+|-+$/g,"").slice(-60)||"materuni-photo")+"."+extension;
     const objectPath=target.key+"/"+Date.now()+"-"+safeName;
     const upload=await fetch(supabaseUrl+"/storage/v1/object/"+bucket+"/"+objectPath,{method:"POST",headers:{...headers(),"Content-Type":uploadFile.type,"x-upsert":"false"},body:uploadFile});
     const uploadData=await upload.json().catch(()=>null);if(!upload.ok)throw new Error(uploadData?.message||uploadData?.error||"Image upload failed.");
