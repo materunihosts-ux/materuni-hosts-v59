@@ -299,7 +299,7 @@ function chatBubble(role, message, mode) {
   text.textContent = message;
   bubble.append(text);
   list.append(bubble);
-  list.scrollTop = list.scrollHeight;
+  requestAnimationFrame(() => bubble.scrollIntoView({ block: "end", behavior: "smooth" }));
   return bubble;
 }
 if (chatEl("mh-chat-open") && chatEl("mh-chat-panel") && languageSelect && chatEl("mh-chat-messages") && chatEl("mh-chat-form")) {
