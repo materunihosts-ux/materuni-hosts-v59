@@ -1,0 +1,57 @@
+---
+const businessId = "https://materunihosts.com/#localbusiness";
+const campgroundId = "https://materunihosts.com/#campground";
+const waterfallId = "https://materunihosts.com/#materuni-waterfall";
+const graph = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "LocalBusiness",
+      "@id": businessId,
+      "name": "Materuni Hosts",
+      "url": "https://materunihosts.com/",
+      "image": "https://materunihosts.com/materuni-hosts-logo-round.svg",
+      "description": "Local-hosted Chagga cultural experiences, Materuni waterfall visits and overnight village camping in Materuni Village near Moshi, Tanzania.",
+      "telephone": "+255612068540",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Materuni Village",
+        "addressRegion": "Kilimanjaro",
+        "addressCountry": "TZ"
+      },
+      "areaServed": {
+        "@type": "Place",
+        "name": "Materuni Village, Moshi, Kilimanjaro, Tanzania"
+      }
+    },
+    {
+      "@type": "Campground",
+      "@id": campgroundId,
+      "name": "Materuni Hosts Overnight Camping",
+      "url": "https://materunihosts.com/materuni-camping",
+      "description": "An overnight village camping experience in Materuni with local hosting, meals and time to discover Chagga culture. Confirm the camping setup and facilities with the host before booking.",
+      "parentOrganization": { "@id": businessId },
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Materuni Village",
+        "addressRegion": "Kilimanjaro",
+        "addressCountry": "TZ"
+      }
+    },
+    {
+      "@type": "TouristAttraction",
+      "@id": waterfallId,
+      "name": "Materuni Waterfall",
+      "url": "https://materunihosts.com/materuni-waterfall-tour",
+      "description": "Materuni Waterfall is a forest waterfall visited on guided walks from Materuni Village near Moshi, Tanzania.",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Materuni Village",
+        "addressRegion": "Kilimanjaro",
+        "addressCountry": "TZ"
+      }
+    }
+  ]
+};
+---
+<script type="application/ld+json" set:html={JSON.stringify(graph)} />
