@@ -35,7 +35,7 @@ const breadcrumbData = {
   "@type": "BreadcrumbList",
   itemListElement: breadcrumbItems
 };
-const socialImage = preloadImage ?? `${supabaseUrl}/storage/v1/object/public/materuni-images/hero_image/1791600514716-b2bclfcnhhh.jpg`;
+const socialImage = preloadImage ?? `${supabaseUrl}/storage/v1/object/public/materuni-images/hero_image/1791995544192-materuni-waterfall.jpg`;
 const structuredData = {
   "@context": "https://schema.org",
   "@type": "TourOperator",
@@ -82,7 +82,8 @@ const structuredData = {
 <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>{title}</title><meta name="description" content={description} /><meta name="theme-color" content="#1A3322" /><link rel="canonical" href={canonical} /><meta property="og:type" content="website" /><meta property="og:site_name" content="Materuni Hosts" /><meta property="og:title" content={title} /><meta property="og:description" content={description} /><meta property="og:url" content={canonical} /><meta property="og:image" content={socialImage} /><meta property="og:locale" content="en_TZ" /><meta property="og:image:alt" content="Materuni Hosts authentic village experiences in Materuni, Tanzania" /><meta name="twitter:card" content="summary_large_image" /><meta name="twitter:title" content={title} /><meta name="twitter:description" content={description} /><meta name="twitter:image" content={socialImage} />{!noindex && <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />}{!noindex && <script type="application/ld+json" set:html={JSON.stringify(breadcrumbData)} />}{noindex && <meta name="robots" content="noindex,nofollow" />}{preloadImage && <link rel="preload" as="image" href={preloadImage} fetchpriority="high" />}
 <link rel="icon" type="image/svg+xml" href="/materuni-hosts-logo-round.svg" /><link rel="preconnect" href={supabaseUrl} crossorigin /><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+<noscript><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" /></noscript>
 
 
 <style is:global>
