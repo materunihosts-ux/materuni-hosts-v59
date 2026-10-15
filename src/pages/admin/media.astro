@@ -14,7 +14,7 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
  </div>
  <div id="manager" hidden>
   <div class="booking-panel">
-   <div class="section-heading"><div><span class="eyebrow">PHOTO MANAGEMENT</span><h2>Assign a website image</h2><p class="muted">Use JPG, PNG or WebP. Maximum file size: 8 MB. Uploading replaces the image assigned to that section without deleting the previous file.</p></div><button class="button button-secondary" id="logout" type="button">Sign out</button></div>
+   <div class="section-heading"><div><span class="eyebrow">PHOTO MANAGEMENT</span><h2>Assign a website image</h2><p class="muted">Use JPG, PNG or WebP. Maximum original file size: 15 MB. Images are resized and converted to WebP before upload. Uploading replaces the image assigned to that section without deleting the previous file.</p></div><button class="button button-secondary" id="logout" type="button">Sign out</button></div>
    <div class="admin-shortcuts" style="margin-bottom:1.2rem"><a class="button button-secondary" href="/admin/">Dashboard</a><a class="button button-secondary" href="/" target="_blank" rel="noopener">Preview homepage</a><a class="button button-secondary" href="/admin/content">Website content</a></div>
    <div id="media-grid" class="form-grid"></div>
    <p id="media-feedback" class="muted" aria-live="polite"></p>
@@ -54,12 +54,31 @@ function renderTargets(){
   button.addEventListener("click",async()=>{
    const file=input.files?.[0];if(!file){status.textContent="Choose an image first.";return}
    if(!["image/jpeg","image/png","image/webp"].includes(file.type)){status.textContent="Only JPG, PNG and WebP files are accepted.";return}
-   if(file.size>8*1024*1024){status.textContent="This file is larger than 8 MB. Please compress it before uploading.";return}
-   button.disabled=true;status.textContent="Uploading image…";
+   if(file.size>15*1024*1024){status.textContent="This file is larger than 15 MB. Choose a smaller photograph.";return}
+   button.disabled=true;status.textContent="Optimising photograph…";
    try{
-    const safeName=file.name.toLowerCase().replace(/[^a-z0-9.-]+/g,"-").replace(/^-+|-+$/g,"").slice(-70)||"materuni-photo";
+    let uploadFile=file;
+    try{
+     if(typeof createImageBitmap==="function"){
+      const bitmap=await createImageBitmap(file);
+      const maxDimension=1800;
+      const scale=Math.min(1,maxDimension/Math.max(bitmap.width,bitmap.height));
+      const canvas=document.createElement("canvas");
+      canvas.width=Math.max(1,Math.round(bitmap.width*scale));
+      canvas.height=Math.max(1,Math.round(bitmap.height*scale));
+      const context=canvas.getContext("2d");
+      if(!context)throw new Error("Image optimisation is unavailable in this browser.");
+      context.drawImage(bitmap,0,0,canvas.width,canvas.height);
+      bitmap.close?.();
+      const webp=await new Promise((resolve,reject)=>canvas.toBlob(blob=>blob?resolve(blob):reject(new Error("Could not optimise this image.")),"image/webp",0.82));
+      if(webp&&webp.size<file.size)uploadFile=new File([webp],(file.name.replace(/\.[^.]+$/,"")||"materuni-photo")+".webp",{type:"image/webp",lastModified:Date.now()});
+     }
+    }catch(optimiseError){console.warn("Using original image after optimisation fallback.",optimiseError)}
+    if(uploadFile.size>8*1024*1024)throw new Error("The optimised image is still larger than 8 MB. Choose a smaller photograph.");
+    status.textContent="Uploading optimised image…";
+    const safeName=(file.name.replace(/\.[^.]+$/,"").toLowerCase().replace(/[^a-z0-9.-]+/g,"-").replace(/^-+|-+$/g,"").slice(-60)||"materuni-photo")+".webp";
     const objectPath=target.key+"/"+Date.now()+"-"+safeName;
-    const upload=await fetch(supabaseUrl+"/storage/v1/object/"+bucket+"/"+objectPath,{method:"POST",headers:{...headers(),"Content-Type":file.type,"x-upsert":"false"},body:file});
+    const upload=await fetch(supabaseUrl+"/storage/v1/object/"+bucket+"/"+objectPath,{method:"POST",headers:{...headers(),"Content-Type":uploadFile.type,"x-upsert":"false"},body:uploadFile});
     const uploadData=await upload.json().catch(()=>null);if(!upload.ok)throw new Error(uploadData?.message||uploadData?.error||"Image upload failed.");
     const publicUrl=supabaseUrl+"/storage/v1/object/public/"+bucket+"/"+objectPath;
     if(target.experienceKey){
