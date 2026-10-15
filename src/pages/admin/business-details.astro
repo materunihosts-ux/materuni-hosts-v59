@@ -46,8 +46,7 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
     <div class="field full"><label for="community_contribution">Community contribution explanation</label><textarea id="community_contribution" rows="4" maxlength="1800"></textarea></div>
     <div class="field"><label for="community_percentage">Contribution percentage (if measured)</label><input id="community_percentage" maxlength="40" placeholder="Leave blank if not measured"></div>
     <div class="field"><label for="tripadvisor_profile">Tripadvisor profile URL</label><input id="tripadvisor_profile" type="url" placeholder="https://www.tripadvisor.com/..."></div>
-    <div class="field full"><label for="internal_notes">Private admin notes (not for public display)</label><textarea id="internal_notes" rows="3" maxlength="2000"></textarea></div>
-    <div class="field full"><p class="notice">Saving stores these values in the protected admin settings workflow. This page does not automatically publish every field on the public website. Review the wording and confirm the facts before publishing them.</p><button class="button" id="save" type="submit">Save business details</button><p id="feedback" class="muted" aria-live="polite"></p></div>
+    <div class="field full"><p class="notice">Saving stores these values in the protected admin settings workflow. This page does not automatically publish every field on the public website. Review the wording and confirm the facts before publishing them. Do not enter passwords or confidential personal information.</p><button class="button" id="save" type="submit">Save business details</button><p id="feedback" class="muted" aria-live="polite"></p></div>
    </form>
   </div>
  </div>
@@ -72,7 +71,6 @@ const groups={
  camping_details:["camp_type","camp_bedding","camp_toilet","camp_shower","camp_power","camp_amenities","camp_notes"],
  booking_policies:["deposit_policy","cancellation_policy","weather_policy","response_promise","safety_facts"],
  community_profile:["community_contribution","community_percentage","tripadvisor_profile"],
- admin_private_notes:["internal_notes"]
 };
 function decode(value){try{return JSON.parse(value||"{}")}catch{return {}}}
 function fill(rows){for(const [key,ids] of Object.entries(groups)){const data=decode(rows.find(x=>x.setting_key===key)?.setting_value);for(const id of ids)el(id).value=typeof data[id]==="string"?data[id]:""}}
