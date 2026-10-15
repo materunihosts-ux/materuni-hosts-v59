@@ -1472,3 +1472,8 @@ body.public-shell .trust-strip svg{
 /* Accessibility: improve gold text contrast on light editorial surfaces */
 .section:not(.hero) .eyebrow,.page-hero .eyebrow,.section-head .eyebrow{color:#755523}
 .pill{color:#6b4e21}
+
+
+/* Final contrast corrections for small text on light surfaces */
+body.public-shell .site-header nav a[aria-current="page"]{color:#755523}
+body.public-shell .catalog-product-tagline{color:#755523}
