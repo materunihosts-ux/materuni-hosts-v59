@@ -9,7 +9,7 @@ const experiences=[
 {key:"Materuni Waterfall Hike & Cultural Day Trip",name:"Waterfall Hike & Cultural Day Trip",price:75,tag:"Signature day trip",image:"culturalday_image/1791994608797-materuni-waterfall-hike-trail.jpg",desc:"For guests who want to give the day more room: combine the waterfall hike with coffee, cultural activities and time to enjoy Materuni at an unhurried pace.",items:["Rainforest hike to Materuni Waterfall","Time to enjoy the waterfall","Coffee experience with village hosts","Local lunch & traditional dance"]},
 {key:"The Ultimate Kilimanjaro Foothills & Materuni Experience",name:"Ultimate",price:135,tag:"Ultimate experience",image:"ultimate_image/1791604660208-7c4yvzvsaf9.jpg",desc:"A multi-experience stay bringing together the waterfall, coffee-making, Chagga cooking and overnight camping in one visit.",items:["Scenic waterfall hike","Hands-on Chagga cooking class","Organic coffee tour","Camping, campfire, dance & meals"]}];
 const base=`${supabaseUrl}/storage/v1/render/image/public/materuni-images/`;
-const image=(path,width=800)=>`${base}${path}?width=${width}&quality=75&format=webp`;
+const image=(path: string,width: number=800)=>`${base}${path}?width=${width}&quality=75&format=webp`;
 const heroImage=image("hero_image/1791995544192-materuni-waterfall.jpg",1600);
 ---
 <SiteLayout title="Materuni Waterfall Tour & Chagga Coffee Experiences | Materuni Hosts" description="Explore Materuni Waterfall hikes, authentic Chagga coffee-making, village culture and local camping near Moshi, at the foothills of Mount Kilimanjaro, Tanzania." preloadImage={heroImage}>
