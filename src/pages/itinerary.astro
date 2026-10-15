@@ -16,7 +16,7 @@ const tours=[{"key":"Waterfall & Chagga Culture","name":"Materuni Waterfall & Ch
 <div class="field full"><span class="label" data-i18n="itinerary_select_experiences">Select experiences (choose more than one)</span><div class="form-grid choices">{tours.map((t,i)=><label class="choice"><input type="checkbox" name="tour" value={i} /> <span><strong>{t.name}</strong><small>${t.price} per person · {t.duration}</small></span></label>)}</div></div>
 <div class="field full"><label for="notes" data-i18n="itinerary_notes_label">Anything we should consider?</label><textarea id="notes" rows="3" placeholder="Children, dietary needs, mobility, pickup point or special interests…" data-i18n-placeholder="itinerary_notes_placeholder"></textarea></div>
 <div class="field full"><button class="button" type="submit" data-i18n="itinerary_submit_label">Create my suggested itinerary</button><p class="muted" id="planner-feedback" aria-live="polite"></p></div>
-<p class="muted" data-i18n="itinerary_currency_note">Indicative TZS estimates; some activities may overlap, so your host will confirm the final combination and price before payment.</p>
+<p class="muted" data-i18n="itinerary_currency_note">Indicative TZS guide (15 Oct 2026; 1 USD ≈ TZS 2,640): $65 ≈ TZS 172,000 · $75 ≈ TZS 198,000 · $85 ≈ TZS 224,000 · $110 ≈ TZS 290,000 · $135 ≈ TZS 356,000. Some activities may overlap, so your host will confirm the final combination and price before payment.</p>
 </form></div>
 <div class="booking-panel itinerary-output" id="output"><span class="eyebrow">YOUR PERSONAL PLAN</span><h2>Your itinerary will appear here.</h2><p>Select one or more experiences and create your suggested plan. A local host can then confirm timing, availability and transport.</p></div></div></section>
 <script>
