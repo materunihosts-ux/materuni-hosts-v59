@@ -1485,22 +1485,29 @@ body.public-shell textarea::placeholder,
 body.public-shell select:invalid{color:#626960;opacity:1}
 
 
-/* Cooking Class photography: show the complete original image instead of cropping the food and hosts. */
+/* Cooking Class image: fill the available card width while keeping the established image height. */
 .experience-card[data-catalog-key="Traditional Chagga Cooking Class"]>img,
-.experience-card[data-experience-key="Traditional Chagga Cooking Class"]>img,
-.day .card[data-experience-key="Traditional Chagga Cooking Class"] img{
-  object-fit:contain!important;
+.experience-card[data-experience-key="Traditional Chagga Cooking Class"]>img{
+  display:block;
+  width:100%!important;
+  height:250px!important;
+  object-fit:cover!important;
   object-position:center;
-  background:#e6dfd3;
+}
+.day .card[data-experience-key="Traditional Chagga Cooking Class"]{
+  grid-template-columns:minmax(0,1fr);
 }
 .day .card[data-experience-key="Traditional Chagga Cooking Class"] img{
-  height:320px;
-  min-height:320px;
+  display:block;
+  width:100%!important;
+  height:320px!important;
+  min-height:320px!important;
+  object-fit:cover!important;
+  object-position:center;
 }
 @media(max-width:680px){
   .day .card[data-experience-key="Traditional Chagga Cooking Class"] img{
-    height:auto;
-    min-height:0;
-    aspect-ratio:8/5;
+    height:225px!important;
+    min-height:225px!important;
   }
 }
