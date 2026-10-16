@@ -3,6 +3,7 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "redirects": [
+    { "source": "/materuni-camping", "destination": "/camping", "permanent": true },
     { "source": "/sustainability.html", "destination": "/sustainability", "permanent": true },
     { "source": "/admin.html", "destination": "/admin/bookings", "permanent": true }
   ],
