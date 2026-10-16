@@ -61,8 +61,8 @@ for (const [route, source] of [["/camping", "source=camping"], ["/day-trips", "s
 const homeFile = routeFile("/");
 if (homeFile) {
   const homeHtml = read(homeFile);
-  if (/facebook/i.test(homeHtml)) fail("Public homepage must not expose retired Facebook profile links or labels");
-  else pass("Public homepage contains no retired Facebook profile reference");
+  if (!homeHtml.includes("https://www.facebook.com/share/1VTNWPbqcc/")) fail("Public homepage must include the current Materuni Hosts Facebook page link");
+  else pass("Public homepage includes the current Materuni Hosts Facebook page link");
 }
 const itineraryFile = routeFile("/itinerary");
 if (itineraryFile) {
