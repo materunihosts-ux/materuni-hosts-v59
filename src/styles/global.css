@@ -1530,3 +1530,25 @@ body.public-shell select:invalid{color:#626960;opacity:1}
 
 /* Keep homepage experience links distinguishable to assistive technology. */
 .experience-card .button[aria-label]{white-space:normal}
+
+
+/* PageSpeed accessibility: keep gold brand accents readable on light backgrounds.
+   Gold remains unchanged on the dark forest surfaces where it already passes contrast. */
+body.public-shell .brand-word small,
+body.public-shell .site-header nav a:hover,
+body.public-shell .catalog-product-tagline,
+body.public-shell .page-hero .eyebrow,
+body.public-shell .section:not(.hero) .eyebrow,
+body.public-shell .section-head .eyebrow,
+body.public-shell .location-section .eyebrow,
+body.public-shell .section .pill,
+body.public-shell .review-invite-panel .eyebrow {
+  color: #755523 !important;
+}
+body.public-shell .site-header nav a:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+body.public-shell .catalog-product-tagline {
+  font-weight: 700;
+}
