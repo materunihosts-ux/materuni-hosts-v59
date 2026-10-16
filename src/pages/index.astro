@@ -109,7 +109,14 @@ fetch(`${supabaseUrl}/rest/v1/experience_catalog?select=experience_key,display_n
   if(!Array.isArray(tours))return;
   const root=document.querySelector(".cards");
   if(!root)return;
-  const makeList=(values)=>{
+  const imageFallbacks={
+    "Camping & Village Life":base+"camping_image/1791601872981-zmji0mykwhd.jpg",
+    "Waterfall & Chagga Culture":base+"waterfall_image/1791601414950-ew7ak42gjka.jpg",
+    "Traditional Coffee Experience":base+"coffee_image/1791601540965-5mt58f2ipoe.jpg",
+    "Traditional Chagga Cooking Class":base+"cooking_image/1791601646297-7th6jahyw0w.jpg",
+    "The Ultimate Kilimanjaro Foothills & Materuni Experience":base+"ultimate_image/1791604660208-7c4yvzvsaf9.jpg"
+   };
+   const makeList=(values)=>{
    const list=document.createElement("ul");
    (Array.isArray(values)?values:[]).forEach(value=>{if(typeof value!=="string"||!value.trim())return;const li=document.createElement("li");li.textContent=value;list.append(li)});
    return list;
@@ -133,7 +140,7 @@ fetch(`${supabaseUrl}/rest/v1/experience_catalog?select=experience_key,display_n
    let card=existing.get(t.experience_key);
    if(!card){
     card=document.createElement("article");card.className="experience-card";card.dataset.catalogKey=t.experience_key;
-    if(t.image_url&&/^https:\/\//i.test(t.image_url)){const img=document.createElement("img");img.src=t.image_url;img.alt=t.display_name||"Materuni experience";img.loading="lazy";img.decoding="async";img.width=640;img.height=420;card.append(img)}
+    {const img=document.createElement("img");img.src=t.image_url&&/^https:\/\//i.test(t.image_url)?t.image_url:(imageFallbacks[t.experience_key]||base+"hero_image/1791600514716-b2bclfcnhhh.jpg");img.alt=t.display_name||"Materuni experience";img.loading="lazy";img.decoding="async";img.width=640;img.height=420;img.style.width="100%";img.style.aspectRatio="8/5";img.style.objectFit="cover";card.append(img)}
     const body=document.createElement("div");body.className="card-body";
     const top=document.createElement("div");top.className="card-top";
     const pill=document.createElement("span");pill.className="pill";pill.textContent=t.duration_label||"Local experience";
@@ -148,7 +155,7 @@ fetch(`${supabaseUrl}/rest/v1/experience_catalog?select=experience_key,display_n
    if(title)title.textContent=t.display_name||"Materuni experience";
    if(price){price.replaceChildren(document.createTextNode("$"+Number(t.price_usd).toFixed(0)));const small=document.createElement("small");small.textContent="PER PERSON";price.append(small)}
    if(desc&&(t.full_description||t.short_description))desc.textContent=t.full_description||t.short_description;
-   if(img&&t.image_url&&/^https:\/\//i.test(t.image_url))img.src=t.image_url;
+   if(img)img.src=t.image_url&&/^https:\/\//i.test(t.image_url)?t.image_url:(imageFallbacks[t.experience_key]||base+"hero_image/1791600514716-b2bclfcnhhh.jpg");
    if(pill&&t.duration_label)pill.textContent=t.duration_label;
    body.querySelectorAll(".catalog-product-tagline,.catalog-best-for,.catalog-detail-heading, .catalog-detail-heading + ul").forEach(node=>node.remove());
    const legacyList=body.querySelector("ul");if(legacyList)legacyList.remove();
