@@ -1387,7 +1387,7 @@ body.public-shell .page-hero:after{
 }
 body.public-shell .page-hero h1{max-width:900px;font-size:clamp(43px,6vw,76px);line-height:.99;letter-spacing:-.025em}
 body.public-shell .page-hero p{max-width:680px;font-size:15px;line-height:1.9;color:#5d675e}
-body.public-shell .section-head .eyebrow,body.public-shell .page-hero .eyebrow{color:#98723b}
+body.public-shell .section-head .eyebrow,body.public-shell .page-hero .eyebrow{color:#755523}
 body.public-shell .button,body.public-shell button.button{
  min-height:46px;padding:13px 21px;border-radius:3px;box-shadow:0 5px 14px rgba(26,51,34,.09);
  text-transform:none;letter-spacing:.025em
@@ -1530,3 +1530,11 @@ body.public-shell select:invalid{color:#626960;opacity:1}
 
 /* Keep homepage experience links distinguishable to assistive technology. */
 .experience-card .button[aria-label]{white-space:normal}
+
+
+/* Accessibility: keep page-hero eyebrow text above WCAG AA contrast on pale backgrounds. */
+body.public-shell .page-hero .eyebrow{color:#755523}
+
+/* Accessibility: make keyboard focus visible on both light and dark surfaces. */
+:focus-visible{outline:3px solid #1A3322!important;outline-offset:3px;box-shadow:0 0 0 5px #FAF7F2!important}
+.skip-link:focus-visible{transform:translateY(0)}
