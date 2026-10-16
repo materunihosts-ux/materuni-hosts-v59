@@ -97,7 +97,9 @@ fetch(siteContentEndpoint,{headers:{apikey:siteContentKey,Authorization:"Bearer 
   document.querySelectorAll("[data-site-content]").forEach(node=>{const value=content.get(node.dataset.siteContent);if(value)node.textContent=value});
   document.querySelectorAll("[data-site-image]").forEach(node=>{
    const url=content.get(node.dataset.siteImage);if(!url||!/^https:\/\//i.test(url))return;
-   if(node.tagName==="IMG")node.src=url;
+   // Update the actual image element, including the hero image nested inside its wrapper.
+   const image=node.tagName==="IMG"?node:node.querySelector("img");
+   if(image){image.removeAttribute("srcset");image.src=url;image.removeAttribute("sizes");}
    else node.style.backgroundImage="linear-gradient(0deg,rgba(14,35,25,.22),rgba(14,35,25,.04)),url("+JSON.stringify(url)+")";
   });
  }).catch(()=>{});
