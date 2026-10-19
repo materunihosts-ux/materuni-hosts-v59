@@ -13,6 +13,8 @@
   "dependencies": {
     "@astrojs/check": "^0.9.10",
     "astro": "^7.3.8",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.2",
+    "@fontsource/manrope": "^5.2.6",
+    "@vercel/analytics": "^1.5.0"
   }
 }
