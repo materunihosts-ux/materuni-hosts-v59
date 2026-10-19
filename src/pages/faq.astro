@@ -1,7 +1,7 @@
 ---
 import SiteLayout from "../layouts/SiteLayout.astro";
 import { supabaseUrl } from "../lib/supabase-public";
-const faqPreview = `${supabaseUrl}/storage/v1/object/public/materuni-images/story_image/1791995912146-materuni-community.jpg`;
+const faqPreview = "https://commons.wikimedia.org/wiki/Special:FilePath/Moshi_rural_Tanzania.jpg?width=1600";
 const faqs = [
   ["Where is Materuni Village?", "Materuni Village is in the Kilimanjaro region of northern Tanzania, near Moshi, on the forested slopes of Mount Kilimanjaro. It is a village visit rather than a town-centre attraction, so agree your transport and pickup point before travelling."],
   ["Which experiences can I book?", "Our five featured experiences are Materuni Camping ($110), Materuni Waterfall & Chagga Culture ($75), Traditional Coffee Experience ($65), Traditional Chagga Cooking Class ($85) and Ultimate ($135), all priced per person."],
@@ -18,7 +18,7 @@ const faqs = [
 ];
 ---
 <SiteLayout title="Materuni Tours FAQ | Booking, Prices & Travel Advice" description="Find practical answers about Materuni Waterfall tours, Chagga coffee experiences, camping prices, availability, transport and booking near Moshi, Tanzania." preloadImage={faqPreview}>
-<section class="page-hero"><span class="eyebrow" data-i18n="faq_eyebrow">GOOD TO KNOW BEFORE YOU VISIT</span><h1 data-i18n="faq_page_title">Plan your visit with confidence.</h1><p data-i18n="faq_page_intro">Practical answers about Materuni, experience prices, availability, transport and what happens after you send a booking request.</p></section>
+<section class="media-hero" aria-labelledby="faq-title"><div><span class="eyebrow" data-i18n="faq_eyebrow">GOOD TO KNOW BEFORE YOU VISIT</span><h1 id="faq-title" data-i18n="faq_page_title">Plan your visit with confidence.</h1><p data-i18n="faq_page_intro">Practical answers about Materuni, experience prices, availability, transport and what happens after you send a booking request.</p></div><img src={faqPreview} alt="Rural Moshi landscape with coffee and banana cultivation" width="1200" height="900" loading="eager" fetchpriority="high" decoding="async" /></section>
 <section class="section faq-section">
   <div class="faq-intro"><span class="eyebrow" data-i18n="faq_section_eyebrow">PLAN WITH CONFIDENCE</span><h2 data-i18n="faq_section_title">Everything you need to know.</h2><p data-i18n="faq_section_intro">If you need help with something not covered here, speak directly with a local host.</p><a class="button" href="https://wa.me/255612068540" target="_blank" rel="noopener noreferrer" data-i18n="faq_whatsapp">Ask us on WhatsApp</a></div>
   <div class="faq-list">{faqs.map(([question,answer])=><details class="faq-item"><summary>{question}</summary><p>{answer}</p></details>)}</div>
@@ -49,4 +49,5 @@ const faqs = [
   </script></section>
 <section class="band"><h2 data-i18n="faq_cta_title">Still planning your visit?</h2><p data-i18n="faq_cta_intro">Tell us what you would like to experience and we will help you shape a practical plan.</p><div class="actions" style="justify-content:center"><a class="button button-light" href="/itinerary" data-i18n="faq_build_itinerary">Build your itinerary</a><a class="button secondary" href="/booking" data-i18n="faq_check_availability">Check availability</a></div></section>
 <script id="faq-structured-data" type="application/ld+json" set:html={JSON.stringify({"@context":"https://schema.org","@type":"FAQPage","mainEntity":faqs.map(([question,answer])=>({"@type":"Question","name":question,"acceptedAnswer":{"@type":"Answer","text":answer}}))})} />
+<style>.media-hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,.9fr);gap:clamp(24px,5vw,64px);align-items:center;padding:clamp(42px,7vw,88px) clamp(22px,7vw,100px);background:#1a3322;color:#faf7f2}.media-hero h1{color:#faf7f2;max-width:13ch;font:600 clamp(38px,5vw,64px)/1.04 "Cormorant Garamond",serif}.media-hero p{color:#e6dfd3;line-height:1.85;max-width:58ch}.media-hero img{display:block;width:100%;height:clamp(240px,34vw,430px);object-fit:cover;object-position:center 45%;border-radius:12px;box-shadow:0 18px 42px #0003}@media(max-width:720px){.media-hero{grid-template-columns:1fr;padding:42px 22px}.media-hero img{height:260px}}</style>
 </SiteLayout>
