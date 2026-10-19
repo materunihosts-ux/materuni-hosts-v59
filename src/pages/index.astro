@@ -3,12 +3,12 @@ import SiteLayout from "../layouts/SiteLayout.astro";
 import { Image, getImage } from "astro:assets";
 import { supabaseUrl } from "../lib/supabase-public";
 const experiences=[
-{key:"Waterfall & Chagga Culture",name:"Materuni Waterfall & Chagga Village Experience",price:45,tag:"Waterfall & Chagga heritage",image:"waterfall_image/1791601414950-ew7ak42gjka.jpg",desc:"Follow a local guide to Materuni’s 95-metre waterfall, discover Chagga village life and enjoy a complimentary Mbege tasting and traditional dance.",items:["Guided waterfall and village walk","Complimentary Mbege tasting","Traditional Chagga dance"]},
-{key:"Traditional Coffee Experience",name:"Materuni Coffee & Chagga Culture Experience",price:41,tag:"From coffee growing to a fresh cup",image:"coffee_image/1791601540965-5mt58f2ipoe.jpg",desc:"Discover Chagga coffee traditions with local hosts through hands-on roasting, grinding, brewing and tasting.",items:["Learn about local coffee growing","Roast, grind and brew coffee","Freshly prepared coffee tasting"]},
-{key:"Traditional Chagga Cooking Class",name:"Materuni Chagga Cooking & Village Experience",price:55,tag:"Cook, taste & share",image:"cooking_image/1791601646297-7th6jahyw0w.jpg",desc:"Prepare traditional Chagga dishes with local hosts, learn about local ingredients and enjoy the food you help make.",items:["Hands-on Chagga cooking class","Local cooking ingredients","Traditional preparation methods"]},
+{key:"Waterfall & Chagga Culture",name:"Materuni Waterfall & Chagga Village Experience",price:45,tag:"Waterfall & Chagga heritage",image:"waterfall_image/1791998303073-materuni-waterfall-hike.jpg",desc:"Follow a local guide to Materuni’s 95-metre waterfall, discover Chagga village life and enjoy a complimentary Mbege tasting and traditional dance.",items:["Guided waterfall and village walk","Complimentary Mbege tasting","Traditional Chagga dance"]},
+{key:"Traditional Coffee Experience",name:"Materuni Coffee & Chagga Culture Experience",price:41,tag:"From coffee growing to a fresh cup",image:"coffee_image/1791998412318-materuni-tour.jpg",desc:"Discover Chagga coffee traditions with local hosts through hands-on roasting, grinding, brewing and tasting.",items:["Learn about local coffee growing","Roast, grind and brew coffee","Freshly prepared coffee tasting"]},
+{key:"Traditional Chagga Cooking Class",name:"Materuni Chagga Cooking & Village Experience",price:55,tag:"Cook, taste & share",image:"cooking_image/1791998880538-materuni-cooking-lesson.jpg",desc:"Prepare traditional Chagga dishes with local hosts, learn about local ingredients and enjoy the food you help make.",items:["Hands-on Chagga cooking class","Local cooking ingredients","Traditional preparation methods"]},
 {key:"Materuni & Moshi Town Tour",name:"Materuni & Moshi Town Cultural Tour",price:59,tag:"Materuni village & Moshi town",image:"https://commons.wikimedia.org/wiki/Special:FilePath/Market_place_at_Moshi_Town.jpg?width=1600",desc:"Pair the shared Materuni day experience with a guided Moshi town visit, local history, market life and everyday culture.",items:["Guided Moshi town walk","Local town guide","History and everyday-life stories"]},
 {key:"Materuni & Rau Forest Experience",name:"Materuni & Rau Forest Nature Experience",price:50,tag:"Waterfall, culture & forest nature",image:"https://commons.wikimedia.org/wiki/Special:FilePath/Rau_forest_in_Miembeni_Ward,_Moshi.jpg?width=1600",desc:"Combine Materuni’s shared day experience with a guided nature walk in Rau Forest, Moshi. Discover indigenous trees, birdlife and the forest’s distinctive atmosphere. Rau Forest entrance is an additional USD 15 per guest.",items:["Guided Rau Forest nature walk","Birdwatching and forest interpretation","Ancient Mvule tree and rice-field discovery"]},
-{key:"Camping & Village Life",name:"Materuni Overnight Village Experience",price:101,tag:"A slower Materuni village stay",image:"camping_image/1791601872981-zmji0mykwhd.jpg",desc:"Stay one night in Materuni with tent accommodation, dinner, breakfast and a next-day guided village experience.",items:["One-night tent accommodation","Dinner and breakfast","Next-day local guide"]}
+{key:"Camping & Village Life",name:"Materuni Overnight Village Experience",price:101,tag:"A slower Materuni village stay",image:"camping_image/1792122487239-camping.jpg",desc:"Stay one night in Materuni with tent accommodation, dinner, breakfast and a next-day guided village experience.",items:["One-night tent accommodation","Dinner and breakfast","Next-day local guide"]}
 ];
 const base=`${supabaseUrl}/storage/v1/object/public/materuni-images/`;
 const heroSource = base + "hero_image/1791995544192-materuni-waterfall.jpg";
@@ -115,10 +115,10 @@ fetch(`${supabaseUrl}/rest/v1/experience_catalog?select=experience_key,display_n
   const root=document.querySelector(".cards");
   if(!root)return;
   const imageFallbacks={
-    "Camping & Village Life":mediaBase+"camping_image/1791601872981-zmji0mykwhd.jpg",
-    "Waterfall & Chagga Culture":mediaBase+"waterfall_image/1791601414950-ew7ak42gjka.jpg",
-    "Traditional Coffee Experience":mediaBase+"coffee_image/1791601540965-5mt58f2ipoe.jpg",
-    "Traditional Chagga Cooking Class":mediaBase+"cooking_image/1791601646297-7th6jahyw0w.jpg",
+    "Camping & Village Life":mediaBase+"camping_image/1792122487239-camping.jpg",
+    "Waterfall & Chagga Culture":mediaBase+"waterfall_image/1791998303073-materuni-waterfall-hike.jpg",
+    "Traditional Coffee Experience":mediaBase+"coffee_image/1791998412318-materuni-tour.jpg",
+    "Traditional Chagga Cooking Class":mediaBase+"cooking_image/1791998880538-materuni-cooking-lesson.jpg",
     "The Ultimate Kilimanjaro Foothills & Materuni Experience":mediaBase+"ultimate_image/1791604660208-7c4yvzvsaf9.jpg",
     "Materuni & Moshi Town Tour":"https://commons.wikimedia.org/wiki/Special:FilePath/Market_place_at_Moshi_Town.jpg?width=1600",
     "Materuni & Rau Forest Experience":"https://commons.wikimedia.org/wiki/Special:FilePath/Rau_forest_in_Miembeni_Ward,_Moshi.jpg?width=1600"
