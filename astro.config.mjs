@@ -4,7 +4,12 @@ import { defineConfig } from 'astro/config';
 // Supabase remains the remote backend; never put a service-role key in this frontend.
 export default defineConfig({
   site: 'https://materunihosts.com',
-  image: { remotePatterns: [{ protocol: 'https', hostname: 'sskmzswoeljxwojcszta.supabase.co', pathname: '/storage/v1/object/public/materuni-images/**' }] },
+  image: { remotePatterns: [
+    { protocol: 'https', hostname: 'sskmzswoeljxwojcszta.supabase.co', pathname: '/storage/v1/object/public/materuni-images/**' },
+    { protocol: 'https', hostname: 'images.unsplash.com', pathname: '/photo-**' },
+    { protocol: 'https', hostname: 'images.pexels.com', pathname: '/photos/**' },
+    { protocol: 'https', hostname: 'commons.wikimedia.org', pathname: '/wiki/Special:FilePath/**' },
+  ] },
   output: 'static',
   build: { assets: '_astro' },
 });
