@@ -57,8 +57,8 @@ function makeCatalogCard(tour) {
   card.dataset.experienceKey = tour.experience_key;
   if (tour.image_url && /^https:\/\//i.test(tour.image_url)) {
     const image = document.createElement("img");
-    image.src = tour.image_url; image.alt = tour.display_name || "Materuni experience";
-    image.loading = "lazy"; image.decoding = "async"; image.width = 640; image.height = 420;
+    image.src = tour.image_url; image.alt = tour.experience_key === "Traditional Coffee Experience" ? "Materuni coffee experience with local hosts" : tour.experience_key === "Traditional Chagga Cooking Class" ? "Materuni Chagga cooking experience with local ingredients" : tour.experience_key === "Camping & Village Life" ? "Outdoor camping setup for the Materuni overnight experience; confirm facilities with the host" : tour.display_name || "Materuni experience";
+    image.className = "experience-photo"; image.loading = "lazy"; image.decoding = "async"; image.width = 640; image.height = 420;
     card.append(image);
   }
   const body = document.createElement("div"); body.className = "card-body";
@@ -105,7 +105,7 @@ async function syncPublicCatalogue() {
       safeText(card.querySelector("[data-catalog-name]"), item.display_name);
       safeText(card.querySelector("[data-catalog-description]"), item.full_description || item.short_description);
       const image = card.querySelector("img");
-      if (image && item.image_url && /^https:\/\//i.test(item.image_url)) image.src = item.image_url;
+      if (image && item.image_url && /^https:\/\//i.test(item.image_url)) { image.src = item.image_url; image.alt = item.experience_key === "Traditional Coffee Experience" ? "Materuni coffee experience with local hosts" : item.experience_key === "Traditional Chagga Cooking Class" ? "Materuni Chagga cooking experience with local ingredients" : item.experience_key === "Camping & Village Life" ? "Outdoor camping setup for the Materuni overnight experience; confirm facilities with the host" : item.display_name || "Materuni experience"; }
       const pill = card.querySelector(".pill");
       if (pill && item.duration_label) pill.textContent = item.duration_label;
       const body = card.querySelector(".card-body");
