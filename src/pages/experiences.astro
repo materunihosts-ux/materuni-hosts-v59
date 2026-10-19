@@ -14,17 +14,17 @@ const items: Experience[]=[
 const defaultExclusions = ["Transport to and from Materuni unless arranged separately","Personal purchases and expenses","Tips and gratuities"];
 const experienceKeys: Record<string,string> = {"Materuni Waterfall & Chagga Village Experience":"Waterfall & Chagga Culture","Materuni Coffee & Chagga Culture Experience":"Traditional Coffee Experience","Materuni Chagga Cooking & Village Experience":"Traditional Chagga Cooking Class","Materuni & Moshi Town Cultural Tour":"Materuni & Moshi Town Tour","Materuni & Rau Forest Nature Experience":"Materuni & Rau Forest Experience","Materuni Overnight Village Experience":"Camping & Village Life"};
 const base=`${supabaseUrl}/storage/v1/object/public/materuni-images/`;
-const stockPhotoByKey = {
+const stockPhotoByKey: Record<string, string> = {
   "Traditional Chagga Cooking Class": "https://images.unsplash.com/photo-1723643343026-b42936dba48e?auto=format&fit=crop&w=1200&q=85",
   "Materuni & Moshi Town Tour": "https://images.pexels.com/photos/36007432/pexels-photo-36007432.jpeg?auto=compress&cs=tinysrgb&w=1200",
   "Camping & Village Life": "https://images.pexels.com/photos/14181446/pexels-photo-14181446.jpeg?auto=compress&cs=tinysrgb&w=1200"
 };
-const photoAltByKey = {
+const photoAltByKey: Record<string, string> = {
   "Traditional Chagga Cooking Class": "Women preparing food over an open fire in Tanzania",
   "Materuni & Moshi Town Tour": "Tanzanian market vendor arranging fresh produce",
   "Camping & Village Life": "Mountain campsite with a tent in a green highland landscape"
 };
-const experiencePhoto = (key, fallback) => stockPhotoByKey[key] || fallback;
+const experiencePhoto = (key: string, fallback?: string): string | undefined => stockPhotoByKey[key] || fallback;
 ---
 <SiteLayout title="Materuni Tours & Experiences | Waterfall, Coffee & Chagga Culture" description="Book Materuni tours near Moshi: guided waterfall hikes, Chagga coffee experiences, cooking classes, Moshi town visits, Rau Forest nature walks and overnight village stays with local hosts." preloadImage={`${base}waterfall_image/1791998303073-materuni-waterfall-hike.jpg`}>
 <section class="page-hero"><span class="eyebrow" data-i18n="home_section_eyebrow">LOCAL CHAGGA EXPERIENCES</span><h1 data-i18n="experiences_hero_title">Discover Materuni with local Chagga hosts.</h1><p data-i18n="experiences_hero_intro">Choose a guided waterfall and village experience, Chagga coffee traditions, hands-on cooking, a Moshi town visit, Rau Forest nature or an overnight village stay. Every package includes the shared Materuni day essentials, with its own added experience.</p></section>
