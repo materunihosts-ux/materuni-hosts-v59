@@ -11,10 +11,11 @@ const bookingPreview = `${supabaseUrl}/storage/v1/object/public/materuni-images/
  <div class="booking-estimate-heading"><span class="eyebrow" data-i18n="estimate_heading">YOUR EXPERIENCE SUMMARY</span><span class="booking-estimate-note" data-i18n="estimate_note">Indicative estimate</span></div>
  <div class="booking-estimate-grid">
   <div><span data-i18n="estimate_experience">Selected experience</span><strong id="estimate-experience">Choose an experience</strong></div>
-  <div><span data-i18n="estimate_unit">Price per guest</span><strong id="estimate-unit">—</strong></div>
+  <div><span>Discounted price per guest</span><strong id="estimate-unit">—</strong></div>
+  <div><span>Group discount</span><strong id="estimate-discount">—</strong></div>
   <div class="booking-estimate-total"><span data-i18n="estimate_total">Estimated group total</span><strong id="estimate-total">—</strong></div>
  </div>
- <p data-i18n="estimate_disclaimer">Estimate based on the current published experience price and guest count. Transport and separately agreed extras are not included. Indicative TZS guide (15 Oct 2026; 1 USD ≈ TZS 2,640): $65 ≈ TZS 172,000 · $75 ≈ TZS 198,000 · $85 ≈ TZS 224,000 · $110 ≈ TZS 290,000 · $135 ≈ TZS 356,000. TZS amounts are rounded estimates; your host confirms the final amount before payment. Your host will confirm the final arrangements and amount before payment.</p>
+ <p>Group savings are applied automatically: 1–3 guests standard price; 4–5 guests save 5%; 6–9 guests save 8%; 10–14 guests save 10%; groups of 15 or more receive a custom quotation. Transport and separately agreed extras are not included. Your host confirms the final amount before payment.</p>
 </div>
 <form id="booking-form" class="form-grid">
 <div class="field full"><label for="experience" data-i18n="booking_experience_label">Choose your experience *</label><select id="experience" required><option value="">Loading experiences…</option></select></div>
@@ -37,10 +38,12 @@ function updateBookingEstimate(){
  if(!option||!option.value||!Number.isFinite(Number(option.dataset.price))||Number(option.dataset.price)<=0||!Number.isInteger(count)||count<1||count>30){panel.hidden=true;return}
  const unit=Number(option.dataset.price);
  const guests=count;
- const money=value=>new Intl.NumberFormat("en-US",{style:"currency",currency:"USD",maximumFractionDigits:0}).format(value);
+ const discount=guests>=10&&guests<=14?0.10:guests>=6&&guests<=9?0.08:guests>=4&&guests<=5?0.05:0;
+ const money=value=>new Intl.NumberFormat("en-US",{style:"currency",currency:"USD",minimumFractionDigits:2,maximumFractionDigits:2}).format(value);
  $("estimate-experience").textContent=option.textContent.split(" · $")[0];
- $("estimate-unit").textContent=money(unit);
- $("estimate-total").textContent=money(unit*guests);
+ $("estimate-unit").textContent=money(unit*(1-discount));
+ $("estimate-discount").textContent=guests>=15?"Custom group quote":discount?Math.round(discount*100)+"% off ("+money(unit*guests*discount)+" saved)": "No group discount";
+ $("estimate-total").textContent=guests>=15?"Custom quotation":money(unit*guests*(1-discount));
  panel.hidden=false;
 }
 const tanzaniaToday=()=>new Intl.DateTimeFormat("en-CA",{timeZone:"Africa/Dar_es_Salaam",year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date());
