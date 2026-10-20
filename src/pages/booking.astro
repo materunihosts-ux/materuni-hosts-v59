@@ -268,6 +268,7 @@ $("booking-form").addEventListener("submit",async e=>{
    console.warn("Booking saved; notification delivery could not be confirmed.",notificationError);
    notice=" Your request is saved, but automatic notifications could not be confirmed. Our host can verify it using your reference.";
   }
+  window.mhTrack?.("booking_request_success",{method:"website_form"});
   showFeedback("Booking request received — reference: "+reference+". Your request is awaiting host confirmation; it is not yet a confirmed reservation and no payment has been taken."+notice,notice?"warning":"success");
   $("booking-form").reset();
   updateBookingEstimate();
