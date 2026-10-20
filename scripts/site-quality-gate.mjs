@@ -4,6 +4,8 @@ import path from "node:path";
 const root = path.resolve("dist");
 const errors = [];
 const checks = [];
+const noindexPublicRoutes = [];
+const sitemapPaths = new Set();
 const fail = (message) => errors.push(message);
 const pass = (message) => checks.push(message);
 
@@ -100,14 +102,10 @@ if (fs.existsSync(sitemapPath)) {
   }
   if (urls.length) pass("All " + urls.length + " sitemap URLs resolve to built pages");
 
-  const sitemapPaths = new Set(urls.map((url) => {
+  urls.forEach((url) => {
     const pathname = new URL(url).pathname;
-    return pathname.length > 1 && pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;
-  }));
-  for (const route of noindexPublicRoutes) {
-    if (sitemapPaths.has(route)) fail(route + ": noindex page must be excluded from sitemap.xml");
-    else pass(route + ": noindex page is correctly excluded from sitemap.xml");
-  }
+    sitemapPaths.add(pathname.length > 1 && pathname.endsWith("/") ? pathname.slice(0, -1) : pathname);
+  });
   for (const requiredPath of ["/", "/experiences", "/camping", "/day-trips", "/booking"]) {
     if (!sitemapPaths.has(requiredPath)) fail("Sitemap is missing an important public route: " + requiredPath);
   }
@@ -153,8 +151,6 @@ const walk = (directory) => {
   }
 };
 walk(root);
-
-const noindexPublicRoutes = [];
 
 for (const file of htmlFiles) {
   const html = read(file);
@@ -203,6 +199,10 @@ const imageTags = [...html.matchAll(/<img\b[^>]*>/gi)].map((match) => match[0]);
   if (/href\s*=\s*["'][^"']*REPLACE_/i.test(html)) fail(relative + ": contains a placeholder URL in href");
 }
 if (htmlFiles.length) pass("Checked SEO metadata and primary headings on " + htmlFiles.length + " HTML pages");
+for (const route of noindexPublicRoutes) {
+  if (sitemapPaths.has(route)) fail(route + ": noindex page must be excluded from sitemap.xml");
+  else pass(route + ": noindex page is correctly excluded from sitemap.xml");
+}
 
 const notFoundPage = path.join(root, "404.html");
 if (!fs.existsSync(notFoundPage)) fail("Missing branded 404.html page");
