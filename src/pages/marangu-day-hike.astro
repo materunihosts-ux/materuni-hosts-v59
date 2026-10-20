@@ -3,7 +3,7 @@ import SiteLayout from "../layouts/SiteLayout.astro";
 import LocalBusinessSchema from "../components/LocalBusinessSchema.astro";
 const serviceData = {"@context":"https://schema.org","@type":"Service","name":"Marangu Day Hike from Moshi","serviceType":"Guided day hike and village visit enquiry","description":"A day hike enquiry for Marangu in the Kilimanjaro area, with route, fees and transport confirmed before booking.","provider":{"@type":"TourOperator","name":"Materuni Hosts","url":"https://materunihosts.com/"},"areaServed":[{"@type":"Place","name":"Marangu, Kilimanjaro Region, Tanzania"},{"@type":"City","name":"Moshi, Tanzania"}],"url":"https://materunihosts.com/marangu-day-hike"};
 ---
-<SiteLayout title="Marangu Day Hike from Moshi | Local Tour Enquiry" description="Ask about a Marangu day hike from Moshi, including village walks, waterfall options, route details, transport and a current group price.">
+<SiteLayout noindex={true} title="Marangu Day Hike from Moshi | Local Tour Enquiry" description="Ask about a Marangu day hike from Moshi, including village walks, waterfall options, route details, transport and a current group price.">
 <LocalBusinessSchema />
 <script type="application/ld+json" set:html={JSON.stringify(serviceData)} />
 <main class="landing">
