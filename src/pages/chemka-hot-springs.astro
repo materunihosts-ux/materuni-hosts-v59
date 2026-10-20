@@ -3,7 +3,7 @@ import SiteLayout from "../layouts/SiteLayout.astro";
 import LocalBusinessSchema from "../components/LocalBusinessSchema.astro";
 const serviceData = {"@context":"https://schema.org","@type":"Service","name":"Chemka Hot Springs Day Trip from Moshi","serviceType":"Guided hot springs day trip","description":"A day trip enquiry for Chemka, also known as Kikuletwa Hot Springs, from Moshi, Tanzania. Transport and arrangements are confirmed by request.","provider":{"@type":"TourOperator","name":"Materuni Hosts","url":"https://materunihosts.com/"},"areaServed":[{"@type":"City","name":"Moshi, Tanzania"},{"@type":"Place","name":"Chemka Hot Springs, Tanzania"}],"url":"https://materunihosts.com/chemka-hot-springs"};
 ---
-<SiteLayout title="Chemka Hot Springs Tour from Moshi | Kikuletwa" description="Plan a Chemka Hot Springs day trip from Moshi with Materuni Hosts. Ask about Kikuletwa, transport, availability and a price for your group.">
+<SiteLayout noindex={true} title="Chemka Hot Springs Tour from Moshi | Kikuletwa" description="Plan a Chemka Hot Springs day trip from Moshi with Materuni Hosts. Ask about Kikuletwa, transport, availability and a price for your group.">
 <LocalBusinessSchema />
 <script type="application/ld+json" set:html={JSON.stringify(serviceData)} />
 <main class="landing">
