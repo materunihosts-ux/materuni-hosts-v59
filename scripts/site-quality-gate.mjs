@@ -104,6 +104,10 @@ if (fs.existsSync(sitemapPath)) {
     const pathname = new URL(url).pathname;
     return pathname.length > 1 && pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;
   }));
+  for (const route of noindexPublicRoutes) {
+    if (sitemapPaths.has(route)) fail(route + ": noindex page must be excluded from sitemap.xml");
+    else pass(route + ": noindex page is correctly excluded from sitemap.xml");
+  }
   for (const requiredPath of ["/", "/experiences", "/camping", "/day-trips", "/booking"]) {
     if (!sitemapPaths.has(requiredPath)) fail("Sitemap is missing an important public route: " + requiredPath);
   }
@@ -150,6 +154,8 @@ const walk = (directory) => {
 };
 walk(root);
 
+const noindexPublicRoutes = [];
+
 for (const file of htmlFiles) {
   const html = read(file);
   const relative = path.relative(root, file);
@@ -160,7 +166,10 @@ for (const file of htmlFiles) {
   if (/<h1\b/gi.test(html) === false) fail(relative + ": missing primary heading");
   const isPrivateRoute = relative.startsWith("admin/") || relative === "admin.html";
   const isNotFoundRoute = relative === "404.html";
-  if (!isPrivateRoute && !isNotFoundRoute && /<meta\s+name=["']robots["']\s+content=["'][^"']*noindex/i.test(html)) fail(relative + ": public page must remain indexable");
+  if (!isPrivateRoute && !isNotFoundRoute && /<meta\s+name=["']robots["']\s+content=["'][^"']*noindex/i.test(html)) {
+    const route = relative.replace(/\\/g, "/").replace(/\/index\.html$/i, "").replace(/\.html$/i, "");
+    noindexPublicRoutes.push(route ? "/" + route : "/");
+  }
   if (!isPrivateRoute && !isNotFoundRoute) {
     const anchors = [...html.matchAll(/<a\b[^>]*>/gi)].map((match) => match[0]);
     for (const anchor of anchors) {
