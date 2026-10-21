@@ -153,6 +153,12 @@ walk(root);
 for (const file of htmlFiles) {
   const html = read(file);
   const relative = path.relative(root, file);
+  const isRedirectRoute = relative === "about/index.html";
+  if (isRedirectRoute) {
+    if (!/http-equiv/i.test(html) || !/refresh/i.test(html)) fail(relative + ": legacy About URL must redirect to /about-us");
+    else pass(relative + ": legacy About URL redirects to the canonical About Us page");
+    continue;
+  }
   if (!/<title>\s*[^<]+<\/title>/i.test(html)) fail(relative + ": missing page title");
   if (!/<meta\s+name=["']description["']\s+content=["'][^"']+["']/i.test(html)) fail(relative + ": missing meta description");
   if (!/<link\s+rel=["']canonical["']\s+href=["']https:\/\//i.test(html)) fail(relative + ": missing canonical URL");
