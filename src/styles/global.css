@@ -1698,3 +1698,31 @@ body.public-shell .site-footer{border-top:3px solid #c5a059}
   body.public-shell .experience-card>img{aspect-ratio:1.6/1}
   body.public-shell .split img{box-shadow:8px 8px 0 #e1d5c2}
 }
+
+
+/* Fix homepage hero stacking: keep the real photo above the hero background. */
+body.public-shell .hero.hero-home{display:flex!important;position:relative!important;isolation:isolate!important}
+body.public-shell .hero.hero-home>.hero-image{
+  position:absolute!important;inset:0!important;z-index:0!important;
+  display:block!important;width:100%!important;height:100%!important;
+  min-height:100%!important;overflow:hidden!important;
+}
+body.public-shell .hero.hero-home>.hero-image>.hero-photo{
+  position:absolute!important;inset:0!important;z-index:0!important;
+  display:block!important;width:100%!important;height:100%!important;
+  min-height:100%!important;object-fit:cover!important;
+}
+body.public-shell .hero.hero-home>.hero-copy{
+  position:relative!important;z-index:2!important;
+  display:flex!important;flex-direction:column!important;
+  align-items:flex-start!important;justify-content:center!important;
+  width:min(100%,920px)!important;max-width:920px!important;
+}
+body.public-shell .hero.hero-home>.hero-image:after{
+  z-index:1!important;content:""!important;position:absolute!important;
+  inset:0!important;pointer-events:none!important;
+}
+@media(max-width:850px){
+  body.public-shell .hero.hero-home{min-height:690px!important}
+  body.public-shell .hero.hero-home>.hero-copy{width:100%!important;max-width:100%!important}
+}
