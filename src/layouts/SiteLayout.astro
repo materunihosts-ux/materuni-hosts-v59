@@ -73,13 +73,11 @@ const structuredData = {
   "image": socialImage,
   "description": "Materuni waterfall hikes, Chagga coffee and cooking experiences, Moshi town tours, Rau Forest nature walks and overnight village stays hosted by local Chagga hosts near Moshi, Tanzania.",
   "telephone": "+255612068540",
-  "email": "hello@materunihosts.com",
   "priceRange": "USD 41–101 per person",
   "hasMap": "https://www.google.com/maps/search/?api=1&query=Materuni%20Hosts%20-%20Waterfall%20Tours%20%26%20Village%20Camping%2C%20Materuni%20Village%2C%20Moshi%2C%20Tanzania",
   "contactPoint": {
     "@type": "ContactPoint",
     "telephone": "+255612068540",
-    "email": "hello@materunihosts.com",
     "contactType": "customer service"
   },
   "potentialAction": {
@@ -107,13 +105,7 @@ const structuredData = {
 <!doctype html>
 <html lang={requestedLanguage && ["en","es","fr","de"].includes(requestedLanguage) ? requestedLanguage : "en"}>
 <head>
-{!isAdmin && !isVercelPreview && <script is:inline>
-(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-TLB463PS');
-</script>}
+
 <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="preload" as="style" href={globalStyles} /><link rel="stylesheet" href={globalStyles} media="print" onload="this.media='all'" /><noscript><link rel="stylesheet" href={globalStyles} /></noscript>
 <title>{title}</title><meta name="description" content={description} /><meta name="theme-color" content="#1A3322" /><link rel="canonical" href={canonical} />{!shouldNoindex && <><link rel="alternate" hreflang="en" href={localizedUrl("en")} /><link rel="alternate" hreflang="es" href={localizedUrl("es")} /><link rel="alternate" hreflang="fr" href={localizedUrl("fr")} /><link rel="alternate" hreflang="de" href={localizedUrl("de")} /><link rel="alternate" hreflang="x-default" href={localizedUrl("en")} /></>}<meta property="og:type" content="website" /><meta property="og:site_name" content="Materuni Hosts" /><meta property="og:title" content={title} /><meta property="og:description" content={description} /><meta property="og:url" content={canonical} /><meta property="og:image" content={socialImage} /><meta property="og:locale" content={requestedLanguage==="es"?"es_ES":requestedLanguage==="fr"?"fr_FR":requestedLanguage==="de"?"de_DE":"en_TZ"} /><meta property="og:image:alt" content="Materuni Hosts authentic village experiences in Materuni, Tanzania" /><meta name="twitter:card" content="summary_large_image" /><meta name="twitter:title" content={title} /><meta name="twitter:description" content={description} /><meta name="twitter:image" content={socialImage} />{!shouldNoindex && <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />}{!shouldNoindex && <script type="application/ld+json" set:html={JSON.stringify(webPageData)} />}{!shouldNoindex && <script type="application/ld+json" set:html={JSON.stringify(breadcrumbData)} />}{shouldNoindex && <meta name="robots" content="noindex,nofollow" />}{preloadImage && <link rel="preload" as="image" href={preloadImage} fetchpriority="high" />}
@@ -135,7 +127,7 @@ body.admin-shell #main-content{min-height:calc(100vh - 58px)}
 </style>
 </head>
 <body class={Astro.url.pathname.startsWith("/admin") ? "admin-shell" : "public-shell"}>
-{!isAdmin && !isVercelPreview && <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TLB463PS" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>}
+
 <a class="skip-link" href="#main-content">Skip to content</a>
 {!isAdmin && <header class="site-header"><a class="brand" href="/" aria-label="Materuni Hosts home"><img class="brand-logo" src="/materuni-hosts-logo-round.svg" alt="Materuni Hosts logo" width="86" height="86" /></a>
 <nav id="primary-navigation" aria-label="Main navigation"><a href="/" data-i18n="nav_home" aria-current={Astro.url.pathname === "/" ? "page" : undefined}>Home</a><a class="nav-camping" href="/camping" data-i18n="nav_camping">Materuni Camping</a><a href="/day-trips" data-i18n="nav_day_trips">Day Trips</a><a href="/experiences" data-i18n="nav_experiences">All Experiences</a><a href="/sustainability" data-i18n="nav_community">Community & sustainability</a><a href="/reviews" data-i18n="nav_reviews">Guest reviews</a><a href="/faq" data-i18n="nav_faqs">FAQs</a><a class="nav-cta" href="/booking" data-i18n="nav_availability">Check availability</a></nav>
@@ -380,5 +372,66 @@ if (chatEl("mh-chat-open") && chatEl("mh-chat-panel") && languageSelect && chatE
 
 {!isAdmin && <footer class="site-footer"><div><a class="brand brand-light" href="/" aria-label="Materuni Hosts home"><img class="brand-logo-footer" src="/materuni-hosts-logo-round.svg" alt="Materuni Hosts — official round logo" width="72" height="72" loading="lazy" decoding="async" /></a><p>Authentic Chagga experiences in Materuni Village, Moshi, Tanzania.</p><p class="tagline">Come as a guest. Leave as a friend.</p><div class="social-links" aria-label="Follow Materuni Hosts"><a data-social-key="facebook_url" href="https://www.facebook.com/share/1VTNWPbqcc/" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><svg viewBox="0 0 24 24" role="img" aria-hidden="true"><path d="M13.5 21v-8h2.7l.4-3.1h-3.1V8c0-.9.3-1.5 1.6-1.5h1.7V3.7c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2H7.3V13h2.8v8h3.4Z" fill="currentColor" stroke="none"/></svg><span>Facebook</span></a><a data-social-key="instagram_url" href="https://instagram.com/materuni_hosts" hidden aria-hidden="true" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><svg viewBox="0 0 24 24" role="img" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg><span>Instagram</span></a><a data-social-key="google_review_url" href="https://g.page/r/CXy6M_Suiip9EBM/review" hidden aria-hidden="true" target="_blank" rel="noopener noreferrer" aria-label="Google reviews"><svg viewBox="0 0 24 24" role="img" aria-hidden="true"><path d="M20.2 12.2c0-.6-.1-1.2-.2-1.8H12v3.4h4.6a4 4 0 0 1-1.7 2.6v2.2h2.8c1.6-1.5 2.5-3.7 2.5-6.4Z" fill="currentColor" stroke="none"/><path d="M12 20.5c2.3 0 4.2-.8 5.6-2.1l-2.8-2.2c-.8.5-1.7.9-2.8.9-2.2 0-4.1-1.5-4.8-3.5H4.3v2.3a8.5 8.5 0 0 0 7.7 4.6Z" fill="currentColor" stroke="none"/><path d="M7.2 13.6a5.1 5.1 0 0 1 0-3.2V8.1H4.3a8.5 8.5 0 0 0 0 7.8l2.9-2.3Z" fill="currentColor" stroke="none"/><path d="M12 6.9c1.3 0 2.4.4 3.3 1.3l2.5-2.5A8.3 8.3 0 0 0 12 3.5a8.5 8.5 0 0 0-7.7 4.6l2.9 2.3c.7-2 2.6-3.5 4.8-3.5Z" fill="currentColor" stroke="none"/></svg><span>Google</span></a><a href="https://wa.me/255612068540" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><svg viewBox="0 0 24 24" role="img" aria-hidden="true"><path d="M20.2 11.4a8.2 8.2 0 0 1-12 7.2L4 20l1.4-4.2a8.2 8.2 0 1 1 14.8-4.4Z"/><path d="M9 8.3c.5 2.8 2.1 4.4 4.8 5.1l1.1-1.2 2 1c-.2 1.6-1.2 2.3-2.6 2.3-3.8-.5-6.9-3.7-7.3-7.4 0-1.3.8-2.3 2.1-2.5l1 2z"/></svg><span>WhatsApp</span></a></div></div>
 <div><strong>Explore</strong><a href="/camping">Materuni Camping</a><a href="/day-trips">Materuni Day Trips</a><a href="/experiences">All experiences</a><a href="/itinerary">Build your itinerary</a><a href="/reviews">Guest reviews</a><a href="/faq">FAQs</a><a href="/sustainability">Our approach</a><a href="/travel-guide">Travel guide</a><a href="/privacy">Privacy</a><a href="/terms">Booking terms</a><a href="/work-with-us">Work with us</a><a href="/booking">Book your experience</a></div>
-<div><strong>Talk to a local host</strong><a href="https://wa.me/255612068540" target="_blank" rel="noopener noreferrer">WhatsApp +255 612 068 540</a><a href="mailto:hello@materunihosts.com">hello@materunihosts.com</a><span>Materuni Village, Moshi · Tanzania</span><a href="https://www.google.com/maps/search/?api=1&query=Materuni%20Hosts%20-%20Waterfall%20Tours%20%26%20Village%20Camping%2C%20Materuni%20Village%2C%20Moshi%2C%20Tanzania" target="_blank" rel="noopener noreferrer">Find us on Google Maps</a></div><div class="copyright">Materuni Hosts. All rights reserved.</div></footer>}
+<div><strong>Talk to a local host</strong><a href="https://wa.me/255612068540" target="_blank" rel="noopener noreferrer">WhatsApp +255 612 068 540</a><button class="mh-cookie-preferences-link" type="button" id="mh-cookie-preferences-open">Cookie preferences</button><span>Materuni Village, Moshi · Tanzania</span><a href="https://www.google.com/maps/search/?api=1&query=Materuni%20Hosts%20-%20Waterfall%20Tours%20%26%20Village%20Camping%2C%20Materuni%20Village%2C%20Moshi%2C%20Tanzania" target="_blank" rel="noopener noreferrer">Find us on Google Maps</a></div><div class="copyright">Materuni Hosts. All rights reserved.</div></footer>}
+
+{!isAdmin && !isVercelPreview && <section class="mh-cookie-banner" id="mh-cookie-banner" role="dialog" aria-modal="false" aria-labelledby="mh-cookie-title" aria-describedby="mh-cookie-description" hidden>
+  <div class="mh-cookie-copy"><strong id="mh-cookie-title">Your privacy matters</strong><p id="mh-cookie-description">We use essential browser storage for site functions. With your permission, we also use Google Analytics to understand how visitors use this website. Advertising cookies remain disabled.</p></div>
+  <div class="mh-cookie-actions"><button type="button" class="mh-cookie-reject" id="mh-cookie-reject">Reject optional</button><button type="button" class="mh-cookie-accept" id="mh-cookie-accept">Accept analytics</button></div>
+</section>
+<style is:global>
+.mh-cookie-banner{position:fixed;z-index:10000;left:18px;right:18px;bottom:18px;max-width:980px;margin:0 auto;padding:20px 22px;display:flex;align-items:center;justify-content:space-between;gap:20px;background:#FAF7F2;color:#242421;border:1px solid #C5A059;border-radius:12px;box-shadow:0 16px 50px rgba(0,0,0,.22)}
+.mh-cookie-banner[hidden]{display:none}
+.mh-cookie-copy{max-width:620px}.mh-cookie-copy strong{display:block;color:#1A3322;font:700 16px Manrope,sans-serif}.mh-cookie-copy p{margin:6px 0 0;font:400 13px/1.65 Manrope,sans-serif;color:#4c514b}
+.mh-cookie-actions{display:flex;flex-wrap:wrap;gap:9px;flex-shrink:0}.mh-cookie-actions button{min-height:42px;padding:10px 15px;border-radius:5px;font:700 12px Manrope,sans-serif;cursor:pointer}
+.mh-cookie-reject{background:transparent;color:#1A3322;border:1px solid #1A3322}.mh-cookie-accept{background:#1A3322;color:#FAF7F2;border:1px solid #1A3322}
+.mh-cookie-preferences-link{display:inline-block;margin-top:10px;padding:0;border:0;background:none;color:inherit;text-align:left;text-decoration:underline;text-underline-offset:3px;font:inherit;cursor:pointer}
+.mh-cookie-actions button:focus-visible,.mh-cookie-preferences-link:focus-visible{outline:3px solid #C5A059;outline-offset:3px}
+@media(max-width:650px){.mh-cookie-banner{left:10px;right:10px;bottom:10px;padding:17px;display:block}.mh-cookie-actions{margin-top:14px;display:grid;grid-template-columns:1fr 1fr}.mh-cookie-actions button{width:100%;padding:9px 8px;font-size:11px}}
+</style>
+<script is:inline>
+(function(){
+  if(document.body.classList.contains("admin-shell")) return;
+  var key="materuni-cookie-consent-v1";
+  var banner=document.getElementById("mh-cookie-banner");
+  var accept=document.getElementById("mh-cookie-accept");
+  var reject=document.getElementById("mh-cookie-reject");
+  var manage=document.getElementById("mh-cookie-preferences-open");
+  var copy={
+    en:["Your privacy matters","We use essential browser storage for site functions. With your permission, we also use Google Analytics to understand how visitors use this website. Advertising cookies remain disabled.","Reject optional","Accept analytics"],
+    es:["Tu privacidad importa","Utilizamos almacenamiento esencial del navegador para el funcionamiento del sitio. Con tu permiso, también usamos Google Analytics para comprender cómo se utiliza esta web. La publicidad permanece desactivada.","Rechazar opcionales","Aceptar analítica"],
+    fr:["Votre vie privée compte","Nous utilisons le stockage essentiel du navigateur pour le fonctionnement du site. Avec votre accord, nous utilisons aussi Google Analytics pour comprendre l’utilisation du site. Les cookies publicitaires restent désactivés.","Refuser les options","Accepter l’analyse"],
+    de:["Ihre Privatsphäre ist wichtig","Wir verwenden notwendigen Browser-Speicher für Website-Funktionen. Mit Ihrer Zustimmung nutzen wir Google Analytics, um die Nutzung dieser Website zu verstehen. Werbe-Cookies bleiben deaktiviert.","Optionale ablehnen","Analyse akzeptieren"]
+  };
+  var lang=(document.documentElement.lang||"en").slice(0,2);
+  var strings=copy[lang]||copy.en;
+  document.getElementById("mh-cookie-title").textContent=strings[0];
+  document.getElementById("mh-cookie-description").textContent=strings[1];
+  reject.textContent=strings[2];accept.textContent=strings[3];
+  window.dataLayer=window.dataLayer||[];
+  window.gtag=window.gtag||function(){window.dataLayer.push(arguments);};
+  window.gtag("consent","default",{analytics_storage:"denied",ad_storage:"denied",ad_user_data:"denied",ad_personalization:"denied",functionality_storage:"granted",security_storage:"granted",wait_for_update:500});
+  var loaded=false;
+  function loadAnalytics(){
+    if(loaded||location.hostname.endsWith(".vercel.app")) return;
+    loaded=true;
+    window.gtag("consent","update",{analytics_storage:"granted",ad_storage:"denied",ad_user_data:"denied",ad_personalization:"denied"});
+    window.dataLayer.push({"gtm.start":new Date().getTime(),event:"gtm.js"});
+    var first=document.getElementsByTagName("script")[0],script=document.createElement("script");
+    script.async=true;script.src="https://www.googletagmanager.com/gtm.js?id=GTM-TLB463PS";
+    first.parentNode.insertBefore(script,first);
+  }
+  function save(value){
+    try{localStorage.setItem(key,value);}catch(error){}
+    banner.hidden=true;
+    if(value==="accepted") loadAnalytics();
+  }
+  var current=null;try{current=localStorage.getItem(key);}catch(error){}
+  if(current==="accepted") loadAnalytics();
+  else if(current!=="rejected") banner.hidden=false;
+  accept.addEventListener("click",function(){save("accepted");});
+  reject.addEventListener("click",function(){save("rejected");});
+  manage&&manage.addEventListener("click",function(){banner.hidden=false;});
+})();
+</script>
+
 </body></html>
