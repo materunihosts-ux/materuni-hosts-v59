@@ -1991,3 +1991,45 @@ body.public-shell .site-footer .copyright {
 .cookie-reopen { position:fixed; z-index:9998; right:14px; bottom:12px; padding:8px 12px; border:1px solid rgba(26,51,34,.35); border-radius:999px; background:#FAF7F2; color:#1A3322; box-shadow:0 3px 14px rgba(0,0,0,.12); font:700 10px/1.2 var(--sans); cursor:pointer; }
 .cookie-reopen:focus-visible { outline:3px solid #C5A059; outline-offset:3px; }
 .cookie-consent:not([hidden]) ~ .cookie-reopen { display:none; }
+
+/* Compact-screen header: keep the logo, language selector and menu usable at 320px. */
+@media (max-width: 360px) {
+  body.public-shell .site-header {
+    padding-inline: 10px;
+    gap: 8px;
+  }
+  body.public-shell .site-header > .brand {
+    min-width: 0;
+    min-height: 0;
+    gap: 6px;
+  }
+  body.public-shell .site-header > .brand .brand-logo {
+    width: 48px;
+    height: 48px;
+    flex: 0 0 48px;
+  }
+  body.public-shell .site-header .brand-lockup strong {
+    font-size: 16px;
+    white-space: nowrap;
+  }
+  body.public-shell .site-header .brand-lockup small {
+    font-size: 5.5px;
+    letter-spacing: .07em;
+  }
+  body.public-shell .language-control {
+    margin-left: auto;
+    flex: 0 0 auto;
+  }
+  body.public-shell .language-control select {
+    min-width: 44px;
+    min-height: 44px;
+    padding: 7px 18px 7px 6px;
+  }
+  body.public-shell .site-header .menu-toggle {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
+    flex: 0 0 44px;
+  }
+}
