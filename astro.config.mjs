@@ -6,9 +6,9 @@ export default defineConfig({
   site: 'https://materunihosts.com',
   image: { remotePatterns: [
     { protocol: 'https', hostname: 'sskmzswoeljxwojcszta.supabase.co', pathname: '/storage/v1/object/public/materuni-images/**' },
-    { protocol: 'https', hostname: 'images.unsplash.com', pathname: '/photo-**' },
-    { protocol: 'https', hostname: 'images.pexels.com', pathname: '/photos/**' },
-    { protocol: 'https', hostname: 'commons.wikimedia.org', pathname: '/wiki/Special:FilePath/**' },
+    { protocol: 'https', hostname: 'images.unsplash.com', pathname: '/**' },
+    { protocol: 'https', hostname: 'images.pexels.com', pathname: '/**' },
+    { protocol: 'https', hostname: 'commons.wikimedia.org', pathname: '/**' },
   ] },
   output: 'static',
   build: { assets: '_astro' },
