@@ -22,6 +22,14 @@
 <script is:inline>
 (() => {
   const key = "materuni-cookie-consent-v1";
+  // Queue conversion-friendly events for the consent-gated GTM container.
+  // No guest names, emails, phone numbers or booking references are sent.
+  document.addEventListener("click", (event) => {
+    const link = event.target instanceof Element ? event.target.closest('a[href*="wa.me"]') : null;
+    if (!link) return;
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ event: "whatsapp_click", link_url: "https://wa.me/" });
+  });
   const banner = document.getElementById("cookie-consent");
   if (!banner) return;
   const settings = document.getElementById("cookie-settings");
