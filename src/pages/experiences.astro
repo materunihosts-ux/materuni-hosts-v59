@@ -34,6 +34,27 @@ const base=`${supabaseUrl}/storage/v1/object/public/materuni-images/`;
 // @ts-nocheck
 import { supabaseUrl as catalogApi, publishableKey as catalogKey } from "../lib/supabase-public";
 const catalogHeaders = { apikey: catalogKey, Authorization: "Bearer " + catalogKey };
+const publicMediaBase = catalogApi + "/storage/v1/object/public/materuni-images/";
+const photoAltByKey: Record<string,string> = {
+  "Waterfall & Chagga Culture": "Materuni Waterfall and surrounding green forest in Tanzania",
+  "Traditional Coffee Experience": "Traditional coffee experience with local Materuni hosts",
+  "Traditional Chagga Cooking Class": "Guests preparing traditional Chagga food during a Materuni cooking class",
+  "Materuni & Moshi Town Tour": "Local market scene in Moshi, Tanzania",
+  "Materuni & Rau Forest Experience": "Rau Forest in Miembeni Ward, Moshi, Tanzania",
+  "Camping & Village Life": "Village camping experience in Materuni beneath Mount Kilimanjaro"
+};
+function experiencePhoto(key: string, imageUrl?: string | null) {
+  if (imageUrl && /^https:\/\//i.test(imageUrl)) return imageUrl;
+  const fallback: Record<string,string> = {
+    "Waterfall & Chagga Culture": publicMediaBase + "waterfall_image/1791998303073-materuni-waterfall-hike.jpg",
+    "Traditional Coffee Experience": publicMediaBase + "coffee_image/1791998412318-materuni-tour.jpg",
+    "Traditional Chagga Cooking Class": publicMediaBase + "cooking_image/1792089297987-cooking-class.jpg",
+    "Materuni & Moshi Town Tour": "https://commons.wikimedia.org/wiki/Special:FilePath/Market_place_at_Moshi_Town.jpg?width=1600",
+    "Materuni & Rau Forest Experience": "https://commons.wikimedia.org/wiki/Special:FilePath/Rau_forest_in_Miembeni_Ward,_Moshi.jpg?width=1600",
+    "Camping & Village Life": publicMediaBase + "story_image/1791994219885-materuni-coffe-plantatio-tour.jpg"
+  };
+  return fallback[key] || "";
+}
 const cardsRoot = document.querySelector(".cards");
 const safeText = (node, value) => { if (node && typeof value === "string") node.textContent = value; };
 function appendProductMeta(body, tour) {
