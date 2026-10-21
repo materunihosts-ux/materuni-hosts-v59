@@ -269,6 +269,9 @@ $("booking-form").addEventListener("submit",async e=>{
    notice=" Your request is saved, but automatic notifications could not be confirmed. Our host can verify it using your reference.";
   }
   showFeedback("Booking request received — reference: "+reference+". Your request is awaiting host confirmation; it is not yet a confirmed reservation and no payment has been taken."+notice,notice?"warning":"success");
+  // A booking request is a lead, not a confirmed or paid reservation.
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({event:"booking_request_submitted",conversion_type:"lead",experience_name:experience,guest_count:guestCount,request_status:"pending_confirmation"});
   $("booking-form").reset();
   updateBookingEstimate();
   $("date").min=tanzaniaToday();
