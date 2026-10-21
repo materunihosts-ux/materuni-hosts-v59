@@ -98,6 +98,8 @@ if (homeFile) {
 
 const layoutSourcePath = path.resolve("src/layouts/SiteLayout.astro");
 const businessSchemaPath = path.resolve("src/components/LocalBusinessSchema.astro");
+if (fs.existsSync(layoutSourcePath) && /15\\s+oct(?:\\.|obre)?\\s+2026|15\\.\\s+Okt\\.\\s+2026|2[.,]640\\s+TZS/i.test(read(layoutSourcePath))) fail("Multilingual fallback copy must not publish a stale TZS exchange-rate estimate");
+else if (fs.existsSync(layoutSourcePath)) pass("Multilingual fallback copy avoids stale TZS exchange-rate estimates");
 if (fs.existsSync(layoutSourcePath) && read(layoutSourcePath).includes('mailto:materunihosts@gmail.com')) pass("Verified public email is present as a clickable footer contact");
 else fail("Public footer must include the verified materunihosts@gmail.com contact email");
 if (fs.existsSync(layoutSourcePath) && read(layoutSourcePath).includes('"email": "materunihosts@gmail.com"') && fs.existsSync(businessSchemaPath) && read(businessSchemaPath).includes('"email": "materunihosts@gmail.com"')) pass("Verified email is present in TourOperator and LocalBusiness structured data");
