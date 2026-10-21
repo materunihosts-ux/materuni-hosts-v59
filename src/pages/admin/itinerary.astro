@@ -1,0 +1,80 @@
+---
+import SiteLayout from "../../layouts/SiteLayout.astro";
+---
+<SiteLayout title="Itinerary Studio | Materuni Hosts" description="Private host workspace for preparing guest itineraries." noindex={true}>
+<section class="page-hero"><span class="eyebrow">PRIVATE HOST WORKSPACE</span><h1>Itinerary Studio</h1><p>Prepare a clear, branded travel proposal for a guest, then print it as PDF or share it directly.</p></section>
+<section class="booking-wrap">
+ <div class="booking-panel" id="login-panel">
+  <h2>Administrator sign in</h2>
+  <form id="login-form" class="form-grid">
+   <div class="field full"><label for="admin-email">Admin email</label><input id="admin-email" type="email" autocomplete="username" required></div>
+   <div class="field full"><label for="admin-password">Password</label><input id="admin-password" type="password" autocomplete="current-password" required></div>
+   <div class="field full"><button class="button" id="login-button" type="submit">Sign in securely</button><p id="login-feedback" class="muted" aria-live="polite"></p></div>
+  </form>
+ </div>
+ <div id="studio" hidden>
+  <div class="booking-panel">
+   <div class="section-heading"><div><span class="eyebrow">GUEST PROPOSAL</span><h2>Build an itinerary</h2><p class="muted">Complete the guest details and proposed experiences. This proposal is not a confirmed booking.</p></div><a class="button button-secondary" href="/admin">Back to dashboard</a></div>
+   <form id="itinerary-form" class="form-grid">
+    <div class="field"><label for="guest-name">Guest full name</label><input id="guest-name" autocomplete="name" required placeholder="Guest name"></div>
+    <div class="field"><label for="guest-email">Guest email (optional)</label><input id="guest-email" type="email" autocomplete="email" placeholder="guest@example.com"></div>
+    <div class="field"><label for="travel-date">Proposed start date</label><input id="travel-date" type="date" required></div>
+    <div class="field"><label for="guest-count">Number of guests</label><input id="guest-count" type="number" min="1" max="30" value="2" required></div>
+    <div class="field full"><label for="experiences">Experiences and daily plan</label><textarea id="experiences" rows="7" required placeholder="Day 1 — Materuni Waterfall & Chagga Culture&#10;Day 2 — Traditional Coffee Experience&#10;Add timing, meeting point and any practical details."></textarea></div>
+    <div class="field"><label for="total-price">Proposed total (USD)</label><input id="total-price" type="number" min="0" step="0.01" placeholder="0.00"></div>
+    <div class="field"><label for="valid-until">Proposal valid until (optional)</label><input id="valid-until" type="date"></div>
+    <div class="field full"><label for="host-notes">Important notes and arrangements</label><textarea id="host-notes" rows="3" placeholder="What's included, exclusions, pickup, dietary needs or special arrangements."></textarea></div>
+    <div class="field full"><button class="button" type="submit">Update itinerary preview</button><p id="studio-feedback" class="muted" aria-live="polite"></p></div>
+   </form>
+  </div>
+  <div class="booking-panel" style="margin-top:1.25rem">
+   <div class="section-heading"><div><span class="eyebrow">BRANDED DOCUMENT</span><h2>Guest-ready preview</h2><p class="muted">Review the proposal before sharing it.</p></div></div>
+   <div id="proposal-preview" class="proposal-preview"><p class="muted">Complete the form to prepare the guest proposal.</p></div>
+   <div class="admin-shortcuts" style="margin-top:1rem">
+    <button class="button" id="save-pdf" type="button" disabled>Print / Save as PDF</button>
+    <button class="button button-secondary" id="share-whatsapp" type="button" disabled>Share via WhatsApp</button>
+    <button class="button button-secondary" id="share-email" type="button" disabled>Prepare email</button>
+   </div>
+   <p class="muted" style="margin-top:1rem">This workspace prepares proposals for sharing. It does not create a confirmed booking or save a permanent itinerary record.</p>
+  </div>
+ </div>
+</section>
+<style>
+.proposal-preview{background:#faf7f2;border:1px solid #e6dfd3;border-radius:16px;padding:clamp(18px,4vw,32px);color:#242421}.proposal-head{display:flex;justify-content:space-between;gap:16px;align-items:center;border-bottom:2px solid #c5a059;padding-bottom:18px}.proposal-head img{width:58px;height:58px;object-fit:contain}.proposal-kicker{font-size:.72rem;letter-spacing:.16em;color:#6d765f;font-weight:800}.proposal-preview h3{font-family:Georgia,serif;color:#1a3322;font-size:clamp(1.5rem,4vw,2.2rem);margin:20px 0 8px}.proposal-meta{display:flex;flex-wrap:wrap;gap:8px 18px;color:#55564f;font-size:.92rem}.proposal-body{white-space:pre-wrap;line-height:1.8;margin:22px 0}.proposal-price{font-family:Georgia,serif;font-size:1.6rem;color:#1a3322;border-top:1px solid #d8cfbf;padding-top:16px}.proposal-foot{border-top:1px solid #d8cfbf;margin-top:24px;padding-top:14px;font-size:.82rem;color:#62635c;line-height:1.7}
+@media print{body *{visibility:hidden!important}#proposal-print,#proposal-print *{visibility:visible!important}#proposal-print{position:absolute;inset:0;width:100%;background:#fff!important;border:0!important}}
+</style>
+<script>
+import { supabaseUrl, publishableKey } from "../../lib/supabase-public";
+let accessToken="";
+const el=id=>document.getElementById(id);
+const headers=()=>({apikey:publishableKey,Authorization:"Bearer "+accessToken,"Content-Type":"application/json"});
+el("login-form").addEventListener("submit",async event=>{
+ event.preventDefault();const button=el("login-button");button.disabled=true;el("login-feedback").textContent="Verifying administrator…";
+ try{
+  const response=await fetch(supabaseUrl+"/auth/v1/token?grant_type=password",{method:"POST",headers:{apikey:publishableKey,"Content-Type":"application/json"},body:JSON.stringify({email:el("admin-email").value.trim(),password:el("admin-password").value})});
+  const session=await response.json();if(!response.ok)throw new Error(session.msg||session.message||"Sign in failed.");
+  accessToken=session.access_token;
+  const check=await fetch(supabaseUrl+"/rest/v1/admin_users?select=user_id&user_id=eq."+encodeURIComponent(session.user.id),{headers});
+  const admins=await check.json();if(!check.ok||!Array.isArray(admins)||!admins.length)throw new Error("This account is not authorised as an administrator.");
+  el("login-panel").hidden=true;el("studio").hidden=false;
+ }catch(error){accessToken="";el("login-feedback").textContent=error.message;}finally{button.disabled=false;}
+});
+function getData(){return {name:el("guest-name").value.trim(),email:el("guest-email").value.trim(),date:el("travel-date").value,guests:el("guest-count").value,experiences:el("experiences").value.trim(),price:el("total-price").value,valid:el("valid-until").value,notes:el("host-notes").value.trim()};}
+function escapeHtml(value){return String(value||"").replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]));}
+function render(){
+ const d=getData();if(!d.name||!d.date||!d.experiences){el("studio-feedback").textContent="Add the guest name, proposed date and itinerary before sharing.";return false;}
+ const money=d.price!==""?"$"+Number(d.price).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2}):"To be confirmed";
+ const date=new Date(d.date+"T12:00:00").toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"});
+ const valid=d.valid?new Date(d.valid+"T12:00:00").toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"}):"";
+ const preview=el("proposal-preview");preview.id="proposal-preview";
+ preview.innerHTML='<div id="proposal-print"><div class="proposal-head"><div><div class="proposal-kicker">MATERUNI HOSTS · MOSHI · KILIMANJARO</div><h3>Personalised itinerary</h3><div class="proposal-meta"><span>Prepared for '+escapeHtml(d.name)+'</span><span>'+escapeHtml(date)+'</span><span>'+escapeHtml(d.guests)+' guest(s)</span></div></div><img src="https://materunihosts.com/materuni-hosts-logo-round.svg" alt="Materuni Hosts logo"></div><div class="proposal-body">'+escapeHtml(d.experiences)+'</div>'+(d.notes?'<h4>Important arrangements</h4><div class="proposal-body">'+escapeHtml(d.notes)+'</div>':'')+'<div class="proposal-price">Proposed total: '+escapeHtml(money)+'</div>'+(valid?'<p>Proposal valid until: '+escapeHtml(valid)+'</p>':'')+'<div class="proposal-foot">This is a travel proposal, not a confirmed reservation. Experiences and availability are subject to host confirmation. No payment has been taken.<br><strong>Materuni Hosts</strong> · Materuni Village, Moshi, Tanzania<br>WhatsApp: +255 612 068 540 · Come as a guest. Leave as a friend.</div></div>';
+ ["save-pdf","share-whatsapp","share-email"].forEach(id=>el(id).disabled=false);
+ el("studio-feedback").textContent="Proposal preview updated. Review it before sharing.";
+ return true;
+}
+el("itinerary-form").addEventListener("submit",event=>{event.preventDefault();render();});
+el("save-pdf").addEventListener("click",()=>{if(!render())return;const printWindow=window.open("","_blank");if(!printWindow){el("studio-feedback").textContent="Allow pop-ups to open the PDF print view.";return;}const html='<!doctype html><html><head><meta charset="utf-8"><title>Materuni Hosts itinerary</title><style>body{font:15px Arial,sans-serif;color:#242421;margin:40px}.head{display:flex;justify-content:space-between;border-bottom:2px solid #c5a059;padding-bottom:18px}.head img{width:58px;height:58px}h1{font:32px Georgia;color:#1a3322}.meta{color:#555}.body{white-space:pre-wrap;line-height:1.8;margin:24px 0}.price{font:26px Georgia;color:#1a3322;border-top:1px solid #ddd;padding-top:16px}.foot{border-top:1px solid #ddd;margin-top:24px;padding-top:14px;font-size:12px;line-height:1.7}@media print{body{margin:18mm}}</style></head><body>'+el("proposal-print").innerHTML+'</body></html>';printWindow.document.open();printWindow.document.write(html);printWindow.document.close();printWindow.focus();printWindow.print();});
+el("share-whatsapp").addEventListener("click",()=>{if(!render())return;const d=getData();const text="Materuni Hosts itinerary for "+d.name+"\nDate: "+d.date+"\nGuests: "+d.guests+"\n\n"+d.experiences+"\n\nProposed total: "+(d.price?"$"+Number(d.price).toFixed(2):"To be confirmed")+"\n\nThis is a proposal, not a confirmed booking.";window.open("https://wa.me/?text="+encodeURIComponent(text),"_blank","noopener");});
+el("share-email").addEventListener("click",()=>{if(!render())return;const d=getData();const subject="Your proposed Materuni Hosts itinerary";const body="Hello "+d.name+",\n\nThank you for considering Materuni Hosts. Please find your proposed itinerary below.\n\n"+d.experiences+"\n\nProposed total: "+(d.price?"$"+Number(d.price).toFixed(2):"To be confirmed")+"\n\nThis is a proposal and is subject to availability and written confirmation.\n\nWarm regards,\nMateruni Hosts\nWhatsApp: +255 612 068 540";location.href="mailto:"+encodeURIComponent(d.email)+"?subject="+encodeURIComponent(subject)+"&body="+encodeURIComponent(body);});
+</script>
+</SiteLayout>
