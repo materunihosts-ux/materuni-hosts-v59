@@ -251,6 +251,12 @@ $("booking-form").addEventListener("submit",async e=>{
   if(!created?.booking_id)throw new Error("The booking response could not be verified. Please contact our host before submitting again.");
   try{const saved=JSON.parse(sessionStorage.getItem(attemptStorageKey)||"null");if(saved?.key===idempotencyKey)sessionStorage.removeItem(attemptStorageKey);}catch(storageError){}
   const reference=created.booking_reference||created.booking_id;
+  // Record a conversion only after the booking request is safely saved and only with analytics consent.
+  try{
+   if(localStorage.getItem("materuni-cookie-consent-v1")==="accepted"&&typeof window.gtag==="function"){
+    window.gtag("event","generate_lead",{method:"booking_form",experience_type:experience,group_size:guestCount});
+   }
+  }catch(analyticsError){console.warn("Optional booking analytics unavailable.",analyticsError);}
   let notice="";
   try{
    const notificationResponse=await fetch(url+"/functions/v1/booking-notifications",{
