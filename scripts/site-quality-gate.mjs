@@ -79,7 +79,7 @@ for (const sourcePath of groupDiscountPages) {
     continue;
   }
   const source = read(fullPath);
-  const rule = source.match(/\.group-discount-heading\\s+\.eyebrow\\s*\\{[^}]*color:\\s*(#[0-9a-fA-F]{6})/i);
+  const rule = source.match(/\.group-discount-heading\s+\.eyebrow\s*\{[^}]*color:\s*(#[0-9a-fA-F]{6})/i);
   if (!rule) {
     fail(sourcePath + ": group discount label must define a contrast-tested foreground color");
     continue;
