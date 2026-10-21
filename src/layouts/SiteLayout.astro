@@ -2,18 +2,19 @@
 import globalStyles from "../styles/global.css?url";
 import CookieConsent from "../components/CookieConsent.astro";
 import { supabaseUrl } from "../lib/supabase-public";
-const { title = "Materuni Hosts | Authentic Chagga Experiences", description = "Discover authentic Chagga coffee, waterfalls, food and village life in Materuni, Kilimanjaro, Tanzania.", noindex = false, preloadImage = null } = Astro.props;
+const { title = "Materuni Hosts | Authentic Chagga Experiences", description = "Discover authentic Chagga coffee, waterfalls, food and village life in Materuni, Kilimanjaro, Tanzania.", noindex = false, preloadImage = null, canonicalOverride = null } = Astro.props;
 const isAdmin = Astro.url.pathname.startsWith("/admin");
 const isVercelPreview = Astro.url.hostname.endsWith(".vercel.app") && Astro.url.hostname !== "materunihosts.com";
 const shouldNoindex = noindex || isAdmin || isVercelPreview;
 const requestedLanguage = Astro.url.searchParams.get("lang");
 const canonicalUrl = new URL(Astro.url.pathname, "https://materunihosts.com");
 if (requestedLanguage && ["en","es","fr","de"].includes(requestedLanguage)) canonicalUrl.searchParams.set("lang", requestedLanguage);
-const canonical = canonicalUrl.toString();
+const canonical = canonicalOverride ? new URL(canonicalOverride, "https://materunihosts.com").toString() : canonicalUrl.toString();
 const localizedUrl = (language: string) => { const url = new URL(Astro.url.pathname, "https://materunihosts.com"); url.searchParams.set("lang", language); return url.toString(); };
 const breadcrumbLabels: Record<string, string> = {
   experiences: "Experiences",
   about: "Our story",
+  "about-us": "Our story",
   camping: "Materuni Camping",
   "day-trips": "Materuni Day Trips",
   itinerary: "Build itinerary",
