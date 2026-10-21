@@ -1,6 +1,5 @@
 ---
 import SiteLayout from "../layouts/SiteLayout.astro";
-import { Image } from "astro:assets";
 import { supabaseUrl } from "../lib/supabase-public";
 
 const mediaBase = `${supabaseUrl}/storage/v1/object/public/materuni-images/`;
@@ -24,7 +23,7 @@ const community = mediaBase + "story_image/1791995912146-materuni-community.jpg"
         <a class="text-link" href="/booking">Plan your visit</a>
       </div>
     </div>
-    <Image src={community} alt="Community life and local hosting in Materuni Village" width={900} height={760} format="webp" quality={78} loading="eager" fetchpriority="high" />
+    <img src={community} alt="Community life and local hosting in Materuni Village" width="900" height="760" loading="eager" fetchpriority="high" decoding="async" />
   </section>
 
   <section class="about-intro">
@@ -41,15 +40,15 @@ const community = mediaBase + "story_image/1791995912146-materuni-community.jpg"
       <p>Choose the experience that best matches your interests and the time you have.</p>
     </div>
     <article class="experience">
-      <Image src={waterfall} alt="Waterfall and forest walk in Materuni" width={720} height={520} format="webp" quality={76} loading="lazy" />
+      <img src={waterfall} alt="Waterfall and forest walk in Materuni" width="720" height="520" loading="lazy" decoding="async" />
       <div><h3>Waterfall and nature walks</h3><p>Follow local walking routes through the green landscape to Materuni Waterfall and discover the natural setting around the village.</p><a href="/materuni-waterfall-tour">Explore waterfall tours</a></div>
     </article>
     <article class="experience">
-      <Image src={coffee} alt="Traditional coffee experience with local hosts in Materuni" width={720} height={520} format="webp" quality={76} loading="lazy" />
+      <img src={coffee} alt="Traditional coffee experience with local hosts in Materuni" width="720" height="520" loading="lazy" decoding="async" />
       <div><h3>Chagga coffee and village culture</h3><p>Learn about local coffee traditions, take part in roasting and grinding, and spend time discovering village life with local hosts.</p><a href="/materuni-coffee-tour">Explore the coffee experience</a></div>
     </article>
     <article class="experience">
-      <Image src={cooking} alt="Traditional Chagga cooking experience in Materuni" width={720} height={520} format="webp" quality={76} loading="lazy" />
+      <img src={cooking} alt="Traditional Chagga cooking experience in Materuni" width="720" height="520" loading="lazy" decoding="async" />
       <div><h3>Traditional food and cooking</h3><p>Take part in a hands-on cooking experience and learn about ingredients and food traditions from the area.</p><a href="/experiences">Explore all experiences</a></div>
     </article>
   </section>
@@ -67,7 +66,7 @@ const community = mediaBase + "story_image/1791995912146-materuni-community.jpg"
       </ul>
       <a class="button" href="/sustainability">Our approach to community and sustainability</a>
     </div>
-    <Image src={community} alt="Materuni community and village setting" width={760} height={900} format="webp" quality={76} loading="lazy" />
+    <img src={community} alt="Materuni community and village setting" width="760" height="900" loading="lazy" decoding="async" />
   </section>
 
   <section class="about-next">
