@@ -7,6 +7,19 @@ const checks = [];
 const fail = (message) => errors.push(message);
 const pass = (message) => checks.push(message);
 
+const relativeLuminance = (hex) => {
+  const channels = hex.replace("#", "").match(/.{2}/g)?.map((value) => parseInt(value, 16) / 255);
+  if (!channels || channels.length !== 3) return null;
+  const linear = channels.map((value) => value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4);
+  return 0.2126 * linear[0] + 0.7152 * linear[1] + 0.0722 * linear[2];
+};
+const contrastRatio = (foreground, background) => {
+  const first = relativeLuminance(foreground);
+  const second = relativeLuminance(background);
+  if (first === null || second === null) return 0;
+  return (Math.max(first, second) + 0.05) / (Math.min(first, second) + 0.05);
+};
+
 if (!fs.existsSync(root)) {
   console.error("QUALITY GATE FAILED: dist/ does not exist. Run astro build first.");
   process.exit(1);
@@ -56,6 +69,24 @@ for (const [route, source] of [["/camping", "source=camping"], ["/day-trips", "s
     if (!html.includes('application/ld+json')) fail(route + ": missing structured service/offer data");
     else pass(route + ": structured service/offer data is present");
   }
+}
+
+const groupDiscountPages = ["src/pages/experiences.astro", "src/pages/day-trips.astro", "src/pages/camping.astro"];
+for (const sourcePath of groupDiscountPages) {
+  const fullPath = path.resolve(sourcePath);
+  if (!fs.existsSync(fullPath)) {
+    fail(sourcePath + ": source file is missing for the group discount contrast check");
+    continue;
+  }
+  const source = read(fullPath);
+  const rule = source.match(/\.group-discount-heading\\s+\.eyebrow\\s*\\{[^}]*color:\\s*(#[0-9a-fA-F]{6})/i);
+  if (!rule) {
+    fail(sourcePath + ": group discount label must define a contrast-tested foreground color");
+    continue;
+  }
+  const contrast = contrastRatio(rule[1], "#f4efe6");
+  if (contrast < 4.5) fail(sourcePath + ": group discount label contrast is " + contrast.toFixed(2) + ":1 (requires 4.5:1)");
+  else pass(sourcePath + ": group discount label contrast passes WCAG AA (" + contrast.toFixed(2) + ":1)");
 }
 
 const homeFile = routeFile("/");
