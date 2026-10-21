@@ -13,6 +13,7 @@ const canonical = canonicalUrl.toString();
 const localizedUrl = (language: string) => { const url = new URL(Astro.url.pathname, "https://materunihosts.com"); url.searchParams.set("lang", language); return url.toString(); };
 const breadcrumbLabels: Record<string, string> = {
   experiences: "Experiences",
+  about: "Our story",
   camping: "Materuni Camping",
   "day-trips": "Materuni Day Trips",
   itinerary: "Build itinerary",
@@ -129,7 +130,7 @@ body.admin-shell #main-content{min-height:calc(100vh - 58px)}
 <body class={Astro.url.pathname.startsWith("/admin") ? "admin-shell" : "public-shell"}>
 <a class="skip-link" href="#main-content">Skip to content</a>
 {!isAdmin && <header class="site-header"><a class="brand" href="/" aria-label="Materuni Hosts home"><img class="brand-logo" src="/materuni-hosts-logo-round.svg" alt="Materuni Hosts logo" width="86" height="86" /><span class="brand-lockup"><strong>Materuni Hosts</strong><small>LOCAL EXPERIENCES · KILIMANJARO</small></span></a>
-<nav id="primary-navigation" aria-label="Main navigation"><a href="/" data-i18n="nav_home" aria-current={Astro.url.pathname === "/" ? "page" : undefined}>Home</a><a href="/experiences" data-i18n="nav_experiences">All Experiences</a><a href="/day-trips" data-i18n="nav_day_trips">Day Trips</a><a href="/camping" data-i18n="nav_camping">Camping</a><a href="/sustainability" data-i18n="nav_community">Community & sustainability</a><a href="/reviews" data-i18n="nav_reviews">Guest reviews</a><a href="/faq" data-i18n="nav_faqs">FAQs</a><a class="nav-cta" href="/booking" data-i18n="nav_availability">Check availability</a></nav>
+<nav id="primary-navigation" aria-label="Main navigation"><a href="/" data-i18n="nav_home" aria-current={Astro.url.pathname === "/" ? "page" : undefined}>Home</a><a href="/experiences" data-i18n="nav_experiences">All Experiences</a><a href="/about">Our story</a><a href="/day-trips" data-i18n="nav_day_trips">Day Trips</a><a href="/camping" data-i18n="nav_camping">Camping</a><a href="/sustainability" data-i18n="nav_community">Community & sustainability</a><a href="/reviews" data-i18n="nav_reviews">Guest reviews</a><a href="/faq" data-i18n="nav_faqs">FAQs</a><a class="nav-cta" href="/booking" data-i18n="nav_availability">Check availability</a></nav>
 <label class="language-control" for="site-language"><span class="sr-only">Website language</span><select id="site-language" aria-label="Website language"><option value="en">EN</option><option value="es">ES</option><option value="fr">FR</option><option value="de">DE</option></select></label><button class="menu-toggle" type="button" aria-label="Open menu" aria-controls="primary-navigation" aria-expanded="false">☰</button></header>}
 <script>
 // @ts-nocheck
