@@ -1,0 +1,52 @@
+---
+---
+<div class="cookie-consent" id="cookie-consent" role="dialog" aria-modal="false" aria-labelledby="cookie-title" hidden>
+  <div class="cookie-copy">
+    <p class="cookie-eyebrow">YOUR PRIVACY</p>
+    <h2 id="cookie-title">Your choices matter</h2>
+    <p>We use essential storage to make this website work. With your permission, we may also use analytics to understand how visitors use the site. You can accept or reject optional analytics.</p>
+    <a href="/privacy">Read our privacy policy</a>
+  </div>
+  <div class="cookie-actions">
+    <button type="button" data-cookie-accept>Accept all</button>
+    <button type="button" data-cookie-reject>Reject optional</button>
+    <button type="button" data-cookie-settings>Settings</button>
+  </div>
+  <div class="cookie-settings" id="cookie-settings" hidden>
+    <label><input type="checkbox" checked disabled /> Essential storage (always active)</label>
+    <label><input type="checkbox" id="cookie-analytics" /> Allow analytics</label>
+    <button type="button" data-cookie-save>Save choices</button>
+  </div>
+</div>
+<script is:inline>
+(() => {
+  const key = "materuni-cookie-consent-v1";
+  const banner = document.getElementById("cookie-consent");
+  if (!banner) return;
+  const settings = document.getElementById("cookie-settings");
+  const analytics = document.getElementById("cookie-analytics");
+  const loadAnalytics = () => {
+    if (window.__materuniGtmLoaded) return;
+    window.__materuniGtmLoaded = true;
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ "gtm.start": Date.now(), event: "gtm.js" });
+    const script = document.createElement("script");
+    script.async = true;
+    script.src = "https://www.googletagmanager.com/gtm.js?id=GTM-TLB463PS";
+    document.head.appendChild(script);
+  };
+  const apply = (choice) => {
+    localStorage.setItem(key, JSON.stringify({ analytics: !!choice.analytics, savedAt: new Date().toISOString() }));
+    banner.hidden = true;
+    if (choice.analytics) loadAnalytics();
+  };
+  let saved = null;
+  try { saved = JSON.parse(localStorage.getItem(key) || "null"); } catch {}
+  if (!saved || typeof saved.analytics !== "boolean") banner.hidden = false;
+  else if (saved.analytics) loadAnalytics();
+  banner.querySelector("[data-cookie-accept]")?.addEventListener("click", () => apply({ analytics: true }));
+  banner.querySelector("[data-cookie-reject]")?.addEventListener("click", () => apply({ analytics: false }));
+  banner.querySelector("[data-cookie-settings]")?.addEventListener("click", () => { settings.hidden = !settings.hidden; });
+  banner.querySelector("[data-cookie-save]")?.addEventListener("click", () => apply({ analytics: analytics.checked }));
+})();
+</script>
