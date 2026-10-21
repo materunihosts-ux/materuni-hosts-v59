@@ -1575,3 +1575,126 @@ body.public-shell .catalog-product-tagline {
 @media(max-width:850px){.site-header{padding-inline:20px}.site-header nav{gap:18px}.site-header nav a:not(.nav-cta){padding:7px 0}.site-header nav.open{box-shadow:0 18px 28px rgba(26,51,34,.12)}}
 @media(max-width:560px){.brand{gap:9px}.brand-logo{width:54px;height:54px}.brand-lockup strong{font-size:18px}.brand-lockup small{font-size:6.5px;letter-spacing:.1em}.hero-image img,.hero-photo{min-height:280px}.page-hero{padding:66px 20px}.site-footer{padding-top:52px}.site-footer .brand-logo-footer{width:58px;height:58px}.site-footer .footer-brand-lockup .brand-lockup strong{font-size:21px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important}}
+
+
+/* 2026 visual refresh — immersive homepage and consistent editorial system */
+body.public-shell .hero.hero-home{
+  position:relative;isolation:isolate;display:flex;align-items:center;
+  min-height:clamp(650px,76vw,850px);overflow:hidden;
+  background:#142d20;color:#fff;
+}
+body.public-shell .hero.hero-home .hero-image{
+  position:absolute;inset:0;z-index:-1;min-height:100%;background:#142d20;
+}
+body.public-shell .hero.hero-home .hero-image .hero-photo{
+  position:absolute;inset:0;width:100%;height:100%;min-height:100%;
+  object-fit:cover;object-position:center 48%;transform:scale(1.015);
+}
+body.public-shell .hero.hero-home .hero-image:after{
+  content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(90deg,rgba(12,31,21,.91) 0%,rgba(12,31,21,.78) 36%,rgba(12,31,21,.25) 72%,rgba(12,31,21,.08) 100%),
+             linear-gradient(0deg,rgba(12,31,21,.42),transparent 42%);
+}
+body.public-shell .hero.hero-home .hero-copy{
+  width:min(100%,850px);padding:clamp(78px,10vw,138px) clamp(24px,9vw,132px);
+  align-items:flex-start;position:relative;z-index:2;
+}
+body.public-shell .hero.hero-home .eyebrow{
+  display:inline-flex;align-items:center;gap:12px;color:#e2c58f;
+  letter-spacing:.2em;font-size:10px;
+}
+body.public-shell .hero.hero-home .eyebrow:before{
+  content:"";width:34px;height:1px;background:#c5a059;display:inline-block;
+}
+body.public-shell .hero.hero-home h1{
+  max-width:760px;margin:24px 0 18px;color:#fff;
+  font:500 clamp(52px,7.4vw,100px)/.99 var(--serif);
+  letter-spacing:-.035em;text-wrap:balance;
+}
+body.public-shell .hero.hero-home p{
+  max-width:590px;color:rgba(255,255,255,.88);
+  font-size:clamp(14px,1.3vw,17px);line-height:1.9;
+}
+body.public-shell .hero.hero-home .actions{gap:13px;margin-top:32px}
+body.public-shell .hero.hero-home .actions .button{
+  min-height:54px;padding:15px 25px;border-radius:3px;
+  font-size:11px;letter-spacing:.09em;text-transform:uppercase;
+}
+body.public-shell .hero.hero-home .actions .button.light{
+  background:#c5a059;color:#172f21!important;border:1px solid #c5a059;
+}
+body.public-shell .hero.hero-home .actions .button.light:hover{background:#e0c58e}
+body.public-shell .hero.hero-home .actions .button.secondary{
+  border-color:rgba(255,255,255,.68);background:rgba(255,255,255,.07);
+  backdrop-filter:blur(8px);color:#fff!important;
+}
+body.public-shell .trust-strip{
+  position:relative;z-index:2;background:#f0e9dc;
+  border-bottom:1px solid #e2d8c7;
+}
+body.public-shell .section-head h2{
+  font-size:clamp(38px,5vw,62px);letter-spacing:-.025em;line-height:1.02;
+  text-wrap:balance;
+}
+body.public-shell .section-head p{
+  max-width:720px;margin:16px auto 0;font-size:14px;line-height:1.9;
+}
+body.public-shell .cards{gap:clamp(14px,2vw,26px)}
+body.public-shell .experience-card{
+  border-radius:5px;background:#fff;border:1px solid #e4ddd1;
+  box-shadow:0 12px 34px rgba(26,51,34,.065);
+}
+body.public-shell .experience-card>img{
+  height:auto;aspect-ratio:1.42/1;object-fit:cover;
+}
+body.public-shell .experience-card .card-body{padding:clamp(18px,2vw,26px)}
+body.public-shell .experience-card h3{
+  font:600 clamp(21px,2vw,27px)/1.15 var(--serif);letter-spacing:-.01em;
+}
+body.public-shell .experience-card p{font-size:13px;line-height:1.8}
+body.public-shell .experience-card .pill{
+  white-space:normal;line-height:1.45;border-radius:2px;
+  background:#f2eadb;color:#765725;letter-spacing:.08em;
+}
+body.public-shell .experience-card .price{font-size:30px}
+body.public-shell .experience-card .button{
+  border-radius:2px;min-height:48px;letter-spacing:.07em;
+  text-transform:uppercase;font-size:10px;
+}
+body.public-shell .section[style*="background:#f0eadf"],
+body.public-shell .section[style*="background:#f5f0e7"]{
+  background:#f0e9dc!important;
+}
+body.public-shell .split img{
+  border-radius:4px;box-shadow:16px 16px 0 #e1d5c2;
+}
+body.public-shell .feature-list>div{
+  padding:16px 14px;background:rgba(255,255,255,.56);
+  border:1px solid #e4ddd1;border-top:2px solid #c5a059;
+}
+body.public-shell .review-invite-panel{
+  border-radius:4px!important;box-shadow:0 18px 50px rgba(26,51,34,.09);
+}
+body.public-shell .location-map{border-radius:4px!important}
+body.public-shell .site-footer{border-top:3px solid #c5a059}
+@media(max-width:850px){
+  body.public-shell .hero.hero-home{min-height:690px}
+  body.public-shell .hero.hero-home .hero-copy{
+    width:100%;padding:92px 28px 82px;
+  }
+  body.public-shell .hero.hero-home .hero-image:after{
+    background:linear-gradient(90deg,rgba(12,31,21,.88),rgba(12,31,21,.48)),
+               linear-gradient(0deg,rgba(12,31,21,.5),transparent 65%);
+  }
+}
+@media(max-width:560px){
+  body.public-shell .hero.hero-home{min-height:680px}
+  body.public-shell .hero.hero-home .hero-copy{padding:88px 22px 74px}
+  body.public-shell .hero.hero-home h1{font-size:clamp(48px,14vw,66px);line-height:.99}
+  body.public-shell .hero.hero-home p{font-size:14px;line-height:1.8}
+  body.public-shell .hero.hero-home .actions{display:grid;width:100%;gap:10px}
+  body.public-shell .hero.hero-home .actions .button{width:100%;min-height:52px}
+  body.public-shell .cards{grid-template-columns:1fr}
+  body.public-shell .experience-card>img{aspect-ratio:1.6/1}
+  body.public-shell .split img{box-shadow:8px 8px 0 #e1d5c2}
+}
