@@ -64,6 +64,28 @@ if (homeFile) {
   if (!homeHtml.includes("https://www.facebook.com/share/1VTNWPbqcc/")) fail("Public homepage must include the current Materuni Hosts Facebook page link");
   else pass("Public homepage includes the current Materuni Hosts Facebook page link");
 }
+
+const layoutSourcePath = path.resolve("src/layouts/SiteLayout.astro");
+const businessSchemaPath = path.resolve("src/components/LocalBusinessSchema.astro");
+if (fs.existsSync(layoutSourcePath) && read(layoutSourcePath).includes('mailto:hello@materunihosts.com')) pass("Verified public email is present as a clickable footer contact");
+else fail("Public footer must include the verified hello@materunihosts.com contact email");
+if (fs.existsSync(layoutSourcePath) && read(layoutSourcePath).includes('"email": "hello@materunihosts.com"') && fs.existsSync(businessSchemaPath) && read(businessSchemaPath).includes('"email": "hello@materunihosts.com"')) pass("Verified email is present in TourOperator and LocalBusiness structured data");
+else fail("Verified email must be present in both public business structured-data sources");
+
+const aboutUsFile = routeFile("/about-us");
+if (aboutUsFile) {
+  const aboutHtml = read(aboutUsFile);
+  if (!aboutHtml.includes("https://materunihosts.com/about-us")) fail("About Us must use /about-us as its canonical URL");
+  if (!aboutHtml.includes("Saidi Materu")) fail("About Us must retain the verified founder name Saidi Materu");
+  if (aboutHtml.includes("https://materunihosts.com/about-us") && aboutHtml.includes("Saidi Materu")) pass("About Us canonical URL and founder story are present");
+}
+for (const route of ["/", "/experiences", "/day-trips"]) {
+  const file = routeFile(route);
+  if (!file) continue;
+  const html = read(file);
+  if (/cooking_image|materuni-cooking|photo-1723643343026/i.test(html)) fail(route + ": cooking-class photography must remain removed");
+  else pass(route + ": cooking-class photography remains removed");
+}
 const itineraryFile = routeFile("/itinerary");
 if (itineraryFile) {
   const itineraryHtml = read(itineraryFile);
