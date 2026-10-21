@@ -67,9 +67,9 @@ if (homeFile) {
 
 const layoutSourcePath = path.resolve("src/layouts/SiteLayout.astro");
 const businessSchemaPath = path.resolve("src/components/LocalBusinessSchema.astro");
-if (fs.existsSync(layoutSourcePath) && read(layoutSourcePath).includes('mailto:hello@materunihosts.com')) pass("Verified public email is present as a clickable footer contact");
-else fail("Public footer must include the verified hello@materunihosts.com contact email");
-if (fs.existsSync(layoutSourcePath) && read(layoutSourcePath).includes('"email": "hello@materunihosts.com"') && fs.existsSync(businessSchemaPath) && read(businessSchemaPath).includes('"email": "hello@materunihosts.com"')) pass("Verified email is present in TourOperator and LocalBusiness structured data");
+if (fs.existsSync(layoutSourcePath) && read(layoutSourcePath).includes('mailto:materunihosts@gmail.com')) pass("Verified public email is present as a clickable footer contact");
+else fail("Public footer must include the verified materunihosts@gmail.com contact email");
+if (fs.existsSync(layoutSourcePath) && read(layoutSourcePath).includes('"email": "materunihosts@gmail.com"') && fs.existsSync(businessSchemaPath) && read(businessSchemaPath).includes('"email": "materunihosts@gmail.com"')) pass("Verified email is present in TourOperator and LocalBusiness structured data");
 else fail("Verified email must be present in both public business structured-data sources");
 
 const aboutUsFile = routeFile("/about-us");
