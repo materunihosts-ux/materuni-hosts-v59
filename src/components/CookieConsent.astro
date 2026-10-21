@@ -8,7 +8,7 @@
     <a href="/privacy">Read our privacy policy</a>
   </div>
   <div class="cookie-actions">
-    <button type="button" data-cookie-accept>Accept all</button>
+    <button type="button" data-cookie-accept>Allow analytics</button>
     <button type="button" data-cookie-reject>Reject optional</button>
     <button type="button" data-cookie-settings>Settings</button>
   </div>
@@ -18,6 +18,7 @@
     <button type="button" data-cookie-save>Save choices</button>
   </div>
 </div>
+<button class="cookie-reopen" type="button" data-cookie-reopen aria-label="Open privacy settings">Privacy settings</button>
 <script is:inline>
 (() => {
   const key = "materuni-cookie-consent-v1";
@@ -29,6 +30,9 @@
     if (window.__materuniGtmLoaded) return;
     window.__materuniGtmLoaded = true;
     window.dataLayer = window.dataLayer || [];
+    window.gtag = function(){ window.dataLayer.push(arguments); };
+    window.gtag("consent", "default", { analytics_storage: "denied", ad_storage: "denied", ad_user_data: "denied", ad_personalization: "denied", functionality_storage: "granted", security_storage: "granted" });
+    window.gtag("consent", "update", { analytics_storage: "granted", ad_storage: "denied", ad_user_data: "denied", ad_personalization: "denied" });
     window.dataLayer.push({ "gtm.start": Date.now(), event: "gtm.js" });
     const script = document.createElement("script");
     script.async = true;
@@ -48,5 +52,10 @@
   banner.querySelector("[data-cookie-reject]")?.addEventListener("click", () => apply({ analytics: false }));
   banner.querySelector("[data-cookie-settings]")?.addEventListener("click", () => { settings.hidden = !settings.hidden; });
   banner.querySelector("[data-cookie-save]")?.addEventListener("click", () => apply({ analytics: analytics.checked }));
+  document.querySelector("[data-cookie-reopen]")?.addEventListener("click", () => {
+    analytics.checked = !!saved?.analytics;
+    settings.hidden = true;
+    banner.hidden = false;
+  });
 })();
 </script>
