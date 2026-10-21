@@ -393,6 +393,7 @@ if (chatEl("mh-chat-open") && chatEl("mh-chat-panel") && languageSelect && chatE
   if(document.body.classList.contains("admin-shell")) return;
   var key="materuni-cookie-consent-v1";
   var banner=document.getElementById("mh-cookie-banner");
+  if(!banner) return;
   var accept=document.getElementById("mh-cookie-accept");
   var reject=document.getElementById("mh-cookie-reject");
   var manage=document.getElementById("mh-cookie-preferences-open");
