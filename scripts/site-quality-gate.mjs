@@ -178,6 +178,9 @@ const walkSources = (directory) => {
   }
 };
 walkSources(publicSourceRoot);
+const outdatedContactPages = sourceFiles.filter((file) => /hello@materunihosts\\.com/i.test(read(file)));
+if (outdatedContactPages.length) fail("Public pages still contain the retired hello@materunihosts.com contact address: " + outdatedContactPages.map((file) => path.relative(process.cwd(), file)).join(", "));
+else pass("Public pages contain no retired contact email");
 let checkedImages = 0;
 for (const file of sourceFiles) {
   const source = read(file);
