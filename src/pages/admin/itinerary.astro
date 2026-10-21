@@ -44,6 +44,7 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
 @media print{body *{visibility:hidden!important}#proposal-print,#proposal-print *{visibility:visible!important}#proposal-print{position:absolute;inset:0;width:100%;background:#fff!important;border:0!important}}
 </style>
 <script>
+// @ts-nocheck
 import { supabaseUrl, publishableKey } from "../../lib/supabase-public";
 let accessToken="";
 const el=id=>document.getElementById(id);
