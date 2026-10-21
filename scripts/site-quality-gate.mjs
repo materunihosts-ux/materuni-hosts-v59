@@ -112,12 +112,15 @@ if (aboutUsFile) {
   if (!aboutHtml.includes("Saidi Materu")) fail("About Us must retain the verified founder name Saidi Materu");
   if (aboutHtml.includes("https://materunihosts.com/about-us") && aboutHtml.includes("Saidi Materu")) pass("About Us canonical URL and founder story are present");
 }
-for (const route of ["/", "/experiences", "/day-trips"]) {
+for (const route of ["/", "/experiences"]) {
   const file = routeFile(route);
   if (!file) continue;
   const html = read(file);
-  if (/cooking_image|materuni-cooking|photo-1723643343026/i.test(html)) fail(route + ": cooking-class photography must remain removed");
-  else pass(route + ": cooking-class photography remains removed");
+  if (!html.includes("1791998880538-materuni-cooking-lesson")) {
+    fail(route + ": must show the selected distinct Materuni cooking lesson photo");
+  } else {
+    pass(route + ": shows the selected Materuni cooking lesson photo");
+  }
 }
 const itineraryFile = routeFile("/itinerary");
 if (itineraryFile) {
