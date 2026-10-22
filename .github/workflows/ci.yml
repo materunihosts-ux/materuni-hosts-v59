@@ -24,4 +24,7 @@ jobs:
       - name: Install dependencies
         run: npm install --no-audit --no-fund
       - name: Build and run quality gate
+        env:
+          PUBLIC_SUPABASE_URL: https://sskmzswoeljxwojcszta.supabase.co
+          PUBLIC_SUPABASE_PUBLISHABLE_KEY: sb_publishable_G9ru4P_yKzievqiXjXEEbQ_p28cB_NZ
         run: npm run build
