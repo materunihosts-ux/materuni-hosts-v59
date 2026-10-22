@@ -153,7 +153,7 @@ fetch(`${supabaseUrl}/rest/v1/experience_catalog?select=experience_key,display_n
    let card=existing.get(t.experience_key);
    if(!card){
     card=document.createElement("article");card.className="experience-card";card.dataset.catalogKey=t.experience_key;
-    const photo=selectedPhoto(t);if(photo){const img=document.createElement("img");img.src=photo;img.alt=t.display_name||"Materuni experience";img.loading="lazy";img.decoding="async";img.width=640;img.height=420;img.style.width="100%";img.style.aspectRatio="8/5";img.style.objectFit="cover";card.append(img)}
+    const photo=selectedPhoto(t);if(photo){const img=document.createElement("img");img.src=photo;img.alt=t.display_name||"Materuni experience";img.loading="lazy";img.decoding="async";img.width=640;img.height=420;img.style.width="100%";img.style.aspectRatio="8/5";img.style.objectFit="cover";card.append(img)}else if(t.experience_key==="Traditional Chagga Cooking Class"){const placeholder=document.createElement("div");placeholder.className="experience-placeholder";placeholder.setAttribute("role","img");placeholder.setAttribute("aria-label","Authentic Materuni cooking-class photograph to be added");placeholder.textContent="COOKING WITH LOCAL HOSTS";card.append(placeholder)}
     const body=document.createElement("div");body.className="card-body";
     const top=document.createElement("div");top.className="card-top";
     const pill=document.createElement("span");pill.className="pill";pill.textContent=t.duration_label||"Local experience";
@@ -168,7 +168,7 @@ fetch(`${supabaseUrl}/rest/v1/experience_catalog?select=experience_key,display_n
    if(title)title.textContent=t.display_name||"Materuni experience";
    if(price){price.replaceChildren(document.createTextNode("$"+Number(t.price_usd).toFixed(0)));const small=document.createElement("small");small.textContent="PER PERSON";price.append(small)}
    if(desc&&(t.full_description||t.short_description))desc.textContent=t.full_description||t.short_description;
-   if(img){img.src=selectedPhoto(t);img.alt=t.experience_key==="Traditional Chagga Cooking Class"?"Guests preparing traditional Chagga food during a Materuni cooking class":t.display_name||"Materuni experience"}else{const photo=selectedPhoto(t);if(photo){const restored=document.createElement("img");restored.src=photo;restored.alt=t.experience_key==="Traditional Chagga Cooking Class"?"Guests preparing traditional Chagga food during a Materuni cooking class":t.display_name||"Materuni experience";restored.loading="lazy";restored.decoding="async";restored.width=640;restored.height=420;restored.style.width="100%";restored.style.aspectRatio="8/5";restored.style.objectFit="cover";card.prepend(restored)}}
+   if(t.experience_key==="Traditional Chagga Cooking Class"){if(img)img.remove()}else if(img){img.src=selectedPhoto(t);img.alt=t.display_name||"Materuni experience"}else{const photo=selectedPhoto(t);if(photo){const restored=document.createElement("img");restored.src=photo;restored.alt=t.display_name||"Materuni experience";restored.loading="lazy";restored.decoding="async";restored.width=640;restored.height=420;restored.style.width="100%";restored.style.aspectRatio="8/5";restored.style.objectFit="cover";card.prepend(restored)}}
    if(pill&&t.duration_label)pill.textContent=t.duration_label;
    body.querySelectorAll(".catalog-product-tagline,.catalog-best-for,.catalog-detail-heading, .catalog-detail-heading + ul").forEach(node=>node.remove());
    const legacyList=body.querySelector("ul");if(legacyList)legacyList.remove();
