@@ -31,7 +31,7 @@ async function syncItineraryTours(){
   const response=await fetch(catalogueEndpoint,{headers:{apikey:publishableKey,Authorization:"Bearer "+publishableKey},cache:"no-store"});
   if(!response.ok)throw new Error("Catalogue unavailable");
   const rows=await response.json();
-  if(!Array.isArray(rows)||!rows.length)return;
+  if(!Array.isArray(rows)||!rows.length)throw new Error("No active experiences found in the live catalogue.");
   tourData=rows.map(row=>({key:row.experience_key,name:row.display_name,price:Number(row.price_usd),duration:row.duration_label||"Duration confirmed by host",detail:row.full_description||row.short_description||"A locally hosted Materuni experience."}));
   const root=form.querySelector(".choices");root.replaceChildren();
   tourData.forEach((tour,index)=>{
