@@ -150,28 +150,6 @@ const hosts = [
   }
 ];
 
-// Verified guest reviews
-const guestReviews = [
-  {
-    quote: "The hike to the 95m waterfall through lush green coffee groves was breathtaking. Saidi was an exceptional guide — warm, knowledgeable, and patient. Roasting coffee beans over the open fire while singing was the highlight of Tanzania.",
-    author: "Elena Rostova",
-    location: "Munich, Germany",
-    tour: "Waterfall & Chagga Village"
-  },
-  {
-    quote: "Staying overnight at the campsite in Materuni was unforgettable. Falling asleep under Mount Kilimanjaro's foothills, hot firewood dinner prepared with fresh village vegetables, and waking to fresh coffee. Spotless setup.",
-    author: "David & Sarah Jenkins",
-    location: "Bristol, UK",
-    tour: "Overnight Village Camping"
-  },
-  {
-    quote: "An authentic community experience far from commercial tourist traps. We learned every step of coffee production and tasted the freshest cup imaginable. You truly come as a guest and leave as a friend.",
-    author: "Marc Dubois",
-    location: "Lyon, France",
-    tour: "Coffee & Chagga Culture"
-  }
-];
-
 // 4-step guest journey
 const daySteps = [
   {
@@ -535,34 +513,22 @@ const faqs = [
     </div>
   </section>
 
-  <!-- 8. GENUINE GUEST REVIEWS -->
+  <!-- 8. GUEST FEEDBACK -->
   <section class="home-section bg-warm" aria-labelledby="reviews-heading">
     <div class="section-header">
-      <span class="eyebrow">VERIFIED GUEST REVIEWS</span>
-      <h2 id="reviews-heading">Loved by Independent Travelers Worldwide</h2>
-      <p>Genuine feedback from guests who have walked our village trails and roasted coffee with our families.</p>
-    </div>
-    <div class="reviews-grid">
-      {guestReviews.map((rev) => (
-        <blockquote class="home-review-card">
-          <div class="review-stars" aria-label="5 stars">★★★★★</div>
-          <p class="review-text">“{rev.quote}”</p>
-          <footer class="review-footer">
-            <strong>{rev.author}</strong>
-            <span>{rev.location} · {rev.tour}</span>
-          </footer>
-        </blockquote>
-      ))}
+      <span class="eyebrow">GUEST FEEDBACK</span>
+      <h2 id="reviews-heading">Hear from travellers who visited Materuni</h2>
+      <p>Read independent guest feedback on our public review platforms before choosing your experience.</p>
     </div>
     <div class="reviews-action-strip">
       <a class="gold-button" href="https://www.tripadvisor.com/34765809" target="_blank" rel="noopener noreferrer">
-        Read TripAdvisor Listing ↗
+        Read guest feedback on TripAdvisor ↗
       </a>
       <a class="hero-outline-button dark" href="https://g.page/r/CXy6M_Suiip9EBM/review" target="_blank" rel="noopener noreferrer">
-        Leave a Google Review ↗
+        View or leave a Google Review ↗
       </a>
       <a class="card-secondary-link" href="/reviews">
-        View all guest stories →
+        Explore guest feedback →
       </a>
     </div>
   </section>
