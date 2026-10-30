@@ -2,193 +2,1038 @@
 import SiteLayout from "../../layouts/SiteLayout.astro";
 ---
 <SiteLayout title="Tour Management | Materuni Hosts" description="Private Materuni Hosts tour and availability management." noindex={true}>
-<section class="page-hero"><span class="eyebrow">PRIVATE ADMIN</span><h1>Tour & availability management</h1><p>Add new experiences whenever your offering grows, then publish dates and available spaces for guests.</p></section>
-<section class="booking-wrap">
- <div class="booking-panel" id="login-panel">
-  <h2>Administrator sign in</h2>
-  <p class="muted">Only accounts already authorised in Materuni Hosts Admin can manage tours.</p>
-  <form id="login-form" class="form-grid">
-   <div class="field full"><label for="admin-email">Admin email</label><input id="admin-email" type="email" autocomplete="username" required></div>
-   <div class="field full"><label for="admin-password">Password</label><input id="admin-password" type="password" autocomplete="current-password" required></div>
-   <div class="field full"><button class="button" type="submit" id="login-button">Sign in securely</button><p id="login-feedback" class="muted" aria-live="polite"></p></div>
-  </form>
- </div>
- <div id="manager" hidden>
-  <div class="booking-panel">
-   <div class="section-heading"><div><span class="eyebrow">TOUR CATALOGUE</span><h2>Add a new experience</h2></div><div><a class="button button-secondary" href="/admin/analytics">Analytics</a> <a class="button button-secondary" href="/admin/conversations">Guest conversations</a> <a class="button button-secondary" href="/admin/bookings">Bookings</a> <a class="button button-secondary" href="/admin/settings">Website settings</a> <button class="button button-secondary" id="logout" type="button">Sign out</button></div></div>
-   <form id="tour-form" class="form-grid">
-    <div class="field"><label for="tour-name">Guest-facing tour name *</label><input id="tour-name" required maxlength="120" placeholder="e.g. Materuni Forest & Birding Walk"></div>
-    <div class="field"><label for="tour-key">Booking key *</label><input id="tour-key" required maxlength="120" placeholder="e.g. Materuni Forest & Birding Walk"></div>
-    <div class="field"><label for="tour-price">Price per person (USD) *</label><input id="tour-price" type="number" min="0" step="0.01" required></div>
-    <div class="field"><label for="tour-order">Display order</label><input id="tour-order" type="number" value="100"></div>
-    <div class="field full"><label for="tour-description">Short description</label><textarea id="tour-description" rows="3"></textarea></div>
-    <div class="field full"><label for="tour-full-description">Full guest-facing description</label><textarea id="tour-full-description" rows="4"></textarea></div>
-    <div class="field"><label for="tour-duration">Duration label</label><input id="tour-duration" maxlength="80" placeholder="e.g. 5–6 hours"></div>
-    <div class="field"><label for="tour-image">Public image URL</label><input id="tour-image" type="url" placeholder="https://..."></div>
-    <div class="field full"><label for="tour-inclusions">WHAT’S INCLUDED (one item per line)</label><textarea id="tour-inclusions" rows="4" placeholder="Guided waterfall hike&#10;Traditional coffee experience&#10;Local lunch"></textarea></div>
-    <div class="field full"><label for="tour-exclusions">WHAT’S NOT INCLUDED (one item per line)</label><textarea id="tour-exclusions" rows="4" placeholder="Transport to Materuni (unless arranged separately)&#10;Personal expenses&#10;Tips and gratuities"></textarea></div>
-    <div class="field full"><button class="button" type="submit" id="save-tour">Add tour to booking options</button><p id="tour-feedback" class="muted" aria-live="polite"></p></div>
-   </form>
-  </div>
-  <div class="booking-panel" id="package-details" style="margin-top:1.5rem">
-   <span class="eyebrow">PACKAGE CONTENTS · GUEST-FACING DETAILS</span><h2>Edit Included & Excluded</h2><p class="muted">These two fields are saved separately for every experience and appear on the public package cards. Enter one item per line, then choose Save tour changes for that package below.</p><div class="notice">Included = services and items covered by the package price. Excluded = items not covered or arranged separately. Keep both lists clear and specific.</div>
-  </div>
-  <div class="booking-panel" id="shared-inclusions-panel" style="margin-top:1.5rem">
-   <span class="eyebrow">MATERUNI HOSTS SERVICE STANDARD</span><h2>Shared inclusions for all experiences</h2><p class="muted">Edit this single list once. It is displayed across the six experiences and is not duplicated in each product record.</p><div class="field"><label for="shared-inclusions">Included in every experience — one item per line</label><textarea id="shared-inclusions" rows="7"></textarea></div><div class="actions"><button class="button" type="button" id="save-shared-inclusions">Save shared inclusions</button><span class="muted" id="shared-inclusions-feedback" aria-live="polite"></span></div>
-  </div>
-  <div class="booking-panel" style="margin-top:1.5rem">
-   <span class="eyebrow">PUBLISH AVAILABILITY</span><h2>Create available dates</h2>
-   <form id="slot-form" class="form-grid">
-    <div class="field full"><label for="slot-experience">Experience *</label><select id="slot-experience" required><option value="">Select a tour</option></select></div>
-    <div class="field"><label for="slot-date">Start date *</label><input id="slot-date" type="date" required></div>
-    <div class="field"><label for="slot-end-date">End date (optional – publish range up to 90 days)</label><input id="slot-end-date" type="date"></div>
-    <div class="field"><label for="slot-capacity">Guest capacity *</label><input id="slot-capacity" type="number" min="1" max="100" value="10" required></div>
-    <div class="field"><label for="slot-start">Start time *</label><input id="slot-start" type="time" value="08:00" required></div>
-    <div class="field"><label for="slot-end">End time *</label><input id="slot-end" type="time" value="14:00" required></div>
-    <div class="field full"><button class="button" type="submit">Publish availability</button><p id="slot-feedback" class="muted" aria-live="polite"></p></div>
-   </form>
-  </div>
-  <div class="booking-panel" style="margin-top:1.5rem">
-   <span class="eyebrow">AVAILABILITY CALENDAR</span><h2>Upcoming dates & spaces</h2><p class="muted">Review published dates, remaining spaces, and close or reopen availability.</p><div id="availability-list" class="admin-booking-list" aria-live="polite">Loading availability…</div>
-  </div>
-  <div class="booking-panel" id="package-editors" style="margin-top:1.5rem">
-   <span class="eyebrow">PACKAGE CONTENTS EDITOR</span><h2>Edit each experience — Included & Excluded</h2><p class="muted">Open the fields under each experience, enter one item per line, then press Save tour changes. These details are shown to guests on the public Experiences page.</p><div id="tour-list" class="muted">Loading tours…</div>
-  </div>
- </div>
+<section class="page-hero">
+  <span class="eyebrow">PRIVATE ADMIN · TOUR STUDIO</span>
+  <h1>Tour & Experience Management</h1>
+  <p>Create new cultural experiences, upload authentic photography, set inclusions and publish live availability slots for guests.</p>
 </section>
+
+<section class="booking-wrap">
+  <div class="booking-panel" id="login-panel">
+    <h2>Administrator sign in</h2>
+    <p class="muted">Only accounts already authorised in Materuni Hosts Admin can manage tours.</p>
+    <form id="login-form" class="form-grid">
+      <div class="field full"><label for="admin-email">Admin email</label><input id="admin-email" type="email" autocomplete="username" required></div>
+      <div class="field full"><label for="admin-password">Password</label><input id="admin-password" type="password" autocomplete="current-password" required></div>
+      <div class="field full"><button class="button" type="submit" id="login-button">Sign in securely</button><p id="login-feedback" class="muted" aria-live="polite"></p></div>
+    </form>
+  </div>
+
+  <div id="manager" hidden>
+    <!-- Top Action Bar -->
+    <div class="admin-topbar">
+      <div class="admin-topbar-links">
+        <a class="button button-secondary" href="/admin/">← Dashboard</a>
+        <a class="button button-secondary" href="/admin/content">Content & About Us</a>
+        <a class="button button-secondary" href="/admin/media">Media Library</a>
+        <a class="button button-secondary" href="/admin/bookings">Bookings</a>
+        <a class="button button-secondary" href="/admin/itinerary">Itinerary Studio</a>
+        <a class="button button-secondary" href="/experiences" target="_blank" rel="noopener">Preview Public Experiences ↗</a>
+      </div>
+      <button class="button button-secondary" id="logout" type="button">Sign out</button>
+    </div>
+
+    <!-- Add New Tour Panel -->
+    <div class="booking-panel" id="add-tour-panel" style="margin-top:1.5rem">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">TOUR CREATOR</span>
+          <h2>Create & Publish a New Tour Experience</h2>
+          <p class="muted">Add a new tour package with guest-facing descriptions, pricing, authentic photography, and included activities.</p>
+        </div>
+      </div>
+
+      <div class="tour-creator-grid">
+        <!-- Form Left Column -->
+        <form id="tour-form" class="form-grid">
+          <div class="field"><label for="tour-name">Guest-facing tour name *</label><input id="tour-name" required maxlength="120" placeholder="e.g. Materuni Birding & Sacred Waterfalls"></div>
+          <div class="field"><label for="tour-key">Unique booking key *</label><input id="tour-key" required maxlength="120" placeholder="e.g. Materuni Birding & Sacred Waterfalls"></div>
+          
+          <div class="field"><label for="tour-price">Price per person (USD) *</label><input id="tour-price" type="number" min="0" step="1" placeholder="e.g. 55" required></div>
+          <div class="field"><label for="tour-duration">Duration label *</label><input id="tour-duration" maxlength="80" placeholder="e.g. 4–5 hours" value="4–5 hours" required></div>
+          
+          <div class="field"><label for="tour-tagline">Product identity / Tagline</label><input id="tour-tagline" maxlength="120" placeholder="e.g. Sacred forest walks & Chagga highland birdlife"></div>
+          <div class="field"><label for="tour-best-for">Best for</label><input id="tour-best-for" maxlength="120" placeholder="e.g. Nature lovers, bird watchers & quiet explorers"></div>
+
+          <div class="field full"><label for="tour-description">Short summary (shown on cards) *</label><textarea id="tour-description" rows="2" placeholder="A concise 2-sentence summary of the experience." required></textarea></div>
+          <div class="field full"><label for="tour-full-description">Full guest-facing description</label><textarea id="tour-full-description" rows="3" placeholder="Detailed story of how the day unfolds with local Chagga hosts."></textarea></div>
+
+          <!-- Image Selection & Upload Area -->
+          <div class="field full image-manager-box">
+            <span class="eyebrow" style="color:#C5A059">EXPERIENCE PHOTOGRAPHY</span>
+            <label style="margin-top:4px;font-weight:700">Attach or Upload a Real Photograph</label>
+            <p class="muted" style="margin:2px 0 10px;font-size:12px">Select from authentic Materuni photos below, or upload a new photo directly from your device.</p>
+            
+            <div class="image-upload-row">
+              <div class="upload-btn-wrap">
+                <input type="file" id="tour-file-input" accept="image/jpeg,image/png,image/webp" style="display:none" />
+                <button type="button" class="button button-secondary" id="tour-file-btn">📷 Upload photo from device</button>
+              </div>
+              <span class="muted" style="font-size:12px">or enter image URL:</span>
+              <input id="tour-image" type="url" placeholder="https://..." style="flex:1;min-width:200px" />
+            </div>
+            <p id="tour-upload-status" class="muted" style="font-size:12px;margin:6px 0 0" aria-live="polite"></p>
+
+            <!-- Quick-Pick Authentic Gallery -->
+            <div style="margin-top:12px">
+              <span style="font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#1A3322;display:block;margin-bottom:6px">Quick-Select Authentic Photography:</span>
+              <div class="quick-gallery" id="quick-gallery">
+                <button type="button" class="quick-img-btn" data-url="/storage/v1/object/public/materuni-images/waterfall_image/1791998303073-materuni-waterfall-hike.jpg" title="Materuni 95m Waterfall Hike">
+                  <img src="/storage/v1/object/public/materuni-images/waterfall_image/1791998303073-materuni-waterfall-hike.jpg" alt="Waterfall Hike" width="90" height="60" loading="lazy" decoding="async" />
+                  <span>Waterfall</span>
+                </button>
+                <button type="button" class="quick-img-btn" data-url="/storage/v1/object/public/materuni-images/coffee_image/1791998412318-materuni-tour.jpg" title="Chagga Coffee Ceremony">
+                  <img src="/storage/v1/object/public/materuni-images/coffee_image/1791998412318-materuni-tour.jpg" alt="Coffee Ceremony" width="90" height="60" loading="lazy" decoding="async" />
+                  <span>Coffee</span>
+                </button>
+                <button type="button" class="quick-img-btn" data-url="/storage/v1/object/public/materuni-images/coffee_image/1791994933291-materuni-coffe-picking-lesson.jpg" title="Coffee Harvest & Garden">
+                  <img src="/storage/v1/object/public/materuni-images/coffee_image/1791994933291-materuni-coffe-picking-lesson.jpg" alt="Coffee Picking" width="90" height="60" loading="lazy" decoding="async" />
+                  <span>Harvest</span>
+                </button>
+                <button type="button" class="quick-img-btn" data-url="/storage/v1/object/public/materuni-images/story_image/1791995912146-materuni-community.jpg" title="Village Life & Community">
+                  <img src="/storage/v1/object/public/materuni-images/story_image/1791995912146-materuni-community.jpg" alt="Village Community" width="90" height="60" loading="lazy" decoding="async" />
+                  <span>Village</span>
+                </button>
+                <button type="button" class="quick-img-btn" data-url="/storage/v1/object/public/materuni-images/story_image/1791601761441-q3iog8mni3r.jpg" title="Rau Forest Nature & Botany">
+                  <img src="/storage/v1/object/public/materuni-images/story_image/1791601761441-q3iog8mni3r.jpg" alt="Rau Forest Trail" width="90" height="60" loading="lazy" decoding="async" />
+                  <span>Forest</span>
+                </button>
+                <button type="button" class="quick-img-btn" data-url="/storage/v1/object/public/materuni-images/story_image/1791994219885-materuni-coffe-plantatio-tour.jpg" title="Overnight Camping & Sunset">
+                  <img src="/storage/v1/object/public/materuni-images/story_image/1791994219885-materuni-coffe-plantatio-tour.jpg" alt="Camping & Slopes" width="90" height="60" loading="lazy" decoding="async" />
+                  <span>Camping</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="field full"><label for="tour-moments">Signature moments (one highlight per line)</label><textarea id="tour-moments" rows="3" placeholder="Morning walk through native agroforestry&#10;Quiet birdsong listening at the river gorge&#10;Fresh mountain water tasting"></textarea></div>
+
+          <div class="field full"><label for="tour-inclusions">WHAT’S INCLUDED (one item per line) *</label><textarea id="tour-inclusions" rows="4" placeholder="Professional local Chagga guide&#10;Materuni village and waterfall fees&#10;Traditional Chagga coffee experience&#10;Authentic local hot lunch&#10;Bottled drinking water" required></textarea></div>
+          
+          <div class="field full"><label for="tour-exclusions">WHAT’S NOT INCLUDED (one item per line)</label><textarea id="tour-exclusions" rows="3" placeholder="Transport to and from Materuni (unless booked separately)&#10;Personal purchases and souvenirs&#10;Tips and gratuities"></textarea></div>
+
+          <div class="field"><label for="tour-order">Display catalog order</label><input id="tour-order" type="number" value="70"></div>
+
+          <div class="field full" style="margin-top:12px">
+            <button class="button" type="submit" id="save-tour" style="font-size:14px;padding:12px 24px">✨ Publish Tour to Website & Booking</button>
+            <p id="tour-feedback" class="muted" style="margin-top:8px" aria-live="polite"></p>
+          </div>
+        </form>
+
+        <!-- Live Preview Right Column -->
+        <div class="tour-live-preview-wrap">
+          <div class="preview-header">
+            <span class="eyebrow" style="color:#C5A059">LIVE PREVIEW</span>
+            <strong style="color:#1A3322;font-size:14px">Guest-Facing Card Preview</strong>
+          </div>
+          <div class="preview-card" id="tour-preview-card">
+            <div class="preview-image-container">
+              <img id="preview-img" src="/storage/v1/object/public/materuni-images/waterfall_image/1791998303073-materuni-waterfall-hike.jpg" alt="Tour preview" width="600" height="380" loading="lazy" decoding="async" />
+              <span class="preview-badge" id="preview-duration">4–5 hours</span>
+            </div>
+            <div class="preview-body">
+              <div class="preview-price-row">
+                <span class="preview-tagline" id="preview-tagline">SACRED FOREST & HERITAGE</span>
+                <span class="preview-price"><strong id="preview-price-val">$55</strong> <small>PER PERSON</small></span>
+              </div>
+              <h3 id="preview-title" class="preview-title">Materuni Birding & Sacred Waterfalls</h3>
+              <p id="preview-desc" class="preview-desc">A concise 2-sentence summary of the experience.</p>
+              
+              <div class="preview-inclusions-box">
+                <strong>WHAT'S INCLUDED</strong>
+                <ul id="preview-inclusions-list">
+                  <li>Professional local Chagga guide</li>
+                  <li>Materuni village and waterfall fees</li>
+                  <li>Traditional Chagga coffee experience</li>
+                  <li>Authentic local hot lunch</li>
+                </ul>
+              </div>
+
+              <div class="preview-btn">Check availability</div>
+            </div>
+          </div>
+          <p class="muted" style="font-size:11px;margin-top:10px;text-align:center">This preview automatically updates as you type and select photos.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit Existing Tours Section -->
+    <div class="booking-panel" id="package-editors" style="margin-top:1.5rem">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">TOUR CATALOGUE</span>
+          <h2>Edit Existing Tours & Photos</h2>
+          <p class="muted">Update prices, replace photographs, change what's included/excluded, or toggle visibility for any published tour.</p>
+        </div>
+      </div>
+      <div id="tour-list" class="muted">Loading tours…</div>
+    </div>
+
+    <!-- Shared Inclusions Standard -->
+    <div class="booking-panel" id="shared-inclusions-panel" style="margin-top:1.5rem">
+      <span class="eyebrow">MATERUNI HOSTS SERVICE STANDARD</span>
+      <h2>Shared inclusions for all experiences</h2>
+      <p class="muted">Edit this single standard once. It applies across all experiences and highlights your village hospitality guarantee.</p>
+      <div class="field full">
+        <label for="shared-inclusions">Included in every experience — one item per line</label>
+        <textarea id="shared-inclusions" rows="6"></textarea>
+      </div>
+      <div class="actions" style="margin-top:12px">
+        <button class="button" type="button" id="save-shared-inclusions">Save shared inclusions</button>
+        <span class="muted" id="shared-inclusions-feedback" aria-live="polite"></span>
+      </div>
+    </div>
+
+    <!-- Publish Availability Slots -->
+    <div class="booking-panel" style="margin-top:1.5rem">
+      <span class="eyebrow">PUBLISH AVAILABILITY</span>
+      <h2>Create Available Dates & Time Slots</h2>
+      <p class="muted">Make departure dates and times available for direct online guest booking requests.</p>
+      <form id="slot-form" class="form-grid">
+        <div class="field full"><label for="slot-experience">Select Tour *</label><select id="slot-experience" required><option value="">Select a tour</option></select></div>
+        <div class="field"><label for="slot-date">Start date *</label><input id="slot-date" type="date" required></div>
+        <div class="field"><label for="slot-end-date">End date (optional – publish range up to 90 days)</label><input id="slot-end-date" type="date"></div>
+        <div class="field"><label for="slot-capacity">Guest capacity per slot *</label><input id="slot-capacity" type="number" min="1" max="100" value="10" required></div>
+        <div class="field"><label for="slot-start">Start time *</label><input id="slot-start" type="time" value="08:00" required></div>
+        <div class="field"><label for="slot-end">End time *</label><input id="slot-end" type="time" value="14:00" required></div>
+        <div class="field full"><button class="button" type="submit">Publish Available Dates</button><p id="slot-feedback" class="muted" aria-live="polite"></p></div>
+      </form>
+    </div>
+
+    <!-- Availability Calendar -->
+    <div class="booking-panel" style="margin-top:1.5rem">
+      <span class="eyebrow">AVAILABILITY CALENDAR</span>
+      <h2>Upcoming Published Spaces</h2>
+      <p class="muted">Review published dates, remaining capacity, and open or close slots with one click.</p>
+      <div id="availability-list" class="admin-booking-list" aria-live="polite">Loading availability…</div>
+    </div>
+  </div>
+</section>
+
 <script>
 // @ts-nocheck
-
 import { supabaseUrl, publishableKey } from "../../lib/supabase-public";
-let accessToken="";
-let adminId="";
-const el=id=>document.getElementById(id);
-const apiHeaders=()=>({"apikey":publishableKey,"Authorization":"Bearer "+accessToken,"Content-Type":"application/json"});
-async function api(path,options={}){
- const response=await fetch(supabaseUrl+path,{...options,headers:{...apiHeaders(),...(options.headers||{})}});
- const body=await response.json().catch(()=>null);
- if(!response.ok) throw new Error(body?.message||body?.error_description||body?.details||"Request failed. Please try again.");
- return body;
-}
-async function refreshAvailability(){
- const list=el("availability-list");
- list.textContent="Loading availability…";
- try{
-  const today=new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,10);
-  const query=new URLSearchParams({select:"id,experience,slot_date,start_time,end_time,capacity,booked_count,is_active",slot_date:"gte."+today,order:"slot_date.asc,start_time.asc",limit:"150"});
-  const rows=await api("/rest/v1/availability_slots?"+query.toString());
-  list.replaceChildren();
-  if(!rows.length){const empty=document.createElement("p");empty.className="muted";empty.textContent="No upcoming availability has been published yet.";list.append(empty);return;}
-  rows.forEach(slot=>{
-   const line=document.createElement("div");line.className="notice";line.style.marginTop="0.65rem";
-   const title=document.createElement("strong");title.textContent=slot.experience;
-   const meta=document.createElement("p");meta.className="muted";
-   meta.textContent=slot.slot_date+" · "+String(slot.start_time).slice(0,5)+"–"+String(slot.end_time).slice(0,5)+" · "+Math.max(0,Number(slot.capacity)-Number(slot.booked_count))+" spaces left of "+slot.capacity+" · "+(slot.is_active?"Open":"Closed");
-   const action=document.createElement("button");action.type="button";action.className="button button-secondary";
-   action.textContent=slot.is_active?"Close availability":"Reopen availability";
-   action.disabled=slot.slot_date<today;
-   action.addEventListener("click",async()=>{
-    action.disabled=true;
-    try{
-     await api("/rest/v1/availability_slots?id=eq."+encodeURIComponent(slot.id),{method:"PATCH",body:JSON.stringify({is_active:!slot.is_active})});
-     await refreshAvailability();
-    }catch(error){el("slot-feedback").textContent=error.message;action.disabled=false;}
-   });
-   line.append(title,meta,action);list.append(line);
+const bucket = "materuni-images";
+let accessToken = "";
+let adminId = "";
+
+const el = id => document.getElementById(id);
+const apiHeaders = () => ({
+  "apikey": publishableKey,
+  "Authorization": "Bearer " + accessToken,
+  "Content-Type": "application/json"
+});
+
+async function api(path, options = {}) {
+  const response = await fetch(supabaseUrl + path, {
+    ...options,
+    headers: { ...apiHeaders(), ...(options.headers || {}) }
   });
- }catch(error){list.textContent="Availability could not be loaded: "+error.message;}
+  const body = await response.json().catch(() => null);
+  if (!response.ok) throw new Error(body?.message || body?.error_description || body?.details || "Request failed. Please try again.");
+  return body;
 }
-async function refreshTours(){
- const rows=await api("/rest/v1/experience_catalog?select=id,experience_key,display_name,price_usd,is_active,sort_order,short_description,full_description,image_url,duration_label,inclusions,exclusions,product_tagline,best_for,signature_moments,unique_amenities&order=sort_order.asc");
- const select=el("slot-experience");
- select.innerHTML='<option value="">Select a tour</option>';
- rows.filter(t=>t.is_active).forEach(t=>{const o=document.createElement("option");o.value=t.experience_key;o.textContent=t.display_name+" · $"+Number(t.price_usd).toFixed(0);select.append(o)});
- el("tour-list").innerHTML="";
- rows.forEach(t=>{
-  const line=document.createElement("section");line.className="notice";line.style.marginTop="0.8rem";
-  const title=document.createElement("h3");title.textContent=t.display_name+" — $"+Number(t.price_usd).toFixed(2);
-  const form=document.createElement("div");form.className="form-grid";form.style.marginTop=".7rem";
-  const field=(label,value,type="text")=>{const wrap=document.createElement("div");wrap.className="field";const l=document.createElement("label");l.textContent=label;const input=document.createElement(type==="textarea"?"textarea":"input");if(type!=="textarea")input.type=type;input.value=value??"";if(type==="textarea"){input.rows=5;input.style.minHeight="130px";input.placeholder=label.startsWith("INCLUDED")?"Local guide\nVillage / entrance fees\nLocal lunch or listed activity":"Transport to and from Materuni (unless arranged separately)\nPersonal expenses\nTips and gratuities";}wrap.append(l,input);form.append(wrap);return input};
-   const name=field("Display name",t.display_name),price=field("Price USD",t.price_usd,"number"),tagline=field("Product identity / tagline",t.product_tagline||""),bestFor=field("Best for",t.best_for||""),short=field("Short description",t.short_description||"","textarea"),full=field("Full guest-facing description",t.full_description||"","textarea"),duration=field("Duration",t.duration_label||""),image=field("Image URL",t.image_url||"","url"),moments=field("Signature moments — one per line",Array.isArray(t.signature_moments)?t.signature_moments.join("\n"):"","textarea"),amenities=field("Unique amenities — one per line",Array.isArray(t.unique_amenities)?t.unique_amenities.join("\n"):"","textarea"),inclusions=field("Additional package inclusions — one per line",Array.isArray(t.inclusions)?t.inclusions.join("\n"):"","textarea"),exclusions=field("WHAT’S NOT INCLUDED — one per line",Array.isArray(t.exclusions)?t.exclusions.join("\n"):"","textarea");
-  const actions=document.createElement("div");actions.className="actions";const save=document.createElement("button");save.type="button";save.className="button";save.textContent="Save tour changes";const toggle=document.createElement("button");toggle.type="button";toggle.className="button button-secondary";toggle.textContent=t.is_active?"Hide tour":"Publish tour";
-   save.addEventListener("click",async()=>{save.disabled=true;try{const p=Number(price.value);if(!name.value.trim()||!Number.isFinite(p)||p<0)throw new Error("Enter a tour name and a valid non-negative price.");if(image.value&&!image.value.trim().toLowerCase().startsWith("https://"))throw new Error("Image URL must begin with https://");await api("/rest/v1/experience_catalog?id=eq."+encodeURIComponent(t.id),{method:"PATCH",body:JSON.stringify({display_name:name.value.trim(),price_usd:p,product_tagline:tagline.value.trim(),best_for:bestFor.value.trim(),short_description:short.value.trim(),full_description:full.value.trim(),duration_label:duration.value.trim(),image_url:image.value.trim()||null,signature_moments:moments.value.split("\n").map(x=>x.trim()).filter(Boolean),unique_amenities:amenities.value.split("\n").map(x=>x.trim()).filter(Boolean),inclusions:inclusions.value.split("\n").map(x=>x.trim()).filter(Boolean),exclusions:exclusions.value.split("\n").map(x=>x.trim()).filter(Boolean),updated_at:new Date().toISOString()})});el("tour-feedback").textContent="Tour updated. Refresh the public experience page to review it.";await refreshTours()}catch(e){el("tour-feedback").textContent=e.message;save.disabled=false}});
-  toggle.addEventListener("click",async()=>{toggle.disabled=true;try{await api("/rest/v1/experience_catalog?id=eq."+encodeURIComponent(t.id),{method:"PATCH",body:JSON.stringify({is_active:!t.is_active,updated_at:new Date().toISOString()})});await refreshTours()}catch(e){el("tour-feedback").textContent=e.message;toggle.disabled=false}});
-  actions.append(save,toggle);const editor=document.createElement("details");editor.className="admin-package-editor";const summary=document.createElement("summary");summary.textContent="Edit package details · price, description, photo, included and excluded";editor.append(summary,form,actions);line.append(title,editor);el("tour-list").append(line);
- });
-}
-async function loadSharedInclusions(){
- const feedback=el("shared-inclusions-feedback");
- try{const rows=await api("/rest/v1/site_settings?select=setting_value&setting_key=eq.experience_shared_inclusions");const raw=rows?.[0]?.setting_value;const items=typeof raw==="string"?JSON.parse(raw||"[]"):(raw||[]);el("shared-inclusions").value=Array.isArray(items)?items.join("\n"):"";feedback.textContent="Loaded shared service standard.";}catch(error){feedback.textContent="Could not load shared inclusions: "+error.message;}
-}
-el("save-shared-inclusions").addEventListener("click",async()=>{
- const button=el("save-shared-inclusions"),feedback=el("shared-inclusions-feedback");button.disabled=true;feedback.textContent="Saving…";
- try{const items=el("shared-inclusions").value.split("\n").map(x=>x.trim()).filter(Boolean);if(!items.length)throw new Error("Keep at least one shared inclusion.");await api("/rest/v1/site_settings?on_conflict=setting_key",{method:"POST",headers:{"Prefer":"resolution=merge-duplicates,return=minimal"},body:JSON.stringify({setting_key:"experience_shared_inclusions",setting_value:JSON.stringify(items)})});feedback.textContent="Shared inclusions saved. Public pages will use this shared list.";}catch(error){feedback.textContent=error.message;}finally{button.disabled=false;}
-});
 
-el("login-form").addEventListener("submit",async e=>{
- e.preventDefault();const button=el("login-button");button.disabled=true;el("login-feedback").textContent="Checking account…";
- try{
-  const response=await fetch(supabaseUrl+"/auth/v1/token?grant_type=password",{method:"POST",headers:{"apikey":publishableKey,"Content-Type":"application/json"},body:JSON.stringify({email:el("admin-email").value.trim(),password:el("admin-password").value})});
-  const session=await response.json();if(!response.ok)throw new Error(session.msg||session.message||"Sign in failed.");
-  accessToken=session.access_token;adminId=session.user.id;
-  const admins=await api("/rest/v1/admin_users?select=user_id&user_id=eq."+adminId);
-  if(!admins.length){accessToken="";throw new Error("This account is not authorised as a Materuni Hosts administrator.");}
-  el("login-panel").hidden=true;el("manager").hidden=false;await Promise.all([refreshTours(),refreshAvailability(),loadSharedInclusions()]);
- }catch(error){el("login-feedback").textContent=error.message}finally{button.disabled=false}
-});
-el("tour-form").addEventListener("submit",async e=>{
- e.preventDefault();const button=el("save-tour");button.disabled=true;el("tour-feedback").textContent="Saving tour…";
- const name=el("tour-name").value.trim();const key=el("tour-key").value.trim();
- try{
-   const price=Number(el("tour-price").value);const imageUrl=el("tour-image").value.trim();
-   if(!name||!key)throw new Error("Enter both a guest-facing name and a unique booking key.");
-   if(!Number.isFinite(price)||price<0)throw new Error("Enter a valid non-negative price.");
-   if(imageUrl&&!imageUrl.toLowerCase().startsWith("https://"))throw new Error("Image URL must begin with https://");
-   await api("/rest/v1/experience_catalog",{method:"POST",headers:{"Prefer":"return=minimal"},body:JSON.stringify({display_name:name,experience_key:key,price_usd:price,sort_order:Number(el("tour-order").value||100),short_description:el("tour-description").value.trim(),full_description:el("tour-full-description").value.trim(),duration_label:el("tour-duration").value.trim(),image_url:imageUrl||null,inclusions:el("tour-inclusions").value.split("\n").map(x=>x.trim()).filter(Boolean),exclusions:el("tour-exclusions").value.split("\n").map(x=>x.trim()).filter(Boolean),is_active:true})});
-  el("tour-form").reset();el("tour-order").value="100";el("tour-feedback").textContent="Tour added. It is now available in the guest booking form.";await refreshTours();
- }catch(error){el("tour-feedback").textContent=error.message}finally{button.disabled=false}
-});
-el("slot-form").addEventListener("submit",async e=>{
- e.preventDefault();const feedback=el("slot-feedback");feedback.textContent="Publishing…";
- try{
-  const start=el("slot-start").value,end=el("slot-end").value;
-  if(end<=start)throw new Error("End time must be later than start time.");
-  const startDate=el("slot-date").value;
-  if(!startDate||startDate<minDate)throw new Error("Choose today or a future date.");
-  const cap=Number(el("slot-capacity").value);
-  if(cap<1||cap>100)throw new Error("Capacity must be between 1 and 100 guests.");
-  const exp=el("slot-experience").value;
-  const endDate=el("slot-end-date")?.value;
-  if(endDate && endDate < startDate) throw new Error("End date cannot be earlier than start date.");
+// WebP image optimizer
+async function makeOptimizedWebP(source, maxSide = 1400) {
+  const bitmap = await createImageBitmap(source);
+  const scale = Math.min(1, maxSide / Math.max(bitmap.width, bitmap.height));
+  const width = Math.max(1, Math.round(bitmap.width * scale));
+  const height = Math.max(1, Math.round(bitmap.height * scale));
+  const canvas = document.createElement("canvas");
+  canvas.width = width;
+  canvas.height = height;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) { bitmap.close?.(); throw new Error("Browser canvas unavailable."); }
+  ctx.drawImage(bitmap, 0, 0, width, height);
+  bitmap.close?.();
+  const blob = await new Promise(resolve => canvas.toBlob(resolve, "image/webp", 0.82));
+  if (!blob) throw new Error("Could not compress to WebP.");
+  return blob;
+}
 
-  const dates=[];
-  if(!endDate || endDate === startDate){
-   dates.push(startDate);
-  } else {
-   let curr = new Date(startDate + "T12:00:00Z");
-   const stop = new Date(endDate + "T12:00:00Z");
-   const maxDays = 90;
-   let count = 0;
-   while(curr <= stop && count < maxDays){
-    dates.push(curr.toISOString().slice(0,10));
-    curr.setDate(curr.getDate() + 1);
-    count++;
-   }
+// Upload blob to Supabase storage
+async function uploadTourImage(blob, folder = "tour_images") {
+  const filename = `${folder}/${Date.now()}-${Math.random().toString(36).substring(2, 7)}.webp`;
+  const upload = await fetch(supabaseUrl + `/storage/v1/object/${bucket}/${filename}`, {
+    method: "POST",
+    headers: {
+      "apikey": publishableKey,
+      "Authorization": "Bearer " + accessToken,
+      "Content-Type": "image/webp",
+      "x-upsert": "false",
+      "Cache-Control": "31536000"
+    },
+    body: blob
+  });
+  const res = await upload.json().catch(() => null);
+  if (!upload.ok) throw new Error(res?.message || res?.error || "Image upload failed.");
+  return supabaseUrl + `/storage/v1/object/public/${bucket}/${filename}`;
+}
+
+// Live preview sync for tour creator
+function syncTourPreview() {
+  const name = el("tour-name")?.value.trim() || "Materuni Birding & Sacred Waterfalls";
+  const price = el("tour-price")?.value || "55";
+  const duration = el("tour-duration")?.value.trim() || "4–5 hours";
+  const tagline = el("tour-tagline")?.value.trim() || "SACRED FOREST & HERITAGE";
+  const desc = el("tour-description")?.value.trim() || "A concise 2-sentence summary of the experience.";
+  const imgUrl = el("tour-image")?.value.trim() || `${supabaseUrl}/storage/v1/object/public/materuni-images/waterfall_image/1791998303073-materuni-waterfall-hike.jpg`;
+  const rawInc = el("tour-inclusions")?.value.split("\n").map(x => x.trim()).filter(Boolean);
+
+  if (el("preview-title")) el("preview-title").textContent = name;
+  if (el("preview-price-val")) el("preview-price-val").textContent = "$" + price;
+  if (el("preview-duration")) el("preview-duration").textContent = duration;
+  if (el("preview-tagline")) el("preview-tagline").textContent = tagline.toUpperCase();
+  if (el("preview-desc")) el("preview-desc").textContent = desc;
+  if (el("preview-img")) {
+    const fullImg = imgUrl.startsWith("/") ? (supabaseUrl + imgUrl) : imgUrl;
+    el("preview-img").src = fullImg;
   }
 
-  const payload = dates.map(d=>({
-   experience:exp,slot_date:d,start_time:start,end_time:end,capacity:cap,booked_count:0,is_active:true
-  }));
+  const list = el("preview-inclusions-list");
+  if (list) {
+    list.replaceChildren();
+    const items = rawInc && rawInc.length ? rawInc.slice(0, 5) : [
+      "Professional local Chagga guide",
+      "Materuni village and waterfall fees",
+      "Traditional Chagga coffee experience",
+      "Authentic local hot lunch"
+    ];
+    items.forEach(it => {
+      const li = document.createElement("li");
+      li.textContent = it;
+      list.append(li);
+    });
+  }
+}
 
-  await api("/rest/v1/availability_slots",{method:"POST",headers:{"Prefer":"return=minimal"},body:JSON.stringify(payload)});
-  feedback.textContent=`Availability published for ${dates.length} date${dates.length===1?'':'s'}. Guests can now select these times.`;
-  await refreshAvailability();
- }catch(error){feedback.textContent=error.message}
+// Wire inputs to live preview
+["tour-name", "tour-price", "tour-duration", "tour-tagline", "tour-description", "tour-image", "tour-inclusions"].forEach(id => {
+  el(id)?.addEventListener("input", syncTourPreview);
 });
-el("logout").addEventListener("click",async()=>{try{await fetch(supabaseUrl+"/auth/v1/logout",{method:"POST",headers:apiHeaders()})}catch{}accessToken="";adminId="";el("manager").hidden=true;el("login-panel").hidden=false;el("login-form").reset()});
-const minDate=new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,10);el("slot-date").min=minDate;if(el("slot-end-date"))el("slot-end-date").min=minDate;
+
+// Auto-fill unique key when typing tour name if key is empty
+el("tour-name")?.addEventListener("input", () => {
+  const keyInput = el("tour-key");
+  if (keyInput && (!keyInput.value || keyInput.dataset.autofilled === "true")) {
+    keyInput.value = el("tour-name").value;
+    keyInput.dataset.autofilled = "true";
+  }
+});
+el("tour-key")?.addEventListener("input", () => {
+  if (el("tour-key")) el("tour-key").dataset.autofilled = "false";
+});
+
+// Quick-select gallery click handling
+document.querySelectorAll(".quick-img-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const rawPath = btn.getAttribute("data-url");
+    const fullUrl = rawPath.startsWith("/") ? (supabaseUrl + rawPath) : rawPath;
+    el("tour-image").value = fullUrl;
+    syncTourPreview();
+    if (el("tour-upload-status")) el("tour-upload-status").textContent = "✓ Authentic photograph selected.";
+  });
+});
+
+// File upload button for new tour
+el("tour-file-btn")?.addEventListener("click", () => {
+  el("tour-file-input")?.click();
+});
+
+el("tour-file-input")?.addEventListener("change", async (e) => {
+  const file = e.target.files?.[0];
+  if (!file) return;
+  const status = el("tour-upload-status");
+  status.textContent = "Compressing and uploading image…";
+  try {
+    const optimized = await makeOptimizedWebP(file, 1400);
+    const publicUrl = await uploadTourImage(optimized);
+    el("tour-image").value = publicUrl;
+    status.textContent = "✓ Image uploaded and attached successfully!";
+    syncTourPreview();
+  } catch (err) {
+    status.textContent = "Upload failed: " + err.message;
+  } finally {
+    e.target.value = "";
+  }
+});
+
+async function refreshAvailability() {
+  const list = el("availability-list");
+  list.textContent = "Loading availability…";
+  try {
+    const today = new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+    const query = new URLSearchParams({
+      select: "id,experience,slot_date,start_time,end_time,capacity,booked_count,is_active",
+      slot_date: "gte." + today,
+      order: "slot_date.asc,start_time.asc",
+      limit: "150"
+    });
+    const rows = await api("/rest/v1/availability_slots?" + query.toString());
+    list.replaceChildren();
+    if (!rows.length) {
+      const empty = document.createElement("p");
+      empty.className = "muted";
+      empty.textContent = "No upcoming availability has been published yet.";
+      list.append(empty);
+      return;
+    }
+    rows.forEach(slot => {
+      const line = document.createElement("div");
+      line.className = "notice";
+      line.style.marginTop = "0.65rem";
+      line.style.display = "flex";
+      line.style.justifyContent = "space-between";
+      line.style.alignItems = "center";
+      line.style.flexWrap = "wrap";
+      line.style.gap = "10px";
+
+      const info = document.createElement("div");
+      const title = document.createElement("strong");
+      title.textContent = slot.experience;
+      const meta = document.createElement("p");
+      meta.className = "muted";
+      meta.style.margin = "4px 0 0";
+      meta.textContent = `${slot.slot_date} · ${String(slot.start_time).slice(0, 5)}–${String(slot.end_time).slice(0, 5)} · ${Math.max(0, Number(slot.capacity) - Number(slot.booked_count))} spaces left of ${slot.capacity} · ${slot.is_active ? "Open" : "Closed"}`;
+      info.append(title, meta);
+
+      const action = document.createElement("button");
+      action.type = "button";
+      action.className = "button button-secondary";
+      action.textContent = slot.is_active ? "Close availability" : "Reopen availability";
+      action.disabled = slot.slot_date < today;
+      action.addEventListener("click", async () => {
+        action.disabled = true;
+        try {
+          await api("/rest/v1/availability_slots?id=eq." + encodeURIComponent(slot.id), {
+            method: "PATCH",
+            body: JSON.stringify({ is_active: !slot.is_active })
+          });
+          await refreshAvailability();
+        } catch (error) {
+          el("slot-feedback").textContent = error.message;
+          action.disabled = false;
+        }
+      });
+      line.append(info, action);
+      list.append(line);
+    });
+  } catch (error) {
+    list.textContent = "Availability could not be loaded: " + error.message;
+  }
+}
+
+async function refreshTours() {
+  const rows = await api("/rest/v1/experience_catalog?select=id,experience_key,display_name,price_usd,is_active,sort_order,short_description,full_description,image_url,duration_label,inclusions,exclusions,product_tagline,best_for,signature_moments,unique_amenities&order=sort_order.asc");
+  const select = el("slot-experience");
+  select.innerHTML = '<option value="">Select a tour</option>';
+  rows.filter(t => t.is_active).forEach(t => {
+    const o = document.createElement("option");
+    o.value = t.experience_key;
+    o.textContent = `${t.display_name} · $${Number(t.price_usd).toFixed(0)}`;
+    select.append(o);
+  });
+
+  const tourList = el("tour-list");
+  tourList.innerHTML = "";
+  
+  rows.forEach(t => {
+    const line = document.createElement("section");
+    line.className = "admin-tour-card-wrap";
+    line.style.marginTop = "1rem";
+    line.style.border = "1px solid #e6dfd3";
+    line.style.borderRadius = "14px";
+    line.style.background = "#fff";
+    line.style.padding = "20px";
+
+    // Card Header
+    const head = document.createElement("div");
+    head.style.display = "flex";
+    head.style.justifyContent = "space-between";
+    head.style.alignItems = "center";
+    head.style.flexWrap = "wrap";
+    head.style.gap = "12px";
+
+    const left = document.createElement("div");
+    left.style.display = "flex";
+    left.style.alignItems = "center";
+    left.style.gap = "14px";
+
+    // Thumbnail
+    const thumb = document.createElement("img");
+    thumb.src = t.image_url || `${supabaseUrl}/storage/v1/object/public/materuni-images/waterfall_image/1791998303073-materuni-waterfall-hike.jpg`;
+    thumb.alt = t.display_name;
+    thumb.width = 64;
+    thumb.height = 64;
+    thumb.loading = "lazy";
+    thumb.decoding = "async";
+    thumb.style.width = "64px";
+    thumb.style.height = "64px";
+    thumb.style.borderRadius = "8px";
+    thumb.style.objectFit = "cover";
+    thumb.style.border = "1px solid #e6dfd3";
+
+    const info = document.createElement("div");
+    const h3 = document.createElement("h3");
+    h3.style.margin = "0";
+    h3.style.color = "#1a3322";
+    h3.style.fontSize = "18px";
+    h3.textContent = `${t.display_name} — $${Number(t.price_usd).toFixed(0)} USD`;
+    
+    const sub = document.createElement("p");
+    sub.className = "muted";
+    sub.style.margin = "3px 0 0";
+    sub.style.fontSize = "13px";
+    sub.textContent = `Key: ${t.experience_key} · Duration: ${t.duration_label || "Flexible"} · Status: ${t.is_active ? "Published" : "Hidden"}`;
+    info.append(h3, sub);
+    left.append(thumb, info);
+
+    const headActions = document.createElement("div");
+    headActions.style.display = "flex";
+    headActions.style.gap = "8px";
+    
+    const toggleBtn = document.createElement("button");
+    toggleBtn.type = "button";
+    toggleBtn.className = "button button-secondary";
+    toggleBtn.textContent = t.is_active ? "Hide from guests" : "Publish to website";
+    headActions.append(toggleBtn);
+
+    head.append(left, headActions);
+
+    // Expandable Editor
+    const details = document.createElement("details");
+    details.className = "admin-package-editor";
+    details.style.marginTop = "14px";
+    
+    const summary = document.createElement("summary");
+    summary.textContent = "✏️ Edit tour details, pricing, photos, and inclusions";
+    
+    const form = document.createElement("div");
+    form.className = "form-grid";
+    form.style.marginTop = "12px";
+
+    const field = (label, value, type = "text", rows = 3) => {
+      const wrap = document.createElement("div");
+      wrap.className = (type === "textarea" || label.includes("description") || label.includes("INCLUDED") || label.includes("moments")) ? "field full" : "field";
+      const l = document.createElement("label");
+      l.textContent = label;
+      const input = document.createElement(type === "textarea" ? "textarea" : "input");
+      if (type !== "textarea") input.type = type;
+      input.value = value ?? "";
+      if (type === "textarea") input.rows = rows;
+      wrap.append(l, input);
+      form.append(wrap);
+      return input;
+    };
+
+    const nameIn = field("Display name", t.display_name);
+    const priceIn = field("Price USD", t.price_usd, "number");
+    const durationIn = field("Duration label", t.duration_label || "");
+    const sortIn = field("Sort order", t.sort_order || 100, "number");
+    const taglineIn = field("Tagline / Identity", t.product_tagline || "");
+    const bestForIn = field("Best for", t.best_for || "");
+    const shortIn = field("Short summary", t.short_description || "", "textarea", 2);
+    const fullIn = field("Full description", t.full_description || "", "textarea", 3);
+    
+    // Tour Image uploader block
+    const imgWrap = document.createElement("div");
+    imgWrap.className = "field full image-manager-box";
+    imgWrap.innerHTML = `
+      <label style="font-weight:700">Tour Photograph</label>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:6px">
+        <input type="url" class="tour-edit-img-url" value="${t.image_url || ''}" placeholder="https://..." style="flex:1;min-width:220px" />
+        <button type="button" class="button button-secondary tour-edit-upload-btn">Upload replacement photo</button>
+      </div>
+      <p class="muted tour-edit-status" style="font-size:12px;margin:4px 0 0"></p>
+    `;
+    form.append(imgWrap);
+
+    const imageIn = imgWrap.querySelector(".tour-edit-img-url");
+    const editUploadBtn = imgWrap.querySelector(".tour-edit-upload-btn");
+    const editStatus = imgWrap.querySelector(".tour-edit-status");
+
+    // Hidden file input for this card
+    const editFileInput = document.createElement("input");
+    editFileInput.type = "file";
+    editFileInput.accept = "image/jpeg,image/png,image/webp";
+    editFileInput.style.display = "none";
+    imgWrap.append(editFileInput);
+
+    editUploadBtn.addEventListener("click", () => editFileInput.click());
+    editFileInput.addEventListener("change", async (ev) => {
+      const f = ev.target.files?.[0];
+      if (!f) return;
+      editStatus.textContent = "Compressing and uploading replacement photo…";
+      try {
+        const opt = await makeOptimizedWebP(f, 1400);
+        const url = await uploadTourImage(opt);
+        imageIn.value = url;
+        thumb.src = url;
+        editStatus.textContent = "✓ Image uploaded! Remember to click Save tour changes below.";
+      } catch (err) {
+        editStatus.textContent = "Upload failed: " + err.message;
+      }
+    });
+
+    const momentsIn = field("Signature moments (one per line)", Array.isArray(t.signature_moments) ? t.signature_moments.join("\n") : "", "textarea", 3);
+    const inclusionsIn = field("WHAT’S INCLUDED (one per line)", Array.isArray(t.inclusions) ? t.inclusions.join("\n") : "", "textarea", 4);
+    const exclusionsIn = field("WHAT’S NOT INCLUDED (one per line)", Array.isArray(t.exclusions) ? t.exclusions.join("\n") : "", "textarea", 3);
+
+    const saveActions = document.createElement("div");
+    saveActions.className = "actions";
+    saveActions.style.marginTop = "14px";
+    
+    const saveBtn = document.createElement("button");
+    saveBtn.type = "button";
+    saveBtn.className = "button";
+    saveBtn.textContent = "Save tour changes";
+
+    const feedback = document.createElement("span");
+    feedback.className = "muted";
+    feedback.style.marginLeft = "12px";
+
+    saveBtn.addEventListener("click", async () => {
+      saveBtn.disabled = true;
+      feedback.textContent = "Saving changes…";
+      try {
+        const p = Number(priceIn.value);
+        if (!nameIn.value.trim() || !Number.isFinite(p) || p < 0) throw new Error("Enter a tour name and a valid non-negative price.");
+        
+        await api("/rest/v1/experience_catalog?id=eq." + encodeURIComponent(t.id), {
+          method: "PATCH",
+          body: JSON.stringify({
+            display_name: nameIn.value.trim(),
+            price_usd: p,
+            duration_label: durationIn.value.trim(),
+            sort_order: Number(sortIn.value) || 100,
+            product_tagline: taglineIn.value.trim(),
+            best_for: bestForIn.value.trim(),
+            short_description: shortIn.value.trim(),
+            full_description: fullIn.value.trim(),
+            image_url: imageIn.value.trim() || null,
+            signature_moments: momentsIn.value.split("\n").map(x => x.trim()).filter(Boolean),
+            inclusions: inclusionsIn.value.split("\n").map(x => x.trim()).filter(Boolean),
+            exclusions: exclusionsIn.value.split("\n").map(x => x.trim()).filter(Boolean),
+            updated_at: new Date().toISOString()
+          })
+        });
+        feedback.textContent = "✓ Tour updated successfully!";
+        await refreshTours();
+      } catch (e) {
+        feedback.textContent = "Error: " + e.message;
+        saveBtn.disabled = false;
+      }
+    });
+
+    toggleBtn.addEventListener("click", async () => {
+      toggleBtn.disabled = true;
+      try {
+        await api("/rest/v1/experience_catalog?id=eq." + encodeURIComponent(t.id), {
+          method: "PATCH",
+          body: JSON.stringify({ is_active: !t.is_active, updated_at: new Date().toISOString() })
+        });
+        await refreshTours();
+      } catch (e) {
+        alert(e.message);
+        toggleBtn.disabled = false;
+      }
+    });
+
+    saveActions.append(saveBtn, feedback);
+    details.append(summary, form, saveActions);
+    line.append(head, details);
+    tourList.append(line);
+  });
+}
+
+async function loadSharedInclusions() {
+  const feedback = el("shared-inclusions-feedback");
+  try {
+    const rows = await api("/rest/v1/site_settings?select=setting_value&setting_key=eq.experience_shared_inclusions");
+    const raw = rows?.[0]?.setting_value;
+    const items = typeof raw === "string" ? JSON.parse(raw || "[]") : (raw || []);
+    el("shared-inclusions").value = Array.isArray(items) ? items.join("\n") : "";
+    feedback.textContent = "Loaded shared service standard.";
+  } catch (error) {
+    feedback.textContent = "Could not load shared inclusions: " + error.message;
+  }
+}
+
+el("save-shared-inclusions")?.addEventListener("click", async () => {
+  const button = el("save-shared-inclusions"), feedback = el("shared-inclusions-feedback");
+  button.disabled = true;
+  feedback.textContent = "Saving…";
+  try {
+    const items = el("shared-inclusions").value.split("\n").map(x => x.trim()).filter(Boolean);
+    if (!items.length) throw new Error("Keep at least one shared inclusion.");
+    await api("/rest/v1/site_settings?on_conflict=setting_key", {
+      method: "POST",
+      headers: { "Prefer": "resolution=merge-duplicates,return=minimal" },
+      body: JSON.stringify({ setting_key: "experience_shared_inclusions", setting_value: JSON.stringify(items) })
+    });
+    feedback.textContent = "✓ Shared inclusions saved. Public pages will use this shared list.";
+  } catch (error) {
+    feedback.textContent = error.message;
+  } finally {
+    button.disabled = false;
+  }
+});
+
+// Admin sign-in
+el("login-form")?.addEventListener("submit", async e => {
+  e.preventDefault();
+  const button = el("login-button");
+  button.disabled = true;
+  el("login-feedback").textContent = "Checking account…";
+  try {
+    const response = await fetch(supabaseUrl + "/auth/v1/token?grant_type=password", {
+      method: "POST",
+      headers: { "apikey": publishableKey, "Content-Type": "application/json" },
+      body: JSON.stringify({ email: el("admin-email").value.trim(), password: el("admin-password").value })
+    });
+    const session = await response.json();
+    if (!response.ok) throw new Error(session.msg || session.message || "Sign in failed.");
+    accessToken = session.access_token;
+    adminId = session.user.id;
+    const admins = await api("/rest/v1/admin_users?select=user_id&user_id=eq." + adminId);
+    if (!admins.length) {
+      accessToken = "";
+      throw new Error("This account is not authorised as a Materuni Hosts administrator.");
+    }
+    el("login-panel").hidden = true;
+    el("manager").hidden = false;
+    await Promise.all([refreshTours(), refreshAvailability(), loadSharedInclusions()]);
+    syncTourPreview();
+  } catch (error) {
+    el("login-feedback").textContent = error.message;
+  } finally {
+    button.disabled = false;
+  }
+});
+
+// Save new tour
+el("tour-form")?.addEventListener("submit", async e => {
+  e.preventDefault();
+  const button = el("save-tour");
+  button.disabled = true;
+  el("tour-feedback").textContent = "Publishing tour to website…";
+  
+  const name = el("tour-name").value.trim();
+  const key = el("tour-key").value.trim();
+  
+  try {
+    const price = Number(el("tour-price").value);
+    const imageUrl = el("tour-image").value.trim();
+    if (!name || !key) throw new Error("Enter both a guest-facing name and a unique booking key.");
+    if (!Number.isFinite(price) || price < 0) throw new Error("Enter a valid non-negative price.");
+    
+    await api("/rest/v1/experience_catalog", {
+      method: "POST",
+      headers: { "Prefer": "return=minimal" },
+      body: JSON.stringify({
+        display_name: name,
+        experience_key: key,
+        price_usd: price,
+        duration_label: el("tour-duration").value.trim() || "4–5 hours",
+        sort_order: Number(el("tour-order").value || 70),
+        product_tagline: el("tour-tagline").value.trim(),
+        best_for: el("tour-best-for").value.trim(),
+        short_description: el("tour-description").value.trim(),
+        full_description: el("tour-full-description").value.trim(),
+        image_url: imageUrl || null,
+        signature_moments: el("tour-moments").value.split("\n").map(x => x.trim()).filter(Boolean),
+        inclusions: el("tour-inclusions").value.split("\n").map(x => x.trim()).filter(Boolean),
+        exclusions: el("tour-exclusions").value.split("\n").map(x => x.trim()).filter(Boolean),
+        is_active: true
+      })
+    });
+
+    el("tour-form").reset();
+    el("tour-order").value = "70";
+    el("tour-duration").value = "4–5 hours";
+    el("tour-feedback").textContent = "✓ Tour successfully created and published! It is now active on the public website and booking form.";
+    syncTourPreview();
+    await refreshTours();
+  } catch (error) {
+    el("tour-feedback").textContent = error.message;
+  } finally {
+    button.disabled = false;
+  }
+});
+
+// Availability slot publishing
+el("slot-form")?.addEventListener("submit", async e => {
+  e.preventDefault();
+  const feedback = el("slot-feedback");
+  feedback.textContent = "Publishing…";
+  try {
+    const start = el("slot-start").value, end = el("slot-end").value;
+    if (end <= start) throw new Error("End time must be later than start time.");
+    const startDate = el("slot-date").value;
+    if (!startDate || startDate < minDate) throw new Error("Choose today or a future date.");
+    const cap = Number(el("slot-capacity").value);
+    if (cap < 1 || cap > 100) throw new Error("Capacity must be between 1 and 100 guests.");
+    const exp = el("slot-experience").value;
+    const endDate = el("slot-end-date")?.value;
+    if (endDate && endDate < startDate) throw new Error("End date cannot be earlier than start date.");
+
+    const dates = [];
+    if (!endDate || endDate === startDate) {
+      dates.push(startDate);
+    } else {
+      let curr = new Date(startDate + "T12:00:00Z");
+      const stop = new Date(endDate + "T12:00:00Z");
+      const maxDays = 90;
+      let count = 0;
+      while (curr <= stop && count < maxDays) {
+        dates.push(curr.toISOString().slice(0, 10));
+        curr.setDate(curr.getDate() + 1);
+        count++;
+      }
+    }
+
+    const payload = dates.map(d => ({
+      experience: exp,
+      slot_date: d,
+      start_time: start,
+      end_time: end,
+      capacity: cap,
+      booked_count: 0,
+      is_active: true
+    }));
+
+    await api("/rest/v1/availability_slots", {
+      method: "POST",
+      headers: { "Prefer": "return=minimal" },
+      body: JSON.stringify(payload)
+    });
+    feedback.textContent = `✓ Availability published for ${dates.length} date${dates.length === 1 ? '' : 's'}. Guests can now select these times.`;
+    await refreshAvailability();
+  } catch (error) {
+    feedback.textContent = error.message;
+  }
+});
+
+el("logout")?.addEventListener("click", async () => {
+  try {
+    await fetch(supabaseUrl + "/auth/v1/logout", { method: "POST", headers: apiHeaders() });
+  } catch {}
+  accessToken = "";
+  adminId = "";
+  el("manager").hidden = true;
+  el("login-panel").hidden = false;
+  el("login-form").reset();
+});
+
+const minDate = new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+if (el("slot-date")) el("slot-date").min = minDate;
+if (el("slot-end-date")) el("slot-end-date").min = minDate;
 </script>
+
 <style>
-.admin-package-editor{margin-top:.75rem;padding:.85rem 1rem;border:1px solid #e6dfd3;border-radius:12px;background:#faf7f2}.admin-package-editor summary{cursor:pointer;font-weight:600;color:#1a3322}.admin-package-editor[open] summary{margin-bottom:1rem}.admin-package-editor .form-grid{margin-top:.5rem}
+.admin-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 14px 18px;
+  background: #FAF7F2;
+  border: 1px solid #E6DFD3;
+  border-radius: 12px;
+}
+.admin-topbar-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.tour-creator-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(320px, 1fr);
+  gap: 28px;
+  margin-top: 1.5rem;
+}
+@media (max-width: 990px) {
+  .tour-creator-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.image-manager-box {
+  background: #FAF7F2;
+  border: 1px dashed #C5A059;
+  border-radius: 12px;
+  padding: 16px;
+}
+.image-upload-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.quick-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: 8px;
+}
+.quick-img-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  background: #fff;
+  border: 1px solid #E6DFD3;
+  border-radius: 8px;
+  padding: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.quick-img-btn:hover {
+  border-color: #C5A059;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+.quick-img-btn img {
+  width: 100%;
+  height: 52px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+.quick-img-btn span {
+  font-size: 10px;
+  font-weight: 700;
+  color: #1A3322;
+}
+
+/* Tour Live Preview Card */
+.tour-live-preview-wrap {
+  position: sticky;
+  top: 24px;
+  display: flex;
+  flex-direction: column;
+}
+.preview-header {
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.preview-card {
+  background: #fff;
+  border: 1px solid #E6DFD3;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+}
+.preview-image-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/10;
+  background: #1A3322;
+}
+.preview-image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.preview-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: rgba(26, 51, 34, 0.85);
+  backdrop-filter: blur(4px);
+  color: #FAF7F2;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+.preview-body {
+  padding: 18px 20px 22px;
+}
+.preview-price-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 8px;
+}
+.preview-tagline {
+  color: #A27B3E;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+.preview-price strong {
+  font-size: 22px;
+  color: #1A3322;
+}
+.preview-price small {
+  font-size: 10px;
+  color: #7A8077;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+.preview-title {
+  margin: 0 0 8px;
+  color: #1A3322;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.15;
+}
+.preview-desc {
+  color: #586258;
+  font-size: 13px;
+  line-height: 1.6;
+  margin: 0 0 14px;
+}
+.preview-inclusions-box {
+  background: #FAF7F2;
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 16px;
+}
+.preview-inclusions-box strong {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: #1A3322;
+  margin-bottom: 6px;
+}
+.preview-inclusions-box ul {
+  margin: 0;
+  padding-left: 16px;
+  font-size: 12px;
+  color: #4F524D;
+  line-height: 1.6;
+}
+.preview-btn {
+  display: block;
+  text-align: center;
+  background: #C5A059;
+  color: #1A3322;
+  font-weight: 800;
+  font-size: 12px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  letter-spacing: 0.5px;
+}
+
+.admin-package-editor {
+  margin-top: .75rem;
+  padding: .85rem 1rem;
+  border: 1px solid #e6dfd3;
+  border-radius: 12px;
+  background: #faf7f2;
+}
+.admin-package-editor summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: #1a3322;
+}
+.admin-package-editor[open] summary {
+  margin-bottom: 1rem;
+}
 </style>
 </SiteLayout>

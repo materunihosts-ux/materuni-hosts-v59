@@ -22,6 +22,64 @@ const bookingPreview = `${supabaseUrl}/storage/v1/object/public/materuni-images/
   <span>🛡 Pay nothing until confirmed</span>
 </div>
 <p class="muted" style="margin:0 0 16px"><span data-i18n="booking_reviews_intro">Independent guest feedback:</span> <a href="/reviews" data-i18n="booking_reviews_link">Read guest reviews</a> · <a href="https://www.tripadvisor.com/34765809" target="_blank" rel="noopener noreferrer">TripAdvisor</a> · <a href="https://g.page/r/CXy6M_Suiip9EBM/review" target="_blank" rel="noopener noreferrer" data-i18n="booking_leave_review">Google reviews</a></p>
+
+<div class="manage-booking-bar" style="margin-bottom:16px;text-align:center">
+  <span class="muted">Already reserved with us?</span> 
+  <button id="toggle-manage-btn" type="button" class="text-link" style="background:none;border:none;color:#1A3322;font-weight:700;text-decoration:underline;cursor:pointer;font-family:inherit;font-size:inherit;padding:4px 8px">
+    Manage or look up your booking &rarr;
+  </button>
+</div>
+
+<div id="manage-panel" class="manage-panel" hidden style="background:#FAF7F2;border:2px solid #C5A059;border-radius:14px;padding:24px;margin-bottom:24px;box-shadow:0 8px 24px rgba(26,51,34,0.06)">
+  <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;border-bottom:1px solid #E6DFD3;padding-bottom:14px;margin-bottom:18px">
+    <div>
+      <span class="eyebrow" style="color:#C5A059;display:block">GUEST CONCIERGE</span>
+      <h2 style="font-family:Georgia,serif;font-size:22px;color:#1A3322;margin:2px 0 0">Manage My Booking</h2>
+    </div>
+    <div style="text-align:right">
+      <span style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#7A756B;display:block">REFERENCE</span>
+      <strong id="manage-ref-display" style="font-family:monospace;font-size:16px;color:#1A3322;background:#fff;padding:4px 10px;border-radius:4px;border:1px solid #C5A059;display:inline-block">—</strong>
+    </div>
+  </div>
+
+  <p style="margin:0 0 16px;line-height:1.7;color:#242421">
+    Welcome back to Materuni Hosts. Need to reschedule your experience date, modify party size, request private taxi transfers from Moshi or Kilimanjaro Airport, or coordinate special requests? Your local host Saidi Materu is on standby.
+  </p>
+
+  <div id="manual-ref-box" style="display:flex;gap:10px;align-items:center;margin-bottom:18px;flex-wrap:wrap">
+    <label for="manage-input-ref" style="font-size:13px;font-weight:700;color:#1A3322">Booking Reference:</label>
+    <input id="manage-input-ref" type="text" placeholder="e.g. MH-2026-8492" style="max-width:260px;padding:8px 12px;border:1px solid #C5A059;border-radius:6px;font-family:monospace" />
+    <button id="manage-apply-ref" type="button" class="button button-secondary" style="min-height:38px;padding:6px 14px;font-size:13px">Apply Reference</button>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:20px">
+    <a id="manage-wa-btn" href="https://wa.me/255612068540" target="_blank" rel="noopener noreferrer" class="button" style="background:#25D366;color:#fff;border-color:#25D366;display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none">
+      <span>💬</span> Chat with Host on WhatsApp
+    </a>
+    <a id="manage-email-btn" href="mailto:materunihosts@gmail.com" class="button button-secondary" style="display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none">
+      <span>✉️</span> Email Hosts Directly
+    </a>
+    <a href="https://www.google.com/maps/search/?api=1&query=Materuni%20Hosts%20-%20Waterfall%20Tours%20%26%20Village%20Camping%2C%20Materuni%20Village%2C%20Moshi%2C%20Tanzania" target="_blank" rel="noopener noreferrer" class="button button-secondary" style="display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none">
+      <span>📍</span> Meeting Point & Directions
+    </a>
+  </div>
+
+  <div style="background:#fff;border:1px solid #E6DFD3;border-radius:8px;padding:16px;margin-bottom:16px">
+    <strong style="display:block;color:#1A3322;font-size:13px;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">🌿 Booking Policies & Guarantees</strong>
+    <ul style="margin:0;padding-left:18px;font-size:13px;line-height:1.7;color:#4F524D">
+      <li><strong>Free Rescheduling:</strong> Change your date at zero fee anytime due to mountain weather or flight updates.</li>
+      <li><strong>100% Free Cancellation:</strong> Cancel up to 48 hours prior with no cancellation fees.</li>
+      <li><strong>Payment on Arrival:</strong> Settle your experience directly in Materuni with USD cash, TZS cash, or Vodacom M-Pesa.</li>
+      <li><strong>Private Transfers:</strong> Moshi Town (+$25/vehicle), KIA Airport (+$50/vehicle), Arusha (+$80/vehicle) up to 6 guests.</li>
+    </ul>
+  </div>
+
+  <div style="text-align:right">
+    <button id="close-manage-btn" type="button" class="button button-secondary" style="font-size:12px;min-height:36px;padding:6px 14px">
+      Close Booking Manager
+    </button>
+  </div>
+</div>
 <div class="booking-estimate" id="booking-estimate" hidden aria-live="polite" aria-atomic="true">
  <div class="booking-estimate-heading"><span class="eyebrow" data-i18n="estimate_heading">YOUR EXPERIENCE SUMMARY</span><span class="booking-estimate-note" data-i18n="estimate_note">Indicative estimate</span></div>
  <div class="booking-estimate-grid">
@@ -76,6 +134,63 @@ $("date").max=addDays(tanzaniaToday(),365);
 // Start on the next local day so guests do not land on today's already-passed slots.
 $("date").value=addDays(tanzaniaToday(),1);
 const params=new URLSearchParams(location.search);
+const managePanel=$("manage-panel");
+const toggleManageBtn=$("toggle-manage-btn");
+const closeManageBtn=$("close-manage-btn");
+const manageRefDisplay=$("manage-ref-display");
+const manageInputRef=$("manage-input-ref");
+const manageApplyRef=$("manage-apply-ref");
+const manageWaBtn=$("manage-wa-btn");
+const manageEmailBtn=$("manage-email-btn");
+
+function updateManageLinks(ref){
+ const cleanRef=String(ref||"").trim();
+ if(manageRefDisplay)manageRefDisplay.textContent=cleanRef||"—";
+ if(manageInputRef&&cleanRef)manageInputRef.value=cleanRef;
+ if(manageWaBtn){
+  const text=cleanRef 
+   ? "Hello Materuni Hosts, I am managing my booking reference: "+cleanRef+". I would like to check details or request an update."
+   : "Hello Materuni Hosts, I have a question regarding my reservation.";
+  manageWaBtn.href="https://wa.me/255612068540?text="+encodeURIComponent(text);
+ }
+ if(manageEmailBtn){
+  const subject=cleanRef ? "Managing Booking: "+cleanRef : "Materuni Hosts Reservation Enquiry";
+  manageEmailBtn.href="mailto:materunihosts@gmail.com?subject="+encodeURIComponent(subject);
+ }
+}
+
+const initialRef=(params.get("ref")||"").trim();
+const isManageRequested=params.get("manage")==="true"||Boolean(initialRef);
+
+if(isManageRequested){
+ if(managePanel)managePanel.hidden=false;
+ updateManageLinks(initialRef);
+ setTimeout(()=>{managePanel?.scrollIntoView({behavior:"smooth",block:"start"});},200);
+}
+
+toggleManageBtn?.addEventListener("click",()=>{
+ if(!managePanel)return;
+ managePanel.hidden=!managePanel.hidden;
+ if(!managePanel.hidden)managePanel.scrollIntoView({behavior:"smooth",block:"start"});
+});
+
+manageApplyRef?.addEventListener("click",()=>{
+ const val=manageInputRef?.value?.trim();
+ if(val)updateManageLinks(val);
+});
+
+manageInputRef?.addEventListener("keydown",e=>{
+ if(e.key==="Enter"){
+  e.preventDefault();
+  const val=manageInputRef?.value?.trim();
+  if(val)updateManageLinks(val);
+ }
+});
+
+closeManageBtn?.addEventListener("click",()=>{
+ if(managePanel)managePanel.hidden=true;
+});
+
 let availabilityRequest=0;
 function setAvailabilityStatus(message,state="info"){
  const status=$("availability-status");

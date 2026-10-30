@@ -2,143 +2,273 @@
 import SiteLayout from "../../layouts/SiteLayout.astro";
 ---
 <SiteLayout title="Photo Library | Materuni Hosts Admin" description="Manage authentic Materuni Hosts website photography." noindex={true}>
-<section class="page-hero"><span class="eyebrow">PRIVATE ADMIN · MEDIA LIBRARY</span><h1>Website photo library</h1><p>Upload real Materuni photographs and assign them to the homepage. New images are stored in your private-managed Supabase media bucket; the public website displays their public image URLs.</p></section>
-<section class="booking-wrap">
- <div class="booking-panel" id="login-panel">
-  <h2>Administrator sign in</h2><p class="muted">Use your existing approved administrator account.</p>
-  <form id="login-form" class="form-grid">
-   <div class="field full"><label for="admin-email">Admin email</label><input id="admin-email" type="email" autocomplete="username" required></div>
-   <div class="field full"><label for="admin-password">Password</label><input id="admin-password" type="password" autocomplete="current-password" required></div>
-   <div class="field full"><button class="button" id="login-button" type="submit">Sign in securely</button><p id="login-feedback" class="muted" aria-live="polite"></p></div>
-  </form>
- </div>
- <div id="manager" hidden>
-  <div class="booking-panel">
-   <div class="section-heading"><div><span class="eyebrow">PHOTO MANAGEMENT</span><h2>Assign a website image</h2><p class="muted">Use JPG, PNG or WebP. Maximum file size: 8 MB. Uploading replaces the image assigned to that section without deleting the previous file.</p></div><button class="button button-secondary" id="logout" type="button">Sign out</button></div>
-   <div class="admin-shortcuts" style="margin-bottom:1.2rem"><a class="button button-secondary" href="/admin/">Dashboard</a><a class="button button-secondary" href="/" target="_blank" rel="noopener">Preview homepage</a><a class="button button-secondary" href="/admin/content">Website content</a></div>
-   <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:0 0 1rem"><button class="button button-secondary" id="optimize-existing" type="button">Optimize assigned photos</button><span class="muted">Creates smaller WebP copies and keeps every original file.</span></div>
-   <div id="media-grid" class="form-grid"></div>
-   <p id="media-feedback" class="muted" aria-live="polite"></p>
-  </div>
-  <div class="booking-panel" style="margin-top:1.25rem"><span class="eyebrow">CURRENT IMAGE ASSIGNMENTS</span><h2>Homepage media</h2><div id="media-current" class="form-grid"></div></div>
- </div>
+<section class="page-hero">
+  <span class="eyebrow">PRIVATE ADMIN · MEDIA LIBRARY</span>
+  <h1>Website Photo & Media Library</h1>
+  <p>Upload real Materuni photographs and assign them to homepage sections, tour packages, or the About Us page.</p>
 </section>
+
+<section class="booking-wrap">
+  <div class="booking-panel" id="login-panel">
+    <h2>Administrator sign in</h2>
+    <p class="muted">Use your existing approved administrator account.</p>
+    <form id="login-form" class="form-grid">
+      <div class="field full"><label for="admin-email">Admin email</label><input id="admin-email" type="email" autocomplete="username" required></div>
+      <div class="field full"><label for="admin-password">Password</label><input id="admin-password" type="password" autocomplete="current-password" required></div>
+      <div class="field full"><button class="button" id="login-button" type="submit">Sign in securely</button><p id="login-feedback" class="muted" aria-live="polite"></p></div>
+    </form>
+  </div>
+
+  <div id="manager" hidden>
+    <div class="booking-panel">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">PHOTO MANAGEMENT</span>
+          <h2>Assign a Website Image</h2>
+          <p class="muted">Upload JPG, PNG or WebP photographs. WebP compression is applied automatically to guarantee fast loading.</p>
+        </div>
+        <button class="button button-secondary" id="logout" type="button">Sign out</button>
+      </div>
+
+      <div class="admin-shortcuts" style="margin-bottom:1.2rem;display:flex;flex-wrap:wrap;gap:8px">
+        <a class="button button-secondary" href="/admin/">← Dashboard</a>
+        <a class="button button-secondary" href="/admin/tours">Tours & Photos</a>
+        <a class="button button-secondary" href="/admin/content">Content & About Us</a>
+        <a class="button button-secondary" href="/" target="_blank" rel="noopener">Preview Homepage ↗</a>
+      </div>
+
+      <!-- Quick Upload for Tours & About Us -->
+      <div class="notice" style="background:#FAF7F2;border:1px dashed #C5A059;padding:18px;border-radius:12px;margin-bottom:1.5rem">
+        <span class="eyebrow" style="color:#C5A059">GENERAL ASSET UPLOADER</span>
+        <h3 style="margin:4px 0 8px;font-size:18px;color:#1A3322">Upload Photo for Tours, Hosts or Stories</h3>
+        <p class="muted" style="margin-bottom:12px">Upload any high-resolution image to get an optimized public URL to paste into tour packages or host bios.</p>
+        <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+          <input type="file" id="general-file-input" accept="image/jpeg,image/png,image/webp" style="display:none" />
+          <button type="button" class="button" id="general-upload-btn">📷 Select & Upload Photo</button>
+          <span id="general-upload-status" class="muted" style="font-size:13px" aria-live="polite"></span>
+        </div>
+        <div id="general-upload-result" style="margin-top:14px;display:none;align-items:center;gap:14px;background:#fff;padding:12px;border:1px solid #E6DFD3;border-radius:10px">
+          <img id="general-thumb" src="" alt="Uploaded thumbnail" width="80" height="60" style="width:80px;height:60px;object-fit:cover;border-radius:6px" />
+          <div style="flex:1;min-width:200px">
+            <span style="font-size:11px;font-weight:700;color:#1A3322;display:block">Public Image URL:</span>
+            <input type="text" id="general-url-input" readonly style="width:100%;font-size:12px;padding:4px 8px;margin-top:2px" />
+          </div>
+          <button type="button" class="button button-secondary" id="copy-url-btn" style="padding:6px 14px;font-size:12px">📋 Copy URL</button>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:0 0 1rem">
+        <button class="button button-secondary" id="optimize-existing" type="button">Optimize assigned photos</button>
+        <span class="muted">Creates smaller WebP copies and keeps every original file.</span>
+      </div>
+      
+      <div id="media-grid" class="form-grid"></div>
+      <p id="media-feedback" class="muted" aria-live="polite"></p>
+    </div>
+
+    <div class="booking-panel" style="margin-top:1.25rem">
+      <span class="eyebrow">CURRENT IMAGE ASSIGNMENTS</span>
+      <h2>Homepage & Featured Media</h2>
+      <div id="media-current" class="form-grid"></div>
+    </div>
+  </div>
+</section>
+
 <script>
 // @ts-nocheck
 import { supabaseUrl, publishableKey } from "../../lib/supabase-public";
-const bucket="materuni-images";
-let accessToken="";
-const el=id=>document.getElementById(id);
-const headers=()=>({apikey:publishableKey,Authorization:"Bearer "+accessToken});
-const targets=[
- {key:"hero_image",label:"Homepage hero",help:"Main landscape photograph at the top of the homepage"},
- {key:"story_image",label:"Our story",help:"Image beside the homepage local-host story"},
- {key:"waterfall_image",experienceKey:"Waterfall & Chagga Culture",label:"Waterfalls & Coffee Tour",help:"First featured experience card"},
- {key:"coffee_image",experienceKey:"Traditional Coffee Experience",label:"Coffee & Chagga Culture",help:"Coffee experience card"},
- {key:"cooking_image",experienceKey:"Traditional Chagga Cooking Class",label:"Cooking & Culture",help:"Cooking experience card"},
- {key:"culturalday_image",experienceKey:"Waterfall & Chagga Culture",label:"Materuni Waterfall & Chagga Culture",help:"Combined waterfall and Chagga culture experience card"},
- {key:"camping_image",experienceKey:"Camping & Village Life",label:"Overnight Camping",help:"Camping experience card"},
- {key:"ultimate_image",experienceKey:"The Ultimate Kilimanjaro Foothills & Materuni Experience",label:"Ultimate experience",help:"Ultimate experience card"}
+const bucket = "materuni-images";
+let accessToken = "";
+const el = id => document.getElementById(id);
+const headers = () => ({ apikey: publishableKey, Authorization: "Bearer " + accessToken });
+
+const targets = [
+  { key: "hero_image", label: "Homepage hero", help: "Main landscape photograph at the top of the homepage" },
+  { key: "story_image", label: "Our story", help: "Image beside the homepage local-host story" },
+  { key: "waterfall_image", experienceKey: "Waterfall & Chagga Culture", label: "Waterfalls & Coffee Tour", help: "First featured experience card" },
+  { key: "coffee_image", experienceKey: "Traditional Coffee Experience", label: "Coffee & Chagga Culture", help: "Coffee experience card" },
+  { key: "cooking_image", experienceKey: "Traditional Chagga Cooking Class", label: "Cooking & Culture", help: "Cooking experience card" },
+  { key: "culturalday_image", experienceKey: "Waterfall & Chagga Culture", label: "Materuni Waterfall & Chagga Culture", help: "Combined waterfall and Chagga culture experience card" },
+  { key: "camping_image", experienceKey: "Camping & Village Life", label: "Overnight Camping", help: "Camping experience card" },
+  { key: "ultimate_image", experienceKey: "The Ultimate Kilimanjaro Foothills & Materuni Experience", label: "Ultimate experience", help: "Ultimate experience card" }
 ];
-async function api(path,options={}){const response=await fetch(supabaseUrl+path,{...options,headers:{...headers(),...(options.headers||{})}});const data=await response.json().catch(()=>null);if(!response.ok)throw new Error(data?.message||data?.error||"Supabase request failed.");return data}
-async function makeOptimizedWebP(source,maxSide=1400){
- const bitmap=await createImageBitmap(source);
- const scale=Math.min(1,maxSide/Math.max(bitmap.width,bitmap.height));
- const width=Math.max(1,Math.round(bitmap.width*scale)),height=Math.max(1,Math.round(bitmap.height*scale));
- const canvas=document.createElement("canvas");canvas.width=width;canvas.height=height;
- const context=canvas.getContext("2d");if(!context){bitmap.close?.();throw new Error("Your browser could not prepare this image.");}
- context.drawImage(bitmap,0,0,width,height);bitmap.close?.();
- const blob=await new Promise(resolve=>canvas.toBlob(resolve,"image/webp",0.78));
- if(!blob)throw new Error("WebP compression is not supported by this browser.");
- return blob;
+
+async function api(path, options = {}) {
+  const response = await fetch(supabaseUrl + path, { ...options, headers: { ...headers(), ...(options.headers || {}) } });
+  const data = await response.json().catch(() => null);
+  if (!response.ok) throw new Error(data?.message || data?.error || "Supabase request failed.");
+  return data;
 }
-async function uploadOptimizedImage(target,blob){
- const objectPath=target.key+"/"+Date.now()+"-optimized.webp";
- const upload=await fetch(supabaseUrl+"/storage/v1/object/"+bucket+"/"+objectPath,{method:"POST",headers:{...headers(),"Content-Type":"image/webp","x-upsert":"false","Cache-Control":"31536000"},body:blob});
- const uploadData=await upload.json().catch(()=>null);if(!upload.ok)throw new Error(uploadData?.message||uploadData?.error||"Optimized image upload failed.");
- const publicUrl=supabaseUrl+"/storage/v1/object/public/"+bucket+"/"+objectPath;
- if(target.experienceKey){
-  const key=encodeURIComponent(target.experienceKey);
-  const updated=await api("/rest/v1/experience_catalog?experience_key=eq."+key,{method:"PATCH",headers:{"Content-Type":"application/json","Prefer":"return=representation"},body:JSON.stringify({image_url:publicUrl,updated_at:new Date().toISOString()})});
-  if(!Array.isArray(updated)||!updated.length)throw new Error("Image uploaded, but no matching package was found in the catalogue.");
- }
- await api("/rest/v1/site_content?on_conflict=id",{method:"POST",headers:{"Content-Type":"application/json","Prefer":"resolution=merge-duplicates,return=minimal"},body:JSON.stringify({id:target.key,content:publicUrl,updated_at:new Date().toISOString()})});
- return publicUrl;
+
+async function makeOptimizedWebP(source, maxSide = 1400) {
+  const bitmap = await createImageBitmap(source);
+  const scale = Math.min(1, maxSide / Math.max(bitmap.width, bitmap.height));
+  const width = Math.max(1, Math.round(bitmap.width * scale)), height = Math.max(1, Math.round(bitmap.height * scale));
+  const canvas = document.createElement("canvas"); canvas.width = width; canvas.height = height;
+  const context = canvas.getContext("2d");
+  if (!context) { bitmap.close?.(); throw new Error("Your browser could not prepare this image."); }
+  context.drawImage(bitmap, 0, 0, width, height); bitmap.close?.();
+  const blob = await new Promise(resolve => canvas.toBlob(resolve, "image/webp", 0.78));
+  if (!blob) throw new Error("WebP compression is not supported by this browser.");
+  return blob;
 }
-function renderTargets(){
- const root=el("media-grid");root.replaceChildren();
- targets.forEach(target=>{
-  const card=document.createElement("section");card.className="notice";card.style.marginTop=".7rem";
-  const title=document.createElement("h3");title.textContent=target.label;
-  const help=document.createElement("p");help.className="muted";help.textContent=target.help;
-  const wrap=document.createElement("div");wrap.className="field full";
-  const label=document.createElement("label");label.textContent="Choose a real photograph";
-  const input=document.createElement("input");input.type="file";input.accept="image/jpeg,image/png,image/webp";input.required=true;input.setAttribute("aria-label","Upload image for "+target.label);
-  const button=document.createElement("button");button.type="button";button.className="button";button.textContent="Upload and publish image";
-  const status=document.createElement("p");status.className="muted";status.setAttribute("aria-live","polite");
-  button.addEventListener("click",async()=>{
-   const file=input.files?.[0];if(!file){status.textContent="Choose an image first.";return}
-   if(!["image/jpeg","image/png","image/webp"].includes(file.type)){status.textContent="Only JPG, PNG and WebP files are accepted.";return}
-   if(file.size>8*1024*1024){status.textContent="This file is larger than 8 MB. Choose a smaller original image.";return}
-   button.disabled=true;status.textContent="Uploading image…";
-   try{
-    const optimized=await makeOptimizedWebP(file,target.key==="hero_image"?1800:1400);
-    const publicUrl=await uploadOptimizedImage(target,optimized);
-    status.textContent="Uploaded and assigned. Refresh the homepage to see the new photograph.";input.value="";await loadCurrent();
-   }catch(error){status.textContent=error.message}finally{button.disabled=false}
+
+async function uploadOptimizedImage(target, blob) {
+  const objectPath = target.key + "/" + Date.now() + "-optimized.webp";
+  const upload = await fetch(supabaseUrl + "/storage/v1/object/" + bucket + "/" + objectPath, {
+    method: "POST",
+    headers: { ...headers(), "Content-Type": "image/webp", "x-upsert": "false", "Cache-Control": "31536000" },
+    body: blob
   });
-  wrap.append(label,input);card.append(title,help,wrap,button,status);root.append(card);
- });
-}
-async function loadCurrent(){
- const rows=await api("/rest/v1/site_content?select=id,content&id=in.("+targets.map(x=>encodeURIComponent(x.key)).join(",")+")");
- const catalogue=await api("/rest/v1/experience_catalog?select=experience_key,image_url");
- const root=el("media-current");root.replaceChildren();
- targets.forEach(target=>{
-  const catalogRow=target.experienceKey?catalogue.find(item=>item.experience_key===target.experienceKey):null;const contentRow=rows.find(item=>item.id===target.key);const imageUrl=catalogRow?.image_url||contentRow?.content;const card=document.createElement("div");card.className="notice";
-  const title=document.createElement("strong");title.textContent=target.label;
-  const img=document.createElement("img");img.alt=target.label;img.loading="lazy";img.style.width="100%";img.style.aspectRatio="16/9";img.style.objectFit="cover";img.style.borderRadius="12px";img.style.marginTop=".6rem";
-  if(imageUrl)img.src=imageUrl;else img.alt="No image assigned yet";
-  const note=document.createElement("p");note.className="muted";note.textContent=imageUrl?"Image assigned to the live website package":"Using the website's built-in image";
-  card.append(title,img,note);root.append(card);
- });
-}
-el("login-form").addEventListener("submit",async event=>{
- event.preventDefault();const button=el("login-button");button.disabled=true;el("login-feedback").textContent="Verifying administrator…";
- try{
-  const response=await fetch(supabaseUrl+"/auth/v1/token?grant_type=password",{method:"POST",headers:{apikey:publishableKey,"Content-Type":"application/json"},body:JSON.stringify({email:el("admin-email").value.trim(),password:el("admin-password").value})});
-  const session=await response.json();if(!response.ok)throw new Error(session.msg||session.message||"Sign in failed.");
-  accessToken=session.access_token;
-  const admins=await api("/rest/v1/admin_users?select=user_id&user_id=eq."+encodeURIComponent(session.user.id));
-  if(!admins.length){accessToken="";throw new Error("This account is not authorised as an administrator.");}
-  el("login-panel").hidden=true;el("manager").hidden=false;renderTargets();await loadCurrent();
- }catch(error){el("login-feedback").textContent=error.message}finally{button.disabled=false}
-});
-el("optimize-existing").addEventListener("click",async()=>{
- const button=el("optimize-existing"),feedback=el("media-feedback");button.disabled=true;
- try{
-  const rows=await api("/rest/v1/site_content?select=id,content&id=in.("+targets.map(x=>encodeURIComponent(x.key)).join(",")+")");
-  const catalogue=await api("/rest/v1/experience_catalog?select=experience_key,image_url");
-  const converted=new Map();let completed=0;
-  for(const target of targets){
-   const catalogRow=target.experienceKey?catalogue.find(item=>item.experience_key===target.experienceKey):null;
-   const contentRow=rows.find(item=>item.id===target.key);const imageUrl=catalogRow?.image_url||contentRow?.content;
-   if(!imageUrl||!/^https:\/\//i.test(imageUrl))continue;
-   let optimizedUrl=converted.get(imageUrl);
-   if(!optimizedUrl){
-    feedback.textContent="Optimizing "+target.label+"…";
-    const response=await fetch(imageUrl,{cache:"no-store"});if(!response.ok)throw new Error("Could not read the current "+target.label+" image.");
-    const original=await response.blob();const optimized=await makeOptimizedWebP(original,target.key==="hero_image"?1800:1400);
-    optimizedUrl=await uploadOptimizedImage(target,optimized);converted.set(imageUrl,optimizedUrl);
-   }else{
-    await api("/rest/v1/site_content?on_conflict=id",{method:"POST",headers:{"Content-Type":"application/json","Prefer":"resolution=merge-duplicates,return=minimal"},body:JSON.stringify({id:target.key,content:optimizedUrl,updated_at:new Date().toISOString()})});
-   }
-   completed++;feedback.textContent="Optimized "+completed+" of "+targets.length+" assigned photos. Original files are untouched.";
+  const uploadData = await upload.json().catch(() => null);
+  if (!upload.ok) throw new Error(uploadData?.message || uploadData?.error || "Optimized image upload failed.");
+  const publicUrl = supabaseUrl + "/storage/v1/object/public/" + bucket + "/" + objectPath;
+  if (target.experienceKey) {
+    const key = encodeURIComponent(target.experienceKey);
+    const updated = await api("/rest/v1/experience_catalog?experience_key=eq." + key, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json", "Prefer": "return=representation" },
+      body: JSON.stringify({ image_url: publicUrl, updated_at: new Date().toISOString() })
+    });
+    if (!Array.isArray(updated) || !updated.length) throw new Error("Image uploaded, but no matching package was found in the catalogue.");
   }
-  feedback.textContent="Finished. "+completed+" assigned photo slots now use optimized WebP files. Original uploads were kept.";await loadCurrent();
- }catch(error){feedback.textContent="Optimization stopped: "+error.message+" Original files remain untouched."}
- finally{button.disabled=false}
+  await api("/rest/v1/site_content?on_conflict=id", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "Prefer": "resolution=merge-duplicates,return=minimal" },
+    body: JSON.stringify({ id: target.key, content: publicUrl, updated_at: new Date().toISOString() })
+  });
+  return publicUrl;
+}
+
+function renderTargets() {
+  const root = el("media-grid"); root.replaceChildren();
+  targets.forEach(target => {
+    const card = document.createElement("section"); card.className = "notice"; card.style.marginTop = ".7rem";
+    const title = document.createElement("h3"); title.textContent = target.label;
+    const help = document.createElement("p"); help.className = "muted"; help.textContent = target.help;
+    const wrap = document.createElement("div"); wrap.className = "field full";
+    const label = document.createElement("label"); label.textContent = "Choose a real photograph";
+    const input = document.createElement("input"); input.type = "file"; input.accept = "image/jpeg,image/png,image/webp"; input.required = true; input.setAttribute("aria-label", "Upload image for " + target.label);
+    const button = document.createElement("button"); button.type = "button"; button.className = "button"; button.textContent = "Upload and publish image";
+    const status = document.createElement("p"); status.className = "muted"; status.setAttribute("aria-live", "polite");
+    button.addEventListener("click", async () => {
+      const file = input.files?.[0]; if (!file) { status.textContent = "Choose an image first."; return }
+      if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) { status.textContent = "Only JPG, PNG and WebP files are accepted."; return }
+      if (file.size > 8 * 1024 * 1024) { status.textContent = "This file is larger than 8 MB. Choose a smaller original image."; return }
+      button.disabled = true; status.textContent = "Uploading image…";
+      try {
+        const optimized = await makeOptimizedWebP(file, target.key === "hero_image" ? 1800 : 1400);
+        await uploadOptimizedImage(target, optimized);
+        status.textContent = "Uploaded and assigned. Refresh the homepage to see the new photograph."; input.value = ""; await loadCurrent();
+      } catch (error) { status.textContent = error.message } finally { button.disabled = false }
+    });
+    wrap.append(label, input); card.append(title, help, wrap, button, status); root.append(card);
+  });
+}
+
+async function loadCurrent() {
+  const rows = await api("/rest/v1/site_content?select=id,content&id=in.(" + targets.map(x => encodeURIComponent(x.key)).join(",") + ")");
+  const catalogue = await api("/rest/v1/experience_catalog?select=experience_key,image_url");
+  const root = el("media-current"); root.replaceChildren();
+  targets.forEach(target => {
+    const catalogRow = target.experienceKey ? catalogue.find(item => item.experience_key === target.experienceKey) : null;
+    const contentRow = rows.find(item => item.id === target.key);
+    const imageUrl = catalogRow?.image_url || contentRow?.content;
+    const card = document.createElement("div"); card.className = "notice";
+    const title = document.createElement("strong"); title.textContent = target.label;
+    const img = document.createElement("img"); img.alt = target.label; img.loading = "lazy"; img.decoding = "async"; img.style.width = "100%"; img.style.aspectRatio = "16/9"; img.style.objectFit = "cover"; img.style.borderRadius = "12px"; img.style.marginTop = ".6rem";
+    if (imageUrl) img.src = imageUrl; else img.alt = "No image assigned yet";
+    const note = document.createElement("p"); note.className = "muted"; note.textContent = imageUrl ? "Image assigned to the live website package" : "Using the website's built-in image";
+    card.append(title, img, note); root.append(card);
+  });
+}
+
+// General Uploader
+el("general-upload-btn")?.addEventListener("click", () => el("general-file-input")?.click());
+el("general-file-input")?.addEventListener("change", async (e) => {
+  const file = e.target.files?.[0];
+  if (!file) return;
+  const status = el("general-upload-status");
+  status.textContent = "Compressing & uploading…";
+  try {
+    const optimized = await makeOptimizedWebP(file, 1600);
+    const path = "general/" + Date.now() + "-" + Math.random().toString(36).substring(2, 6) + ".webp";
+    const upload = await fetch(supabaseUrl + "/storage/v1/object/" + bucket + "/" + path, {
+      method: "POST",
+      headers: { ...headers(), "Content-Type": "image/webp", "x-upsert": "false", "Cache-Control": "31536000" },
+      body: optimized
+    });
+    const res = await upload.json().catch(() => null);
+    if (!upload.ok) throw new Error(res?.message || res?.error || "Upload failed.");
+    const url = supabaseUrl + "/storage/v1/object/public/" + bucket + "/" + path;
+    
+    el("general-thumb").src = url;
+    el("general-url-input").value = url;
+    el("general-upload-result").style.display = "flex";
+    status.textContent = "✓ Image uploaded successfully!";
+  } catch (err) {
+    status.textContent = "Error: " + err.message;
+  } finally {
+    e.target.value = "";
+  }
 });
-el("logout").addEventListener("click",async()=>{try{await fetch(supabaseUrl+"/auth/v1/logout",{method:"POST",headers:headers()})}catch{}accessToken="";el("manager").hidden=true;el("login-panel").hidden=false;el("login-form").reset()});
+
+el("copy-url-btn")?.addEventListener("click", () => {
+  const inp = el("general-url-input");
+  if (inp && inp.value) {
+    navigator.clipboard?.writeText(inp.value).then(() => {
+      el("copy-url-btn").textContent = "✓ Copied!";
+      setTimeout(() => el("copy-url-btn").textContent = "📋 Copy URL", 2000);
+    });
+  }
+});
+
+el("login-form")?.addEventListener("submit", async event => {
+  event.preventDefault(); const button = el("login-button"); button.disabled = true; el("login-feedback").textContent = "Verifying administrator…";
+  try {
+    const response = await fetch(supabaseUrl + "/auth/v1/token?grant_type=password", {
+      method: "POST",
+      headers: { apikey: publishableKey, "Content-Type": "application/json" },
+      body: JSON.stringify({ email: el("admin-email").value.trim(), password: el("admin-password").value })
+    });
+    const session = await response.json(); if (!response.ok) throw new Error(session.msg || session.message || "Sign in failed.");
+    accessToken = session.access_token;
+    const admins = await api("/rest/v1/admin_users?select=user_id&user_id=eq." + encodeURIComponent(session.user.id));
+    if (!admins.length) { accessToken = ""; throw new Error("This account is not authorised as an administrator."); }
+    el("login-panel").hidden = true; el("manager").hidden = false; renderTargets(); await loadCurrent();
+  } catch (error) { el("login-feedback").textContent = error.message } finally { button.disabled = false }
+});
+
+el("optimize-existing")?.addEventListener("click", async () => {
+  const button = el("optimize-existing"), feedback = el("media-feedback"); button.disabled = true;
+  try {
+    const rows = await api("/rest/v1/site_content?select=id,content&id=in.(" + targets.map(x => encodeURIComponent(x.key)).join(",") + ")");
+    const catalogue = await api("/rest/v1/experience_catalog?select=experience_key,image_url");
+    const converted = new Map(); let completed = 0;
+    for (const target of targets) {
+      const catalogRow = target.experienceKey ? catalogue.find(item => item.experience_key === target.experienceKey) : null;
+      const contentRow = rows.find(item => item.id === target.key);
+      const imageUrl = catalogRow?.image_url || contentRow?.content;
+      if (!imageUrl || !/^https:\/\//i.test(imageUrl)) continue;
+      let optimizedUrl = converted.get(imageUrl);
+      if (!optimizedUrl) {
+        feedback.textContent = "Optimizing " + target.label + "…";
+        const response = await fetch(imageUrl, { cache: "no-store" }); if (!response.ok) throw new Error("Could not read the current " + target.label + " image.");
+        const original = await response.blob(); const optimized = await makeOptimizedWebP(original, target.key === "hero_image" ? 1800 : 1400);
+        optimizedUrl = await uploadOptimizedImage(target, optimized); converted.set(imageUrl, optimizedUrl);
+      } else {
+        await api("/rest/v1/site_content?on_conflict=id", { method: "POST", headers: { "Content-Type": "application/json", "Prefer": "resolution=merge-duplicates,return=minimal" }, body: JSON.stringify({ id: target.key, content: optimizedUrl, updated_at: new Date().toISOString() }) });
+      }
+      completed++; feedback.textContent = "Optimized " + completed + " of " + targets.length + " assigned photos. Original files are untouched.";
+    }
+    feedback.textContent = "Finished. " + completed + " assigned photo slots now use optimized WebP files. Original uploads were kept."; await loadCurrent();
+  } catch (error) { feedback.textContent = "Optimization stopped: " + error.message + " Original files remain untouched." }
+  finally { button.disabled = false }
+});
+
+el("logout")?.addEventListener("click", async () => {
+  try { await fetch(supabaseUrl + "/auth/v1/logout", { method: "POST", headers: headers() }) } catch {}
+  accessToken = ""; el("manager").hidden = true; el("login-panel").hidden = false; el("login-form").reset();
+});
 </script>
 </SiteLayout>

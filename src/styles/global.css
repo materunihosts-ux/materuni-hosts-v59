@@ -209,27 +209,314 @@
 }
 
 
-/* Final logo alignment: true optical and geometric centering */
-.site-header{display:flex;align-items:center}
-.site-header>.brand{width:88px;height:88px;min-width:88px;display:flex;align-items:center;justify-content:center;padding:0;margin:0;line-height:0}
-.site-footer>.brand{display:inline-flex;width:78px;height:78px;align-items:center;justify-content:center;line-height:0}
-@media(max-width:850px){
- .site-header>.brand{width:72px;height:72px;min-width:72px}
+/* African Boutique Header & Navigation Architecture */
+.site-header {
+  height: auto;
+  min-height: 86px;
+  padding: 8px clamp(18px, 4vw, 64px);
+  display: flex;
+  align-items: center;
+  background: rgba(250, 247, 242, 0.98);
+  border-bottom: 1px solid var(--sand);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  backdrop-filter: blur(14px);
+  box-shadow: 0 4px 20px rgba(26, 51, 34, 0.04);
 }
-@media(max-width:560px){
- .site-header>.brand{width:64px;height:64px;min-width:64px}
+.site-header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  gap: clamp(12px, 2vw, 28px);
+}
+.site-header-inner .brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+.site-header-inner .brand-logo {
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  box-shadow: 0 3px 12px rgba(26, 51, 34, 0.08);
+}
+.site-header-inner .brand-lockup {
+  display: flex;
+  flex-direction: column;
+}
+.site-header-inner .brand-lockup strong {
+  font-family: var(--serif);
+  font-size: 21px;
+  font-weight: 700;
+  color: var(--forest);
+  line-height: 1.05;
+}
+.site-header-inner .brand-lockup small {
+  font-family: var(--sans);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  color: var(--gold);
+}
+.site-header-inner nav#primary-navigation {
+  display: flex;
+  align-items: center;
+  gap: clamp(10px, 1.3vw, 20px);
+  font-size: 13px;
+  font-weight: 600;
+  flex-wrap: wrap;
+}
+.site-header-inner nav#primary-navigation a:not(.nav-cta) {
+  color: var(--ink);
+  position: relative;
+  padding: 8px 0;
+  transition: color 0.2s ease;
+}
+.site-header-inner nav#primary-navigation a:not(.nav-cta):hover,
+.site-header-inner nav#primary-navigation a:not(.nav-cta)[aria-current="page"] {
+  color: var(--forest);
+}
+.site-header-inner nav#primary-navigation a:not(.nav-cta)::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 100%;
+  bottom: 2px;
+  height: 2px;
+  background: var(--gold);
+  transition: right 0.2s ease;
+}
+.site-header-inner nav#primary-navigation a:not(.nav-cta):hover::after,
+.site-header-inner nav#primary-navigation a:not(.nav-cta)[aria-current="page"]::after {
+  right: 0;
 }
 
+/* Header Tools & African Boutique Language Switcher */
+.header-tools {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+.boutique-lang-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #FAF7F2;
+  border: 1px solid #C5A059;
+  border-radius: 4px;
+  padding: 6px 10px;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(26, 51, 34, 0.05);
+}
+.boutique-lang-toggle:hover, .boutique-lang-toggle:focus-within {
+  background: #F4EFE6;
+  border-color: #1A3322;
+  box-shadow: 0 0 0 2px rgba(197, 160, 89, 0.25);
+}
+.lang-globe-icon {
+  font-size: 14px;
+  line-height: 1;
+}
+.site-language-select {
+  border: none;
+  background: transparent;
+  color: #1A3322;
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  outline: none;
+  padding-right: 2px;
+}
+.desktop-nav-cta {
+  display: inline-flex;
+}
+.mobile-nav-cta {
+  display: none;
+}
+.mobile-lang-row {
+  display: none;
+}
 
-/* Centered boutique brand header */
-.site-header{height:auto;min-height:122px;padding:7px clamp(20px,6vw,88px);display:flex;flex-direction:column;justify-content:center;gap:0}
-.site-header>.brand{height:68px;width:100%;justify-content:center;align-items:center}
-.site-header nav{justify-content:center;gap:clamp(12px,2vw,26px);font-size:12px;flex-wrap:wrap}
-@media(max-width:850px){
-  .site-header{height:76px;min-height:76px;padding:0 20px;display:flex;flex-direction:row;justify-content:center;align-items:center}
-  .site-header>.brand{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:auto;height:68px}
-  .site-header nav{top:75px}
-  .menu-toggle{position:absolute;right:20px;top:50%;transform:translateY(-50%);z-index:2}
+/* Mobile Sticky Bottom Convenience Bar */
+.mobile-boutique-bar {
+  display: none;
+}
+@media (max-width: 980px) {
+  .site-header {
+    min-height: 72px;
+    padding: 6px 16px;
+  }
+  .site-header-inner .brand-logo {
+    width: 48px;
+    height: 48px;
+  }
+  .site-header-inner .brand-lockup strong {
+    font-size: 18px;
+  }
+  .desktop-nav-cta {
+    display: none;
+  }
+  .site-header-inner nav#primary-navigation {
+    display: none;
+    position: absolute;
+    top: 72px;
+    left: 0;
+    right: 0;
+    background: #FAF7F2;
+    border-bottom: 2px solid #C5A059;
+    box-shadow: 0 16px 40px rgba(26, 51, 34, 0.14);
+    padding: 22px 20px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+    max-height: calc(100vh - 75px);
+    overflow-y: auto;
+  }
+  .site-header-inner nav#primary-navigation.open {
+    display: flex;
+  }
+  .mobile-lang-row {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 14px 0;
+    margin: 6px 0;
+    border-top: 1px solid #E6DFD3;
+    border-bottom: 1px solid #E6DFD3;
+  }
+  .mobile-lang-label {
+    font-size: 11px;
+    font-weight: 800;
+    color: #76551F;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .mobile-lang-options {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  .lang-pill-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 9px 12px;
+    background: #FFFFFF;
+    border: 1px solid #C5A059;
+    border-radius: 4px;
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 700;
+    color: #1A3322;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .lang-pill-btn.active {
+    background: #1A3322;
+    color: #FAF7F2 !important;
+    border-color: #1A3322;
+  }
+  .mobile-nav-cta {
+    display: inline-flex;
+    margin-top: 8px;
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+  }
+  .menu-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border: 1px solid #E6DFD3;
+    border-radius: 4px;
+    background: #FAF7F2;
+    font-size: 24px;
+    color: #1A3322;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+}
+@media (max-width: 768px) {
+  body.public-shell {
+    padding-bottom: 64px;
+  }
+  .mobile-boutique-bar {
+    display: grid;
+    grid-template-columns: 1fr 1.35fr;
+    gap: 8px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 60;
+    background: rgba(26, 51, 34, 0.97);
+    border-top: 1px solid #C5A059;
+    backdrop-filter: blur(12px);
+    padding: 8px 12px;
+    box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.16);
+  }
+  .mobile-boutique-bar .bar-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    border-radius: 4px;
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 700;
+    min-height: 44px;
+    text-decoration: none;
+    transition: transform 0.15s ease;
+  }
+  .mobile-boutique-bar .bar-btn:active {
+    transform: scale(0.98);
+  }
+  .mobile-boutique-bar .bar-whatsapp {
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #FAF7F2;
+  }
+  .mobile-boutique-bar .bar-whatsapp svg {
+    color: #25D366;
+  }
+  .mobile-boutique-bar .bar-book {
+    background: #C5A059;
+    color: #1A3322 !important;
+    position: relative;
+    overflow: hidden;
+  }
+  .mobile-boutique-bar .bar-pulse {
+    position: absolute;
+    top: 50%;
+    left: 12px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #1A3322;
+    transform: translateY(-50%);
+    box-shadow: 0 0 0 0 rgba(26, 51, 34, 0.7);
+    animation: pulseDot 2s infinite;
+  }
+  @keyframes pulseDot {
+    0% { box-shadow: 0 0 0 0 rgba(26, 51, 34, 0.7); }
+    70% { box-shadow: 0 0 0 8px rgba(26, 51, 34, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(26, 51, 34, 0); }
+  }
+  .mh-concierge {
+    bottom: 74px !important;
+    right: 14px !important;
+  }
 }
 
 

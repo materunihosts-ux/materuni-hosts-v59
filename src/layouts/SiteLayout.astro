@@ -198,9 +198,46 @@ body.admin-shell #main-content{min-height:calc(100vh - 58px)}
 </head>
 <body class={Astro.url.pathname.startsWith("/admin") ? "admin-shell" : "public-shell"}>
 <a class="skip-link" href="#main-content">Skip to content</a>
-{!isAdmin && <header class="site-header"><a class="brand" href="/" aria-label="Materuni Hosts home"><img class="brand-logo" src="/materuni-hosts-logo-round.svg" alt="Materuni Hosts logo" width="86" height="86" /><span class="brand-lockup"><strong>Materuni Hosts</strong><small>LOCAL EXPERIENCES · KILIMANJARO</small></span></a>
-<nav id="primary-navigation" aria-label="Main navigation"><a href="/" data-i18n="nav_home" aria-current={Astro.url.pathname === "/" ? "page" : undefined}>Home</a><a href="/experiences" data-i18n="nav_experiences">All Experiences</a><a href="/about-us" data-i18n="nav_about">About us</a><a href="/day-trips" data-i18n="nav_day_trips">Day Trips</a><a href="/camping" data-i18n="nav_camping">Camping</a><a href="/journal">Journal</a><a href="/sustainability" data-i18n="nav_community">Community & sustainability</a><a href="/reviews" data-i18n="nav_reviews">Guest reviews</a><a href="/faq" data-i18n="nav_faqs">FAQs</a><a class="nav-cta" href="/booking" data-i18n="nav_availability">Check availability</a></nav>
-<button class="menu-toggle" type="button" aria-label="Open menu" aria-controls="primary-navigation" aria-expanded="false">☰</button></header>}
+{!isAdmin && <header class="site-header">
+  <div class="site-header-inner">
+    <a class="brand" href="/" aria-label="Materuni Hosts home"><img class="brand-logo" src="/materuni-hosts-logo-round.svg" alt="Materuni Hosts logo" width="86" height="86" loading="eager" decoding="async" /><span class="brand-lockup"><strong>Materuni Hosts</strong><small>LOCAL EXPERIENCES · KILIMANJARO</small></span></a>
+    <nav id="primary-navigation" aria-label="Main navigation">
+      <a href="/" data-i18n="nav_home" aria-current={Astro.url.pathname === "/" ? "page" : undefined}>Home</a>
+      <a href="/experiences" data-i18n="nav_experiences">All Experiences</a>
+      <a href="/about-us" data-i18n="nav_about">About us</a>
+      <a href="/day-trips" data-i18n="nav_day_trips">Day Trips</a>
+      <a href="/camping" data-i18n="nav_camping">Camping</a>
+      <a href="/journal">Journal</a>
+      <a href="/sustainability" data-i18n="nav_community">Community & sustainability</a>
+      <a href="/reviews" data-i18n="nav_reviews">Guest reviews</a>
+      <a href="/faq" data-i18n="nav_faqs">FAQs</a>
+      <div class="mobile-lang-row">
+        <span class="mobile-lang-label" data-i18n="lang_select_label">Language / Idioma:</span>
+        <div class="mobile-lang-options">
+          <button type="button" class="lang-pill-btn" data-lang-btn="en" aria-label="English">🇬🇧 English</button>
+          <button type="button" class="lang-pill-btn" data-lang-btn="es" aria-label="Español">🇪🇸 Español</button>
+          <button type="button" class="lang-pill-btn" data-lang-btn="fr" aria-label="Français">🇫🇷 Français</button>
+          <button type="button" class="lang-pill-btn" data-lang-btn="de" aria-label="Deutsch">🇩🇪 Deutsch</button>
+        </div>
+      </div>
+      <a class="nav-cta mobile-nav-cta" href="/booking" data-i18n="nav_availability">Check availability</a>
+    </nav>
+    <div class="header-tools">
+      <div class="language-control boutique-lang-toggle" title="Select website language">
+        <label for="site-language" class="visually-hidden">Language</label>
+        <span class="lang-globe-icon" aria-hidden="true">🌐</span>
+        <select id="site-language" class="site-language-select" aria-label="Select website language">
+          <option value="en">🇬🇧 EN</option>
+          <option value="es">🇪🇸 ES</option>
+          <option value="fr">🇫🇷 FR</option>
+          <option value="de">🇩🇪 DE</option>
+        </select>
+      </div>
+      <a class="nav-cta desktop-nav-cta" href="/booking" data-i18n="nav_availability">Check availability</a>
+      <button class="menu-toggle" type="button" aria-label="Open menu" aria-controls="primary-navigation" aria-expanded="false">☰</button>
+    </div>
+  </div>
+</header>}
 <script>
 // @ts-nocheck
 import { supabaseUrl, publishableKey } from "../lib/supabase-public";
@@ -219,7 +256,13 @@ import { supabaseUrl, publishableKey } from "../lib/supabase-public";
  document.addEventListener("keydown",event=>{if(event.key==="Escape"&&mainNav?.classList.contains("open")){closeMenu();menuButton?.focus()}});
  const lang=supported.includes(requested)?requested:(supported.includes(saved)?saved:(supported.includes((navigator.language||"en").slice(0,2).toLowerCase())?(navigator.language||"en").slice(0,2).toLowerCase():"en"));
  function apply(language){
-  const t=labels[language]||labels.en;document.documentElement.lang=language;select.value=language;
+  const t=labels[language]||labels.en;document.documentElement.lang=language;
+  if(select)select.value=language;
+  document.querySelectorAll(".site-language-select").forEach(el=>{if(el)el.value=language});
+  document.querySelectorAll("[data-lang-btn]").forEach(btn=>{
+    if(btn.dataset.langBtn===language){btn.classList.add("active");btn.setAttribute("aria-pressed","true")}
+    else{btn.classList.remove("active");btn.setAttribute("aria-pressed","false")}
+  });
   const skip=document.querySelector(".skip-link");if(skip)skip.textContent=t.skip;
   const ask=document.querySelector(".mh-concierge-launch span:last-child");if(ask)ask.textContent=t.ask;
   const footerIntro=document.querySelector(".site-footer>div:first-child>p");if(footerIntro)footerIntro.textContent=t.footer;
@@ -227,10 +270,28 @@ import { supabaseUrl, publishableKey } from "../lib/supabase-public";
   const booking=document.querySelector('.site-footer a[href="/booking"]');if(booking)booking.textContent=t.book;
   localStorage.setItem("materuni-language",language);
   const currentUrl=new URL(location.href);currentUrl.searchParams.set("lang",language);history.replaceState(null,"",currentUrl.pathname+currentUrl.search+currentUrl.hash);
-  document.querySelectorAll('a[href^="/"]').forEach(link=>{const target=new URL(link.getAttribute("href"),location.origin);target.searchParams.set("lang",language);link.setAttribute("href",target.pathname+target.search+target.hash)});
+  document.querySelectorAll('a[href^="/"]').forEach(link=>{
+    const href=link.getAttribute("href");
+    if(href&&!href.startsWith("/admin")&&!href.startsWith("//")&&!href.startsWith("#")){
+      try{
+        const target=new URL(href,location.origin);target.searchParams.set("lang",language);
+        link.setAttribute("href",target.pathname+target.search+target.hash);
+      }catch(e){}
+    }
+  });
   const chat=document.getElementById("mh-chat-language");if(chat&&chat.value!==language){chat.value=language;chat.dispatchEvent(new Event("change"))}
  }
- apply(lang);select.addEventListener("change",()=>{apply(select.value);loadPageTranslations(select.value)});
+ apply(lang);
+ if(select)select.addEventListener("change",()=>{apply(select.value);loadPageTranslations(select.value)});
+ document.querySelectorAll(".site-language-select").forEach(el=>{
+   el.addEventListener("change",()=>{apply(el.value);loadPageTranslations(el.value)});
+ });
+ document.querySelectorAll("[data-lang-btn]").forEach(btn=>{
+   btn.addEventListener("click",()=>{
+     const targetLang=btn.dataset.langBtn;
+     if(supported.includes(targetLang)){apply(targetLang);loadPageTranslations(targetLang)}
+   });
+ });
  async function loadPageTranslations(language){
   const nodes=[...document.querySelectorAll("[data-i18n]")];
   nodes.forEach(node=>{if(!node.dataset.i18nDefault)node.dataset.i18nDefault=node.textContent||""});
@@ -323,6 +384,19 @@ import { supabaseUrl, publishableKey } from "../lib/supabase-public";
 })();
 </script>
 {isAdmin && <div class="admin-topbar"><a class="admin-brand" href="/admin/" aria-label="Materuni Hosts admin home">Materuni Hosts <span>ADMIN</span></a><a class="admin-view-site" href="/" target="_blank" rel="noopener noreferrer">View main website ↗</a></div>}<main id="main-content" class={isAdmin ? "admin-main" : "public-main"} tabindex="-1"><slot /></main>
+
+{!isAdmin && (
+  <aside class="mobile-boutique-bar" aria-label="Quick mobile booking and communication">
+    <a href="https://wa.me/255612068540" target="_blank" rel="noopener noreferrer" class="bar-btn bar-whatsapp" aria-label="Chat with local host on WhatsApp">
+      <svg viewBox="0 0 24 24" aria-hidden="true" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 11.6a8.45 8.45 0 0 1-12.4 7.45L3.5 20.5l1.5-4.45a8.45 8.45 0 1 1 15.5-4.45Z"/><path d="M8.8 8.2c.25 2.9 2.1 5.2 5.15 6.15l1.2-1.3 2.05 1.05c-.15 1.5-1.2 2.35-2.65 2.35-3.95-.45-7.05-3.65-7.45-7.5 0-1.35.85-2.35 2.2-2.55l1.05 2.15-.95 1.05"/></svg>
+      <span>WhatsApp</span>
+    </a>
+    <a href="/booking" class="bar-btn bar-book" data-i18n="nav_availability">
+      <span class="bar-pulse"></span>
+      <span>Check availability</span>
+    </a>
+  </aside>
+)}
 
 {!noindex && !isAdmin && <div class="mh-concierge" id="mh-concierge">
   <button class="mh-concierge-launch" id="mh-chat-open" type="button" aria-expanded="false" aria-controls="mh-chat-panel"><span class="mh-chat-icon">✦</span><span>Ask a local host</span></button>

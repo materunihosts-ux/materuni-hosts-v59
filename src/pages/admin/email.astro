@@ -14,7 +14,7 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
     <div class="field full"><label for="template-name">Internal template name</label><input id="template-name" maxlength="90" required></div>
     <div class="field full"><label for="template-subject">Email subject line *</label><input id="template-subject" maxlength="180" required></div>
     <div class="field full"><label for="template-body">Email message body *</label><textarea id="template-body" rows="16" maxlength="12000" required></textarea></div>
-    <div class="field full"><p class="muted">Available dynamic merge tags: <code>{"{{guest_name}}"}</code>, <code>{"{{partner_name}}"}</code>, <code>{"{{experience}}"}</code>, <code>{"{{booking_date}}"}</code>, <code>{"{{guest_count}}"}</code>, <code>{"{{host_name}}"}</code>, <code>{"{{booking_reference}}"}</code>, <code>{"{{reply_email}}"}</code>, <code>{"{{whatsapp}}"}</code>.</p></div>
+    <div class="field full"><p class="muted">Available dynamic merge tags: <code>{"{{guest_name}}"}</code>, <code>{"{{partner_name}}"}</code>, <code>{"{{experience}}"}</code>, <code>{"{{booking_date}}"}</code>, <code>{"{{guest_count}}"}</code>, <code>{"{{host_name}}"}</code>, <code>{"{{booking_reference}}"}</code>, <code>{"{{manage_url}}"}</code>, <code>{"{{reply_email}}"}</code>, <code>{"{{whatsapp}}"}</code>.</p></div>
     <div class="field full"><div class="actions"><button class="button" id="save-template" type="submit">Save template</button><button class="button button-secondary" id="preview-template" type="button">Refresh preview</button></div><p id="template-feedback" class="muted" aria-live="polite"></p></div>
    </form>
   </div>
@@ -238,6 +238,7 @@ function sample(text){
   .replaceAll("{{guest_count}}","2")
   .replaceAll("{{host_name}}",brandSettings.sender_name||"Saidi Materu & Local Hosts")
   .replaceAll("{{booking_reference}}","MH-CONF-2026-8492")
+  .replaceAll("{{manage_url}}","https://materunihosts.com/booking?ref=MH-CONF-2026-8492&manage=true")
   .replaceAll("{{reply_email}}",brandSettings.reply_email||"materunihosts@gmail.com")
   .replaceAll("{{whatsapp}}",brandSettings.whatsapp||"+255 612 068 540");
 }
@@ -250,36 +251,140 @@ function preview(){
  el("preview-subject").textContent=subject;
  const safe=value=>String(value).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 
- const paragraphs=body.split("\n").map(line=>line?`<p style="margin:0 0 14px;line-height:1.75;font-size:14px;color:#242421">${safe(line)}</p>`:'<div style="height:6px"></div>').join("");
+ const paragraphs=body.split("\n").map(line=>line?`<p style="margin:0 0 12px;line-height:1.75;font-size:14px;color:#242421">${safe(line)}</p>`:'<div style="height:6px"></div>').join("");
 
  el("preview-body").innerHTML=`
-  <div style="max-width:620px;margin:0 auto;background:#fff;border:1px solid #E6DFD3;border-radius:12px;overflow:hidden;color:#242421;font-family:Arial,Helvetica,sans-serif;box-shadow:0 12px 36px rgba(26,51,34,.08)">
-   <div style="padding:28px 30px;background:#1A3322;border-bottom:4px solid #C5A059;color:#FAF7F2">
-    <table style="width:100%;border-collapse:collapse"><tr>
-     <td style="vertical-align:middle">
-      <div style="font-size:11px;font-weight:700;letter-spacing:2px;color:#C5A059;text-transform:uppercase">MATERUNI HOSTS</div>
-      <h2 style="font-family:Georgia,serif;font-size:24px;font-weight:600;margin:6px 0 0;line-height:1.2;color:#FAF7F2">${safe(subject)}</h2>
-      <div style="font-size:12px;color:#E6DFD3;margin-top:6px">Materuni Village · Kilimanjaro Foothills, Tanzania</div>
-     </td>
-     <td style="vertical-align:middle;text-align:right">
-      <div style="display:inline-block;background:#FAF7F2;padding:8px 12px;border-radius:6px;border:1px solid #C5A059;text-align:right">
-       <span style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#7A756B;display:block">VERIFIED HOST</span>
-       <strong style="font-family:monospace;font-size:13px;color:#1A3322">MH-CONF-2026</strong>
-      </div>
-     </td>
-    </tr></table>
+  <div style="max-width:600px;margin:0 auto;background:#FAF7F2;border:1px solid #E6DFD3;border-radius:12px;overflow:hidden;color:#242421;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;box-shadow:0 12px 36px rgba(26,51,34,.08)">
+   
+   <!-- Header -->
+   <div style="padding:32px 28px;background:#1A3322;border-bottom:4px solid #C5A059;color:#FAF7F2">
+    <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="border-collapse:collapse">
+     <tr>
+      <td valign="middle" align="left">
+       <div style="font-size:11px;font-weight:800;letter-spacing:2.5px;color:#C5A059;text-transform:uppercase">MATERUNI HOSTS</div>
+       <h2 style="font-family:Georgia,'Times New Roman',serif;font-size:24px;line-height:30px;font-weight:700;margin:6px 0 0;color:#FAF7F2">${safe(subject)}</h2>
+       <div style="font-size:12px;color:#E6DFD3;margin-top:5px;letter-spacing:0.3px">Authentic Chagga Hospitality · Mount Kilimanjaro</div>
+      </td>
+      <td valign="middle" align="right" style="padding-left:12px">
+       <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="background-color:#FAF7F2;border:1px solid #C5A059;border-radius:6px;padding:8px 12px;text-align:right">
+        <tr>
+         <td align="right">
+          <span style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:#7A756B;display:block">BOOKING REF</span>
+          <strong style="font-family:'Courier New',Courier,monospace;font-size:14px;font-weight:800;color:#1A3322;display:block;letter-spacing:0.5px">MH-CONF-2026</strong>
+         </td>
+        </tr>
+       </table>
+      </td>
+     </tr>
+    </table>
    </div>
-   <div style="padding:30px;background:#FAF7F2">
+
+   <!-- Status Banner -->
+   <div style="background-color:#EBF3ED;border-bottom:1px solid #C5E0CB;padding:11px 24px;text-align:center">
+    <span style="font-size:12px;font-weight:800;letter-spacing:1px;color:#1A3322;text-transform:uppercase">
+     ✅ STATUS: RESERVATION CONFIRMED &amp; GUARANTEED
+    </span>
+   </div>
+
+   <!-- Content Area -->
+   <div style="padding:28px 24px 20px;background-color:#FAF7F2">
+    <p style="font-family:Georgia,'Times New Roman',serif;font-size:19px;line-height:26px;color:#1A3322;margin:0 0 14px;font-weight:600">
+     Habari Alex Morgan,
+    </p>
+
     ${paragraphs}
-    <div style="margin:22px 0 10px;text-align:center">
-     <a href="https://wa.me/255612068540" style="display:inline-block;background:#1A3322;color:#FAF7F2;padding:12px 20px;border-radius:4px;text-decoration:none;font-size:13px;font-weight:700;margin-right:10px">💬 Chat on WhatsApp</a>
-     <a href="https://materunihosts.com" style="display:inline-block;background:#C5A059;color:#1A3322;padding:12px 20px;border-radius:4px;text-decoration:none;font-size:13px;font-weight:700">Explore Materuni</a>
+
+    <!-- Structured Reservation Summary -->
+    <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;border-collapse:separate;background-color:#FFFFFF;border:1px solid #E6DFD3;border-radius:10px;margin:20px 0 24px;overflow:hidden;box-shadow:0 4px 16px rgba(26,51,34,0.04)">
+     <tr>
+      <td colspan="2" bgcolor="#F8F5EE" style="background-color:#F8F5EE;padding:12px 18px;border-bottom:1px solid #E6DFD3">
+       <span style="font-size:11px;font-weight:800;letter-spacing:1.5px;color:#1A3322;text-transform:uppercase">
+        📋 RESERVATION SUMMARY
+       </span>
+      </td>
+     </tr>
+     <tr>
+      <td width="38%" style="padding:12px 18px;border-bottom:1px solid #F0ECE1;font-size:12px;font-weight:600;color:#7A756B;text-transform:uppercase;letter-spacing:0.5px">Experience</td>
+      <td width="62%" style="padding:12px 18px;border-bottom:1px solid #F0ECE1;font-size:14px;font-weight:700;color:#1A3322">Materuni Waterfall &amp; Chagga Coffee Tour</td>
+     </tr>
+     <tr>
+      <td style="padding:12px 18px;border-bottom:1px solid #F0ECE1;font-size:12px;font-weight:600;color:#7A756B;text-transform:uppercase;letter-spacing:0.5px">Date &amp; Time</td>
+      <td style="padding:12px 18px;border-bottom:1px solid #F0ECE1;font-size:14px;font-weight:700;color:#1A3322">15 November 2026 &middot; 09:00 AM <span style="font-size:11px;font-weight:400;color:#7A756B">(East Africa Time)</span></td>
+     </tr>
+     <tr>
+      <td style="padding:12px 18px;border-bottom:1px solid #F0ECE1;font-size:12px;font-weight:600;color:#7A756B;text-transform:uppercase;letter-spacing:0.5px">Party Size</td>
+      <td style="padding:12px 18px;border-bottom:1px solid #F0ECE1;font-size:14px;color:#1A3322"><strong>2</strong> guests</td>
+     </tr>
+     <tr>
+      <td style="padding:12px 18px;border-bottom:1px solid #F0ECE1;font-size:12px;font-weight:600;color:#7A756B;text-transform:uppercase;letter-spacing:0.5px">Lead Traveler</td>
+      <td style="padding:12px 18px;border-bottom:1px solid #F0ECE1;font-size:14px;color:#1A3322">Alex Morgan</td>
+     </tr>
+     <tr>
+      <td style="padding:12px 18px;border-bottom:1px solid #F0ECE1;font-size:12px;font-weight:600;color:#7A756B;text-transform:uppercase;letter-spacing:0.5px">Meeting Location</td>
+      <td style="padding:12px 18px;border-bottom:1px solid #F0ECE1;font-size:13px;color:#1A3322;line-height:1.5">
+       <strong>Materuni Cultural Tourism Centre</strong><br>
+       <span style="font-size:12px;color:#555">Materuni Village, Moshi Rural, Kilimanjaro<br>GPS: -3.2505° S, 37.3912° E</span>
+      </td>
+     </tr>
+     <tr>
+      <td style="padding:12px 18px;font-size:12px;font-weight:600;color:#7A756B;text-transform:uppercase;letter-spacing:0.5px">Payment Terms</td>
+      <td style="padding:12px 18px;font-size:13px;color:#1A3322;line-height:1.5">
+       <strong>Pay on arrival</strong> (USD or TZS cash, or Vodacom M-Pesa). Zero prepayment required today.
+      </td>
+     </tr>
+    </table>
+
+    <!-- Manage My Booking CTA -->
+    <div style="margin:24px 0 14px;text-align:center">
+     <a href="https://materunihosts.com/booking?ref=MH-CONF-2026-8492&manage=true" target="_blank" style="display:inline-block;padding:14px 34px;background-color:#1A3322;border-radius:6px;font-size:15px;font-weight:800;color:#FAF7F2;text-decoration:none;letter-spacing:0.5px;box-shadow:0 6px 18px rgba(26,51,34,0.18)">
+      Manage My Booking &rarr;
+     </a>
+     <p style="font-size:12px;color:#6E7268;margin:8px 0 0;text-align:center">
+      View live status, request rescheduling, or update party size online.
+     </p>
+    </div>
+
+    <!-- Quick Action Links -->
+    <div style="margin:12px 0 24px;text-align:center">
+     <a href="https://calendar.google.com" target="_blank" style="display:inline-block;background-color:#FFFFFF;color:#1A3322;border:1px solid #1A3322;padding:10px 18px;border-radius:5px;text-decoration:none;font-size:13px;font-weight:700;margin-right:8px">
+      &plus; Add to Google Calendar
+     </a>
+     <a href="https://wa.me/255612068540" target="_blank" style="display:inline-block;background-color:#25D366;color:#FFFFFF;border:1px solid #25D366;padding:10px 18px;border-radius:5px;text-decoration:none;font-size:13px;font-weight:700">
+      💬 Chat on WhatsApp
+     </a>
+    </div>
+
+    <!-- Traveler Checklist Card -->
+    <div style="background-color:#F8F5EE;border:1px solid #E6DFD3;border-radius:8px;padding:16px 18px;margin:16px 0 10px">
+     <div style="font-size:11px;font-weight:800;letter-spacing:1.5px;color:#1A3322;text-transform:uppercase;margin-bottom:10px">
+      🌿 ESSENTIAL PREPARATION FOR MATERUNI
+     </div>
+     <div style="font-size:13px;line-height:1.6;color:#333">
+      <p style="margin:0 0 6px">👟 <strong>Footwear:</strong> Sturdy walking shoes or sneakers with good traction.</p>
+      <p style="margin:0 0 6px">🧥 <strong>Clothing:</strong> Lightweight layers, light rain jacket, and comfortable modest attire.</p>
+      <p style="margin:0 0 6px">🏊 <strong>Waterfall Swim:</strong> Pack swimwear and a small towel if you wish to swim in the pool.</p>
+      <p style="margin:0">💵 <strong>Village Cash:</strong> Small Tanzanian Shillings for fresh roasted village coffee beans or local crafts.</p>
+     </div>
     </div>
    </div>
-   <div style="padding:20px 30px;background:#E6DFD3;color:#555;font-size:12px;border-top:1px solid #d9d1c4;text-align:center">
-    <strong>${safe(brandSettings.sender_name||"Materuni Hosts")}</strong> · ${safe(brandSettings.address||"Materuni Village, Moshi, Kilimanjaro, Tanzania")}<br>
-    WhatsApp: ${safe(brandSettings.whatsapp||"+255 612 068 540")} · ${safe(brandSettings.reply_email||"materunihosts@gmail.com")}<br>
-    <em style="color:#80652F;font-family:Georgia,serif;font-style:italic;display:block;margin-top:6px">${safe(brandSettings.tagline||"Come as a guest. Leave as a friend.")}</em>
+
+   <!-- Official Brand Footer -->
+   <div style="padding:24px 28px;background:#E6DFD3;color:#555;font-size:12px;border-top:1px solid #D8CFC0;text-align:center;line-height:1.6">
+    <div style="font-family:Georgia,'Times New Roman',serif;font-size:15px;font-style:italic;color:#1A3322;font-weight:600;margin-bottom:6px">
+     &ldquo;${safe(brandSettings.tagline||"Come as a guest. Leave as a friend.")}&rdquo;
+    </div>
+    <div style="font-weight:700;color:#1A3322;font-size:13px">
+     ${safe(brandSettings.sender_name||"Materuni Hosts")} &middot; Cultural Tourism &amp; Local Experiences
+    </div>
+    <div style="color:#666;margin:4px 0 10px">
+     ${safe(brandSettings.address||"Materuni Village, Moshi, Kilimanjaro, Tanzania")}<br>
+     WhatsApp: <a href="https://wa.me/255612068540" style="color:#1A3322;text-decoration:underline;font-weight:700">${safe(brandSettings.whatsapp||"+255 612 068 540")}</a> &middot; Email: <a href="mailto:materunihosts@gmail.com" style="color:#1A3322;text-decoration:underline;font-weight:700">${safe(brandSettings.reply_email||"materunihosts@gmail.com")}</a>
+    </div>
+    <div style="border-top:1px solid #D4CABC;padding-top:10px;font-size:11px;color:#777">
+     <a href="https://materunihosts.com" style="color:#1A3322;text-decoration:none;font-weight:700">materunihosts.com</a> &middot;
+     <a href="https://www.tripadvisor.com/34765809" target="_blank" style="color:#1A3322;text-decoration:none">TripAdvisor Verified</a> &middot;
+     <a href="https://g.page/r/CXy6M_Suiip9EBM/review" target="_blank" style="color:#1A3322;text-decoration:none">Google Reviews</a>
+    </div>
    </div>
   </div>
  `;

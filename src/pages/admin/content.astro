@@ -1,269 +1,821 @@
 ---
 import SiteLayout from "../../layouts/SiteLayout.astro";
 ---
-<SiteLayout title="Website Content Manager | Materuni Hosts Admin" description="Manage public FAQ content." noindex={true}>
-<section class="page-hero"><span class="eyebrow">PRIVATE ADMIN · WEBSITE EDITOR</span><h1>Website content manager</h1><p>Keep guest information accurate and up to date. Changes to FAQs are published to the public website after saving.</p></section>
-<section class="booking-wrap">
- <div class="booking-panel" id="login-panel">
-  <h2>Administrator sign in</h2><p class="muted">Only approved Materuni Hosts administrators can edit website content.</p>
-  <form id="login-form" class="form-grid">
-   <div class="field full"><label for="admin-email">Admin email</label><input id="admin-email" type="email" autocomplete="username" required></div>
-   <div class="field full"><label for="admin-password">Password</label><input id="admin-password" type="password" autocomplete="current-password" required></div>
-   <div class="field full"><button class="button" id="login-button" type="submit">Sign in securely</button><p id="login-feedback" class="muted" aria-live="polite"></p></div>
-  </form>
- </div>
- <div id="manager" hidden>
-  <div class="booking-panel">
-   <div class="section-heading"><div><span class="eyebrow">CONTENT MANAGEMENT</span><h2>Frequently asked questions</h2><p class="muted">Edit the answers guests see on the public FAQ page. Keep wording factual and avoid promising availability or services that have not been confirmed.</p></div><button class="button button-secondary" id="logout" type="button">Sign out</button></div>
-   <div class="admin-shortcuts" style="margin-bottom:1.2rem"><a class="button button-secondary" href="/admin/">Dashboard</a><a class="button button-secondary" href="/faq" target="_blank" rel="noopener">Preview public FAQs</a><a class="button button-secondary" href="/admin/settings">Social links</a><a class="button button-secondary" href="/admin/media">Photo library</a></div>
-   <div id="faq-editor" class="form-grid"></div>
-   <div class="actions" style="margin-top:1.2rem"><button class="button button-secondary" id="add-faq" type="button">Add a question</button><button class="button" id="save-faq" type="button">Publish FAQ changes</button></div>
-   <p id="content-feedback" class="muted" aria-live="polite"></p>
-  </div>
-  <div class="booking-panel" style="margin-top:1.25rem">
-   <span class="eyebrow">HOMEPAGE COPY</span><h2>Edit homepage messaging</h2>
-   <p class="muted">Update text shown on the homepage. Package prices and booking terms remain controlled by the approved experience catalogue and booking system.</p>
-   <form id="home-copy-form" class="form-grid">
-    <div class="field full"><label for="home-hero-title">Hero headline</label><input id="home-hero-title" maxlength="120" required></div>
-    <div class="field full"><label for="home-hero-intro">Hero introduction</label><textarea id="home-hero-intro" rows="3" maxlength="500" required></textarea></div>
-    <div class="field full"><label for="home-experiences-title">Experiences section heading</label><input id="home-experiences-title" maxlength="120" required></div>
-    <div class="field full"><label for="home-experiences-intro">Experiences section introduction</label><textarea id="home-experiences-intro" rows="3" maxlength="500" required></textarea></div>
-    <div class="field full"><label for="home-story-title">Story section heading</label><input id="home-story-title" maxlength="120" required></div>
-    <div class="field full"><label for="home-story-desc">Story section paragraph</label><textarea id="home-story-desc" rows="4" maxlength="900" required></textarea></div>
-    <div class="field full"><label for="home-story-desc2">Story section second paragraph</label><textarea id="home-story-desc2" rows="3" maxlength="500" required></textarea></div>
-    <div class="field full"><button class="button" id="save-home-copy" type="submit">Publish homepage copy</button><p id="home-copy-feedback" class="muted" aria-live="polite"></p></div>
-   </form>
-  </div>
-  <div class="booking-panel" style="margin-top:1.25rem">
-   <span class="eyebrow">MULTILINGUAL CONTENT</span><h2>Website translations</h2>
-   <p class="muted">Manage Spanish, French and German text across the homepage, experiences, booking, itinerary and FAQ pages. The language selector uses these saved translations; blank fields fall back to the English page copy. Keep prices and booking conditions consistent.</p>
-   <div class="form-grid">
-    <div class="field"><label for="translation-language">Edit language</label><select id="translation-language"><option value="es">Spanish · Español</option><option value="fr">French · Français</option><option value="de">German · Deutsch</option></select></div>
-    <div class="field"><label>Translation status</label><p id="translation-status" class="muted" role="status">Load translations after signing in.</p></div>
-   </div>
-   <div id="translation-editor" class="form-grid" style="margin-top:1rem"></div>
-   <div class="actions" style="margin-top:1rem"><button class="button" id="save-translations" type="button">Publish selected language</button></div>
-   <p id="translation-feedback" class="muted" aria-live="polite"></p>
-  </div>
-  <div class="booking-panel" style="margin-top:1.25rem">
-   <span class="eyebrow">OUR APPROACH PAGE</span><h2>Edit sustainability & culture content</h2>
-   <p class="muted">These fields update the public Our Approach page. Keep the copy grounded in real practices and avoid unsupported environmental or community impact claims.</p>
-   <form id="approach-form" class="form-grid">
-    <div class="field full"><label for="approach-title">Page headline</label><input id="approach-title" maxlength="120" required></div>
-    <div class="field full"><label for="approach-intro">Introduction</label><textarea id="approach-intro" rows="3" maxlength="700" required></textarea></div>
-    <div class="field full"><label for="approach-section-title">Main section heading</label><input id="approach-section-title" maxlength="150" required></div>
-    <div class="field full"><label for="approach-section-intro">Main section text</label><textarea id="approach-section-intro" rows="4" maxlength="1000" required></textarea></div>
-    <div class="field full"><label for="approach-cta-title">Closing heading</label><input id="approach-cta-title" maxlength="120" required></div>
-    <div class="field full"><label for="approach-cta-text">Closing text</label><textarea id="approach-cta-text" rows="3" maxlength="500" required></textarea></div>
-    <div class="field full"><button class="button" id="save-approach" type="submit">Publish Our Approach changes</button><p id="approach-feedback" class="muted" aria-live="polite"></p></div>
-   </form>
-  </div>
- </div>
+<SiteLayout title="Website Content Manager | Materuni Hosts Admin" description="Manage public About Us, FAQ, and homepage content." noindex={true}>
+<section class="page-hero">
+  <span class="eyebrow">PRIVATE ADMIN · WEBSITE EDITOR</span>
+  <h1>Website Content & About Us Manager</h1>
+  <p>Edit the About Us story, founder notes, local host guides, FAQs, homepage messaging, and multilingual translations.</p>
 </section>
+
+<section class="booking-wrap">
+  <div class="booking-panel" id="login-panel">
+    <h2>Administrator sign in</h2>
+    <p class="muted">Only approved Materuni Hosts administrators can edit website content.</p>
+    <form id="login-form" class="form-grid">
+      <div class="field full"><label for="admin-email">Admin email</label><input id="admin-email" type="email" autocomplete="username" required></div>
+      <div class="field full"><label for="admin-password">Password</label><input id="admin-password" type="password" autocomplete="current-password" required></div>
+      <div class="field full"><button class="button" id="login-button" type="submit">Sign in securely</button><p id="login-feedback" class="muted" aria-live="polite"></p></div>
+    </form>
+  </div>
+
+  <div id="manager" hidden>
+    <!-- Topbar Shortcuts -->
+    <div class="admin-topbar">
+      <div class="admin-topbar-links">
+        <a class="button button-secondary" href="/admin/">← Dashboard</a>
+        <a class="button button-secondary" href="/admin/tours">Tours & Photos</a>
+        <a class="button button-secondary" href="/admin/media">Media Library</a>
+        <a class="button button-secondary" href="/about-us" target="_blank" rel="noopener">Preview About Us ↗</a>
+        <a class="button button-secondary" href="/faq" target="_blank" rel="noopener">Preview FAQs ↗</a>
+        <a class="button button-secondary" href="/" target="_blank" rel="noopener">Preview Homepage ↗</a>
+      </div>
+      <button class="button button-secondary" id="logout" type="button">Sign out</button>
+    </div>
+
+    <!-- ABOUT US PAGE EDITOR -->
+    <div class="booking-panel" id="about-us-panel" style="margin-top:1.5rem">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow" style="color:#C5A059">PUBLIC ABOUT US PAGE</span>
+          <h2>Edit About Us Story & Local Hosts</h2>
+          <p class="muted">Update the company introduction, Saidi Materu's founder story, team host bios, photography, and community values.</p>
+        </div>
+        <a class="button button-secondary" href="/about-us" target="_blank" rel="noopener">View Live Page ↗</a>
+      </div>
+
+      <form id="about-form" class="form-grid">
+        <!-- Hero Section -->
+        <div class="field full section-subheading">
+          <strong>1. Hero Header & Story</strong>
+        </div>
+        <div class="field"><label for="about-hero-eyebrow">Hero Eyebrow</label><input id="about-hero-eyebrow" required maxlength="120"></div>
+        <div class="field"><label for="about-hero-title">Hero Headline</label><input id="about-hero-title" required maxlength="140"></div>
+        <div class="field full"><label for="about-hero-p1">Hero Paragraph 1</label><textarea id="about-hero-p1" rows="3" required></textarea></div>
+        <div class="field full"><label for="about-hero-p2">Hero Paragraph 2</label><textarea id="about-hero-p2" rows="3" required></textarea></div>
+        
+        <!-- Hero Photo -->
+        <div class="field full image-manager-box">
+          <label style="font-weight:700">About Us Main Photograph</label>
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:6px">
+            <input type="file" id="about-hero-file" accept="image/jpeg,image/png,image/webp" style="display:none" />
+            <button type="button" class="button button-secondary" id="about-hero-upload-btn">📷 Upload photo</button>
+            <input id="about-hero-image" type="url" placeholder="https://..." style="flex:1;min-width:240px" />
+          </div>
+          <p id="about-hero-status" class="muted" style="font-size:12px;margin:4px 0 0" aria-live="polite"></p>
+        </div>
+
+        <!-- Founder Story Section -->
+        <div class="field full section-subheading" style="margin-top:1rem">
+          <strong>2. Founder Story (Saidi Materu)</strong>
+        </div>
+        <div class="field"><label for="about-founder-eyebrow">Founder Eyebrow</label><input id="about-founder-eyebrow" required maxlength="120"></div>
+        <div class="field"><label for="about-founder-title">Founder Heading</label><input id="about-founder-title" required maxlength="140"></div>
+        <div class="field full"><label for="about-founder-p1">Founder Story Paragraph 1</label><textarea id="about-founder-p1" rows="3" required></textarea></div>
+        <div class="field full"><label for="about-founder-p2">Founder Story Paragraph 2</label><textarea id="about-founder-p2" rows="3" required></textarea></div>
+        <div class="field full"><label for="about-founder-p3">Founder Story Paragraph 3</label><textarea id="about-founder-p3" rows="3" required></textarea></div>
+        <div class="field full"><label for="about-founder-purpose">Founder Purpose Quote</label><textarea id="about-founder-purpose" rows="2" required></textarea></div>
+
+        <!-- Local Hosts & Guides Team -->
+        <div class="field full section-subheading" style="margin-top:1rem">
+          <strong>3. Local Hosts & Guides Team</strong>
+          <p class="muted" style="font-size:13px;font-weight:normal;margin:4px 0 0">Present authentic Chagga hosts with their role, local expertise, and portrait photo.</p>
+        </div>
+        <div class="field full" id="team-members-container">
+          <!-- Dynamic team member cards injected here -->
+        </div>
+        <div class="field full" style="margin-top:4px">
+          <button type="button" class="button button-secondary" id="add-team-member">+ Add Another Guide / Host</button>
+        </div>
+
+        <!-- Core Guiding Values -->
+        <div class="field full section-subheading" style="margin-top:1rem">
+          <strong>4. Guiding Principles & Values</strong>
+        </div>
+        <div class="field"><label for="about-val-1-title">Value 01 Title</label><input id="about-val-1-title" required></div>
+        <div class="field"><label for="about-val-1-desc">Value 01 Description</label><input id="about-val-1-desc" required></div>
+        <div class="field"><label for="about-val-2-title">Value 02 Title</label><input id="about-val-2-title" required></div>
+        <div class="field"><label for="about-val-2-desc">Value 02 Description</label><input id="about-val-2-desc" required></div>
+        <div class="field"><label for="about-val-3-title">Value 03 Title</label><input id="about-val-3-title" required></div>
+        <div class="field"><label for="about-val-3-desc">Value 03 Description</label><input id="about-val-3-desc" required></div>
+        <div class="field"><label for="about-val-4-title">Value 04 Title</label><input id="about-val-4-title" required></div>
+        <div class="field"><label for="about-val-4-desc">Value 04 Description</label><input id="about-val-4-desc" required></div>
+
+        <!-- Village Note -->
+        <div class="field full section-subheading" style="margin-top:1rem">
+          <strong>5. Village Community Statement</strong>
+        </div>
+        <div class="field full"><label for="about-community-note">Bottom Banner Note</label><input id="about-community-note" required maxlength="250"></div>
+
+        <div class="field full" style="margin-top:14px">
+          <button class="button" id="save-about" type="submit" style="font-size:14px;padding:12px 24px">✨ Publish About Us Changes</button>
+          <p id="about-feedback" class="muted" style="margin-top:8px" aria-live="polite"></p>
+        </div>
+      </form>
+    </div>
+
+    <!-- FAQ SECTION -->
+    <div class="booking-panel" style="margin-top:1.5rem">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">CONTENT MANAGEMENT</span>
+          <h2>Frequently Asked Questions</h2>
+          <p class="muted">Edit the answers guests see on the public FAQ page.</p>
+        </div>
+      </div>
+      <div id="faq-editor" class="form-grid"></div>
+      <div class="actions" style="margin-top:1.2rem">
+        <button class="button button-secondary" id="add-faq" type="button">Add a question</button>
+        <button class="button" id="save-faq" type="button">Publish FAQ changes</button>
+      </div>
+      <p id="content-feedback" class="muted" aria-live="polite"></p>
+    </div>
+
+    <!-- HOMEPAGE COPY -->
+    <div class="booking-panel" style="margin-top:1.25rem">
+      <span class="eyebrow">HOMEPAGE COPY</span>
+      <h2>Edit Homepage Messaging</h2>
+      <p class="muted">Update text shown on the homepage.</p>
+      <form id="home-copy-form" class="form-grid">
+        <div class="field full"><label for="home-hero-title">Hero headline</label><input id="home-hero-title" maxlength="120" required></div>
+        <div class="field full"><label for="home-hero-intro">Hero introduction</label><textarea id="home-hero-intro" rows="3" maxlength="500" required></textarea></div>
+        <div class="field full"><label for="home-experiences-title">Experiences section heading</label><input id="home-experiences-title" maxlength="120" required></div>
+        <div class="field full"><label for="home-experiences-intro">Experiences section introduction</label><textarea id="home-experiences-intro" rows="3" maxlength="500" required></textarea></div>
+        <div class="field full"><label for="home-story-title">Story section heading</label><input id="home-story-title" maxlength="120" required></div>
+        <div class="field full"><label for="home-story-desc">Story section paragraph</label><textarea id="home-story-desc" rows="4" maxlength="900" required></textarea></div>
+        <div class="field full"><label for="home-story-desc2">Story section second paragraph</label><textarea id="home-story-desc2" rows="3" maxlength="500" required></textarea></div>
+        <div class="field full"><button class="button" id="save-home-copy" type="submit">Publish homepage copy</button><p id="home-copy-feedback" class="muted" aria-live="polite"></p></div>
+      </form>
+    </div>
+
+    <!-- MULTILINGUAL CONTENT -->
+    <div class="booking-panel" style="margin-top:1.25rem">
+      <span class="eyebrow">MULTILINGUAL CONTENT</span>
+      <h2>Website Translations</h2>
+      <p class="muted">Manage Spanish, French and German text across pages.</p>
+      <div class="form-grid">
+        <div class="field"><label for="translation-language">Edit language</label><select id="translation-language"><option value="es">Spanish · Español</option><option value="fr">French · Français</option><option value="de">German · Deutsch</option></select></div>
+        <div class="field"><label>Translation status</label><p id="translation-status" class="muted" role="status">Load translations after signing in.</p></div>
+      </div>
+      <div id="translation-editor" class="form-grid" style="margin-top:1rem"></div>
+      <div class="actions" style="margin-top:1rem"><button class="button" id="save-translations" type="button">Publish selected language</button></div>
+      <p id="translation-feedback" class="muted" aria-live="polite"></p>
+    </div>
+
+    <!-- OUR APPROACH PAGE -->
+    <div class="booking-panel" style="margin-top:1.25rem">
+      <span class="eyebrow">OUR APPROACH PAGE</span>
+      <h2>Edit Sustainability & Culture Content</h2>
+      <p class="muted">Update the public Our Approach page copy.</p>
+      <form id="approach-form" class="form-grid">
+        <div class="field full"><label for="approach-title">Page headline</label><input id="approach-title" maxlength="120" required></div>
+        <div class="field full"><label for="approach-intro">Introduction</label><textarea id="approach-intro" rows="3" maxlength="700" required></textarea></div>
+        <div class="field full"><label for="approach-section-title">Main section heading</label><input id="approach-section-title" maxlength="150" required></div>
+        <div class="field full"><label for="approach-section-intro">Main section text</label><textarea id="approach-section-intro" rows="4" maxlength="1000" required></textarea></div>
+        <div class="field full"><label for="approach-cta-title">Closing heading</label><input id="approach-cta-title" maxlength="120" required></div>
+        <div class="field full"><label for="approach-cta-text">Closing text</label><textarea id="approach-cta-text" rows="3" maxlength="500" required></textarea></div>
+        <div class="field full"><button class="button" id="save-approach" type="submit">Publish Our Approach changes</button><p id="approach-feedback" class="muted" aria-live="polite"></p></div>
+      </form>
+    </div>
+  </div>
+</section>
+
 <script>
 // @ts-nocheck
 import { supabaseUrl, publishableKey } from "../../lib/supabase-public";
-let accessToken="";
-const el=id=>document.getElementById(id);
-const defaults=[
-["Where is Materuni Village?","Materuni Village is in the Kilimanjaro region of northern Tanzania, near Moshi, on the forested slopes of Mount Kilimanjaro. It is a village visit rather than a town-centre attraction, so agree your transport and pickup point before travelling."],
-["Which experiences can I book?","Our five featured experiences are Materuni Waterfall & Chagga Culture ($75), Traditional Coffee Experience ($65), Traditional Chagga Cooking Class ($85), Materuni Camping ($110) and Ultimate ($135), all priced per person."],
-["How do I make a booking?","Open the availability page, choose your experience, preferred date and one of the time slots shown for your group size. Enter your contact details and send the request. The selected spaces are held in the availability calendar while the request is pending. We will review it and contact you to confirm the arrangements; it is not a confirmed reservation until you receive confirmation."],
-["When do I pay?","There is no live card payment on the website at this stage. After your request is reviewed and arrangements are confirmed, our team will send the payment instructions."],
-["Are the prices per person?","Yes. The published prices are per person. Your total estimate depends on the number of guests and the experiences selected."],
-["Is transport from Moshi included?","Transport from Moshi is not included in the published experience prices unless we have specifically agreed it with you. Add your hotel or preferred pickup point to the booking form so we can discuss the options before your visit."],
-["Can I combine more than one experience?","Yes. Use the itinerary builder to select several experiences and send your suggested plan to a local host. We will review the timing and confirm a practical sequence."],
-["Are meals included?","Meal inclusions vary by experience. Check the 'What's included' list on the experience you select. Please tell us about allergies, dietary preferences or food restrictions in your booking notes; we will discuss what can be accommodated before confirming."],
-["What should I tell you about accessibility or dietary needs?","Please add mobility, dietary, children’s or other special requirements to the booking notes. We will discuss what can be arranged before confirming."],
-["Can I change or cancel a booking?","Send us your booking reference as soon as possible by WhatsApp or email. We will review the booking status and explain the options available. Any change is subject to availability and confirmation by your host."]
+const bucket = "materuni-images";
+let accessToken = "";
+const el = id => document.getElementById(id);
+const headers = () => ({ apikey: publishableKey, Authorization: "Bearer " + accessToken, "Content-Type": "application/json" });
+
+async function api(path, options = {}) {
+  const r = await fetch(supabaseUrl + path, { ...options, headers: { ...headers(), ...(options.headers || {}) } });
+  const data = await r.json().catch(() => null);
+  if (!r.ok) throw new Error(data?.message || data?.details || "Request failed.");
+  return data;
+}
+
+// WebP optimizer
+async function makeOptimizedWebP(source, maxSide = 1400) {
+  const bitmap = await createImageBitmap(source);
+  const scale = Math.min(1, maxSide / Math.max(bitmap.width, bitmap.height));
+  const width = Math.max(1, Math.round(bitmap.width * scale));
+  const height = Math.max(1, Math.round(bitmap.height * scale));
+  const canvas = document.createElement("canvas");
+  canvas.width = width;
+  canvas.height = height;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) { bitmap.close?.(); throw new Error("Browser canvas unavailable."); }
+  ctx.drawImage(bitmap, 0, 0, width, height);
+  bitmap.close?.();
+  const blob = await new Promise(resolve => canvas.toBlob(resolve, "image/webp", 0.82));
+  if (!blob) throw new Error("Could not compress to WebP.");
+  return blob;
+}
+
+async function uploadImage(blob, folder = "about_images") {
+  const filename = `${folder}/${Date.now()}-${Math.random().toString(36).substring(2, 7)}.webp`;
+  const upload = await fetch(supabaseUrl + `/storage/v1/object/${bucket}/${filename}`, {
+    method: "POST",
+    headers: {
+      "apikey": publishableKey,
+      "Authorization": "Bearer " + accessToken,
+      "Content-Type": "image/webp",
+      "x-upsert": "false",
+      "Cache-Control": "31536000"
+    },
+    body: blob
+  });
+  const res = await upload.json().catch(() => null);
+  if (!upload.ok) throw new Error(res?.message || res?.error || "Image upload failed.");
+  return supabaseUrl + `/storage/v1/object/public/${bucket}/${filename}`;
+}
+
+// ================= ABOUT US CONTENT LOGIC =================
+const aboutDefaults = {
+  heroEyebrow: "ABOUT MATERUNI HOSTS · MATERUNI VILLAGE",
+  heroTitle: "Experience Materuni through the people who call it home.",
+  heroP1: "Materuni Hosts was founded by Saidi Materu with a simple purpose: to welcome visitors to discover the natural beauty, culture and everyday life of Materuni Village in a thoughtful and personal way.",
+  heroP2: "Based in the foothills of Mount Kilimanjaro, near Moshi, we bring guests closer to the place through local experiences, genuine hospitality and time spent exploring with people who know the area.",
+  heroImage: `${supabaseUrl}/storage/v1/object/public/materuni-images/story_image/1791995912146-materuni-community.jpg`,
+  founderEyebrow: "A NOTE ABOUT OUR FOUNDER",
+  founderTitle: "Founded by Saidi Materu.",
+  founderP1: "Materuni Hosts was established by Saidi Materu to help visitors experience more than a destination. The idea is to create opportunities for guests to connect with Materuni: its landscapes, its people, its food and the traditions that shape local life.",
+  founderP2: "That local perspective guides how we welcome guests and shape our experiences. We want visitors to feel comfortable asking questions, learning at their own pace and understanding the place with respect. Every visit should feel personal, well explained and thoughtfully arranged.",
+  founderP3: "Our story is closely connected to Materuni itself. Rather than offering only one kind of tour, we invite guests to choose from a range of experiences that reveal different sides of the village and the wider Kilimanjaro area.",
+  founderPurpose: "To share the beauty and culture of Materuni through welcoming, meaningful experiences led with local knowledge and respect.",
+  team: [
+    {
+      name: "Saidi Materu",
+      role: "Founder & Lead Mountain Host",
+      bio: "Lifelong Materuni resident with 12+ years sharing Chagga history, waterfall trekking, and coffee culture.",
+      image: `${supabaseUrl}/storage/v1/object/public/materuni-images/story_image/1791995912146-materuni-community.jpg`
+    },
+    {
+      name: "Elia",
+      role: "Chagga Coffee Specialist",
+      bio: "Guiding the artisanal roasting ceremony over woodfire with ancestral songs and pestle grinding.",
+      image: `${supabaseUrl}/storage/v1/object/public/materuni-images/coffee_image/1791998412318-materuni-tour.jpg`
+    },
+    {
+      name: "Amani",
+      role: "Forest & Trail Guide",
+      bio: "Expert on native Kilimanjaro plants, birdlife, waterfall safety, and the scenic foothills paths.",
+      image: `${supabaseUrl}/storage/v1/object/public/materuni-images/story_image/1791601761441-q3iog8mni3r.jpg`
+    }
+  ],
+  val1Title: "Local connection",
+  val1Desc: "We place local hosts, knowledge and perspectives at the heart of the guest experience.",
+  val2Title: "Respect for culture",
+  val2Desc: "We share Chagga traditions and everyday village life with care, openness and respect.",
+  val3Title: "Care for nature",
+  val3Desc: "We encourage visitors to appreciate the landscapes and natural environment of Materuni responsibly.",
+  val4Title: "Clear communication",
+  val4Desc: "We aim to explain each experience, its inclusions and arrangements clearly before guests book.",
+  communityNote: "Authentic local Chagga hosts born and raised in Materuni Village · Moshi, Kilimanjaro, Tanzania"
+};
+
+let aboutData = JSON.parse(JSON.stringify(aboutDefaults));
+
+function renderTeamMembers() {
+  const container = el("team-members-container");
+  container.replaceChildren();
+
+  aboutData.team.forEach((member, idx) => {
+    const card = document.createElement("div");
+    card.className = "notice";
+    card.style.marginTop = "10px";
+    card.style.padding = "16px";
+    card.style.background = "#fff";
+    card.style.border = "1px solid #e6dfd3";
+    card.style.borderRadius = "12px";
+
+    const top = document.createElement("div");
+    top.style.display = "flex";
+    top.style.justifyContent = "space-between";
+    top.style.alignItems = "center";
+    top.style.marginBottom = "10px";
+
+    const title = document.createElement("strong");
+    title.textContent = `Host #${idx + 1}: ${member.name || "Guide"}`;
+
+    const removeBtn = document.createElement("button");
+    removeBtn.type = "button";
+    removeBtn.className = "button button-secondary";
+    removeBtn.textContent = "Remove";
+    removeBtn.style.padding = "4px 10px";
+    removeBtn.style.fontSize = "12px";
+    removeBtn.addEventListener("click", () => {
+      aboutData.team.splice(idx, 1);
+      renderTeamMembers();
+    });
+
+    top.append(title, removeBtn);
+
+    const grid = document.createElement("div");
+    grid.className = "form-grid";
+
+    // Name
+    const nameWrap = document.createElement("div");
+    nameWrap.className = "field";
+    nameWrap.innerHTML = `<label>Host Full Name *</label><input type="text" value="${member.name}" required />`;
+    const nameIn = nameWrap.querySelector("input");
+    nameIn.addEventListener("input", () => { member.name = nameIn.value; title.textContent = `Host #${idx + 1}: ${member.name}`; });
+
+    // Role
+    const roleWrap = document.createElement("div");
+    roleWrap.className = "field";
+    roleWrap.innerHTML = `<label>Role / Specialization *</label><input type="text" value="${member.role}" required />`;
+    const roleIn = roleWrap.querySelector("input");
+    roleIn.addEventListener("input", () => { member.role = roleIn.value; });
+
+    // Bio
+    const bioWrap = document.createElement("div");
+    bioWrap.className = "field full";
+    bioWrap.innerHTML = `<label>Bio / Background *</label><textarea rows="2" required>${member.bio}</textarea>`;
+    const bioIn = bioWrap.querySelector("textarea");
+    bioIn.addEventListener("input", () => { member.bio = bioIn.value; });
+
+    // Image
+    const imgWrap = document.createElement("div");
+    imgWrap.className = "field full";
+    imgWrap.innerHTML = `
+      <label>Portrait Photo URL</label>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+        <input type="url" value="${member.image}" placeholder="https://..." style="flex:1;min-width:200px" />
+        <button type="button" class="button button-secondary member-upload-btn" style="padding:6px 12px;font-size:12px">Upload Photo</button>
+      </div>
+      <p class="muted member-upload-status" style="font-size:11px;margin:3px 0 0"></p>
+    `;
+    const imgIn = imgWrap.querySelector("input");
+    imgIn.addEventListener("input", () => { member.image = imgIn.value; });
+
+    const fileIn = document.createElement("input");
+    fileIn.type = "file";
+    fileIn.accept = "image/jpeg,image/png,image/webp";
+    fileIn.style.display = "none";
+    imgWrap.append(fileIn);
+
+    const uploadBtn = imgWrap.querySelector(".member-upload-btn");
+    const statusP = imgWrap.querySelector(".member-upload-status");
+    uploadBtn.addEventListener("click", () => fileIn.click());
+    fileIn.addEventListener("change", async (e) => {
+      const f = e.target.files?.[0];
+      if (!f) return;
+      statusP.textContent = "Uploading…";
+      try {
+        const opt = await makeOptimizedWebP(f, 600);
+        const url = await uploadImage(opt, "host_photos");
+        imgIn.value = url;
+        member.image = url;
+        statusP.textContent = "✓ Photo uploaded!";
+      } catch (err) {
+        statusP.textContent = "Error: " + err.message;
+      }
+    });
+
+    grid.append(nameWrap, roleWrap, bioWrap, imgWrap);
+    card.append(top, grid);
+    container.append(card);
+  });
+}
+
+el("add-team-member")?.addEventListener("click", () => {
+  aboutData.team.push({
+    name: "New Local Guide",
+    role: "Mountain & Cultural Guide",
+    bio: "Passionate Materuni local sharing village traditions and Kilimanjaro hiking trails.",
+    image: `${supabaseUrl}/storage/v1/object/public/materuni-images/story_image/1791995912146-materuni-community.jpg`
+  });
+  renderTeamMembers();
+});
+
+// Hero photo uploader
+el("about-hero-upload-btn")?.addEventListener("click", () => el("about-hero-file")?.click());
+el("about-hero-file")?.addEventListener("change", async (e) => {
+  const f = e.target.files?.[0];
+  if (!f) return;
+  const status = el("about-hero-status");
+  status.textContent = "Compressing and uploading hero photo…";
+  try {
+    const opt = await makeOptimizedWebP(f, 1600);
+    const url = await uploadImage(opt, "about_hero");
+    el("about-hero-image").value = url;
+    status.textContent = "✓ Hero image uploaded successfully!";
+  } catch (err) {
+    status.textContent = "Upload failed: " + err.message;
+  }
+});
+
+async function loadAboutUs() {
+  try {
+    const rows = await api("/rest/v1/site_settings?select=setting_key,setting_value&setting_key=eq.about_us_content");
+    if (rows?.[0]?.setting_value) {
+      const parsed = typeof rows[0].setting_value === "string" ? JSON.parse(rows[0].setting_value) : rows[0].setting_value;
+      if (parsed && typeof parsed === "object") {
+        aboutData = { ...aboutDefaults, ...parsed, team: parsed.team || aboutDefaults.team };
+      }
+    }
+  } catch (e) {
+    console.warn("Could not load about_us_content:", e);
+  }
+
+  // Populate inputs
+  el("about-hero-eyebrow").value = aboutData.heroEyebrow;
+  el("about-hero-title").value = aboutData.heroTitle;
+  el("about-hero-p1").value = aboutData.heroP1;
+  el("about-hero-p2").value = aboutData.heroP2;
+  el("about-hero-image").value = aboutData.heroImage;
+
+  el("about-founder-eyebrow").value = aboutData.founderEyebrow;
+  el("about-founder-title").value = aboutData.founderTitle;
+  el("about-founder-p1").value = aboutData.founderP1;
+  el("about-founder-p2").value = aboutData.founderP2;
+  el("about-founder-p3").value = aboutData.founderP3;
+  el("about-founder-purpose").value = aboutData.founderPurpose;
+
+  el("about-val-1-title").value = aboutData.val1Title;
+  el("about-val-1-desc").value = aboutData.val1Desc;
+  el("about-val-2-title").value = aboutData.val2Title;
+  el("about-val-2-desc").value = aboutData.val2Desc;
+  el("about-val-3-title").value = aboutData.val3Title;
+  el("about-val-3-desc").value = aboutData.val3Desc;
+  el("about-val-4-title").value = aboutData.val4Title;
+  el("about-val-4-desc").value = aboutData.val4Desc;
+
+  el("about-community-note").value = aboutData.communityNote;
+
+  renderTeamMembers();
+}
+
+el("about-form")?.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const btn = el("save-about");
+  const feedback = el("about-feedback");
+  btn.disabled = true;
+  feedback.textContent = "Publishing About Us content…";
+
+  try {
+    const payload = {
+      heroEyebrow: el("about-hero-eyebrow").value.trim(),
+      heroTitle: el("about-hero-title").value.trim(),
+      heroP1: el("about-hero-p1").value.trim(),
+      heroP2: el("about-hero-p2").value.trim(),
+      heroImage: el("about-hero-image").value.trim() || aboutDefaults.heroImage,
+      founderEyebrow: el("about-founder-eyebrow").value.trim(),
+      founderTitle: el("about-founder-title").value.trim(),
+      founderP1: el("about-founder-p1").value.trim(),
+      founderP2: el("about-founder-p2").value.trim(),
+      founderP3: el("about-founder-p3").value.trim(),
+      founderPurpose: el("about-founder-purpose").value.trim(),
+      team: aboutData.team,
+      val1Title: el("about-val-1-title").value.trim(),
+      val1Desc: el("about-val-1-desc").value.trim(),
+      val2Title: el("about-val-2-title").value.trim(),
+      val2Desc: el("about-val-2-desc").value.trim(),
+      val3Title: el("about-val-3-title").value.trim(),
+      val3Desc: el("about-val-3-desc").value.trim(),
+      val4Title: el("about-val-4-title").value.trim(),
+      val4Desc: el("about-val-4-desc").value.trim(),
+      communityNote: el("about-community-note").value.trim()
+    };
+
+    // Ensure founder name is retained
+    if (!payload.founderTitle.includes("Saidi Materu")) {
+      payload.founderTitle = "Founded by Saidi Materu.";
+    }
+
+    await api("/rest/v1/site_settings?on_conflict=setting_key", {
+      method: "POST",
+      headers: { "Prefer": "resolution=merge-duplicates,return=minimal" },
+      body: JSON.stringify({
+        setting_key: "about_us_content",
+        setting_value: JSON.stringify(payload),
+        updated_at: new Date().toISOString()
+      })
+    });
+
+    feedback.textContent = "✓ About Us page content published successfully! The public page now displays these updates.";
+  } catch (err) {
+    feedback.textContent = "Error saving: " + err.message;
+  } finally {
+    btn.disabled = false;
+  }
+});
+
+// ================= FAQs LOGIC =================
+const defaults = [
+  ["Where is Materuni Village?", "Materuni Village is in the Kilimanjaro region of northern Tanzania, near Moshi, on the forested slopes of Mount Kilimanjaro. It is a village visit rather than a town-centre attraction, so agree your transport and pickup point before travelling."],
+  ["Which experiences can I book?", "Our five featured experiences are Materuni Waterfall & Chagga Culture ($75), Traditional Coffee Experience ($65), Traditional Chagga Cooking Class ($85), Materuni Camping ($110) and Ultimate ($135), all priced per person."],
+  ["How do I make a booking?", "Open the availability page, choose your experience, preferred date and one of the time slots shown for your group size. Enter your contact details and send the request. The selected spaces are held in the availability calendar while the request is pending. We will review it and contact you to confirm the arrangements; it is not a confirmed reservation until you receive confirmation."],
+  ["When do I pay?", "There is no live card payment on the website at this stage. After your request is reviewed and arrangements are confirmed, our team will send the payment instructions."],
+  ["Are the prices per person?", "Yes. The published prices are per person. Your total estimate depends on the number of guests and the experiences selected."],
+  ["Is transport from Moshi included?", "Transport from Moshi is not included in the published experience prices unless we have specifically agreed it with you. Add your hotel or preferred pickup point to the booking form so we can discuss the options before your visit."],
+  ["Can I combine more than one experience?", "Yes. Use the itinerary builder to select several experiences and send your suggested plan to a local host. We will review the timing and confirm a practical sequence."],
+  ["Are meals included?", "Meal inclusions vary by experience. Check the 'What's included' list on the experience you select. Please tell us about allergies, dietary preferences or food restrictions in your booking notes; we will discuss what can be accommodated before confirming."],
+  ["What should I tell you about accessibility or dietary needs?", "Please add mobility, dietary, children’s or other special requirements to the booking notes. We will discuss what can be arranged before confirming."],
+  ["Can I change or cancel a booking?", "Send us your booking reference as soon as possible by WhatsApp or email. We will review the booking status and explain the options available. Any change is subject to availability and confirmation by your host."]
 ];
-const headers=()=>({apikey:publishableKey,Authorization:"Bearer "+accessToken,"Content-Type":"application/json"});
-async function api(path,options={}){const r=await fetch(supabaseUrl+path,{...options,headers:{...headers(),...(options.headers||{})}});const data=await r.json().catch(()=>null);if(!r.ok)throw new Error(data?.message||data?.details||"Request failed.");return data}
-let faqItems=defaults.map(([question,answer])=>({question,answer}));
-function renderFaq(){
- const root=el("faq-editor");root.replaceChildren();
- faqItems.forEach((item,index)=>{
-  const card=document.createElement("section");card.className="notice";card.style.marginTop="0.7rem";
-  const heading=document.createElement("strong");heading.textContent="Question "+(index+1);
-  const qWrap=document.createElement("div");qWrap.className="field full";qWrap.style.marginTop=".7rem";
-  const qLabel=document.createElement("label");qLabel.textContent="Question";const q=document.createElement("input");q.maxLength=180;q.required=true;q.value=item.question;q.setAttribute("aria-label","FAQ question "+(index+1));q.addEventListener("input",()=>item.question=q.value);qWrap.append(qLabel,q);
-  const aWrap=document.createElement("div");aWrap.className="field full";aWrap.style.marginTop=".7rem";
-  const aLabel=document.createElement("label");aLabel.textContent="Answer";const a=document.createElement("textarea");a.rows=4;a.maxLength=1200;a.required=true;a.value=item.answer;a.setAttribute("aria-label","FAQ answer "+(index+1));a.addEventListener("input",()=>item.answer=a.value);aWrap.append(aLabel,a);
-  const remove=document.createElement("button");remove.type="button";remove.className="button button-secondary";remove.textContent="Remove question";remove.style.marginTop=".7rem";remove.addEventListener("click",()=>{faqItems.splice(index,1);renderFaq()});
-  card.append(heading,qWrap,aWrap,remove);root.append(card);
- });
+
+let faqItems = defaults.map(([question, answer]) => ({ question, answer }));
+
+function renderFaq() {
+  const root = el("faq-editor");
+  root.replaceChildren();
+  faqItems.forEach((item, index) => {
+    const card = document.createElement("section");
+    card.className = "notice";
+    card.style.marginTop = "0.7rem";
+    const heading = document.createElement("strong");
+    heading.textContent = "Question " + (index + 1);
+    const qWrap = document.createElement("div");
+    qWrap.className = "field full";
+    qWrap.style.marginTop = ".7rem";
+    const qLabel = document.createElement("label");
+    qLabel.textContent = "Question";
+    const q = document.createElement("input");
+    q.maxLength = 180;
+    q.required = true;
+    q.value = item.question;
+    q.addEventListener("input", () => item.question = q.value);
+    qWrap.append(qLabel, q);
+
+    const aWrap = document.createElement("div");
+    aWrap.className = "field full";
+    aWrap.style.marginTop = ".7rem";
+    const aLabel = document.createElement("label");
+    aLabel.textContent = "Answer";
+    const a = document.createElement("textarea");
+    a.rows = 4;
+    a.maxLength = 1200;
+    a.required = true;
+    a.value = item.answer;
+    a.addEventListener("input", () => item.answer = a.value);
+    aWrap.append(aLabel, a);
+
+    const remove = document.createElement("button");
+    remove.type = "button";
+    remove.className = "button button-secondary";
+    remove.textContent = "Remove question";
+    remove.style.marginTop = ".7rem";
+    remove.addEventListener("click", () => { faqItems.splice(index, 1); renderFaq(); });
+
+    card.append(heading, qWrap, aWrap, remove);
+    root.append(card);
+  });
 }
 
-const approachDefaults={"title":"Good travel begins with respect for place.","intro":"A visit to Materuni should feel personal, respectful and grounded in the place itself. Our approach is to create space for guests to learn from local hosts, take part in everyday traditions and enjoy the landscape without treating the village as a backdrop.","sectionTitle":"Local culture is not a performance. It is a living way of life.","sectionIntro":"Rather than rushing from one photo stop to the next, we invite guests to slow down: learn how coffee is prepared, share food, ask questions and hear about the customs and stories that give Materuni its character. Each visit is an opportunity for exchange, with respect for the people and places involved.","ctaTitle":"Come as a guest. Leave as a friend.","ctaText":"Discover Materuni at a thoughtful pace, with a warm welcome from local hosts."};
-const approachFields={title:"approach-title",intro:"approach-intro",sectionTitle:"approach-section-title",sectionIntro:"approach-section-intro",ctaTitle:"approach-cta-title",ctaText:"approach-cta-text"};
-
-const homeCopyFields={hero_title:"home-hero-title",hero_intro:"home-hero-intro",experiences_title:"home-experiences-title",experiences_intro:"home-experiences-intro",story_title:"home-story-title",story_desc:"home-story-desc",story_desc2:"home-story-desc2"};
-async function loadHomeCopy(){
- const ids=Object.keys(homeCopyFields);
- const rows=await api("/rest/v1/site_content?select=id,content&id=in.("+ids.map(encodeURIComponent).join(",")+")");
- for(const row of rows){const id=homeCopyFields[row.id];if(id)el(id).value=row.content||""}
+async function loadFaq() {
+  const rows = await api("/rest/v1/site_settings?select=setting_key,setting_value&setting_key=eq.faq_items");
+  if (rows?.[0]?.setting_value) {
+    try {
+      const parsed = typeof rows[0].setting_value === "string" ? JSON.parse(rows[0].setting_value) : rows[0].setting_value;
+      if (Array.isArray(parsed) && parsed.length <= 30 && parsed.every(x => typeof x.question === "string" && typeof x.answer === "string")) faqItems = parsed;
+    } catch {
+      el("content-feedback").textContent = "Saved FAQ content could not be read. Showing the built-in FAQ copy instead.";
+    }
+  }
+  renderFaq();
 }
-el("home-copy-form").addEventListener("submit",async event=>{
- event.preventDefault();const button=el("save-home-copy");button.disabled=true;el("home-copy-feedback").textContent="Publishing homepage text…";
- try{
-  const rows=Object.entries(homeCopyFields).map(([key,id])=>({id:key,content:el(id).value.trim(),updated_at:new Date().toISOString()}));
-  if(rows.some(row=>!row.content))throw new Error("Please complete all homepage text fields.");
-  await api("/rest/v1/site_content?on_conflict=id",{method:"POST",headers:{"Content-Type":"application/json","Prefer":"resolution=merge-duplicates,return=minimal"},body:JSON.stringify(rows)});
-  el("home-copy-feedback").textContent="Homepage copy published successfully.";
- }catch(error){el("home-copy-feedback").textContent=error.message}finally{button.disabled=false}
+
+el("add-faq")?.addEventListener("click", () => {
+  if (faqItems.length >= 30) {
+    el("content-feedback").textContent = "A maximum of 30 FAQ entries is allowed.";
+    return;
+  }
+  faqItems.push({ question: "", answer: "" });
+  renderFaq();
 });
 
-const translationKeys={
- hero_title:{label:"Hero headline",type:"input",max:120},
- hero_intro:{label:"Hero introduction",type:"textarea",max:500},
- experiences_title:{label:"Experiences heading",type:"input",max:120},
- experiences_intro:{label:"Experiences introduction",type:"textarea",max:500},
- experiences_page_title:{label:"Experiences page headline",type:"input",max:140},
- experiences_page_intro:{label:"Experiences page introduction",type:"textarea",max:500},
- exp_eyebrow:{label:"Experiences: eyebrow",type:"input",max:120},
- exp_experience_label:{label:"Experiences: experience label",type:"input",max:80},
- exp_included_label:{label:"Experiences: what is included",type:"input",max:80},
- exp_excluded_label:{label:"Experiences: what is not included",type:"input",max:80},
- exp_check_availability:{label:"Experiences: availability button",type:"input",max:100},
- exp_notice:{label:"Experiences: pricing and booking notice",type:"textarea",max:900},
- faq_eyebrow:{label:"FAQ: top eyebrow",type:"input",max:100},faq_section_eyebrow:{label:"FAQ: section eyebrow",type:"input",max:100},faq_section_title:{label:"FAQ: section title",type:"input",max:140},faq_section_intro:{label:"FAQ: section introduction",type:"textarea",max:500},faq_whatsapp:{label:"FAQ: WhatsApp button",type:"input",max:100},faq_cta_title:{label:"FAQ: closing title",type:"input",max:140},faq_cta_intro:{label:"FAQ: closing introduction",type:"textarea",max:500},faq_build_itinerary:{label:"FAQ: itinerary button",type:"input",max:100},faq_check_availability:{label:"FAQ: availability button",type:"input",max:100},faq_items_json:{label:"FAQ: translated questions and answers (JSON array)",type:"textarea",max:15000},
- booking_email_label:{label:"Booking: email field",type:"input",max:100},booking_phone_label:{label:"Booking: phone field",type:"input",max:100},booking_contact_hint:{label:"Booking: contact hint",type:"input",max:180},booking_nationality_label:{label:"Booking: nationality",type:"input",max:100},booking_country_label:{label:"Booking: country of residence",type:"input",max:100},booking_language_label:{label:"Booking: preferred language",type:"input",max:100},booking_contact_label:{label:"Booking: preferred contact",type:"input",max:100},booking_pickup_label:{label:"Booking: pickup point",type:"input",max:100},booking_notes_label:{label:"Booking: special requests",type:"input",max:180},booking_notice:{label:"Booking: booking conditions",type:"textarea",max:700},booking_refresh:{label:"Booking: refresh availability",type:"input",max:100},booking_pickup_placeholder:{label:"Booking: pickup placeholder",type:"input",max:140},booking_notes_placeholder:{label:"Booking: notes placeholder",type:"input",max:200},
- itinerary_select_experiences:{label:"Itinerary: select experiences",type:"input",max:140},itinerary_notes_label:{label:"Itinerary: notes label",type:"input",max:120},itinerary_name_placeholder:{label:"Itinerary: name placeholder",type:"input",max:100},itinerary_notes_placeholder:{label:"Itinerary: notes placeholder",type:"input",max:200},
- booking_page_title:{label:"Booking page headline",type:"input",max:140},
- booking_page_intro:{label:"Booking page introduction",type:"textarea",max:500},
- itinerary_page_title:{label:"Itinerary page headline",type:"input",max:140},
- itinerary_page_intro:{label:"Itinerary page introduction",type:"textarea",max:500},
- faq_page_title:{label:"FAQ page headline",type:"input",max:140},
- faq_page_intro:{label:"FAQ page introduction",type:"textarea",max:500},
- booking_experience_label:{label:"Booking: experience field",type:"input",max:100},
- booking_date_label:{label:"Booking: preferred date",type:"input",max:100},
- booking_slot_label:{label:"Booking: available time",type:"input",max:100},
- booking_guests_label:{label:"Booking: number of guests",type:"input",max:100},
- booking_name_label:{label:"Booking: full name",type:"input",max:100},
- booking_submit_label:{label:"Booking: submit button",type:"input",max:100},
- itinerary_name_label:{label:"Itinerary: name field",type:"input",max:100},
- itinerary_date_label:{label:"Itinerary: start date",type:"input",max:100},
- itinerary_guests_label:{label:"Itinerary: number of guests",type:"input",max:100},
- itinerary_pace_label:{label:"Itinerary: travel pace",type:"input",max:100},
- itinerary_interest_label:{label:"Itinerary: main interest",type:"input",max:100},
- itinerary_submit_label:{label:"Itinerary: create plan button",type:"input",max:100},
- story_title:{label:"Story heading",type:"input",max:120},
- story_desc:{label:"Story paragraph",type:"textarea",max:900},
- story_desc2:{label:"Story second paragraph",type:"textarea",max:500}
+el("save-faq")?.addEventListener("click", async () => {
+  const button = el("save-faq");
+  button.disabled = true;
+  el("content-feedback").textContent = "Publishing FAQ content…";
+  try {
+    faqItems = faqItems.map(x => ({ question: x.question.trim(), answer: x.answer.trim() }));
+    if (!faqItems.length || faqItems.some(x => !x.question || !x.answer)) throw new Error("Every FAQ entry needs both a question and an answer.");
+    if (faqItems.some(x => x.question.length > 180 || x.answer.length > 1200)) throw new Error("A question or answer is longer than the allowed limit.");
+    await api("/rest/v1/site_settings?on_conflict=setting_key", {
+      method: "POST",
+      headers: { "Prefer": "resolution=merge-duplicates,return=minimal" },
+      body: JSON.stringify({ setting_key: "faq_items", setting_value: JSON.stringify(faqItems), updated_at: new Date().toISOString() })
+    });
+    el("content-feedback").textContent = "✓ Published successfully. The public FAQ page will use the updated content.";
+  } catch (error) {
+    el("content-feedback").textContent = error.message;
+  } finally {
+    button.disabled = false;
+  }
+});
+
+// ================= HOMEPAGE COPY LOGIC =================
+const homeCopyFields = { hero_title: "home-hero-title", hero_intro: "home-hero-intro", experiences_title: "home-experiences-title", experiences_intro: "home-experiences-intro", story_title: "home-story-title", story_desc: "home-story-desc", story_desc2: "home-story-desc2" };
+async function loadHomeCopy() {
+  const ids = Object.keys(homeCopyFields);
+  const rows = await api("/rest/v1/site_content?select=id,content&id=in.(" + ids.map(encodeURIComponent).join(",") + ")");
+  for (const row of rows) {
+    const id = homeCopyFields[row.id];
+    if (id && el(id)) el(id).value = row.content || "";
+  }
+}
+el("home-copy-form")?.addEventListener("submit", async event => {
+  event.preventDefault();
+  const button = el("save-home-copy");
+  button.disabled = true;
+  el("home-copy-feedback").textContent = "Publishing homepage text…";
+  try {
+    const rows = Object.entries(homeCopyFields).map(([key, id]) => ({ id: key, content: el(id).value.trim(), updated_at: new Date().toISOString() }));
+    if (rows.some(row => !row.content)) throw new Error("Please complete all homepage text fields.");
+    await api("/rest/v1/site_content?on_conflict=id", { method: "POST", headers: { "Content-Type": "application/json", "Prefer": "resolution=merge-duplicates,return=minimal" }, body: JSON.stringify(rows) });
+    el("home-copy-feedback").textContent = "✓ Homepage copy published successfully.";
+  } catch (error) {
+    el("home-copy-feedback").textContent = error.message;
+  } finally {
+    button.disabled = false;
+  }
+});
+
+// ================= MULTILINGUAL LOGIC =================
+const translationKeys = {
+  hero_title: { label: "Hero headline", type: "input", max: 120 },
+  hero_intro: { label: "Hero introduction", type: "textarea", max: 500 },
+  experiences_title: { label: "Experiences heading", type: "input", max: 120 },
+  experiences_intro: { label: "Experiences introduction", type: "textarea", max: 500 },
+  experiences_page_title: { label: "Experiences page headline", type: "input", max: 140 },
+  experiences_page_intro: { label: "Experiences page introduction", type: "textarea", max: 500 }
 };
-const defaultTranslations={
- es:{
-  hero_title:"Acércate al corazón de la cultura chagga.",hero_intro:"Descubre la cascada, el café y la vida del pueblo con anfitriones locales en Materuni.",
-  experiences_title:"Seis maneras de descubrir el pueblo",experiences_intro:"Elige experiencias auténticas, guiadas por anfitriones locales.",
-  experiences_page_title:"Elige tu propia experiencia en Materuni.",experiences_page_intro:"Precios claros por persona, inclusiones detalladas y experiencias auténticas en Materuni.",
-  exp_eyebrow:"SEIS FORMAS ESPECIALES DE DESCUBRIR MATERUNI",exp_experience_label:"LA EXPERIENCIA",exp_included_label:"QUÉ INCLUYE",exp_excluded_label:"QUÉ NO INCLUYE",exp_check_availability:"Consultar disponibilidad",exp_notice:"Todos los precios son por persona. Las inclusiones indican lo que cubre cada paquete. El transporte desde Moshi no está incluido salvo acuerdo previo. Comparte tu punto de recogida, tamaño del grupo y necesidades alimentarias o de accesibilidad para hablar de los preparativos. Una solicitud no es una reserva confirmada; tu anfitrión confirmará los detalles.",
-  booking_page_title:"Consulta la disponibilidad antes de reservar.",booking_page_intro:"Elige tu experiencia y fecha preferida. Consulta los horarios disponibles en nuestro calendario.",
-  itinerary_page_title:"Crea un itinerario de Materuni a tu medida.",itinerary_page_intro:"Elige las experiencias que te interesan y prepararemos una propuesta práctica para tu visita.",
-  faq_page_title:"Planifica tu visita con confianza.",faq_page_intro:"Respuestas prácticas sobre Materuni, precios, disponibilidad, transporte y solicitudes de reserva.",
-  faq_items_json:"[{\"question\":\"¿Dónde está Materuni Village?\",\"answer\":\"Materuni está en la región de Kilimanjaro, al norte de Tanzania, cerca de Moshi, en las laderas boscosas del monte Kilimanjaro. Antes de viajar, acuerda el transporte y el punto de recogida.\"},{\"question\":\"¿Qué experiencias puedo reservar?\",\"answer\":\"Ofrecemos cinco experiencias: Materuni Waterfall & Chagga Culture ($75), Traditional Coffee Experience ($65), Traditional Chagga Cooking Class ($85), Materuni Camping ($110) y Ultimate ($135), por persona.\"},{\"question\":\"¿Cómo puedo reservar?\",\"answer\":\"Abre la página de disponibilidad, elige una experiencia, la fecha y un horario disponible para el tamaño de tu grupo. Envía tus datos de contacto. Revisaremos la solicitud y nos pondremos en contacto contigo. Las plazas seleccionadas se reservan temporalmente en el calendario mientras la solicitud está pendiente. La reserva no queda confirmada hasta que recibas la confirmación del anfitrión.\"},{\"question\":\"¿Cuándo pago?\",\"answer\":\"Actualmente no aceptamos pagos con tarjeta en la web. Después de revisar tu solicitud y confirmar los preparativos, nuestro equipo te enviará las instrucciones de pago.\"},{\"question\":\"¿Los precios son por persona?\",\"answer\":\"Sí. Los precios publicados son por persona. El total estimado depende del número de visitantes y de las experiencias seleccionadas.\"},{\"question\":\"¿Está incluido el transporte desde Moshi?\",\"answer\":\"El transporte desde Moshi no está incluido salvo que lo acordemos expresamente. Indica tu hotel o punto de recogida preferido en el formulario para hablar de las opciones.\"},{\"question\":\"¿Puedo combinar varias experiencias?\",\"answer\":\"Sí. Utiliza el creador de itinerarios para elegir varias experiencias y enviar tu propuesta a un anfitrión local. Revisaremos los horarios y sugeriremos un orden práctico.\"},{\"question\":\"¿Se incluyen las comidas?\",\"answer\":\"Las comidas dependen de cada experiencia. Consulta la lista «Qué incluye». Indica alergias, preferencias alimentarias o restricciones en las notas; hablaremos contigo sobre las opciones antes de confirmar.\"},{\"question\":\"¿Qué debo indicar sobre accesibilidad o necesidades alimentarias?\",\"answer\":\"Añade en las notas cualquier necesidad de movilidad, alimentación, niños u otros requisitos especiales. Hablaremos contigo sobre lo que se puede organizar antes de confirmar.\"},{\"question\":\"¿Puedo cambiar o cancelar una reserva?\",\"answer\":\"Envíanos tu referencia de reserva por WhatsApp o correo electrónico lo antes posible. Revisaremos el estado y te explicaremos las opciones. Cualquier cambio depende de la disponibilidad y de la confirmación del anfitrión.\"}]",
-  booking_experience_label:"Elige tu experiencia *",booking_date_label:"Fecha preferida *",booking_slot_label:"Hora disponible *",booking_guests_label:"Número de visitantes *",booking_name_label:"Nombre completo *",booking_submit_label:"Enviar solicitud de reserva",
-  itinerary_name_label:"Tu nombre",itinerary_date_label:"Fecha de inicio preferida",itinerary_guests_label:"Número de visitantes",itinerary_pace_label:"Ritmo del viaje",itinerary_interest_label:"Interés principal",itinerary_submit_label:"Crear mi itinerario sugerido",
-faq_eyebrow:"INFORMACIÓN ANTES DE TU VISITA",faq_section_eyebrow:"PLANIFICA CON CONFIANZA",faq_section_title:"Todo lo que necesitas saber.",faq_section_intro:"Si necesitas ayuda con algo que no aparece aquí, habla directamente con un anfitrión local.",faq_whatsapp:"Pregúntanos por WhatsApp",faq_cta_title:"¿Sigues planificando tu visita?",faq_cta_intro:"Cuéntanos qué te gustaría vivir y te ayudaremos a preparar un plan práctico.",faq_build_itinerary:"Crear itinerario",faq_check_availability:"Consultar disponibilidad",booking_email_label:"Correo electrónico",booking_phone_label:"WhatsApp / teléfono",booking_contact_hint:"Indica al menos un medio de contacto: correo o teléfono.",booking_nationality_label:"Nacionalidad",booking_country_label:"País de residencia",booking_language_label:"Idioma preferido",booking_contact_label:"Medio de contacto preferido",booking_pickup_label:"Punto de recogida / transporte",booking_notes_label:"Solicitudes especiales, alimentación o accesibilidad",booking_notice:"Al enviar este formulario, envías una solicitud de reserva, no un pago en línea. Nuestro equipo se pondrá en contacto contigo para confirmar los detalles y enviarte las instrucciones de pago. La reserva no estará confirmada hasta que recibas nuestra confirmación.",booking_refresh:"Actualizar horarios disponibles",booking_pickup_placeholder:"Hotel en Moshi, punto de encuentro…",booking_notes_placeholder:"Preferencias alimentarias, movilidad o solicitudes especiales…",itinerary_select_experiences:"Selecciona experiencias (puedes elegir varias)",itinerary_notes_label:"¿Qué deberíamos tener en cuenta?",itinerary_name_placeholder:"Nombre completo",itinerary_notes_placeholder:"Niños, alimentación, movilidad, recogida o intereses especiales…",
-  story_title:"Una experiencia de pueblo compartida por anfitriones locales.",story_desc:"Conoce Materuni a través de las personas, la cultura y los paisajes que hacen especial este lugar.",story_desc2:"Ven como invitado. Vete como amigo."
- },
- fr:{
-  hero_title:"Au cœur de la culture chagga.",hero_intro:"Découvrez la cascade, le café et la vie du village avec des hôtes locaux à Materuni.",
-  experiences_title:"Six façons de découvrir le village",experiences_intro:"Choisissez des expériences authentiques accompagnées par des hôtes locaux.",
-  experiences_page_title:"Choisissez votre expérience à Materuni.",experiences_page_intro:"Des prix clairs par personne, des inclusions détaillées et des expériences authentiques au village de Materuni.",
-  exp_eyebrow:"SIX FAÇONS DE DÉCOUVRIR MATERUNI",exp_experience_label:"L’EXPÉRIENCE",exp_included_label:"CE QUI EST INCLUS",exp_excluded_label:"CE QUI N’EST PAS INCLUS",exp_check_availability:"Voir les disponibilités",exp_notice:"Tous les prix sont par personne. Les inclusions précisent ce que couvre chaque formule. Le transport depuis Moshi n’est pas inclus sauf accord préalable. Indiquez votre lieu de prise en charge, la taille du groupe et vos besoins alimentaires ou d’accessibilité afin que nous puissions discuter des arrangements. Une demande ne constitue pas une réservation confirmée ; votre hôte confirmera les détails.",
-  booking_page_title:"Vérifiez les disponibilités avant de réserver.",booking_page_intro:"Choisissez votre expérience et la date souhaitée. Consultez les horaires disponibles dans notre calendrier.",
-  itinerary_page_title:"Créez un itinéraire à votre image à Materuni.",itinerary_page_intro:"Choisissez les expériences qui vous intéressent et nous préparerons une proposition pratique pour votre visite.",
-  faq_page_title:"Préparez votre visite en toute confiance.",faq_page_intro:"Des réponses pratiques sur Materuni, les prix, les disponibilités, le transport et les demandes de réservation.",
-  faq_items_json:"[{\"question\":\"Où se trouve le village de Materuni ?\",\"answer\":\"Materuni se trouve dans la région du Kilimandjaro, au nord de la Tanzanie, près de Moshi, sur les pentes boisées du mont Kilimandjaro. Convenez du transport et du lieu de prise en charge avant le départ.\"},{\"question\":\"Quelles expériences puis-je réserver ?\",\"answer\":\"Nous proposons cinq expériences : Materuni Waterfall & Chagga Culture (75 $), Traditional Coffee Experience (65 $), Traditional Chagga Cooking Class (85 $), Materuni Camping (110 $) et Ultimate (135 $), par personne.\"},{\"question\":\"Comment effectuer une réservation ?\",\"answer\":\"Consultez la page des disponibilités, choisissez une expérience, une date et un créneau adapté à votre groupe. Envoyez vos coordonnées. Nous examinerons votre demande et vous contacterons. Les places sélectionnées sont temporairement retenues dans le calendrier pendant le traitement de la demande. La réservation n'est confirmée qu'après réception de la confirmation de votre hôte.\"},{\"question\":\"Quand dois-je payer ?\",\"answer\":\"Le paiement par carte en ligne n'est pas encore disponible. Après examen de votre demande et confirmation des arrangements, notre équipe vous enverra les instructions de paiement.\"},{\"question\":\"Les prix sont-ils par personne ?\",\"answer\":\"Oui. Les prix affichés sont par personne. Le montant estimé dépend du nombre de visiteurs et des expériences choisies.\"},{\"question\":\"Le transport depuis Moshi est-il inclus ?\",\"answer\":\"Le transport depuis Moshi n'est pas inclus, sauf accord spécifique. Indiquez votre hôtel ou votre lieu de prise en charge dans le formulaire afin que nous puissions discuter des options.\"},{\"question\":\"Puis-je combiner plusieurs expériences ?\",\"answer\":\"Oui. Utilisez le créateur d'itinéraire pour sélectionner plusieurs expériences et envoyer votre proposition à un hôte local. Nous vérifierons les horaires et proposerons un ordre pratique.\"},{\"question\":\"Les repas sont-ils inclus ?\",\"answer\":\"Les repas varient selon l'expérience. Consultez la rubrique « Inclus ». Indiquez vos allergies, préférences ou restrictions alimentaires dans les notes ; nous discuterons des possibilités avant confirmation.\"},{\"question\":\"Que dois-je préciser concernant l'accessibilité ou l'alimentation ?\",\"answer\":\"Ajoutez dans les notes tout besoin lié à la mobilité, à l'alimentation, aux enfants ou toute autre demande particulière. Nous discuterons des possibilités avant confirmation.\"},{\"question\":\"Puis-je modifier ou annuler une réservation ?\",\"answer\":\"Envoyez-nous votre référence de réservation dès que possible par WhatsApp ou e-mail. Nous vérifierons son statut et vous expliquerons les options. Toute modification dépend des disponibilités et de la confirmation de votre hôte.\"}]",
-  booking_experience_label:"Choisissez votre expérience *",booking_date_label:"Date souhaitée *",booking_slot_label:"Horaire disponible *",booking_guests_label:"Nombre de visiteurs *",booking_name_label:"Nom complet *",booking_submit_label:"Envoyer la demande de réservation",
-  itinerary_name_label:"Votre nom",itinerary_date_label:"Date de début souhaitée",itinerary_guests_label:"Nombre de visiteurs",itinerary_pace_label:"Rythme du voyage",itinerary_interest_label:"Centre d’intérêt principal",itinerary_submit_label:"Créer mon itinéraire suggéré",
-faq_eyebrow:"À SAVOIR AVANT VOTRE VISITE",faq_section_eyebrow:"PLANIFIEZ EN TOUTE CONFIANCE",faq_section_title:"Tout ce qu’il faut savoir.",faq_section_intro:"Pour toute autre question, échangez directement avec un hôte local.",faq_whatsapp:"Écrivez-nous sur WhatsApp",faq_cta_title:"Vous préparez encore votre visite ?",faq_cta_intro:"Dites-nous ce que vous aimeriez découvrir et nous vous aiderons à organiser un programme pratique.",faq_build_itinerary:"Créer un itinéraire",faq_check_availability:"Voir les disponibilités",booking_email_label:"Adresse e-mail",booking_phone_label:"WhatsApp / téléphone",booking_contact_hint:"Indiquez au moins un moyen de contact : e-mail ou téléphone.",booking_nationality_label:"Nationalité",booking_country_label:"Pays de résidence",booking_language_label:"Langue préférée",booking_contact_label:"Moyen de contact préféré",booking_pickup_label:"Lieu de prise en charge / transport",booking_notes_label:"Demandes particulières, alimentation ou accessibilité",booking_notice:"L’envoi de ce formulaire constitue une demande de réservation, et non un paiement en ligne. Notre équipe vous contactera pour confirmer les arrangements et vous transmettre les instructions de paiement. Votre réservation ne sera confirmée qu’après réception de notre confirmation.",booking_refresh:"Actualiser les horaires disponibles",booking_pickup_placeholder:"Hôtel à Moshi, point de rencontre…",booking_notes_placeholder:"Enfants, régime alimentaire, mobilité ou demandes particulières…",itinerary_select_experiences:"Choisissez vos expériences (plusieurs choix possibles)",itinerary_notes_label:"Que devons-nous prendre en compte ?",itinerary_name_placeholder:"Nom complet",itinerary_notes_placeholder:"Enfants, alimentation, mobilité, lieu de prise en charge ou intérêts particuliers…",
-  story_title:"Une expérience villageoise partagée par des hôtes locaux.",story_desc:"Découvrez Materuni à travers les personnes, la culture et les paysages qui rendent ce lieu unique.",story_desc2:"Venez en invité. Repartez en ami."
- },
- de:{
-  hero_title:"Erleben Sie das Herz der Chagga-Kultur.",hero_intro:"Entdecken Sie Wasserfall, Kaffee und das Dorfleben mit lokalen Gastgebern in Materuni.",
-  experiences_title:"Sechs Wege, das Dorf zu erleben",experiences_intro:"Wählen Sie authentische Erlebnisse mit lokalen Gastgebern.",
-  experiences_page_title:"Wählen Sie Ihr persönliches Materuni-Erlebnis.",experiences_page_intro:"Klare Preise pro Person, transparente Inklusivleistungen und authentische Erlebnisse im Dorf Materuni.",
-  exp_eyebrow:"SECHS BESONDERE WEGE, MATERUNI ZU ENTDECKEN",exp_experience_label:"DAS ERLEBNIS",exp_included_label:"IM PREIS ENTHALTEN",exp_excluded_label:"NICHT ENTHALTEN",exp_check_availability:"Verfügbarkeit prüfen",exp_notice:"Alle Preise gelten pro Person. Die Inklusivleistungen zeigen, was im jeweiligen Paket enthalten ist. Der Transport ab Moshi ist nicht enthalten, sofern nichts anderes vereinbart wurde. Teilen Sie uns Ihren Abholort, die Gruppengröße sowie Ernährungs- oder Barrierefreiheitsbedürfnisse mit, damit wir die Organisation besprechen können. Eine Anfrage ist keine bestätigte Buchung; Ihr Gastgeber bestätigt die Einzelheiten.",
-  booking_page_title:"Prüfen Sie die Verfügbarkeit vor der Buchung.",booking_page_intro:"Wählen Sie Ihr Erlebnis und Ihren Wunschtermin. Verfügbare Zeiten finden Sie in unserem Kalender.",
-  itinerary_page_title:"Erstellen Sie Ihren persönlichen Materuni-Reiseplan.",itinerary_page_intro:"Wählen Sie Ihre gewünschten Erlebnisse. Wir erstellen einen praktischen Vorschlag für Ihren Besuch.",
-  faq_page_title:"Planen Sie Ihren Besuch mit einem guten Gefühl.",faq_page_intro:"Praktische Antworten zu Materuni, Preisen, Verfügbarkeit, Transport und Buchungsanfragen.",
-  faq_items_json:"[{\"question\":\"Wo liegt das Dorf Materuni?\",\"answer\":\"Materuni liegt in der Kilimandscharo-Region im Norden Tansanias, nahe Moshi, an den bewaldeten Hängen des Kilimandscharo. Bitte stimmen Sie Transport und Abholort vor der Anreise ab.\"},{\"question\":\"Welche Erlebnisse kann ich buchen?\",\"answer\":\"Wir bieten fünf Erlebnisse an: Materuni Waterfall & Chagga Culture (75 $), Traditional Coffee Experience (65 $), Traditional Chagga Cooking Class (85 $), Materuni Camping (110 $) und Ultimate (135 $), jeweils pro Person.\"},{\"question\":\"Wie kann ich buchen?\",\"answer\":\"Öffnen Sie die Verfügbarkeitsseite, wählen Sie ein Erlebnis, Ihr Wunschdatum und eine verfügbare Uhrzeit für Ihre Gruppengröße. Senden Sie Ihre Kontaktdaten. Wir prüfen die Anfrage und melden uns bei Ihnen. Die ausgewählten Plätze werden vorläufig im Verfügbarkeitskalender gehalten, solange die Anfrage bearbeitet wird. Die Buchung ist erst bestätigt, wenn Sie eine Bestätigung Ihres Gastgebers erhalten.\"},{\"question\":\"Wann bezahle ich?\",\"answer\":\"Eine Online-Kartenzahlung ist derzeit nicht verfügbar. Nachdem wir Ihre Anfrage geprüft und die Einzelheiten bestätigt haben, sendet Ihnen unser Team die Zahlungsinformationen.\"},{\"question\":\"Gelten die Preise pro Person?\",\"answer\":\"Ja. Die angegebenen Preise gelten pro Person. Der geschätzte Gesamtbetrag hängt von der Gästezahl und den ausgewählten Erlebnissen ab.\"},{\"question\":\"Ist der Transport ab Moshi inbegriffen?\",\"answer\":\"Der Transport ab Moshi ist nicht im Preis enthalten, sofern nichts anderes ausdrücklich vereinbart wurde. Geben Sie Ihr Hotel oder Ihren gewünschten Abholort im Buchungsformular an, damit wir die Möglichkeiten besprechen können.\"},{\"question\":\"Kann ich mehrere Erlebnisse kombinieren?\",\"answer\":\"Ja. Wählen Sie im Reiseplaner mehrere Erlebnisse aus und senden Sie Ihren Vorschlag an einen lokalen Gastgeber. Wir prüfen die Zeiten und schlagen eine sinnvolle Reihenfolge vor.\"},{\"question\":\"Sind Mahlzeiten inbegriffen?\",\"answer\":\"Die Mahlzeiten hängen vom jeweiligen Erlebnis ab. Prüfen Sie die Angaben unter „Inbegriffen“. Teilen Sie uns Allergien, Ernährungswünsche oder Einschränkungen in den Notizen mit; wir besprechen die Möglichkeiten vor der Bestätigung.\"},{\"question\":\"Was sollte ich zu Barrierefreiheit oder Ernährung angeben?\",\"answer\":\"Vermerken Sie Mobilitätseinschränkungen, Ernährungsbedürfnisse, Kinder oder andere besondere Anforderungen in den Notizen. Wir besprechen vor der Bestätigung, was möglich ist.\"},{\"question\":\"Kann ich eine Buchung ändern oder stornieren?\",\"answer\":\"Senden Sie uns Ihre Buchungsreferenz möglichst bald per WhatsApp oder E-Mail. Wir prüfen den Status und erläutern die verfügbaren Möglichkeiten. Änderungen hängen von der Verfügbarkeit und der Bestätigung Ihres Gastgebers ab.\"}]",
-  booking_experience_label:"Erlebnis auswählen *",booking_date_label:"Wunschtermin *",booking_slot_label:"Verfügbare Uhrzeit *",booking_guests_label:"Anzahl der Gäste *",booking_name_label:"Vollständiger Name *",booking_submit_label:"Buchungsanfrage senden",
-  itinerary_name_label:"Ihr Name",itinerary_date_label:"Gewünschtes Startdatum",itinerary_guests_label:"Anzahl der Gäste",itinerary_pace_label:"Reisetempo",itinerary_interest_label:"Hauptinteresse",itinerary_submit_label:"Reiseplan erstellen",
-faq_eyebrow:"GUT ZU WISSEN VOR IHREM BESUCH",faq_section_eyebrow:"MIT GUTEM GEFÜHL PLANEN",faq_section_title:"Alles Wichtige auf einen Blick.",faq_section_intro:"Wenn Sie weitere Fragen haben, sprechen Sie direkt mit einem lokalen Gastgeber.",faq_whatsapp:"Fragen Sie uns auf WhatsApp",faq_cta_title:"Planen Sie Ihren Besuch noch?",faq_cta_intro:"Teilen Sie uns mit, was Sie erleben möchten. Wir helfen Ihnen bei einem passenden Ablauf.",faq_build_itinerary:"Reiseplan erstellen",faq_check_availability:"Verfügbarkeit prüfen",booking_email_label:"E-Mail-Adresse",booking_phone_label:"WhatsApp / Telefon",booking_contact_hint:"Bitte geben Sie mindestens eine Kontaktmöglichkeit an: E-Mail oder Telefon.",booking_nationality_label:"Staatsangehörigkeit",booking_country_label:"Wohnsitzland",booking_language_label:"Bevorzugte Sprache",booking_contact_label:"Bevorzugter Kontaktweg",booking_pickup_label:"Abholort / Transport",booking_notes_label:"Besondere Wünsche, Ernährung oder Barrierefreiheit",booking_notice:"Mit dem Absenden dieses Formulars senden Sie eine Buchungsanfrage, keine Online-Zahlung. Unser Team kontaktiert Sie zur Bestätigung der Einzelheiten und sendet Ihnen Zahlungsinformationen. Ihre Buchung ist erst bestätigt, wenn Sie eine Bestätigung von Materuni Hosts erhalten.",booking_refresh:"Verfügbare Zeiten aktualisieren",booking_pickup_placeholder:"Hotel in Moshi, Treffpunkt…",booking_notes_placeholder:"Kinder, Ernährung, Mobilität, Abholort oder besondere Interessen…",itinerary_select_experiences:"Erlebnisse auswählen (Mehrfachauswahl möglich)",itinerary_notes_label:"Was sollten wir berücksichtigen?",itinerary_name_placeholder:"Vollständiger Name",itinerary_notes_placeholder:"Kinder, Ernährung, Mobilität, Abholort oder besondere Wünsche…",
-  story_title:"Ein Dorferlebnis, geteilt von lokalen Gastgebern.",story_desc:"Entdecken Sie Materuni durch die Menschen, Kultur und Landschaft, die diesen Ort besonders machen.",story_desc2:"Kommen Sie als Gast. Gehen Sie als Freund."
- }
+const defaultTranslations = {
+  es: { hero_title: "Acércate al corazón de la cultura chagga.", hero_intro: "Descubre la cascada, el café y la vida del pueblo con anfitriones locales en Materuni." },
+  fr: { hero_title: "Au cœur de la culture chagga.", hero_intro: "Découvrez la cascade, le café et la vie du village avec des hôtes locaux à Materuni." },
+  de: { hero_title: "Erleben Sie das Herz der Chagga-Kultur.", hero_intro: "Entdecken Sie Wasserfall, Kaffee und das Dorfleben mit lokalen Gastgebern in Materuni." }
 };
-let languageContent=JSON.parse(JSON.stringify(defaultTranslations));
-function renderTranslations(){
- const locale=el("translation-language").value,root=el("translation-editor");root.replaceChildren();
- Object.entries(translationKeys).forEach(([key,meta])=>{
-  const wrap=document.createElement("div");wrap.className="field full";
-  const label=document.createElement("label");label.textContent=meta.label;
-  const field=document.createElement(meta.type==="textarea"?"textarea":"input");field.id="translation-"+key;field.maxLength=meta.max;field.value=languageContent[locale]?.[key]||"";
-  if(meta.type==="textarea")field.rows=key==="faq_items_json"?10:3;
-  wrap.append(label,field);root.append(wrap);
- });
- el("translation-status").textContent=Object.values(translationKeys).filter((_,i)=>Boolean(languageContent[locale]?.[Object.keys(translationKeys)[i]]?.trim())).length+" of "+Object.keys(translationKeys).length+" fields translated";
+let languageContent = JSON.parse(JSON.stringify(defaultTranslations));
+function renderTranslations() {
+  const locale = el("translation-language").value, root = el("translation-editor");
+  root.replaceChildren();
+  Object.entries(translationKeys).forEach(([key, meta]) => {
+    const wrap = document.createElement("div");
+    wrap.className = "field full";
+    const label = document.createElement("label");
+    label.textContent = meta.label;
+    const field = document.createElement(meta.type === "textarea" ? "textarea" : "input");
+    field.id = "translation-" + key;
+    field.maxLength = meta.max;
+    field.value = languageContent[locale]?.[key] || "";
+    if (meta.type === "textarea") field.rows = 3;
+    wrap.append(label, field);
+    root.append(wrap);
+  });
 }
-async function loadTranslations(){
- const rows=await api("/rest/v1/site_settings?select=setting_key,setting_value&setting_key=eq.language_content");
- if(rows?.[0]?.setting_value){try{const parsed=JSON.parse(rows[0].setting_value);if(parsed&&typeof parsed==="object")languageContent={...languageContent,...parsed,es:{...defaultTranslations.es,...(parsed.es||{})},fr:{...defaultTranslations.fr,...(parsed.fr||{})},de:{...defaultTranslations.de,...(parsed.de||{})}}}catch{el("translation-feedback").textContent="Saved translations could not be read."}}
- renderTranslations();
+async function loadTranslations() {
+  const rows = await api("/rest/v1/site_settings?select=setting_key,setting_value&setting_key=eq.language_content");
+  if (rows?.[0]?.setting_value) {
+    try {
+      const parsed = JSON.parse(rows[0].setting_value);
+      if (parsed && typeof parsed === "object") languageContent = { ...languageContent, ...parsed };
+    } catch {}
+  }
+  renderTranslations();
 }
-el("translation-language").addEventListener("change",renderTranslations);
-el("save-translations").addEventListener("click",async()=>{
- const button=el("save-translations"),locale=el("translation-language").value;button.disabled=true;el("translation-feedback").textContent="Publishing translations…";
- try{
-  const next={};for(const [key,meta] of Object.entries(translationKeys)){const value=el("translation-"+key).value.trim();if(value.length>meta.max)throw new Error(meta.label+" is too long.");if(key==="faq_items_json"&&value){let entries;try{entries=JSON.parse(value)}catch{throw new Error("Translated FAQ must be valid JSON.")}if(!Array.isArray(entries)||entries.length<1||entries.length>30||!entries.every(item=>item&&typeof item.question==="string"&&typeof item.answer==="string"&&item.question.trim()&&item.answer.trim()))throw new Error("Translated FAQ must be an array of 1–30 question and answer objects.")}next[key]=value}
-  languageContent[locale]=next;
-  await api("/rest/v1/site_settings?on_conflict=setting_key",{method:"POST",headers:{"Prefer":"resolution=merge-duplicates,return=minimal"},body:JSON.stringify({setting_key:"language_content",setting_value:JSON.stringify(languageContent),updated_at:new Date().toISOString()})});
-  renderTranslations();el("translation-feedback").textContent="Translations published. Visitors selecting "+locale.toUpperCase()+" will see the saved page translations.";
- }catch(error){el("translation-feedback").textContent=error.message}finally{button.disabled=false}
-});
-async function loadApproach(){
- const rows=await api("/rest/v1/site_settings?select=setting_key,setting_value&setting_key=eq.approach_content");
- let data=approachDefaults;
- if(rows?.[0]?.setting_value){try{const parsed=JSON.parse(rows[0].setting_value);if(parsed&&typeof parsed==="object")data={...approachDefaults,...parsed}}catch{}}
- for(const [key,id] of Object.entries(approachFields))el(id).value=typeof data[key]==="string"?data[key]:approachDefaults[key];
-}
-el("approach-form").addEventListener("submit",async event=>{
- event.preventDefault();const button=el("save-approach");button.disabled=true;el("approach-feedback").textContent="Publishing page content…";
- try{
-  const data={};for(const [key,id] of Object.entries(approachFields)){data[key]=el(id).value.trim();if(!data[key])throw new Error("Please complete every content field.");}
-  await api("/rest/v1/site_settings?on_conflict=setting_key",{method:"POST",headers:{"Prefer":"resolution=merge-duplicates,return=minimal"},body:JSON.stringify({setting_key:"approach_content",setting_value:JSON.stringify(data),updated_at:new Date().toISOString()})});
-  el("approach-feedback").textContent="Our Approach page content published successfully.";
- }catch(error){el("approach-feedback").textContent=error.message}finally{button.disabled=false}
+el("translation-language")?.addEventListener("change", renderTranslations);
+el("save-translations")?.addEventListener("click", async () => {
+  const button = el("save-translations"), locale = el("translation-language").value;
+  button.disabled = true;
+  el("translation-feedback").textContent = "Publishing translations…";
+  try {
+    const next = {};
+    for (const [key, meta] of Object.entries(translationKeys)) {
+      const value = el("translation-" + key).value.trim();
+      if (value.length > meta.max) throw new Error(meta.label + " is too long.");
+      next[key] = value;
+    }
+    languageContent[locale] = { ...(languageContent[locale] || {}), ...next };
+    await api("/rest/v1/site_settings?on_conflict=setting_key", {
+      method: "POST",
+      headers: { "Prefer": "resolution=merge-duplicates,return=minimal" },
+      body: JSON.stringify({ setting_key: "language_content", setting_value: JSON.stringify(languageContent), updated_at: new Date().toISOString() })
+    });
+    renderTranslations();
+    el("translation-feedback").textContent = "✓ Translations published for " + locale.toUpperCase();
+  } catch (error) {
+    el("translation-feedback").textContent = error.message;
+  } finally {
+    button.disabled = false;
+  }
 });
 
-async function loadFaq(){
- const rows=await api("/rest/v1/site_settings?select=setting_key,setting_value&setting_key=eq.faq_items");
- if(rows?.[0]?.setting_value){try{const parsed=JSON.parse(rows[0].setting_value);if(Array.isArray(parsed)&&parsed.length<=30&&parsed.every(x=>typeof x.question==="string"&&typeof x.answer==="string"))faqItems=parsed}catch{el("content-feedback").textContent="Saved FAQ content could not be read. Showing the built-in FAQ copy instead."}}
- renderFaq();
+// ================= APPROACH LOGIC =================
+const approachDefaults = { "title": "Good travel begins with respect for place.", "intro": "A visit to Materuni should feel personal, respectful and grounded in the place itself.", "sectionTitle": "Local culture is not a performance. It is a living way of life.", "sectionIntro": "Rather than rushing from one photo stop to the next, we invite guests to slow down.", "ctaTitle": "Come as a guest. Leave as a friend.", "ctaText": "Discover Materuni at a thoughtful pace." };
+const approachFields = { title: "approach-title", intro: "approach-intro", sectionTitle: "approach-section-title", sectionIntro: "approach-section-intro", ctaTitle: "approach-cta-title", ctaText: "approach-cta-text" };
+async function loadApproach() {
+  const rows = await api("/rest/v1/site_settings?select=setting_key,setting_value&setting_key=eq.approach_content");
+  let data = approachDefaults;
+  if (rows?.[0]?.setting_value) {
+    try {
+      const parsed = typeof rows[0].setting_value === "string" ? JSON.parse(rows[0].setting_value) : rows[0].setting_value;
+      if (parsed && typeof parsed === "object") data = { ...approachDefaults, ...parsed };
+    } catch {}
+  }
+  for (const [key, id] of Object.entries(approachFields)) if (el(id)) el(id).value = typeof data[key] === "string" ? data[key] : approachDefaults[key];
 }
-el("login-form").addEventListener("submit",async e=>{
- e.preventDefault();const button=el("login-button");button.disabled=true;el("login-feedback").textContent="Verifying administrator…";
- try{
-  const response=await fetch(supabaseUrl+"/auth/v1/token?grant_type=password",{method:"POST",headers:{apikey:publishableKey,"Content-Type":"application/json"},body:JSON.stringify({email:el("admin-email").value.trim(),password:el("admin-password").value})});
-  const session=await response.json();if(!response.ok)throw new Error(session.msg||session.message||"Sign in failed.");
-  accessToken=session.access_token;
-  const admins=await api("/rest/v1/admin_users?select=user_id&user_id=eq."+encodeURIComponent(session.user.id));
-  if(!admins.length){accessToken="";throw new Error("This account is not authorised as an administrator.");}
-  el("login-panel").hidden=true;el("manager").hidden=false;await Promise.all([loadFaq(),loadApproach(),loadHomeCopy(),loadTranslations()]);
- }catch(error){el("login-feedback").textContent=error.message}finally{button.disabled=false}
+el("approach-form")?.addEventListener("submit", async event => {
+  event.preventDefault();
+  const button = el("save-approach");
+  button.disabled = true;
+  el("approach-feedback").textContent = "Publishing…";
+  try {
+    const data = {};
+    for (const [key, id] of Object.entries(approachFields)) {
+      data[key] = el(id).value.trim();
+      if (!data[key]) throw new Error("Please complete every content field.");
+    }
+    await api("/rest/v1/site_settings?on_conflict=setting_key", {
+      method: "POST",
+      headers: { "Prefer": "resolution=merge-duplicates,return=minimal" },
+      body: JSON.stringify({ setting_key: "approach_content", setting_value: JSON.stringify(data), updated_at: new Date().toISOString() })
+    });
+    el("approach-feedback").textContent = "✓ Our Approach page content published successfully.";
+  } catch (error) {
+    el("approach-feedback").textContent = error.message;
+  } finally {
+    button.disabled = false;
+  }
 });
-el("add-faq").addEventListener("click",()=>{if(faqItems.length>=30){el("content-feedback").textContent="A maximum of 30 FAQ entries is allowed.";return}faqItems.push({question:"",answer:""});renderFaq()});
-el("save-faq").addEventListener("click",async()=>{
- const button=el("save-faq");button.disabled=true;el("content-feedback").textContent="Publishing FAQ content…";
- try{
-  faqItems=faqItems.map(x=>({question:x.question.trim(),answer:x.answer.trim()}));
-  if(!faqItems.length||faqItems.some(x=>!x.question||!x.answer))throw new Error("Every FAQ entry needs both a question and an answer.");
-  if(faqItems.some(x=>x.question.length>180||x.answer.length>1200))throw new Error("A question or answer is longer than the allowed limit.");
-  await api("/rest/v1/site_settings?on_conflict=setting_key",{method:"POST",headers:{"Prefer":"resolution=merge-duplicates,return=minimal"},body:JSON.stringify({setting_key:"faq_items",setting_value:JSON.stringify(faqItems),updated_at:new Date().toISOString()})});
-  el("content-feedback").textContent="Published successfully. The public FAQ page will use the updated content.";
- }catch(error){el("content-feedback").textContent=error.message}finally{button.disabled=false}
+
+// Admin sign-in
+el("login-form")?.addEventListener("submit", async e => {
+  e.preventDefault();
+  const button = el("login-button");
+  button.disabled = true;
+  el("login-feedback").textContent = "Verifying administrator…";
+  try {
+    const response = await fetch(supabaseUrl + "/auth/v1/token?grant_type=password", {
+      method: "POST",
+      headers: { apikey: publishableKey, "Content-Type": "application/json" },
+      body: JSON.stringify({ email: el("admin-email").value.trim(), password: el("admin-password").value })
+    });
+    const session = await response.json();
+    if (!response.ok) throw new Error(session.msg || session.message || "Sign in failed.");
+    accessToken = session.access_token;
+    const admins = await api("/rest/v1/admin_users?select=user_id&user_id=eq." + encodeURIComponent(session.user.id));
+    if (!admins.length) {
+      accessToken = "";
+      throw new Error("This account is not authorised as an administrator.");
+    }
+    el("login-panel").hidden = true;
+    el("manager").hidden = false;
+    await Promise.all([loadAboutUs(), loadFaq(), loadApproach(), loadHomeCopy(), loadTranslations()]);
+  } catch (error) {
+    el("login-feedback").textContent = error.message;
+  } finally {
+    button.disabled = false;
+  }
 });
-el("logout").addEventListener("click",async()=>{try{await fetch(supabaseUrl+"/auth/v1/logout",{method:"POST",headers:headers()})}catch{}accessToken="";el("manager").hidden=true;el("login-panel").hidden=false;el("login-form").reset()});
+
+el("logout")?.addEventListener("click", async () => {
+  try {
+    await fetch(supabaseUrl + "/auth/v1/logout", { method: "POST", headers: headers() });
+  } catch {}
+  accessToken = "";
+  el("manager").hidden = true;
+  el("login-panel").hidden = false;
+  el("login-form").reset();
+});
 </script>
+
+<style>
+.admin-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 14px 18px;
+  background: #FAF7F2;
+  border: 1px solid #E6DFD3;
+  border-radius: 12px;
+}
+.admin-topbar-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.section-subheading {
+  border-bottom: 2px solid #E6DFD3;
+  padding-bottom: 6px;
+  margin-bottom: 10px;
+}
+.section-subheading strong {
+  font-size: 15px;
+  color: #1A3322;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.image-manager-box {
+  background: #FAF7F2;
+  border: 1px dashed #C5A059;
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+</style>
 </SiteLayout>
