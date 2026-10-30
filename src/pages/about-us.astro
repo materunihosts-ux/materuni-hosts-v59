@@ -32,7 +32,31 @@ const community = `${supabaseUrl}/storage/v1/object/public/materuni-images/story
   <h2>A local team, a personal welcome.</h2>
   <p>Materuni Hosts is a locally hosted tourism business based in Materuni Village, in Tanzania’s Kilimanjaro Region. We help travellers discover the area through a balanced range of nature, cultural and day-trip experiences.</p>
   <p>We believe a good visit begins with clear information and a warm welcome. Before choosing an experience, guests should be able to understand what it involves, how much time to allow and what is included. We aim to make planning straightforward and the experience itself relaxed, informative and enjoyable.</p>
-  <p>Whether you are visiting for a few hours or spending more time in the area, we want you to leave with a deeper appreciation of Materuni and the people and traditions that make it special.</p>
+  
+  <div class="team-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px;margin:36px 0">
+    <div style="background:#fff;border:1px solid #e6dfd3;border-radius:14px;padding:24px;text-align:center">
+      <img src={`${community}`} alt="Saidi Materu founder of Materuni Hosts" width="120" height="120" loading="lazy" decoding="async" style="width:120px;height:120px;border-radius:50%;object-fit:cover;margin:0 auto 14px;border:3px solid #c5a059" />
+      <h3 style="margin:0 0 4px;font-size:20px;color:#1a3322">Saidi Materu</h3>
+      <span style="display:block;color:#755523;font:800 11px Manrope,sans-serif;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px">Founder & Lead Mountain Host</span>
+      <p style="font-size:13px;line-height:1.6;color:#586258;margin:0">Lifelong Materuni resident with 12+ years sharing Chagga history, waterfall trekking, and coffee culture.</p>
+    </div>
+    <div style="background:#fff;border:1px solid #e6dfd3;border-radius:14px;padding:24px;text-align:center">
+      <img src={`${supabaseUrl}/storage/v1/object/public/materuni-images/coffee_image/1791998412318-materuni-tour.jpg`} alt="Elia Chagga coffee specialist" width="120" height="120" loading="lazy" decoding="async" style="width:120px;height:120px;border-radius:50%;object-fit:cover;margin:0 auto 14px;border:3px solid #c5a059" />
+      <h3 style="margin:0 0 4px;font-size:20px;color:#1a3322">Elia</h3>
+      <span style="display:block;color:#755523;font:800 11px Manrope,sans-serif;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px">Chagga Coffee Specialist</span>
+      <p style="font-size:13px;line-height:1.6;color:#586258;margin:0">Guiding the artisanal roasting ceremony over woodfire with ancestral songs and pestle grinding.</p>
+    </div>
+    <div style="background:#fff;border:1px solid #e6dfd3;border-radius:14px;padding:24px;text-align:center">
+      <img src={`${supabaseUrl}/storage/v1/object/public/materuni-images/story_image/1791601761441-q3iog8mni3r.jpg`} alt="Amani forest and nature guide" width="120" height="120" loading="lazy" decoding="async" style="width:120px;height:120px;border-radius:50%;object-fit:cover;margin:0 auto 14px;border:3px solid #c5a059" />
+      <h3 style="margin:0 0 4px;font-size:20px;color:#1a3322">Amani</h3>
+      <span style="display:block;color:#755523;font:800 11px Manrope,sans-serif;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px">Forest & Trail Guide</span>
+      <p style="font-size:13px;line-height:1.6;color:#586258;margin:0">Expert on native Kilimanjaro plants, birdlife, waterfall safety, and the scenic foothills paths.</p>
+    </div>
+  </div>
+
+  <div style="background:#f4efe6;border:1px solid #e6dfd3;border-radius:12px;padding:18px 24px;margin-top:24px;text-align:center">
+    <p style="margin:0;font-size:13px;color:#1a3322;font-weight:600">Official Tourism Registration: Tanzania Tourist Board Reg: <strong>TTB/REG/2026/0412</strong> · TALA Tourism License: <strong>TZ-KIL-2026-088</strong></p>
+  </div>
 </section>
 
 <section class="values-section">

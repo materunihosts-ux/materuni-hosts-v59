@@ -2,23 +2,39 @@
 ---
 <div class="cookie-consent" id="cookie-consent" role="dialog" aria-modal="false" aria-labelledby="cookie-title" hidden>
   <div class="cookie-copy">
-    <p class="cookie-eyebrow">YOUR PRIVACY</p>
-    <h2 id="cookie-title">Your choices matter</h2>
-    <p>We use essential storage to make this website work. With your permission, we may also use analytics to understand how visitors use the site. You can accept or reject optional analytics.</p>
-    <a href="/privacy">Read our privacy policy</a>
+    <p id="cookie-title">We use cookies and optional analytics to improve your experience. <a href="/privacy">Privacy policy</a></p>
   </div>
   <div class="cookie-actions">
-    <button type="button" data-cookie-accept>Allow analytics</button>
-    <button type="button" data-cookie-reject>Reject optional</button>
-    <button type="button" data-cookie-settings>Settings</button>
+    <button type="button" class="cookie-btn cookie-btn-accept" data-cookie-accept>Accept</button>
+    <button type="button" class="cookie-btn cookie-btn-reject" data-cookie-reject>Reject</button>
+    <button type="button" class="cookie-btn-link" data-cookie-settings aria-label="Cookie preferences">Settings</button>
   </div>
   <div class="cookie-settings" id="cookie-settings" hidden>
-    <label><input type="checkbox" checked disabled /> Essential storage (always active)</label>
-    <label><input type="checkbox" id="cookie-analytics" /> Allow analytics</label>
-    <button type="button" data-cookie-save>Save choices</button>
+    <label><input type="checkbox" checked disabled /> Essential (active)</label>
+    <label><input type="checkbox" id="cookie-analytics" /> Analytics</label>
+    <button type="button" data-cookie-save>Save</button>
   </div>
 </div>
 <button class="cookie-reopen" type="button" data-cookie-reopen aria-label="Open privacy settings">Privacy settings</button>
+<style>
+.cookie-consent{position:fixed;z-index:10000;inset:auto 16px 16px 16px;max-width:880px;margin-inline:auto;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 18px;color:#242421;background:#FAF7F2;border:1px solid #C5A059;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,.2)}
+.cookie-copy p{margin:0;font:500 12px/1.4 var(--sans);color:#1A3322}
+.cookie-copy a{color:#80652F;font-weight:700;text-decoration:underline}
+.cookie-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.cookie-btn{min-height:36px;min-width:76px;padding:6px 14px;border-radius:999px;font:700 11px var(--sans);cursor:pointer;border:1px solid #1A3322}
+.cookie-btn-accept{background:#1A3322;color:#FAF7F2}
+.cookie-btn-reject{background:transparent;color:#1A3322}
+.cookie-btn-link{background:none;border:none;color:#7A756B;font:600 11px var(--sans);text-decoration:underline;cursor:pointer;padding:4px}
+.cookie-settings{display:flex;align-items:center;gap:12px;font:600 11px var(--sans);width:100%;margin-top:8px}
+.cookie-settings label{display:flex;align-items:center;gap:4px}
+.cookie-settings button{padding:4px 10px;border-radius:4px;border:1px solid #1A3322;background:#1A3322;color:#fff;font-size:11px;cursor:pointer}
+@media(max-width:600px){
+  .cookie-consent{inset:auto 8px 8px 8px;flex-direction:column;align-items:stretch;padding:10px 14px;gap:8px;border-radius:10px}
+  .cookie-copy p{font-size:11px;line-height:1.35;text-align:center}
+  .cookie-actions{display:grid;grid-template-columns:1fr 1fr auto;gap:8px;width:100%}
+  .cookie-btn{min-height:36px;width:100%;padding:6px 8px;text-align:center}
+}
+</style>
 <script is:inline>
 (() => {
   const key = "materuni-cookie-consent-v1";

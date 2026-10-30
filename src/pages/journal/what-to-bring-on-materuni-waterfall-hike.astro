@@ -1,0 +1,391 @@
+---
+import SiteLayout from "../../layouts/SiteLayout.astro";
+import { Image } from "astro:assets";
+import { supabaseUrl } from "../../lib/supabase-public";
+
+const base = `${supabaseUrl}/storage/v1/object/public/materuni-images/`;
+const hikeHero = base + "story_image/1791601761441-q3iog8mni3r.jpg";
+const waterfallImg = base + "waterfall_image/1791998303073-materuni-waterfall-hike.jpg";
+
+const blogPostSchema = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "What to Bring on the Materuni Waterfall Hike: Essential Packing Guide",
+  "description": "Essential packing list for the Materuni waterfall rainforest trek: trail footwear, rain protection, cash practicalities, swimsuit tips, and sun protection.",
+  "image": "https://materunihosts.com/social-preview.jpg",
+  "datePublished": "2026-10-16T08:00:00+03:00",
+  "dateModified": "2026-10-16T08:00:00+03:00",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Saidi Materu",
+      "jobTitle": "Lead Mountain Host & Founder"
+    }
+  ],
+  "publisher": {
+    "@type": "TourOperator",
+    "name": "Materuni Hosts",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://materunihosts.com/materuni-hosts-logo-round.svg"
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://materunihosts.com/journal/what-to-bring-on-materuni-waterfall-hike"
+  }
+};
+
+const faqList = [
+  {
+    q: "Can you swim in Materuni waterfall?",
+    a: "Yes! There is a natural pool beneath the 95-metre cascade. The water is crisp mountain meltwater straight from Mount Kilimanjaro (around 12–15°C / 54–59°F). It is wonderfully refreshing after the hike. If you plan to swim, bring a swimsuit, a quick-dry towel, and water shoes for the rocky bottom."
+  },
+  {
+    q: "How difficult is the hike to Materuni waterfall?",
+    a: "The hike is moderate and accessible for most fitness levels, including active families with children. The trail is approximately 40 minutes each way, winding through rolling banana and coffee farms with a steep, stepped descent into the river gorge."
+  },
+  {
+    q: "Are walking sticks provided?",
+    a: "Yes. Your Materuni Hosts guide provides carved bamboo walking sticks at the village trailhead to provide stability along wet or clay sections."
+  }
+];
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqList.map((f) => ({
+    "@type": "Question",
+    "name": f.q,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": f.a
+    }
+  }))
+};
+---
+
+<SiteLayout
+  title="What to Bring on the Materuni Waterfall Hike (2026 Packing Guide)"
+  description="Local packing list for hiking Materuni Waterfall: shoes, rain layers, cash, swimsuit, and camera protection from local Chagga mountain guides."
+  canonical="https://materunihosts.com/journal/what-to-bring-on-materuni-waterfall-hike"
+>
+  <script type="application/ld+json" set:html={JSON.stringify(blogPostSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+
+  <article class="article-wrap">
+    <header class="article-header">
+      <nav class="article-breadcrumb" aria-label="Breadcrumbs">
+        <a href="/">Home</a>
+        <span aria-hidden="true">/</span>
+        <a href="/journal">Journal</a>
+        <span aria-hidden="true">/</span>
+        <span>Planning</span>
+      </nav>
+
+      <span class="eyebrow">PLANNING · PACKING CHECKLIST</span>
+      <h1>What to Bring on the Materuni Waterfall Hike</h1>
+
+      <div class="article-meta">
+        <span class="meta-authors">By <strong>Saidi Materu</strong></span>
+        <span class="meta-dot">·</span>
+        <time datetime="2026-10-16">October 16, 2026</time>
+        <span class="meta-dot">·</span>
+        <span class="meta-reading-time">4 min read</span>
+      </div>
+    </header>
+
+    <figure class="article-featured-media">
+      <Image
+        src={hikeHero}
+        alt="Lush green walking trail through the tropical forest in Materuni"
+        width={1200}
+        height={675}
+        format="webp"
+        quality={82}
+        loading="eager"
+        decoding="async"
+        class="featured-img"
+      />
+      <figcaption>The trail meanders alongside mountain irrigation channels (mfongo) shaded by native trees.</figcaption>
+    </figure>
+
+    <div class="article-body">
+      <p>The 95-metre Materuni waterfall is one of the highest cascades in the Kilimanjaro region. While the hike is moderate and well within the capability of active travellers, coming prepared makes the difference between an exhilarating rainforest adventure and slippery discomfort.</p>
+
+      <p>Here is our local guide to packing smart for your day in Materuni Village.</p>
+
+      <hr class="divider" />
+
+      <h2>1. The Right Footwear</h2>
+      <p>The trail from the village centre down into the gorge crosses red volcanic clay. When dry, it is firm; after morning mist or tropical rain, it becomes slick.</p>
+      <ul>
+        <li><strong>Recommended:</strong> Sturdy trail running shoes or lightweight hiking boots with deep rubber lugs.</li>
+        <li><strong>Avoid:</strong> Smooth-soled casual fashion sneakers, dress shoes, and open flip-flops, which provide zero traction on mud or wet river stones.</li>
+        <li><strong>Optional:</strong> River sandals (like Chacos or Tevas) or neoprene water shoes if you want to swim in the pool beneath the falls.</li>
+      </ul>
+
+      <h2>2. Rain Layer &amp; Change of Clothes</h2>
+      <p>Weather on the southern flank of Kilimanjaro can shift within twenty minutes. Even on sunny days, the powerful spray from the 95m waterfall creates its own localized mist cloud.</p>
+      <ul>
+        <li>A lightweight breathable rain jacket or packable poncho.</li>
+        <li>A small quick-dry microfiber towel.</li>
+        <li>A dry bag or plastic pouch for your smartphone, passport, and camera gear.</li>
+      </ul>
+
+      <figure class="in-content-media">
+        <Image
+          src={waterfallImg}
+          alt="Materuni waterfall plunge pool with mist spraying onto green ferns"
+          width={900}
+          height={500}
+          format="webp"
+          quality={80}
+          loading="lazy"
+          decoding="async"
+        />
+        <figcaption>Approaching the foot of the 95m cascade, where cooling mist fills the air.</figcaption>
+      </figure>
+
+      <h2>3. Water &amp; Sun Protection</h2>
+      <p>Although Materuni is lush and tree-shaded, the high tropical altitude (1,700m / 5,600ft) amplifies UV exposure.</p>
+      <ul>
+        <li>Reusable water bottle (at least 1 to 1.5 litres). We supply purified refills.</li>
+        <li>Eco-friendly biodegradable sunscreen and lip balm.</li>
+        <li>Insect repellent with natural citronella or DEET for forest sections.</li>
+      </ul>
+
+      <h2>4. Cash in Tanzanian Shillings (TZS)</h2>
+      <p>While your tour fee and private transport can be arranged online or with your host, you will want small Tanzanian shillings (notes of 2,000, 5,000, and 10,000 TZS) for:</p>
+      <ul>
+        <li>Tips for your mountain guide and village coffee mamas.</li>
+        <li>Purchasing fresh hand-roasted bags of village Arabica coffee ($5–$10 / 12,000–25,000 TZS).</li>
+        <li>Tasting local Chagga banana beer (<em>Mbege</em>) or seasonal fresh passion fruit and mountain honey.</li>
+      </ul>
+
+      <hr class="divider" />
+
+      <h2>Frequently Asked Questions</h2>
+      <div class="faq-accordion">
+        {faqList.map((item) => (
+          <details class="faq-card">
+            <summary>
+              <span>{item.q}</span>
+              <span class="chevron" aria-hidden="true">+</span>
+            </summary>
+            <div class="faq-body">
+              <p>{item.a}</p>
+            </div>
+          </details>
+        ))}
+      </div>
+
+      <div class="booking-cta-card">
+        <div class="cta-inner">
+          <span class="eyebrow">BOOK YOUR HIKE</span>
+          <h3>Hike the waterfall with a local Chagga guide.</h3>
+          <p>Includes village entrance fees, walking stick, guided rainforest trek, coffee ceremony, and home-cooked lunch.</p>
+          <div class="cta-actions">
+            <a class="gold-button" href="/booking?experience=waterfall">Book waterfall hike ($45)</a>
+            <a class="outline-button" href="https://wa.me/255612068540?text=Hello%20Materuni%20Hosts%2C%20I%20have%20a%20question%20about%20the%20waterfall%20hike." target="_blank" rel="noopener noreferrer">Chat on WhatsApp</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+</SiteLayout>
+
+<style>
+  .article-wrap {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: clamp(32px, 5vw, 64px) clamp(20px, 4vw, 32px);
+  }
+  .article-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #80652F;
+    margin-bottom: 24px;
+  }
+  .article-breadcrumb a {
+    color: #556056;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .article-header {
+    margin-bottom: 36px;
+  }
+  .article-header .eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #80652F;
+    font-weight: 700;
+    display: block;
+    margin-bottom: 12px;
+  }
+  .article-header h1 {
+    font: 600 clamp(32px, 4.5vw, 50px)/1.15 "Cormorant Garamond", Georgia, serif;
+    color: #1A3322;
+    margin: 0 0 20px;
+  }
+  .article-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: #6D716B;
+    border-top: 1px solid #E6DFD3;
+    padding-top: 16px;
+  }
+  .meta-authors strong {
+    color: #1A3322;
+  }
+  .article-featured-media {
+    margin: 0 0 44px;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .featured-img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  figcaption {
+    font-size: 13px;
+    color: #6D716B;
+    margin-top: 10px;
+    font-style: italic;
+  }
+  .article-body {
+    font-size: 17px;
+    line-height: 1.8;
+    color: #242421;
+  }
+  .article-body p {
+    margin: 0 0 24px;
+  }
+  .article-body h2 {
+    font: 600 clamp(24px, 3vw, 34px)/1.2 "Cormorant Garamond", Georgia, serif;
+    color: #1A3322;
+    margin: 40px 0 16px;
+  }
+  .article-body ul {
+    margin: 0 0 28px;
+    padding-left: 22px;
+  }
+  .article-body li {
+    margin-bottom: 10px;
+  }
+  .divider {
+    border: 0;
+    border-top: 1px solid #E6DFD3;
+    margin: 40px 0;
+  }
+  .in-content-media {
+    margin: 32px 0;
+  }
+  .in-content-media img {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+  }
+  .faq-accordion {
+    margin: 24px 0 44px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .faq-card {
+    background: #FFFFFF;
+    border: 1px solid #E6DFD3;
+    padding: 18px 22px;
+  }
+  .faq-card summary {
+    font: 600 18px/1.3 "Cormorant Garamond", Georgia, serif;
+    color: #1A3322;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    list-style: none;
+  }
+  .faq-card summary::-webkit-details-marker {
+    display: none;
+  }
+  .faq-card .chevron {
+    font-size: 20px;
+    color: #C5A059;
+    font-weight: 300;
+  }
+  .faq-card[open] .chevron {
+    transform: rotate(45deg);
+  }
+  .faq-body {
+    padding-top: 12px;
+    border-top: 1px solid #F0EAE1;
+    margin-top: 12px;
+    font-size: 14px;
+    line-height: 1.7;
+    color: #556056;
+  }
+  .faq-body p {
+    margin: 0;
+  }
+  .booking-cta-card {
+    background: #1A3322;
+    color: #FAF7F2;
+    padding: clamp(32px, 5vw, 48px);
+    margin: 48px 0;
+    border-radius: 4px;
+  }
+  .booking-cta-card .eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #C5A059;
+    font-weight: 700;
+    display: block;
+    margin-bottom: 10px;
+  }
+  .booking-cta-card h3 {
+    font: 600 clamp(24px, 3.2vw, 34px)/1.2 "Cormorant Garamond", Georgia, serif;
+    color: #FAF7F2;
+    margin: 0 0 12px;
+  }
+  .booking-cta-card p {
+    color: #E6DFD3;
+    font-size: 15px;
+    line-height: 1.65;
+    margin: 0 0 24px;
+  }
+  .cta-actions {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .gold-button {
+    background: #C5A059;
+    color: #1A3322 !important;
+    font: 700 13px/1 "Manrope", sans-serif;
+    padding: 14px 26px;
+    border-radius: 2px;
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none !important;
+  }
+  .outline-button {
+    background: transparent;
+    border: 1px solid #FAF7F2;
+    color: #FAF7F2 !important;
+    font: 700 13px/1 "Manrope", sans-serif;
+    padding: 14px 24px;
+    border-radius: 2px;
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none !important;
+  }
+</style>

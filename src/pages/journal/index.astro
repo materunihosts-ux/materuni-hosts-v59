@@ -1,0 +1,415 @@
+---
+import SiteLayout from "../../layouts/SiteLayout.astro";
+import { Image } from "astro:assets";
+import { supabaseUrl } from "../../lib/supabase-public";
+
+const base = `${supabaseUrl}/storage/v1/object/public/materuni-images/`;
+
+const posts = [
+  {
+    title: "How to Get to Materuni Village from Moshi, Arusha and Kilimanjaro Airport",
+    slug: "how-to-get-to-materuni",
+    category: "Getting here",
+    categoryKey: "getting-here",
+    date: "October 23, 2026",
+    isoDate: "2026-10-23",
+    readTime: "5 min read",
+    author: "Adrian Ally Mwaigwisya & Saidi Materu",
+    excerpt: "Routes, travel times, road conditions, and confirmed vehicle transfer prices from local Chagga hosts.",
+    image: base + "waterfall_image/1791998303073-materuni-waterfall-hike.jpg",
+    alt: "Materuni waterfall seen from the forest trail on the slopes of Mount Kilimanjaro"
+  },
+  {
+    title: "How Traditional Chagga Coffee is Made from Bean to Cup",
+    slug: "how-traditional-chagga-coffee-is-made",
+    category: "Culture & food",
+    categoryKey: "culture-food",
+    date: "October 20, 2026",
+    isoDate: "2026-10-20",
+    readTime: "4 min read",
+    author: "Elia & Saidi Materu",
+    excerpt: "From harvesting ripe red cherries to woodfire roasting, pestle grinding songs, and brewing organic Arabica.",
+    image: base + "coffee_image/1791998412318-materuni-tour.jpg",
+    alt: "Chagga coffee roasting over open woodfire in Materuni Village"
+  },
+  {
+    title: "What to Bring on the Materuni Waterfall Hike",
+    slug: "what-to-bring-on-materuni-waterfall-hike",
+    category: "Planning",
+    categoryKey: "planning",
+    date: "October 16, 2026",
+    isoDate: "2026-10-16",
+    readTime: "4 min read",
+    author: "Saidi Materu",
+    excerpt: "Footwear advice, rain prep, cash practicalities, and what to expect on the rainforest trail.",
+    image: base + "story_image/1791601761441-q3iog8mni3r.jpg",
+    alt: "Green lush hiking trail through the rainforest in Materuni"
+  },
+  {
+    title: "Staying Overnight in Materuni: What to Expect",
+    slug: "staying-overnight-in-materuni",
+    category: "Stories",
+    categoryKey: "stories",
+    date: "October 10, 2026",
+    isoDate: "2026-10-10",
+    readTime: "5 min read",
+    author: "Amani & Saidi Materu",
+    excerpt: "Campsite setup, hot woodfire dinners, mountain stargazing, and morning birdsong in the Kilimanjaro foothills.",
+    image: base + "story_image/1791994219885-materuni-coffe-plantatio-tour.jpg",
+    alt: "Sunset over the green coffee landscape in Materuni Village"
+  }
+];
+
+const categories = [
+  { key: "all", label: "All stories" },
+  { key: "getting-here", label: "Getting here" },
+  { key: "culture-food", label: "Culture & food" },
+  { key: "planning", label: "Planning" },
+  { key: "stories", label: "Stories" }
+];
+---
+
+<SiteLayout
+  title="Materuni Journal | Travel Advice, Transport Guides & Village Stories"
+  description="Practical transport routes, packing advice, Chagga coffee culture, and local travel guides written by native Chagga hosts in Materuni Village, Kilimanjaro."
+  canonical="https://materunihosts.com/journal"
+>
+  <header class="journal-hero">
+    <div class="journal-hero-inner">
+      <span class="eyebrow">MATERUNI JOURNAL</span>
+      <h1>Practical advice & stories from the village.</h1>
+      <p>Written by local Chagga guides and mountain hosts. Route directions, packing essentials, cultural history, and honest travel tips for the Kilimanjaro foothills.</p>
+    </div>
+  </header>
+
+  <main class="journal-container">
+    <!-- Category Filter Tabs -->
+    <nav class="category-tabs" aria-label="Filter journal articles by category">
+      {categories.map((cat, i) => (
+        <button
+          type="button"
+          class={`tab-btn ${i === 0 ? "active" : ""}`}
+          data-category={cat.key}
+          aria-pressed={i === 0 ? "true" : "false"}
+        >
+          {cat.label}
+        </button>
+      ))}
+    </nav>
+
+    <!-- Post Grid -->
+    <section class="journal-grid" id="posts-grid" aria-label="Journal articles">
+      {posts.map((post) => (
+        <article class="journal-card" data-category={post.categoryKey}>
+          <a class="card-media" href={`/journal/${post.slug}`} aria-label={`Read article: ${post.title}`}>
+            <Image
+              src={post.image}
+              alt={post.alt}
+              width={700}
+              height={440}
+              format="webp"
+              quality={78}
+              loading="lazy"
+              decoding="async"
+              class="card-img"
+            />
+            <span class="category-badge">{post.category}</span>
+          </a>
+          <div class="card-content">
+            <div class="card-meta">
+              <time datetime={post.isoDate}>{post.date}</time>
+              <span class="dot" aria-hidden="true">·</span>
+              <span>{post.readTime}</span>
+            </div>
+            <h2>
+              <a href={`/journal/${post.slug}`}>{post.title}</a>
+            </h2>
+            <p>{post.excerpt}</p>
+            <div class="card-footer">
+              <span class="author">By {post.author}</span>
+              <a class="read-link" href={`/journal/${post.slug}`}>Read article →</a>
+            </div>
+          </div>
+        </article>
+      ))}
+    </section>
+
+    <!-- Village Host CTA -->
+    <aside class="journal-banner">
+      <div class="banner-copy">
+        <span class="eyebrow">READY TO VISIT?</span>
+        <h3>Experience Materuni with the people who call it home.</h3>
+        <p>Private waterfall hikes, coffee picking, traditional meals, and overnight village stays with 100% local Chagga guides.</p>
+      </div>
+      <div class="banner-actions">
+        <a class="gold-btn" href="/booking">Check availability</a>
+        <a class="whatsapp-btn" href="https://wa.me/255612068540?text=Hello%20Materuni%20Hosts%2C%20I%20read%20your%20journal%20and%20would%20like%20to%20plan%20a%20visit." target="_blank" rel="noopener noreferrer">Chat on WhatsApp</a>
+      </div>
+    </aside>
+  </main>
+</SiteLayout>
+
+<script>
+  // Category filtering
+  const tabs = document.querySelectorAll<HTMLButtonElement>(".tab-btn");
+  const cards = document.querySelectorAll<HTMLElement>(".journal-card");
+
+  tabs.forEach((tab) => {
+    tab.addEventListener("click", () => {
+      tabs.forEach((t) => {
+        t.classList.remove("active");
+        t.setAttribute("aria-pressed", "false");
+      });
+      tab.classList.add("active");
+      tab.setAttribute("aria-pressed", "true");
+
+      const selected = tab.dataset.category;
+      cards.forEach((card) => {
+        if (selected === "all" || card.dataset.category === selected) {
+          card.style.display = "flex";
+        } else {
+          card.style.display = "none";
+        }
+      });
+    });
+  });
+</script>
+
+<style>
+  .journal-hero {
+    background: #1A3322;
+    color: #FAF7F2;
+    padding: clamp(56px, 8vw, 96px) clamp(20px, 6vw, 80px);
+    text-align: center;
+  }
+  .journal-hero-inner {
+    max-width: 820px;
+    margin: 0 auto;
+  }
+  .journal-hero .eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #C5A059;
+    font-weight: 700;
+  }
+  .journal-hero h1 {
+    font: 600 clamp(38px, 5.5vw, 64px)/1.1 "Cormorant Garamond", Georgia, serif;
+    margin: 16px 0;
+    color: #FAF7F2;
+  }
+  .journal-hero p {
+    font-size: clamp(16px, 1.8vw, 18px);
+    line-height: 1.7;
+    color: #E6DFD3;
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  .journal-container {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: clamp(36px, 6vw, 72px) clamp(20px, 5vw, 48px);
+  }
+
+  .category-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: clamp(36px, 5vw, 56px);
+  }
+  .tab-btn {
+    background: #FAF7F2;
+    border: 1px solid #DCD6CA;
+    color: #4A564C;
+    padding: 10px 22px;
+    font: 600 13px "Manrope", sans-serif;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .tab-btn:hover {
+    border-color: #C5A059;
+    color: #1A3322;
+  }
+  .tab-btn.active {
+    background: #1A3322;
+    border-color: #1A3322;
+    color: #FAF7F2;
+  }
+
+  .journal-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(24px, 4vw, 40px);
+  }
+  @media (max-width: 768px) {
+    .journal-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .journal-card {
+    background: #FFFFFF;
+    border: 1px solid #E6DFD3;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .journal-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 16px 36px rgba(26, 51, 34, 0.08);
+  }
+
+  .card-media {
+    position: relative;
+    display: block;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background: #1A3322;
+  }
+  .card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+  .journal-card:hover .card-img {
+    transform: scale(1.03);
+  }
+  .category-badge {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    background: #1A3322;
+    color: #FAF7F2;
+    font: 700 10px/1 "Manrope", sans-serif;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 7px 12px;
+  }
+
+  .card-content {
+    padding: clamp(22px, 3.5vw, 32px);
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+  .card-meta {
+    font-size: 12px;
+    font-weight: 600;
+    color: #80652F;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card-content h2 {
+    font: 600 clamp(22px, 2.4vw, 28px)/1.25 "Cormorant Garamond", Georgia, serif;
+    color: #1A3322;
+    margin: 0 0 12px;
+  }
+  .card-content h2 a:hover {
+    color: #80652F;
+  }
+  .card-content p {
+    font-size: 14px;
+    line-height: 1.65;
+    color: #556056;
+    margin: 0 0 20px;
+    flex: 1;
+  }
+
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    border-top: 1px solid #F0EAE1;
+    padding-top: 16px;
+    font-size: 12px;
+  }
+  .author {
+    color: #6D716B;
+    font-weight: 500;
+  }
+  .read-link {
+    font-weight: 700;
+    color: #1A3322;
+    transition: color 0.2s ease;
+  }
+  .read-link:hover {
+    color: #80652F;
+  }
+
+  .journal-banner {
+    margin-top: clamp(48px, 7vw, 84px);
+    background: #F4EFE6;
+    border: 1px solid #E6DFD3;
+    padding: clamp(32px, 5vw, 56px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .banner-copy {
+    max-width: 620px;
+  }
+  .banner-copy .eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #80652F;
+    font-weight: 700;
+  }
+  .banner-copy h3 {
+    font: 600 clamp(24px, 3.2vw, 36px)/1.2 "Cormorant Garamond", Georgia, serif;
+    color: #1A3322;
+    margin: 8px 0;
+  }
+  .banner-copy p {
+    font-size: 14px;
+    line-height: 1.65;
+    color: #556056;
+    margin: 0;
+  }
+  .banner-actions {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .gold-btn {
+    background: #C5A059;
+    color: #1A3322;
+    font: 700 13px/1 "Manrope", sans-serif;
+    padding: 14px 26px;
+    border-radius: 2px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease;
+  }
+  .gold-btn:hover {
+    background: #b6924a;
+  }
+  .whatsapp-btn {
+    background: transparent;
+    border: 1px solid #1A3322;
+    color: #1A3322;
+    font: 700 13px/1 "Manrope", sans-serif;
+    padding: 14px 24px;
+    border-radius: 2px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+  }
+  .whatsapp-btn:hover {
+    background: #1A3322;
+    color: #FAF7F2;
+  }
+</style>

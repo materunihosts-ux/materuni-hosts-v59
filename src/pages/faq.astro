@@ -1,6 +1,7 @@
 ---
 import SiteLayout from "../layouts/SiteLayout.astro";
-const faqPreview = "https://commons.wikimedia.org/wiki/Special:FilePath/Moshi_rural_Tanzania.jpg?width=1600";
+import { supabaseUrl } from "../lib/supabase-public";
+const faqPreview = `${supabaseUrl}/storage/v1/object/public/materuni-images/story_image/1791995912146-materuni-community.jpg`;
 const faqs = [
   ["Where is Materuni Village?", "Materuni Village is situated in the Kilimanjaro region of northern Tanzania, approximately 15 km north of Moshi town, on the lush forested slopes of Mount Kilimanjaro (approx. 1,800 m elevation). We recommend arranging your return transport before travelling."],
   ["Which experiences can I book?", "Our six featured experiences are Materuni Waterfall & Chagga Culture ($45), Materuni Coffee & Chagga Culture ($41), Traditional Chagga Cooking ($55), Materuni & Moshi Town ($59), Materuni & Rau Forest ($65), and Materuni Overnight Village Experience ($101), all priced per person. Direct group discounts apply from 4 guests: 5% for 4–5, 8% for 6–9, and 10% for 10–14 guests. Custom quotations are provided for groups of 15 or more."],

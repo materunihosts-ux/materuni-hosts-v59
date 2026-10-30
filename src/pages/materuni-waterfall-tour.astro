@@ -1,29 +1,51 @@
 ---
 import SiteLayout from "../layouts/SiteLayout.astro";
 import LocalBusinessSchema from "../components/LocalBusinessSchema.astro";
-const waterfallHero = "https://commons.wikimedia.org/wiki/Special:FilePath/Materuni_Falls,_Uru_mashariki.jpg?width=1600";
+import { supabaseUrl } from "../lib/supabase-public";
+const waterfallHero = `${supabaseUrl}/storage/v1/object/public/materuni-images/waterfall_image/1791998303073-materuni-waterfall-hike.jpg`;
 const serviceData = {
   "@context": "https://schema.org",
-  "@type": "Service",
-  "name": "Materuni Waterfall Tour",
-  "serviceType": "Guided waterfall hike and Chagga cultural experience",
-  "description": "A locally hosted visit to Materuni Waterfall in Materuni Village near Moshi, with an optional Chagga coffee experience, village culture and local lunch.",
+  "@type": "TouristTrip",
+  "name": "Materuni Waterfall & Chagga Culture Experience",
+  "touristType": ["Eco-tourists", "Cultural travelers", "Nature lovers"],
+  "description": "A locally hosted hike to the 95m Materuni Waterfall in Materuni Village near Moshi, with traditional Chagga coffee ceremony, cultural dance and hot lunch.",
   "provider": { "@type": "TourOperator", "name": "Materuni Hosts", "url": "https://materunihosts.com/" },
-  "areaServed": { "@type": "Place", "name": "Materuni Village, Moshi, Kilimanjaro, Tanzania" },
+  "offers": {
+    "@type": "Offer",
+    "price": "45.00",
+    "priceCurrency": "USD",
+    "availability": "https://schema.org/InStock",
+    "url": "https://materunihosts.com/booking?experience=waterfall"
+  },
   "url": "https://materunihosts.com/materuni-waterfall-tour"
 };
 ---
-<SiteLayout title="Materuni Waterfall Tours | Guided Hikes & Chagga Culture" description="Join a Materuni Waterfall tour near Moshi, Tanzania. Walk forest trails with local hosts and discover Chagga coffee, village culture and local food.">
+<SiteLayout title="Materuni Waterfall Tours | Guided Hikes & Chagga Culture" description="Join a Materuni Waterfall tour near Moshi, Tanzania. Walk forest trails with local hosts and discover Chagga coffee, village culture and local food." preloadImage={waterfallHero}>
 <LocalBusinessSchema />
 <script type="application/ld+json" set:html={JSON.stringify(serviceData)} />
 <main class="landing">
-<section class="hero hero-with-image"><div><p class="eyebrow">GUIDED WATERFALL WALK · LOCAL CHAGGA HOSTS · MATERUNI, TANZANIA</p><h1>Materuni Waterfall Tours with Local Hosts</h1><p>Visit the famous Materuni Waterfall in the green foothills of Mount Kilimanjaro. Walk village and forest paths with a local host, then make more of your day with Chagga coffee traditions, local food and time in Materuni Village.</p><a class="button" href="/booking?source=materuni-waterfall-tour&experience=Waterfall%20%26%20Chagga%20Culture">Check Materuni waterfall tour availability</a></div><img src={waterfallHero} alt="Materuni Falls in Uru Mashariki, Kilimanjaro Region" width="1200" height="900" loading="eager" fetchpriority="high" decoding="async" /></section>
+<section class="hero hero-with-image"><div><p class="eyebrow">GUIDED WATERFALL WALK · LOCAL CHAGGA HOSTS · MATERUNI, TANZANIA</p><h1>Materuni Waterfall Tours with Local Hosts</h1><p>Visit the famous Materuni Waterfall in the green foothills of Mount Kilimanjaro. Walk village and forest paths with a local host, then make more of your day with Chagga coffee traditions, local food and time in Materuni Village.</p><a class="button" href="/booking?source=materuni-waterfall-tour&experience=waterfall">Check Materuni waterfall tour availability</a></div><img src={waterfallHero} alt="Materuni waterfall seen from the forest trail in Kilimanjaro" width="1200" height="900" loading="eager" fetchpriority="high" decoding="async" /></section>
 <section><h2>Discover Materuni Waterfall near Moshi</h2><p>Materuni Waterfall is a natural highlight of Materuni Village, a short journey from Moshi in Tanzania’s Kilimanjaro Region. The guided walk follows village paths and forest trails through the lush foothills before reaching the waterfall. The route can be uneven, steep or slippery after rain, so comfortable walking shoes are recommended.</p><p>Allow time to enjoy the landscape and take photographs along the way. Walking time and trail conditions vary with the weather and the pace of your group; your host will explain the route before you set off.</p></section>
-<section><h2>Choose a Materuni waterfall and cultural day trip</h2><p>For a fuller visit, combine the waterfall hike with a traditional Chagga coffee experience and an introduction to village life. The Materuni Waterfall & Chagga Culture day experience is designed for visitors who want to understand more than the scenery.</p><ul><li>Guided forest walk to Materuni Waterfall</li><li>Chagga coffee-making, from roasting and grinding to brewing</li><li>Time to learn about Materuni Village and Chagga traditions</li><li>Local lunch and cultural activities as confirmed with your host</li></ul><p>The published Materuni Waterfall & Chagga Culture experience is $45 per person. Direct group discounts are available from 4 guests and are calculated on the booking form. Your host confirms the final itinerary, inclusions and availability before payment. Private door-to-door return vehicle transfers can be added directly when booking: Moshi Town ($25/vehicle, up to 4 guests), Kilimanjaro Airport / KIA ($50/vehicle), or Arusha ($80/vehicle).</p><a class="button" href="/day-trips">Compare Materuni day trips</a></section>
+<section><h2>Choose a Materuni waterfall and cultural day trip</h2><p>For a fuller visit, combine the waterfall hike with a traditional Chagga coffee experience and an introduction to village life. The Materuni Waterfall & Chagga Culture day experience is designed for visitors who want to understand more than the scenery.</p><ul><li>Guided forest walk to Materuni Waterfall</li><li>Chagga coffee-making, from roasting and grinding to brewing</li><li>Time to learn about Materuni Village and Chagga traditions</li><li>Local lunch and cultural activities as confirmed with your host</li></ul><p>The published Materuni Waterfall & Chagga Culture experience is $45 per person. Direct group discounts are available from 4 guests and are calculated on the booking form. Your host confirms the final itinerary, inclusions and availability before payment. Private door-to-door return vehicle transfers can be added directly when booking: Moshi Town ($25/vehicle), Kilimanjaro Airport / KIA ($50/vehicle), or Arusha ($80/vehicle).</p><a class="button" href="/day-trips">Compare Materuni day trips</a></section>
 <section><h2>What to bring for the waterfall walk</h2><ul><li>Comfortable walking shoes with good grip</li><li>A light rain jacket, especially during wetter months</li><li>Water and sun protection</li><li>A small amount of cash for personal purchases, if needed</li></ul><p>Please tell your host about mobility needs, dietary requirements or allergies when you enquire. Swimming conditions at the waterfall can change; only enter the water if your guide confirms it is safe on the day.</p></section>
-<section><h2>Plan your Materuni Waterfall visit</h2><p>Send your preferred date, group size and pickup point. A local host will check availability and confirm the route, start time, inclusions and transport arrangements before you make payment. A booking request is not a confirmed reservation until your host replies.</p><div class="actions"><a class="button" href="/booking?source=materuni-waterfall-tour&experience=Waterfall%20%26%20Chagga%20Culture">Request a waterfall tour</a><a class="text-link" href="https://wa.me/255612068540?text=Hello%20Materuni%20Hosts%2C%20I%20would%20like%20to%20ask%20about%20a%20Materuni%20Waterfall%20tour." target="_blank" rel="noopener noreferrer">Ask a local host on WhatsApp</a></div></section>
+<section><h2>From the Journal</h2><p>Practical transport advice from our local guides: <a href="/journal/how-to-get-to-materuni" style="color:#1a3322;font-weight:700;text-decoration:underline">How to Get to Materuni Village from Moshi, Arusha and KIA</a>. Includes confirmed vehicle transfer prices and road route options.</p></section>
+<section><h2>Plan your Materuni Waterfall visit</h2><p>Send your preferred date, group size and pickup point. A local host will check availability and confirm the route, start time, inclusions and transport arrangements before you make payment. A booking request is not a confirmed reservation until your host replies.</p><div class="actions"><a class="button" href="/booking?source=materuni-waterfall-tour&experience=waterfall">Request a waterfall tour</a><a class="text-link" href="https://wa.me/255612068540?text=Hello%20Materuni%20Hosts%2C%20I%20would%20like%20to%20ask%20about%20a%20Materuni%20Waterfall%20tour." target="_blank" rel="noopener noreferrer">Ask a local host on WhatsApp</a></div></section>
 <section><h2>Stay longer in Materuni</h2><p>If you have more time, turn your visit into an overnight village experience with <a href="/camping">Materuni camping</a>. You can also explore <a href="/day-trips">Materuni day trips</a>, compare all <a href="/experiences">Materuni tours and experiences</a>, or create a personalised <a href="/itinerary">Materuni itinerary</a>.</p></section>
 </main>
+
+<!-- Sticky Mobile Booking Bar (T6) -->
+<div class="sticky-mobile-booking-bar" role="region" aria-label="Waterfall tour booking bar">
+  <div class="sticky-price">
+    <strong>$45 USD</strong>
+    <small>Per person · 7–8 hrs</small>
+  </div>
+  <div class="sticky-actions">
+    <a class="sticky-book-btn" href="/booking?experience=waterfall">Check availability</a>
+    <a class="sticky-wa-btn" href="https://wa.me/255612068540?text=Hello%20Materuni%20Hosts%2C%20I%20want%20to%20book%20the%20Waterfall%20Tour." target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 11.6a8.45 8.45 0 0 1-12.4 7.45L3.5 20.5l1.5-4.45a8.45 8.45 0 1 1 15.5-4.45Z"/><path d="M8.8 8.2c.25 2.9 2.1 5.2 5.15 6.15l1.2-1.3 2.05 1.05c-.15 1.5-1.2 2.35-2.65 2.35-3.95-.45-7.05-3.65-7.45-7.5 0-1.35.85-2.35 2.2-2.55l1.05 2.15-.95 1.05"/></svg>
+    </a>
+  </div>
+</div>
 <style>
 .landing{color:#242421}.landing .hero{padding:clamp(58px,9vw,112px) clamp(22px,8vw,110px);background:#1a3322;color:#faf7f2}.landing .hero-with-image{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,.9fr);gap:clamp(24px,5vw,64px);align-items:center}.landing .hero-with-image img{display:block;width:100%;height:clamp(250px,34vw,440px);object-fit:cover;object-position:center 45%;border-radius:12px;box-shadow:0 18px 42px #0003}.landing .hero h1{max-width:900px;margin:12px 0;font:600 clamp(42px,7vw,76px)/1.02 "Cormorant Garamond",serif;color:#faf7f2}.landing .hero p:not(.eyebrow){max-width:720px;color:#e6dfd3;line-height:1.85}.eyebrow{color:#c5a059;font:800 11px Manrope,sans-serif;letter-spacing:.16em}.landing section:not(.hero){max-width:950px;margin:auto;padding:42px 24px}.landing h2{font:600 clamp(30px,4vw,44px)/1.1 "Cormorant Garamond",serif;color:#1a3322}.landing p,.landing li{line-height:1.85;color:#586258}.landing li{margin:.4rem 0}.button{display:inline-block;padding:14px 22px;border-radius:999px;background:#c5a059;color:#1a3322;text-decoration:none;font:800 13px Manrope,sans-serif}.text-link{color:#1a3322;font-weight:800}.actions{display:flex;gap:18px;align-items:center;flex-wrap:wrap}@media(max-width:720px){.landing .hero-with-image{grid-template-columns:1fr}.landing .hero-with-image img{height:260px}}
 </style>

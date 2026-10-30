@@ -1,0 +1,373 @@
+---
+import SiteLayout from "../../layouts/SiteLayout.astro";
+import { Image } from "astro:assets";
+import { supabaseUrl } from "../../lib/supabase-public";
+
+const base = `${supabaseUrl}/storage/v1/object/public/materuni-images/`;
+const campingHero = base + "story_image/1791994219885-materuni-coffe-plantatio-tour.jpg";
+const communityImg = base + "story_image/1791995912146-materuni-community.jpg";
+
+const blogPostSchema = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Staying Overnight in Materuni: What to Expect from a Village Camp",
+  "description": "What it feels like to camp overnight in Materuni Village: campfire stories, traditional Chagga dinners, mountain stars, and waking up to fresh village coffee.",
+  "image": "https://materunihosts.com/social-preview.jpg",
+  "datePublished": "2026-10-10T08:00:00+03:00",
+  "dateModified": "2026-10-10T08:00:00+03:00",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Amani",
+      "jobTitle": "Forest Guide"
+    },
+    {
+      "@type": "Person",
+      "name": "Saidi Materu",
+      "jobTitle": "Lead Mountain Host"
+    }
+  ],
+  "publisher": {
+    "@type": "TourOperator",
+    "name": "Materuni Hosts",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://materunihosts.com/materuni-hosts-logo-round.svg"
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://materunihosts.com/journal/staying-overnight-in-materuni"
+  }
+};
+
+const faqList = [
+  {
+    q: "What camping gear is provided?",
+    a: "We provide high-grade waterproof safari tents, comfortable foam sleeping mattresses, clean sleeping bags, cotton liners, pillows, campfire chairs, and solar lighting. All equipment is fully set up by our crew before you arrive."
+  },
+  {
+    q: "Are there bathroom and washing facilities?",
+    a: "Yes. Our private village camp compound has dedicated flush toilets, clean handwashing stations, and warm bucket showers prepared upon request with water heated over the fire."
+  },
+  {
+    q: "Is it safe to camp in Materuni?",
+    a: "Yes, completely safe. Materuni is a peaceful, close-knit agricultural community. Our campsite is located on private host grounds with 24-hour local security and host presence throughout your stay."
+  }
+];
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqList.map((f) => ({
+    "@type": "Question",
+    "name": f.q,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": f.a
+    }
+  }))
+};
+---
+
+<SiteLayout
+  title="Staying Overnight in Materuni: What to Expect | Materuni Journal"
+  description="Experience village camping under Mount Kilimanjaro in Materuni. Detailed overview of tents, meals, campfires, and community culture from local hosts."
+  canonical="https://materunihosts.com/journal/staying-overnight-in-materuni"
+>
+  <script type="application/ld+json" set:html={JSON.stringify(blogPostSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+
+  <article class="article-wrap">
+    <header class="article-header">
+      <nav class="article-breadcrumb" aria-label="Breadcrumbs">
+        <a href="/">Home</a>
+        <span aria-hidden="true">/</span>
+        <a href="/journal">Journal</a>
+        <span aria-hidden="true">/</span>
+        <span>Stories</span>
+      </nav>
+
+      <span class="eyebrow">STORIES · VILLAGE HOSPITALITY</span>
+      <h1>Staying Overnight in Materuni: What to Expect</h1>
+
+      <div class="article-meta">
+        <span class="meta-authors">By <strong>Amani</strong> &amp; <strong>Saidi Materu</strong></span>
+        <span class="meta-dot">·</span>
+        <time datetime="2026-10-10">October 10, 2026</time>
+        <span class="meta-dot">·</span>
+        <span class="meta-reading-time">5 min read</span>
+      </div>
+    </header>
+
+    <figure class="article-featured-media">
+      <Image
+        src={campingHero}
+        alt="Mountain landscape during sunset over Materuni Village"
+        width={1200}
+        height={675}
+        format="webp"
+        quality={82}
+        loading="eager"
+        decoding="async"
+        class="featured-img"
+      />
+      <figcaption>Evening twilight settles across the banana and coffee groves in Materuni.</figcaption>
+    </figure>
+
+    <div class="article-body">
+      <p>Most tourists visit Materuni for a quick 3-hour dash to the waterfall before racing back down the mountain to Moshi hotels. But when the afternoon tour vans depart and twilight descends over the Kilimanjaro foothills, Materuni transforms into an enchanting, quiet sanctuary.</p>
+
+      <p>Here is what an authentic overnight stay with our team looks and feels like.</p>
+
+      <hr class="divider" />
+
+      <h2>The Campsite &amp; Tents</h2>
+      <p>Our campsite is nestled on a quiet hillside terrace overlooking the rolling valleys towards Moshi town. High-grade weatherproof safari dome tents are already pitched and equipped when you arrive, complete with thick foam mattresses, freshly laundered sleeping bags, pillows, and warm blankets.</p>
+
+      <h2>Dinner Around the Woodfire</h2>
+      <p>As the mountain night turns crisp, we gather around a crackling woodfire. Dinner is cooked fresh by local village mamas using vegetables harvested just hours earlier from surrounding shambas: sweet potato stew, fresh chapati, seasoned beans, local avocado salad, and tender chicken or vegetarian curries.</p>
+
+      <figure class="in-content-media">
+        <Image
+          src={communityImg}
+          alt="Local Chagga hosts welcoming visitors in Materuni"
+          width={900}
+          height={500}
+          format="webp"
+          quality={80}
+          loading="lazy"
+          decoding="async"
+        />
+        <figcaption>Warm village hospitality and evening fireside storytelling with your hosts.</figcaption>
+      </figure>
+
+      <h2>Kilimanjaro Stargazing &amp; Chagga Tales</h2>
+      <p>Far away from city streetlights, the southern night sky over Materuni is dazzling. You can trace the Milky Way arching directly over the peaks. Saidi and Amani share Chagga folk histories, ancient traditions of the mountain caves, and life stories passed down through generations.</p>
+
+      <h2>Morning Mist &amp; Sunrise Coffee</h2>
+      <p>Wake up naturally to the sound of tropical birds singing in the canopy. Before breakfast, step outside to see Mount Kilimanjaro's snowy Kibo summit glowing in the morning light. A steaming pot of freshly ground, woodfire-roasted Materuni coffee awaits you beside a hearty breakfast of fresh fruits, eggs, and pancakes.</p>
+
+      <hr class="divider" />
+
+      <h2>Frequently Asked Questions</h2>
+      <div class="faq-accordion">
+        {faqList.map((item) => (
+          <details class="faq-card">
+            <summary>
+              <span>{item.q}</span>
+              <span class="chevron" aria-hidden="true">+</span>
+            </summary>
+            <div class="faq-body">
+              <p>{item.a}</p>
+            </div>
+          </details>
+        ))}
+      </div>
+
+      <div class="booking-cta-card">
+        <div class="cta-inner">
+          <span class="eyebrow">SLEEP UNDER KILIMANJARO</span>
+          <h3>Reserve your night in Materuni Village.</h3>
+          <p>Includes tent setup, waterfall trek, coffee ceremony, firewood dinner, campfire stories, and breakfast ($101 USD / person).</p>
+          <div class="cta-actions">
+            <a class="gold-button" href="/booking?experience=camping">Check camping dates</a>
+            <a class="outline-button" href="https://wa.me/255612068540?text=Hello%20Materuni%20Hosts%2C%20I%20would%20like%20to%20plan%20an%20overnight%20stay." target="_blank" rel="noopener noreferrer">Chat on WhatsApp</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+</SiteLayout>
+
+<style>
+  .article-wrap {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: clamp(32px, 5vw, 64px) clamp(20px, 4vw, 32px);
+  }
+  .article-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #80652F;
+    margin-bottom: 24px;
+  }
+  .article-breadcrumb a {
+    color: #556056;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .article-header {
+    margin-bottom: 36px;
+  }
+  .article-header .eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #80652F;
+    font-weight: 700;
+    display: block;
+    margin-bottom: 12px;
+  }
+  .article-header h1 {
+    font: 600 clamp(32px, 4.5vw, 50px)/1.15 "Cormorant Garamond", Georgia, serif;
+    color: #1A3322;
+    margin: 0 0 20px;
+  }
+  .article-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: #6D716B;
+    border-top: 1px solid #E6DFD3;
+    padding-top: 16px;
+  }
+  .meta-authors strong {
+    color: #1A3322;
+  }
+  .article-featured-media {
+    margin: 0 0 44px;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .featured-img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  figcaption {
+    font-size: 13px;
+    color: #6D716B;
+    margin-top: 10px;
+    font-style: italic;
+  }
+  .article-body {
+    font-size: 17px;
+    line-height: 1.8;
+    color: #242421;
+  }
+  .article-body p {
+    margin: 0 0 24px;
+  }
+  .article-body h2 {
+    font: 600 clamp(24px, 3vw, 34px)/1.2 "Cormorant Garamond", Georgia, serif;
+    color: #1A3322;
+    margin: 40px 0 16px;
+  }
+  .article-body a {
+    color: #80652F;
+    text-decoration: underline;
+  }
+  .divider {
+    border: 0;
+    border-top: 1px solid #E6DFD3;
+    margin: 40px 0;
+  }
+  .in-content-media {
+    margin: 32px 0;
+  }
+  .in-content-media img {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+  }
+  .faq-accordion {
+    margin: 24px 0 44px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .faq-card {
+    background: #FFFFFF;
+    border: 1px solid #E6DFD3;
+    padding: 18px 22px;
+  }
+  .faq-card summary {
+    font: 600 18px/1.3 "Cormorant Garamond", Georgia, serif;
+    color: #1A3322;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    list-style: none;
+  }
+  .faq-card summary::-webkit-details-marker {
+    display: none;
+  }
+  .faq-card .chevron {
+    font-size: 20px;
+    color: #C5A059;
+    font-weight: 300;
+  }
+  .faq-card[open] .chevron {
+    transform: rotate(45deg);
+  }
+  .faq-body {
+    padding-top: 12px;
+    border-top: 1px solid #F0EAE1;
+    margin-top: 12px;
+    font-size: 14px;
+    line-height: 1.7;
+    color: #556056;
+  }
+  .faq-body p {
+    margin: 0;
+  }
+  .booking-cta-card {
+    background: #1A3322;
+    color: #FAF7F2;
+    padding: clamp(32px, 5vw, 48px);
+    margin: 48px 0;
+    border-radius: 4px;
+  }
+  .booking-cta-card .eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #C5A059;
+    font-weight: 700;
+    display: block;
+    margin-bottom: 10px;
+  }
+  .booking-cta-card h3 {
+    font: 600 clamp(24px, 3.2vw, 34px)/1.2 "Cormorant Garamond", Georgia, serif;
+    color: #FAF7F2;
+    margin: 0 0 12px;
+  }
+  .booking-cta-card p {
+    color: #E6DFD3;
+    font-size: 15px;
+    line-height: 1.65;
+    margin: 0 0 24px;
+  }
+  .cta-actions {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .gold-button {
+    background: #C5A059;
+    color: #1A3322 !important;
+    font: 700 13px/1 "Manrope", sans-serif;
+    padding: 14px 26px;
+    border-radius: 2px;
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none !important;
+  }
+  .outline-button {
+    background: transparent;
+    border: 1px solid #FAF7F2;
+    color: #FAF7F2 !important;
+    font: 700 13px/1 "Manrope", sans-serif;
+    padding: 14px 24px;
+    border-radius: 2px;
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none !important;
+  }
+</style>

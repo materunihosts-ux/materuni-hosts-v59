@@ -39,7 +39,7 @@ const bookingPreview = `${supabaseUrl}/storage/v1/object/public/materuni-images/
 <div class="field"><label for="email" data-i18n="booking_email_label">Email address</label><input id="email" type="email" autocomplete="email"></div><div class="field"><label for="phone" data-i18n="booking_phone_label">WhatsApp / phone</label><input id="phone" type="tel" autocomplete="tel"><small class="muted" data-i18n="booking_contact_hint">Provide at least one contact method: email or phone.</small></div><div class="field"><label for="language" data-i18n="booking_language_label">Preferred language</label><select id="language"><option value="English">English</option><option value="Spanish">Español</option><option value="French">Français</option><option value="German">Deutsch</option></select></div>
 <div class="field"><label for="pickup-origin" data-i18n="booking_transfer_label">Private transfer request (optional)</label><select id="pickup-origin"><option value="" data-i18n="booking_transfer_none">No transfer / self-arranged</option><option value="Moshi" data-i18n="booking_transfer_moshi">Pickup from Moshi town (+$25 / vehicle · 45–60 mins)</option><option value="Kilimanjaro International Airport (KIA)" data-i18n="booking_transfer_kia">Pickup from Kilimanjaro Airport / KIA (+$50 / vehicle · 1.5–2 hours)</option><option value="Arusha" data-i18n="booking_transfer_arusha">Pickup from Arusha city (+$80 / vehicle · 2.5–3 hours)</option><option value="Other">Other location (custom quote confirmed by host)</option></select><small class="muted" data-i18n="booking_transfer_note">Priced per vehicle for up to 6 passengers with luggage. Door-to-door pickup from your hotel, lodge or flight arrival. Your host will confirm the exact driver name and vehicle details with your booking.</small></div><div class="field"><label for="pickup" data-i18n="booking_pickup_label">Hotel, address or flight details</label><input id="pickup" placeholder="Hotel name, flight number or meeting point…" data-i18n-placeholder="booking_pickup_placeholder"></div>
 <div class="field full"><label for="notes" data-i18n="booking_notes_label">Special requests, dietary needs or accessibility notes</label><textarea id="notes" data-i18n-placeholder="booking_notes_placeholder"></textarea></div>
-<div class="field full"><div class="notice booking-terms-note" role="note"><strong data-i18n="booking_notice_title">A request is free — you pay nothing until you confirm.</strong><p data-i18n="booking_notice">Sending this form is 100% free with zero payment required today. Saidi Materu and our team will review your date, confirm availability and send your personalized itinerary, vehicle quote, and payment instructions within <strong>3–6 hours (guaranteed within 12 hours)</strong>. You pay nothing until you review and confirm those details.</p><p data-i18n="booking_notice_contact"><strong>Peace-of-mind guarantee:</strong> Free cancellation up to 48 hours before your experience with a 100% full refund. Free date rescheduling in case of severe mountain weather. Your booking is confirmed only when Materuni Hosts sends written confirmation.</p></div><button class="button" id="submit" type="submit" data-i18n="booking_submit_label">Send booking request</button><p id="feedback" aria-live="polite" class="muted"></p></div>
+<div class="field full"><div class="notice booking-terms-note" role="note"><strong data-i18n="booking_notice_title">A request is free — you pay nothing until you confirm.</strong><p data-i18n="booking_notice">Sending this form is 100% free with zero payment required today. Saidi Materu and our team will review your date, confirm availability and send your personalized itinerary, vehicle quote, and payment instructions within <strong>3–6 hours (guaranteed within 12 hours)</strong>. You pay nothing until you review and confirm those details.</p><p data-i18n="booking_notice_contact"><strong>Peace-of-mind guarantee:</strong> Free cancellation up to 48 hours before your experience with a 100% full refund. Free date rescheduling in case of severe mountain weather. Accepted payment methods: M-Pesa, card (Visa/Mastercard), cash (USD or TZS). A 20–30% deposit is payable via secure payment link after your host confirms availability.</p></div><button class="button" id="submit" type="submit" data-i18n="booking_submit_label">Send booking request</button><p id="feedback" aria-live="polite" class="muted"></p></div>
 </form></div></section>
 <script>
 // @ts-nocheck
@@ -97,7 +97,26 @@ async function loadExperienceCatalog(){
    select.append(option);
   });
   const wanted=(params.get("experience")||"").trim().toLowerCase();
-  const match=[...select.options].find(o=>o.text.split(" · $")[0].trim().toLowerCase()===wanted||o.value.trim().toLowerCase()===wanted);
+  const keyAliases={
+    coffee:"Traditional Coffee Experience",
+    "coffee-tour":"Traditional Coffee Experience",
+    waterfall:"Waterfall & Chagga Culture",
+    "waterfall-tour":"Waterfall & Chagga Culture",
+    cooking:"Traditional Chagga Cooking Class",
+    "cooking-class":"Traditional Chagga Cooking Class",
+    moshi:"Materuni & Moshi Town Tour",
+    "moshi-town":"Materuni & Moshi Town Tour",
+    rau:"Materuni & Rau Forest Experience",
+    "rau-forest":"Materuni & Rau Forest Experience",
+    camping:"Camping & Village Life",
+    overnight:"Camping & Village Life"
+  };
+  const targetKey=(keyAliases[wanted]||wanted).toLowerCase();
+  const match=[...select.options].find(o=>{
+    const val=o.value.trim().toLowerCase();
+    const txt=o.text.split(" · $")[0].trim().toLowerCase();
+    return val===targetKey||txt===targetKey||(wanted&&(val.includes(wanted)||txt.includes(wanted)));
+  });
   if(match) select.value=match.value;
   updateBookingEstimate();
  } catch(error) {

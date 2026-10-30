@@ -1,0 +1,669 @@
+---
+import SiteLayout from "../../layouts/SiteLayout.astro";
+import { Image } from "astro:assets";
+import { supabaseUrl } from "../../lib/supabase-public";
+
+const base = `${supabaseUrl}/storage/v1/object/public/materuni-images/`;
+const heroImage = base + "hero_image/1791995544192-materuni-waterfall.jpg";
+const trailImage = base + "waterfall_image/1791998303073-materuni-waterfall-hike.jpg";
+const villageImage = base + "story_image/1791601761441-q3iog8mni3r.jpg";
+
+const blogPostSchema = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "How to Get to Materuni Village from Moshi, Arusha and Kilimanjaro Airport",
+  "description": "Getting to Materuni Village: routes, travel times and transport options from Moshi, Arusha and Kilimanjaro Airport, from local Chagga hosts.",
+  "image": "https://materunihosts.com/social-preview.jpg",
+  "datePublished": "2026-10-23T08:00:00+03:00",
+  "dateModified": "2026-10-23T08:00:00+03:00",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Adrian Ally Mwaigwisya"
+    },
+    {
+      "@type": "Person",
+      "name": "Saidi Materu",
+      "jobTitle": "Lead Mountain Host & Founder",
+      "worksFor": {
+        "@type": "TourOperator",
+        "name": "Materuni Hosts"
+      }
+    }
+  ],
+  "publisher": {
+    "@type": "TourOperator",
+    "name": "Materuni Hosts",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://materunihosts.com/materuni-hosts-logo-round.svg"
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://materunihosts.com/journal/how-to-get-to-materuni"
+  }
+};
+
+const faqList = [
+  {
+    q: "How far is Materuni from Moshi?",
+    a: "About 15 km north of Moshi town, or 45–60 minutes by car. The first section is smooth tarmac through Rau and Mamboleo, followed by the final 6–7 km on an unpaved village dirt road climbing through banana and coffee groves."
+  },
+  {
+    q: "Can I visit Materuni without a tour?",
+    a: "You can travel to the village independently, but once you arrive in Materuni you will need a licensed local guide for the waterfall rainforest trail and village property. Booking directly with local Chagga hosts means your village entry, conservation fees, guide, and hot lunch are coordinated seamlessly before you arrive."
+  },
+  {
+    q: "Can a normal car reach Materuni?",
+    a: "Yes, in dry weather if driven slowly and with care. However, after moderate to heavy rain, the unpaved mountain stretch gets steep and muddy, making a 4x4 or a local driver with mountain road experience much safer and easier."
+  },
+  {
+    q: "Is Materuni a good day trip from Arusha?",
+    a: "Yes, but it makes for a full day of 5–6 hours on the road (about 2.5–3 hours each way). We recommend departing Arusha by 7:00 AM to beat traffic, or even better, booking an overnight stay in the village so you can explore without rushing."
+  },
+  {
+    q: "How much does host pickup cost compared to local taxis?",
+    a: "Our private host pickup from Moshi is $25 USD per vehicle (up to 4 passengers) for door-to-door transfer with an experienced village driver. Standard Moshi town taxis quote $25–$30 return with waiting time, while Arusha private vehicle transfers are $80 and Kilimanjaro Airport (KIA) pickups are $50."
+  }
+];
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqList.map((f) => ({
+    "@type": "Question",
+    "name": f.q,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": f.a
+    }
+  }))
+};
+---
+
+<SiteLayout
+  title="How to Get to Materuni from Moshi, Arusha & KIA (2026 Guide)"
+  description="Getting to Materuni Village: routes, travel times and transport options from Moshi, Arusha and Kilimanjaro Airport, from local Chagga hosts."
+  canonical="https://materunihosts.com/journal/how-to-get-to-materuni"
+>
+  <script type="application/ld+json" set:html={JSON.stringify(blogPostSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+
+  <article class="article-wrap">
+    <!-- Breadcrumb & Header -->
+    <header class="article-header">
+      <nav class="article-breadcrumb" aria-label="Breadcrumbs">
+        <a href="/">Home</a>
+        <span aria-hidden="true">/</span>
+        <a href="/journal">Journal</a>
+        <span aria-hidden="true">/</span>
+        <span>Getting here</span>
+      </nav>
+
+      <span class="eyebrow">GETTING HERE · 2026 GUIDE</span>
+      <h1>How to Get to Materuni Village from Moshi, Arusha and Kilimanjaro Airport</h1>
+
+      <div class="article-meta">
+        <span class="meta-authors">By <strong>Adrian Ally Mwaigwisya</strong> &amp; <strong>Saidi Materu</strong></span>
+        <span class="meta-dot">·</span>
+        <time datetime="2026-10-23">October 23, 2026</time>
+        <span class="meta-dot">·</span>
+        <span class="meta-reading-time">5 min read</span>
+      </div>
+    </header>
+
+    <!-- Lead Cover Image -->
+    <figure class="article-featured-media">
+      <Image
+        src={heroImage}
+        alt="The majestic 95-metre Materuni waterfall falling into a natural pool surrounded by rainforest"
+        width={1200}
+        height={675}
+        format="webp"
+        quality={82}
+        loading="eager"
+        decoding="async"
+        class="featured-img"
+      />
+      <figcaption>The 95-metre Materuni waterfall, situated in the verdant southern foothills of Mount Kilimanjaro.</figcaption>
+    </figure>
+
+    <!-- Post Body -->
+    <div class="article-body">
+      <div class="article-intro">
+        <p>Materuni Village sits about 15 km north of Moshi, high on the green southern slopes of Mount Kilimanjaro. It's home to the famous Materuni waterfall, historic Chagga coffee farms, and some of the friendliest villagers in Tanzania. It's also much easier to reach than many first-time visitors expect.</p>
+        <div class="quick-answer-card">
+          <strong>The quick answer:</strong>
+          <p>From Moshi town, Materuni is about <strong>45–60 minutes</strong> by car. From Arusha, allow <strong>2.5–3 hours</strong>, and from Kilimanjaro International Airport (KIA) about <strong>1.5–2 hours</strong>. The final 6–7 km climbs an unpaved mountain dirt road, so take it steadily.</p>
+        </div>
+        <p>Below, we break down every transport option with confirmed prices, travel times, and practical tips from the local hosts who drive this road every day.</p>
+      </div>
+
+      <hr class="divider" />
+
+      <h2>Getting to Materuni from Moshi</h2>
+      <p>Moshi is the natural gateway to Materuni. Most town lodges and hotels are 45–60 minutes away by road. The route heads north out of town towards Rau and Mamboleo on smooth tarmac, before climbing the last 6–7 km on a winding mountain dirt road shaded by banana trees and coffee plants.</p>
+
+      <!-- Transport Comparison Table -->
+      <div class="table-container">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th scope="col">Transport Option</th>
+              <th scope="col">Travel Time</th>
+              <th scope="col">Confirmed Cost</th>
+              <th scope="col">Best For</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Pickup by your Materuni host</strong></td>
+              <td>45–60 min</td>
+              <td><strong>$25 USD</strong> / vehicle (up to 4)</td>
+              <td>Easiest: door-to-door, driver knows the village road intimately</td>
+            </tr>
+            <tr>
+              <td><strong>Taxi from Moshi town</strong></td>
+              <td>45–60 min</td>
+              <td><strong>$25–$30 USD</strong> return (65k–80k TZS)</td>
+              <td>Couples and small groups who want flexibility</td>
+            </tr>
+            <tr>
+              <td><strong>Boda boda (motorbike taxi)</strong></td>
+              <td>40–50 min</td>
+              <td><strong>$8–$10 USD</strong> one-way (20k–25k TZS)</td>
+              <td>Solo travellers with light backpacks, in dry weather</td>
+            </tr>
+            <tr>
+              <td><strong>Dala dala (shared minibus) + boda</strong></td>
+              <td>1.5–2 hours</td>
+              <td><strong>$2–$3 USD</strong> total (5k–8k TZS)</td>
+              <td>Budget backpackers with flexible time to spare</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="pro-tip-box">
+        <strong>Host tip:</strong>
+        <p>If taking a private taxi from Moshi town, always agree on the full price—including driver waiting time and the return trip back to Moshi—before setting off. If it has rained recently, the clay dirt section can be slick, so a 4x4 or a local driver who knows the road turns is well worth it.</p>
+      </div>
+
+      <p><strong>Taking public transport?</strong> Dala dalas depart regularly from Moshi's central bus stand bound for Uru and Mamboleo. Ask the conductor to drop you at the Materuni turn-off. Boda boda riders wait at this junction for the final climb uphill. Send us a message on WhatsApp before you leave and we'll confirm the day's route details.</p>
+
+      <figure class="in-content-media">
+        <Image
+          src={trailImage}
+          alt="Hiking through the lush green banana and coffee trees on the way to Materuni"
+          width={900}
+          height={500}
+          format="webp"
+          quality={80}
+          loading="lazy"
+          decoding="async"
+        />
+        <figcaption>The scenic trail winds through traditional Chagga shamba farms and lush indigenous forest.</figcaption>
+      </figure>
+
+      <hr class="divider" />
+
+      <h2>Getting to Materuni from Arusha</h2>
+      <p>Materuni makes an outstanding full-day excursion from Arusha. Allow 2.5–3 hours each way: roughly 1.5–2 hours on the smooth dual carriageway highway to Moshi, followed by the climb up the mountain slopes.</p>
+      <ul>
+        <li><strong>Private transfer:</strong> The most comfortable and stress-free option. Leave Arusha by 7:00 AM to beat town traffic and make the most of your day. Your Materuni host can arrange a private return vehicle for <strong>$80 USD</strong> total.</li>
+        <li><strong>Express shuttle bus to Moshi, then taxi:</strong> Shared coaster shuttles run between Arusha and Moshi every 20 minutes throughout the day. From Moshi's drop-off point, switch to a host pickup or private town taxi.</li>
+      </ul>
+
+      <div class="pro-tip-box">
+        <strong>Host tip:</strong>
+        <p>If travelling all the way from Arusha, consider booking our <a href="/camping">overnight village stay</a>. Staying overnight lets you hike to the waterfall in peace, roasted coffee over campfire, and wake to fresh mountain views without having to make a 6-hour round-trip in a single day.</p>
+      </div>
+
+      <hr class="divider" />
+
+      <h2>Getting to Materuni from Kilimanjaro Airport (KIA)</h2>
+      <p>Kilimanjaro International Airport (KIA / JRO) sits conveniently between Arusha and Moshi, approximately 1.5–2 hours from Materuni by vehicle. That positioning makes Materuni an ideal first or final stop on a northern circuit Tanzania safari or mountain climb.</p>
+      <ul>
+        <li><strong>Arriving visitors:</strong> Book an airport pickup when submitting your <a href="/booking">booking request</a>. Share your flight number and your host will greet you outside arrivals with a welcoming nameboard. Airport pickup is <strong>$50 USD</strong>.</li>
+        <li><strong>Departing visitors:</strong> A relaxed morning walk in Materuni and an evening international flight match seamlessly. Make sure to depart the village at least 4 hours before your flight departure time to account for road conditions and airport check-in.</li>
+      </ul>
+
+      <figure class="in-content-media">
+        <Image
+          src={villageImage}
+          alt="Lush rainforest trail and river crossings in the Kilimanjaro foothills"
+          width={900}
+          height={500}
+          format="webp"
+          quality={80}
+          loading="lazy"
+          decoding="async"
+        />
+        <figcaption>Chagga forest path shaded by banana fronds, ferns, and towering indigenous trees.</figcaption>
+      </figure>
+
+      <hr class="divider" />
+
+      <h2>Before You Set Off: Local Preparation Tips</h2>
+      <ul class="checklist">
+        <li><strong>Start early:</strong> Morning light across the 95-metre cascade is spectacular, the air is crisp, and you'll return to Moshi comfortably ahead of afternoon commuter traffic.</li>
+        <li><strong>Check the seasonal weather:</strong> The long rains (March to May) and short rains (November) make mountain trails slippery. Sturdy shoes with traction are essential.</li>
+        <li><strong>Wear proper walking footwear:</strong> The 40-minute walk from the village entrance down to the waterfall has steep dirt steps and wet rocks. Flip-flops or smooth sneakers are not recommended.</li>
+        <li><strong>Carry cash in Tanzanian shillings (TZS):</strong> Mobile cellular signal is patchy along the upper road, and small village shops, boda riders, and tips require cash.</li>
+        <li><strong>Message your host before leaving:</strong> We will provide an exact WhatsApp live pin and meet you at the trailhead when you pull in.</li>
+      </ul>
+
+      <hr class="divider" />
+
+      <!-- FAQ Section -->
+      <h2>Frequently Asked Questions</h2>
+      <div class="faq-accordion">
+        {faqList.map((item) => (
+          <details class="faq-card">
+            <summary>
+              <span>{item.q}</span>
+              <span class="chevron" aria-hidden="true">+</span>
+            </summary>
+            <div class="faq-body">
+              <p>{item.a}</p>
+            </div>
+          </details>
+        ))}
+      </div>
+
+      <!-- Closing Booking Card (J2 spec) -->
+      <div class="booking-cta-card">
+        <div class="cta-inner">
+          <span class="eyebrow">PLAN YOUR VISIT</span>
+          <h3>Let us take care of the journey.</h3>
+          <p>When you book our <a href="/materuni-waterfall-tour">Materuni Waterfall &amp; Chagga Culture Day</a>, you can add door-to-door vehicle pickup from Moshi, Arusha, or Kilimanjaro Airport. Your host confirms timing and vehicle details before you pay a shilling.</p>
+          <div class="cta-actions">
+            <a class="gold-button" href="/booking?experience=waterfall">Check availability &amp; book</a>
+            <a class="outline-button" href="https://wa.me/255612068540?text=Hello%20Materuni%20Hosts%2C%20I%20have%20a%20question%20about%20transport%20to%20Materuni." target="_blank" rel="noopener noreferrer">Chat on WhatsApp</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Related articles -->
+      <div class="related-articles">
+        <h3>More from the Materuni Journal</h3>
+        <div class="related-grid">
+          <a class="related-card" href="/journal/how-traditional-chagga-coffee-is-made">
+            <span class="rel-category">Culture &amp; food</span>
+            <strong>How Traditional Chagga Coffee is Made from Bean to Cup</strong>
+            <small>4 min read →</small>
+          </a>
+          <a class="related-card" href="/journal/what-to-bring-on-materuni-waterfall-hike">
+            <span class="rel-category">Planning</span>
+            <strong>What to Bring on the Materuni Waterfall Hike</strong>
+            <small>4 min read →</small>
+          </a>
+        </div>
+      </div>
+    </div>
+  </article>
+</SiteLayout>
+
+<style>
+  .article-wrap {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: clamp(32px, 5vw, 64px) clamp(20px, 4vw, 32px);
+  }
+
+  .article-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #80652F;
+    margin-bottom: 24px;
+  }
+  .article-breadcrumb a {
+    color: #556056;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .article-breadcrumb a:hover {
+    color: #1A3322;
+  }
+
+  .article-header {
+    margin-bottom: 36px;
+  }
+  .article-header .eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #80652F;
+    font-weight: 700;
+    display: block;
+    margin-bottom: 12px;
+  }
+  .article-header h1 {
+    font: 600 clamp(32px, 4.5vw, 52px)/1.15 "Cormorant Garamond", Georgia, serif;
+    color: #1A3322;
+    margin: 0 0 20px;
+  }
+
+  .article-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: #6D716B;
+    border-top: 1px solid #E6DFD3;
+    padding-top: 16px;
+  }
+  .meta-authors strong {
+    color: #1A3322;
+  }
+
+  .article-featured-media {
+    margin: 0 0 44px;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .featured-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 4px;
+  }
+  figcaption {
+    font-size: 13px;
+    color: #6D716B;
+    margin-top: 10px;
+    font-style: italic;
+    line-height: 1.5;
+  }
+
+  .article-body {
+    font-size: 17px;
+    line-height: 1.8;
+    color: #242421;
+  }
+  .article-body p {
+    margin: 0 0 24px;
+  }
+  .article-body h2 {
+    font: 600 clamp(26px, 3.2vw, 36px)/1.2 "Cormorant Garamond", Georgia, serif;
+    color: #1A3322;
+    margin: 44px 0 16px;
+  }
+  .article-body h3 {
+    font: 600 clamp(20px, 2.5vw, 26px)/1.25 "Cormorant Garamond", Georgia, serif;
+    color: #1A3322;
+    margin: 32px 0 12px;
+  }
+  .article-body ul {
+    margin: 0 0 28px;
+    padding-left: 22px;
+  }
+  .article-body li {
+    margin-bottom: 10px;
+  }
+  .article-body a {
+    color: #80652F;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .article-body a:hover {
+    color: #1A3322;
+  }
+
+  .quick-answer-card {
+    background: #F4EFE6;
+    border-left: 4px solid #C5A059;
+    padding: 20px 24px;
+    margin: 28px 0;
+  }
+  .quick-answer-card strong {
+    display: block;
+    color: #1A3322;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+  }
+  .quick-answer-card p {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.65;
+    color: #2E3B31;
+  }
+
+  .pro-tip-box {
+    background: #EAF0EC;
+    border-left: 4px solid #1A3322;
+    padding: 18px 22px;
+    margin: 24px 0;
+  }
+  .pro-tip-box strong {
+    display: block;
+    color: #1A3322;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 6px;
+  }
+  .pro-tip-box p {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.6;
+    color: #242421;
+  }
+
+  .divider {
+    border: 0;
+    border-top: 1px solid #E6DFD3;
+    margin: 44px 0;
+  }
+
+  /* Responsive Table */
+  .table-container {
+    overflow-x: auto;
+    margin: 28px 0;
+    border: 1px solid #E6DFD3;
+  }
+  .comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    text-align: left;
+    background: #FFFFFF;
+  }
+  .comparison-table th {
+    background: #1A3322;
+    color: #FAF7F2;
+    padding: 14px 18px;
+    font: 600 13px "Manrope", sans-serif;
+    letter-spacing: 0.04em;
+  }
+  .comparison-table td {
+    padding: 14px 18px;
+    border-top: 1px solid #E6DFD3;
+    vertical-align: top;
+    color: #3E4A40;
+  }
+  .comparison-table tr:nth-child(even) td {
+    background: #FAF7F2;
+  }
+
+  .in-content-media {
+    margin: 36px 0;
+  }
+  .in-content-media img {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+  }
+
+  .checklist li {
+    margin-bottom: 12px;
+    line-height: 1.65;
+  }
+
+  /* FAQs */
+  .faq-accordion {
+    margin: 24px 0 44px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .faq-card {
+    background: #FFFFFF;
+    border: 1px solid #E6DFD3;
+    padding: 18px 22px;
+  }
+  .faq-card summary {
+    font: 600 18px/1.3 "Cormorant Garamond", Georgia, serif;
+    color: #1A3322;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    list-style: none;
+  }
+  .faq-card summary::-webkit-details-marker {
+    display: none;
+  }
+  .faq-card .chevron {
+    font-size: 20px;
+    color: #C5A059;
+    font-weight: 300;
+  }
+  .faq-card[open] .chevron {
+    transform: rotate(45deg);
+  }
+  .faq-body {
+    padding-top: 12px;
+    border-top: 1px solid #F0EAE1;
+    margin-top: 12px;
+    font-size: 14px;
+    line-height: 1.7;
+    color: #556056;
+  }
+  .faq-body p {
+    margin: 0;
+  }
+
+  /* Booking CTA Card */
+  .booking-cta-card {
+    background: #1A3322;
+    color: #FAF7F2;
+    padding: clamp(32px, 5vw, 48px);
+    margin: 48px 0;
+    border-radius: 4px;
+  }
+  .booking-cta-card .eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #C5A059;
+    font-weight: 700;
+    display: block;
+    margin-bottom: 10px;
+  }
+  .booking-cta-card h3 {
+    font: 600 clamp(24px, 3.2vw, 34px)/1.2 "Cormorant Garamond", Georgia, serif;
+    color: #FAF7F2;
+    margin: 0 0 12px;
+  }
+  .booking-cta-card p {
+    color: #E6DFD3;
+    font-size: 15px;
+    line-height: 1.65;
+    margin: 0 0 24px;
+  }
+  .booking-cta-card a {
+    color: inherit;
+  }
+  .cta-actions {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .gold-button {
+    background: #C5A059;
+    color: #1A3322 !important;
+    font: 700 13px/1 "Manrope", sans-serif;
+    padding: 14px 26px;
+    border-radius: 2px;
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none !important;
+    transition: background 0.2s ease;
+  }
+  .gold-button:hover {
+    background: #b6924a;
+  }
+  .outline-button {
+    background: transparent;
+    border: 1px solid #FAF7F2;
+    color: #FAF7F2 !important;
+    font: 700 13px/1 "Manrope", sans-serif;
+    padding: 14px 24px;
+    border-radius: 2px;
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none !important;
+    transition: all 0.2s ease;
+  }
+  .outline-button:hover {
+    background: #FAF7F2;
+    color: #1A3322 !important;
+  }
+
+  /* Related Articles */
+  .related-articles {
+    margin-top: 56px;
+    border-top: 1px solid #E6DFD3;
+    padding-top: 36px;
+  }
+  .related-articles h3 {
+    font: 600 24px "Cormorant Garamond", Georgia, serif;
+    color: #1A3322;
+    margin: 0 0 20px;
+  }
+  .related-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  @media (max-width: 640px) {
+    .related-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  .related-card {
+    background: #FFFFFF;
+    border: 1px solid #E6DFD3;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    text-decoration: none !important;
+    transition: border-color 0.2s ease;
+  }
+  .related-card:hover {
+    border-color: #C5A059;
+  }
+  .rel-category {
+    font: 700 10px "Manrope", sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #80652F;
+  }
+  .related-card strong {
+    font: 600 18px/1.3 "Cormorant Garamond", Georgia, serif;
+    color: #1A3322;
+  }
+  .related-card small {
+    font-weight: 700;
+    color: #80652F;
+    margin-top: auto;
+  }
+</style>
