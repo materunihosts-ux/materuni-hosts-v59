@@ -197,8 +197,8 @@ Deno.serve(async (request: Request) => {
       booking_date: bookingDate,
       guest_count: String(guests),
       booking_reference: reference,
-      host_name: String(Deno.env.get("HOST_CONTACT_NAME") || "Your local host").slice(0, 120),
-      reply_email: String(Deno.env.get("EMAIL_REPLY_TO") || "hello@materunihosts.com").slice(0, 254),
+      host_name: String(Deno.env.get("HOST_CONTACT_NAME") || "Saidi Materu & Local Hosts").slice(0, 120),
+      reply_email: String(Deno.env.get("EMAIL_REPLY_TO") || "materunihosts@gmail.com").slice(0, 254),
       whatsapp: String(Deno.env.get("PUBLIC_WHATSAPP_NUMBER") || "+255 612 068 540").slice(0, 40),
     };
     const renderReceivedTemplate = (value: unknown, fallback: string, maxLength: number) => {
@@ -208,17 +208,22 @@ Deno.serve(async (request: Request) => {
     const defaultReceivedBody = [
       "Hello {{guest_name}},",
       "",
-      "Thank you for sending your request to Materuni Hosts.",
+      "Thank you for your booking request with Materuni Hosts. We are delighted to welcome you to our Chagga community in the foothills of Mount Kilimanjaro.",
       "",
-      "Your request details:",
+      "Your requested experience details:",
       "Experience: {{experience}}",
       "Preferred date: {{booking_date}}",
-      "Group size: {{guest_count}}",
-      "Reference: {{booking_reference}}",
+      "Group size: {{guest_count}} guest(s)",
+      "Booking reference: {{booking_reference}}",
       "",
-      "Please note that this is a request received, not a confirmed reservation. Our team will check the arrangements and contact you to confirm availability and next steps.",
+      "Please note: This is an initial booking acknowledgement. Our local team is reviewing slot availability and guide arrangements, and will confirm your reservation shortly.",
       "",
-      "Questions? Reply to this email or WhatsApp {{whatsapp}}.",
+      "What happens next:",
+      "1. A host will review your request and confirm availability within a few hours.",
+      "2. You will receive an official booking confirmation voucher with your guide details and meeting location.",
+      "3. No payment is required right now; payment can be settled via secure link or on arrival.",
+      "",
+      "If you have any questions or need to arrange transport from Moshi or Arusha, simply reply to this email or message us on WhatsApp: {{whatsapp}}.",
       "",
       "Warm regards,",
       "{{host_name}}",
@@ -227,26 +232,61 @@ Deno.serve(async (request: Request) => {
     ].join("\n");
     const guestSubject = renderReceivedTemplate(
       receivedTemplate?.subject,
-      "We received your Materuni Hosts booking request",
+      "Booking Request Received · " + experience + " (" + reference + ")",
       240,
     ).replace(/[\r\n\x00-\x1F\x7F]+/g, " ").trim().slice(0, 180);
     const guestMessage = renderReceivedTemplate(receivedTemplate?.body, defaultReceivedBody, 12_000);
     const hasReservationStatus = /not\s+(?:yet\s+)?a\s+confirmed\s+reservation|not\s+confirmed/i.test(guestMessage);
     const hasNoPaymentNotice = /no\s+payment\s+(?:has\s+been|was)\s+taken|payment\s+has\s+not\s+been\s+taken/i.test(guestMessage);
     const disclaimerParts = [
-      ...(hasReservationStatus ? [] : ["This is a booking request, not a confirmed reservation."]),
-      ...(hasNoPaymentNotice ? [] : ["No payment has been taken."]),
+      ...(hasReservationStatus ? [] : ["This is a booking request awaiting host confirmation."]),
+      ...(hasNoPaymentNotice ? [] : ["No payment has been charged."]),
     ];
     const reservationDisclaimer = disclaimerParts.length
-      ? "<p><strong>" + escapeHtml(disclaimerParts.join(" ")) + "</strong></p>"
+      ? '<div style="background:#FAF7F2;border:1px solid #C5A059;padding:12px 16px;border-radius:6px;margin:18px 0;font-size:13px;color:#1A3322"><strong>Notice:</strong> ' + escapeHtml(disclaimerParts.join(" ")) + '</div>'
       : "";
+
+    const dateDigits = bookingDate.replace(/[^0-9]/g, "");
+    const calDate = dateDigits.length === 8 ? dateDigits : new Date().toISOString().slice(0, 10).replace(/[^0-9]/g, "");
+    const gCalUrl = "https://calendar.google.com/calendar/render?action=TEMPLATE&text=" + encodeURIComponent(experience + " - Materuni Hosts") + "&dates=" + calDate + "T060000Z/" + calDate + "T130000Z&details=" + encodeURIComponent("Booking Ref: " + reference + "\nLead Host: Saidi Materu (+255 612 068 540)\nLocation: Materuni Village, Moshi, Tanzania\nWeb: https://materunihosts.com") + "&location=" + encodeURIComponent("Materuni Cultural Tourism Centre, Materuni Village, Moshi, Kilimanjaro, Tanzania");
+
     const guestHtml = [
-      '<div style="font-family:Arial,sans-serif;line-height:1.6;color:#242421;max-width:620px;margin:auto">',
-      '<div style="background:#1A3322;color:#fff;padding:26px 30px"><div style="font-size:12px;letter-spacing:3px">MATERUNI HOSTS</div><h1 style="font-family:Georgia,serif;font-weight:500;margin:12px 0 0">Your Materuni experience</h1></div>',
-      '<div style="padding:28px 30px;background:#FAF7F2">',
-      guestMessage.split("\n").map((line) => line ? "<p>" + escapeHtml(line) + "</p>" : "<br>").join(""),
+      '<div style="font-family:Arial,Helvetica,sans-serif;line-height:1.7;color:#242421;max-width:620px;margin:20px auto;border:1px solid #E6DFD3;border-radius:12px;overflow:hidden;background:#fff;box-shadow:0 8px 30px rgba(26,51,34,0.08)">',
+      '<div style="background:#1A3322;padding:32px 30px;border-bottom:4px solid #C5A059;color:#FAF7F2">',
+      '<table style="width:100%;border-collapse:collapse"><tr>',
+      '<td style="vertical-align:middle">',
+      '<div style="font-size:11px;font-weight:700;letter-spacing:2px;color:#C5A059">MATERUNI HOSTS</div>',
+      '<h1 style="font-family:Georgia,serif;font-size:26px;font-weight:600;margin:6px 0 0;line-height:1.2;color:#FAF7F2">Booking Request Received</h1>',
+      '<div style="font-size:12px;color:#E6DFD3;margin-top:6px">Materuni Village · Kilimanjaro Foothills, Tanzania</div>',
+      '</td>',
+      '<td style="vertical-align:middle;text-align:right">',
+      '<div style="display:inline-block;background:#FAF7F2;padding:8px 14px;border-radius:6px;border:1px solid #C5A059;text-align:right">',
+      '<span style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#7A756B;display:block">REFERENCE</span>',
+      '<strong style="font-family:monospace;font-size:15px;color:#1A3322">' + escapeHtml(reference) + '</strong>',
+      '</div>',
+      '</td>',
+      '</tr></table>',
+      '</div>',
+      '<div style="padding:30px;background:#FAF7F2">',
+      '<table style="width:100%;border-collapse:collapse;background:#fff;border:1px solid #E6DFD3;border-radius:8px;margin-bottom:22px">',
+      '<tr><td style="padding:12px 16px;border-bottom:1px solid #E6DFD3;font-size:12px;color:#7A756B;width:120px">Experience:</td><td style="padding:12px 16px;border-bottom:1px solid #E6DFD3;font-size:14px;font-weight:700;color:#1A3322">' + escapeHtml(experience) + '</td></tr>',
+      '<tr><td style="padding:12px 16px;border-bottom:1px solid #E6DFD3;font-size:12px;color:#7A756B">Date requested:</td><td style="padding:12px 16px;border-bottom:1px solid #E6DFD3;font-size:14px;font-weight:700;color:#1A3322">' + escapeHtml(bookingDate) + '</td></tr>',
+      '<tr><td style="padding:12px 16px;border-bottom:1px solid #E6DFD3;font-size:12px;color:#7A756B">Guest(s):</td><td style="padding:12px 16px;border-bottom:1px solid #E6DFD3;font-size:14px;color:#1A3322">' + guests + ' Guest(s)</td></tr>',
+      '<tr><td style="padding:12px 16px;font-size:12px;color:#7A756B">Meeting point:</td><td style="padding:12px 16px;font-size:13px;color:#1A3322">Materuni Cultural Tourism Centre (GPS: -3.2505° S, 37.3912° E)</td></tr>',
+      '</table>',
+      guestMessage.split("\n").map((line) => line ? "<p style=\"margin:0 0 12px;line-height:1.7;font-size:14px;color:#333\">" + escapeHtml(line) + "</p>" : "<div style=\"height:6px\"></div>").join(""),
       reservationDisclaimer,
-      "</div></div>",
+      '<div style="margin:24px 0 10px;text-align:center">',
+      '<a href="' + gCalUrl + '" style="display:inline-block;background:#1A3322;color:#FAF7F2;padding:12px 20px;border-radius:4px;text-decoration:none;font-size:13px;font-weight:700;margin-right:10px">📅 Add to Google Calendar</a>',
+      '<a href="https://wa.me/255612068540?text=' + encodeURIComponent("Hello Materuni Hosts, I am checking my booking reference: " + reference) + '" style="display:inline-block;background:#C5A059;color:#1A3322;padding:12px 20px;border-radius:4px;text-decoration:none;font-size:13px;font-weight:700">💬 Chat on WhatsApp</a>',
+      '</div>',
+      '</div>',
+      '<div style="background:#E6DFD3;padding:20px 30px;color:#555;font-size:12px;border-top:1px solid #d9d1c4;text-align:center">',
+      '<strong>Materuni Hosts Cultural Tourism</strong> · Materuni Village, Moshi, Kilimanjaro, Tanzania<br>',
+      'WhatsApp: +255 612 068 540 · materunihosts@gmail.com · <a href="https://materunihosts.com" style="color:#1A3322;text-decoration:none;font-weight:700">materunihosts.com</a><br>',
+      '<em style="color:#80652F;font-family:Georgia,serif;font-style:italic;display:block;margin-top:6px">Come as a guest. Leave as a friend.</em>',
+      '</div>',
+      '</div>',
     ].join("");
     if (guestEmail) {
       await sendEmail(guestEmail, "guest_booking_acknowledgement", guestSubject, guestHtml, summary);

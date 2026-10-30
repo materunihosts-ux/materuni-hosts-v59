@@ -34,8 +34,9 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
     <button class="button" id="save-pdf" type="button" disabled>Print / Save as PDF</button>
     <button class="button button-secondary" id="share-whatsapp" type="button" disabled>Share via WhatsApp</button>
     <button class="button button-secondary" id="share-email" type="button" disabled>Prepare email</button>
+    <a class="button button-secondary" href="/admin/operations#documents">Advanced Document Studio (Vouchers &amp; Invoices) →</a>
    </div>
-   <p class="muted" style="margin-top:1rem">This workspace prepares proposals for sharing. It does not create a confirmed booking or save a permanent itinerary record.</p>
+   <p class="muted" style="margin-top:1rem">This workspace prepares proposals for sharing. For international-standard Booking.com vouchers, tax invoices, and Travelogic ledger documents, use the Advanced Document Studio above.</p>
   </div>
  </div>
 </section>
@@ -68,7 +69,7 @@ function render(){
  const date=new Date(d.date+"T12:00:00").toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"});
  const valid=d.valid?new Date(d.valid+"T12:00:00").toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"}):"";
  const preview=el("proposal-preview");preview.id="proposal-preview";
- preview.innerHTML='<div id="proposal-print"><div class="proposal-head"><div><div class="proposal-kicker">MATERUNI HOSTS · MOSHI · KILIMANJARO</div><h3>Personalised itinerary</h3><div class="proposal-meta"><span>Prepared for '+escapeHtml(d.name)+'</span><span>'+escapeHtml(date)+'</span><span>'+escapeHtml(d.guests)+' guest(s)</span></div></div><img src="https://materunihosts.com/materuni-hosts-logo-round.svg" alt="Materuni Hosts logo"></div><div class="proposal-body">'+escapeHtml(d.experiences)+'</div>'+(d.notes?'<h4>Important arrangements</h4><div class="proposal-body">'+escapeHtml(d.notes)+'</div>':'')+'<div class="proposal-price">Proposed total: '+escapeHtml(money)+'</div>'+(valid?'<p>Proposal valid until: '+escapeHtml(valid)+'</p>':'')+'<div class="proposal-foot">This is a travel proposal, not a confirmed reservation. Experiences and availability are subject to host confirmation. No payment has been taken.<br><strong>Materuni Hosts</strong> · Materuni Village, Moshi, Tanzania<br>WhatsApp: +255 612 068 540 · Come as a guest. Leave as a friend.</div></div>';
+ preview.innerHTML='<div id="proposal-print"><div class="proposal-head"><div><div class="proposal-kicker">MATERUNI HOSTS · MOSHI · KILIMANJARO</div><h3>Personalised itinerary</h3><div class="proposal-meta"><span>Prepared for '+escapeHtml(d.name)+'</span><span>'+escapeHtml(date)+'</span><span>'+escapeHtml(d.guests)+' guest(s)</span></div></div><img src="https://materunihosts.com/materuni-hosts-logo-round.svg" alt="Materuni Hosts logo"></div><div class="proposal-body">'+escapeHtml(d.experiences)+'</div>'+(d.notes?'<h4>Important arrangements</h4><div class="proposal-body">'+escapeHtml(d.notes)+'</div>':'')+'<div class="proposal-price">Proposed total: '+escapeHtml(money)+'</div>'+(valid?'<p>Proposal valid until: '+escapeHtml(valid)+'</p>':'')+'<div class="proposal-foot">This is a travel proposal, not a confirmed reservation. Experiences and availability are subject to host confirmation. No payment has been taken.<br><strong>Materuni Hosts</strong> · Materuni Village, Moshi, Tanzania<br>WhatsApp: +255 612 068 540 · materunihosts@gmail.com · Come as a guest. Leave as a friend.</div></div>';
  ["save-pdf","share-whatsapp","share-email"].forEach(id=>el(id).disabled=false);
  el("studio-feedback").textContent="Proposal preview updated. Review it before sharing.";
  return true;

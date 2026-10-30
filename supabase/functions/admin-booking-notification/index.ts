@@ -78,7 +78,7 @@ Deno.serve(async req=>{
   const mergeValues:Record<string,string>={
    guest_name:guest,partner_name:guest,experience:String(b.experience||"Materuni experience"),
    booking_date:String(b.booking_date||""),guest_count:String(count),booking_reference:String(reference),
-   host_name:"Your local host",reply_email:"hello@materunihosts.com",whatsapp:"+255 612 068 540"
+   host_name:"Saidi Materu & Local Hosts",reply_email:"materunihosts@gmail.com",whatsapp:"+255 612 068 540"
   };
   const merge=(value:string)=>value.replace(/\{\{([a-z_]+)\}\}/g,(_,key)=>mergeValues[key]??"");
   const subject=merge(String(savedTemplate?.subject||subjectFallback)).slice(0,180);
@@ -103,7 +103,46 @@ Deno.serve(async req=>{
    }
    logId=log.id;
   }
-  const html='<div style="font-family:Arial,sans-serif;line-height:1.7;color:#242421;max-width:620px;margin:auto"><header style="background:#1A3322;color:white;padding:26px"><div style="letter-spacing:3px;font-size:12px">MATERUNI HOSTS</div><h1 style="font-family:Georgia,serif;font-weight:500">Booking update</h1></header><main style="background:#FAF7F2;padding:28px">'+messageBody.split("\n").map(line=>line?'<p>'+esc(line)+'</p>':'').join('')+'</main></div>';
+   const eventTitle={confirmed:"Booking Confirmed",cancelled:"Booking Cancelled",rescheduled:"Booking Rescheduled"}[event]||"Booking Update";
+   const dateDigits=String(b.booking_date||"").replace(/[^0-9]/g,"");
+   const calDate=dateDigits.length===8?dateDigits:new Date().toISOString().slice(0,10).replace(/[^0-9]/g,"");
+   const gCalUrl="https://calendar.google.com/calendar/render?action=TEMPLATE&text="+encodeURIComponent(String(b.experience||"Materuni Experience")+" - Materuni Hosts")+"&dates="+calDate+"T060000Z/"+calDate+"T130000Z&details="+encodeURIComponent("Booking Ref: "+reference+"\nHost: Saidi Materu (+255 612 068 540)\nLocation: Materuni Village, Moshi, Tanzania")+"&location="+encodeURIComponent("Materuni Cultural Tourism Centre, Materuni Village, Moshi, Kilimanjaro, Tanzania");
+   const html='<div style="font-family:Arial,Helvetica,sans-serif;line-height:1.7;color:#242421;max-width:620px;margin:20px auto;border:1px solid #E6DFD3;border-radius:12px;overflow:hidden;background:#fff;box-shadow:0 8px 30px rgba(26,51,34,0.08)">'+
+    '<div style="background:#1A3322;padding:32px 30px;border-bottom:4px solid #C5A059;color:#FAF7F2">'+
+    '<table style="width:100%;border-collapse:collapse"><tr>'+
+    '<td style="vertical-align:middle">'+
+    '<div style="font-size:11px;font-weight:700;letter-spacing:2px;color:#C5A059">MATERUNI HOSTS</div>'+
+    '<h1 style="font-family:Georgia,serif;font-size:26px;font-weight:600;margin:6px 0 0;line-height:1.2;color:#FAF7F2">'+esc(eventTitle)+'</h1>'+
+    '<div style="font-size:12px;color:#E6DFD3;margin-top:6px">Materuni Village · Kilimanjaro Foothills, Tanzania</div>'+
+    '</td>'+
+    '<td style="vertical-align:middle;text-align:right">'+
+    '<div style="display:inline-block;background:#FAF7F2;padding:8px 14px;border-radius:6px;border:1px solid #C5A059;text-align:right">'+
+    '<span style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#7A756B;display:block">REFERENCE</span>'+
+    '<strong style="font-family:monospace;font-size:15px;color:#1A3322">'+esc(reference)+'</strong>'+
+    '</div>'+
+    '</td>'+
+    '</tr></table>'+
+    '</div>'+
+    '<div style="padding:30px;background:#FAF7F2">'+
+    '<table style="width:100%;border-collapse:collapse;background:#fff;border:1px solid #E6DFD3;border-radius:8px;margin-bottom:22px">'+
+    '<tr><td style="padding:12px 16px;border-bottom:1px solid #E6DFD3;font-size:12px;color:#7A756B;width:120px">Experience:</td><td style="padding:12px 16px;border-bottom:1px solid #E6DFD3;font-size:14px;font-weight:700;color:#1A3322">'+esc(b.experience)+'</td></tr>'+
+    '<tr><td style="padding:12px 16px;border-bottom:1px solid #E6DFD3;font-size:12px;color:#7A756B">Date & Time:</td><td style="padding:12px 16px;border-bottom:1px solid #E6DFD3;font-size:14px;font-weight:700;color:#1A3322">'+esc(b.booking_date)+' · '+esc(time)+(endTime?'–'+esc(endTime):'')+' (EAT)</td></tr>'+
+    '<tr><td style="padding:12px 16px;border-bottom:1px solid #E6DFD3;font-size:12px;color:#7A756B">Guests:</td><td style="padding:12px 16px;border-bottom:1px solid #E6DFD3;font-size:14px;color:#1A3322">'+count+' Guest(s)</td></tr>'+
+    '<tr><td style="padding:12px 16px;border-bottom:1px solid #E6DFD3;font-size:12px;color:#7A756B">Status:</td><td style="padding:12px 16px;border-bottom:1px solid #E6DFD3;font-size:14px;font-weight:700;color:'+(event==='cancelled'?'#8B342D':'#1A3322')+'">'+esc(expected)+'</td></tr>'+
+    '<tr><td style="padding:12px 16px;font-size:12px;color:#7A756B">Meeting point:</td><td style="padding:12px 16px;font-size:13px;color:#1A3322">Materuni Cultural Tourism Centre (GPS: -3.2505° S, 37.3912° E)</td></tr>'+
+    '</table>'+
+    messageBody.split("\n").map(line=>line?'<p style="margin:0 0 12px;line-height:1.7;font-size:14px;color:#333">'+esc(line)+'</p>':'<div style="height:6px"></div>').join('')+
+    (event!=="cancelled"?'<div style="margin:24px 0 10px;text-align:center">'+
+    '<a href="'+gCalUrl+'" style="display:inline-block;background:#1A3322;color:#FAF7F2;padding:12px 20px;border-radius:4px;text-decoration:none;font-size:13px;font-weight:700;margin-right:10px">📅 Add to Calendar</a>'+
+    '<a href="https://wa.me/255612068540?text='+encodeURIComponent("Hello Materuni Hosts, I have a question regarding my booking reference: " + reference)+'" style="display:inline-block;background:#C5A059;color:#1A3322;padding:12px 20px;border-radius:4px;text-decoration:none;font-size:13px;font-weight:700">💬 Chat on WhatsApp</a>'+
+    '</div>':'')+
+    '</div>'+
+    '<div style="background:#E6DFD3;padding:20px 30px;color:#555;font-size:12px;border-top:1px solid #d9d1c4;text-align:center">'+
+    '<strong>Materuni Hosts Cultural Tourism</strong> · Materuni Village, Moshi, Kilimanjaro, Tanzania<br>'+
+    'WhatsApp: +255 612 068 540 · materunihosts@gmail.com · <a href="https://materunihosts.com" style="color:#1A3322;text-decoration:none;font-weight:700">materunihosts.com</a><br>'+
+    '<em style="color:#80652F;font-family:Georgia,serif;font-style:italic;display:block;margin-top:6px">Come as a guest. Leave as a friend.</em>'+
+    '</div>'+
+    '</div>';
   try{
    const response=await fetch("https://api.resend.com/emails",{method:"POST",headers:{Authorization:"Bearer "+apiKey,"Content-Type":"application/json"},body:JSON.stringify({from,to:[recipient],subject,html}),signal:AbortSignal.timeout(10000)});
    const result=await response.json().catch(()=>({}));

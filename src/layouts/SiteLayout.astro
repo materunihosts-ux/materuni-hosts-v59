@@ -78,6 +78,26 @@ const structuredData = {
   "description": "Materuni waterfall hikes, Chagga coffee and cooking experiences, Moshi town tours, Rau Forest nature walks and overnight village stays hosted by local Chagga hosts near Moshi, Tanzania.",
   "telephone": "+255612068540",
   "email": "materunihosts@gmail.com",
+  "sameAs": [
+    "https://www.tripadvisor.com/34765809",
+    "https://g.page/r/CXy6M_Suiip9EBM/review",
+    "https://www.facebook.com/share/1VTNWPbqcc/"
+  ],
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": -3.2505,
+    "longitude": 37.3912
+  },
+  "priceRange": "$$ - $$$",
+  "currenciesAccepted": "USD, TZS, EUR",
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+      "opens": "07:00",
+      "closes": "19:00"
+    }
+  ],
   "hasMap": "https://www.google.com/maps/search/?api=1&query=Materuni%20Hosts%20-%20Waterfall%20Tours%20%26%20Village%20Camping%2C%20Materuni%20Village%2C%20Moshi%2C%20Tanzania",
   "contactPoint": {
     "@type": "ContactPoint",
@@ -106,6 +126,27 @@ const structuredData = {
     "name": "Materuni Village, Moshi, Kilimanjaro, Tanzania"
   }
 };
+
+const websiteData = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": "https://materunihosts.com/#website",
+  "name": "Materuni Hosts",
+  "url": "https://materunihosts.com/",
+  "inLanguage": ["en", "es", "fr", "de"],
+  "description": "Authentic local Chagga cultural experiences, Materuni waterfall hikes, and coffee tours near Moshi, Kilimanjaro, Tanzania.",
+  "publisher": {
+    "@id": "https://materunihosts.com/#localbusiness"
+  },
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "https://materunihosts.com/experiences?search={search_term_string}"
+    },
+    "query-input": "required name=search_term_string"
+  }
+};
 ---
 <!doctype html>
 <html lang="en">
@@ -115,7 +156,31 @@ const structuredData = {
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 <link rel="preload" as="style" href={globalStyles} /><link rel="stylesheet" href={globalStyles} />
-<title>{title}</title><meta name="description" content={description} /><meta name="theme-color" content="#1A3322" /><link rel="canonical" href={canonical} />{!shouldNoindex && <link rel="alternate" hreflang="en" href={canonical} />}<meta property="og:type" content="website" /><meta property="og:site_name" content="Materuni Hosts" /><meta property="og:title" content={title} /><meta property="og:description" content={description} /><meta property="og:url" content={canonical} /><meta property="og:image" content={socialImage.startsWith("http") ? socialImage : `https://materunihosts.com${socialImage.startsWith("/") ? "" : "/"}${socialImage}`} /><meta property="og:locale" content="en_TZ" /><meta property="og:image:alt" content="Materuni Hosts authentic village experiences in Materuni, Tanzania" /><meta name="twitter:card" content="summary_large_image" /><meta name="twitter:title" content={title} /><meta name="twitter:description" content={description} /><meta name="twitter:image" content={socialImage.startsWith("http") ? socialImage : `https://materunihosts.com${socialImage.startsWith("/") ? "" : "/"}${socialImage}`} />{!shouldNoindex && <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />}{!shouldNoindex && <script type="application/ld+json" set:html={JSON.stringify(webPageData)} />}{!shouldNoindex && <script type="application/ld+json" set:html={JSON.stringify(breadcrumbData)} />}{shouldNoindex && <meta name="robots" content="noindex,nofollow" />}{preloadImage && <link rel="preload" as="image" href={preloadImage} fetchpriority="high" />}
+<title>{title}</title><meta name="description" content={description} /><meta name="theme-color" content="#1A3322" /><link rel="canonical" href={canonical} />
+{shouldNoindex ? (
+  <meta name="robots" content="noindex,nofollow" />
+) : (
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+)}
+<meta name="geo.region" content="TZ-09" />
+<meta name="geo.placename" content="Moshi, Kilimanjaro, Tanzania" />
+<meta name="geo.position" content="-3.2505;37.3912" />
+<meta name="ICBM" content="-3.2505, 37.3912" />
+{!shouldNoindex && (
+  <>
+    <link rel="alternate" hreflang="en" href={localizedUrl("en")} />
+    <link rel="alternate" hreflang="es" href={localizedUrl("es")} />
+    <link rel="alternate" hreflang="fr" href={localizedUrl("fr")} />
+    <link rel="alternate" hreflang="de" href={localizedUrl("de")} />
+    <link rel="alternate" hreflang="x-default" href={canonicalOverride ? new URL(canonicalOverride, "https://materunihosts.com").toString() : new URL(Astro.url.pathname, "https://materunihosts.com").toString()} />
+  </>
+)}
+<meta property="og:type" content="website" /><meta property="og:site_name" content="Materuni Hosts" /><meta property="og:title" content={title} /><meta property="og:description" content={description} /><meta property="og:url" content={canonical} /><meta property="og:image" content={socialImage.startsWith("http") ? socialImage : `https://materunihosts.com${socialImage.startsWith("/") ? "" : "/"}${socialImage}`} /><meta property="og:locale" content="en_TZ" /><meta property="og:image:alt" content="Materuni Hosts authentic village experiences in Materuni, Tanzania" /><meta name="twitter:card" content="summary_large_image" /><meta name="twitter:title" content={title} /><meta name="twitter:description" content={description} /><meta name="twitter:image" content={socialImage.startsWith("http") ? socialImage : `https://materunihosts.com${socialImage.startsWith("/") ? "" : "/"}${socialImage}`} />
+{!shouldNoindex && <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />}
+{!shouldNoindex && <script type="application/ld+json" set:html={JSON.stringify(websiteData)} />}
+{!shouldNoindex && <script type="application/ld+json" set:html={JSON.stringify(webPageData)} />}
+{!shouldNoindex && <script type="application/ld+json" set:html={JSON.stringify(breadcrumbData)} />}
+{preloadImage && <link rel="preload" as="image" href={preloadImage} fetchpriority="high" />}
 <link rel="icon" type="image/svg+xml" href="/materuni-hosts-logo-round.svg" /><link rel="preconnect" href={supabaseUrl} crossorigin />
 
 <style is:global>

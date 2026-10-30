@@ -245,6 +245,18 @@ async function loadBookings() {
         });
         actions.append(reschedule);
       }
+      const docBtn = document.createElement("a");
+      docBtn.className = "button button-secondary";
+      docBtn.textContent = "Voucher / Invoice";
+      docBtn.href = "/admin/operations?ref=" + encodeURIComponent(booking.booking_reference || "") +
+        "&name=" + encodeURIComponent(booking.guest_name || "") +
+        "&email=" + encodeURIComponent(booking.guest_email || "") +
+        "&phone=" + encodeURIComponent(booking.guest_phone || "") +
+        "&date=" + encodeURIComponent(booking.booking_date || "") +
+        "&pax=" + encodeURIComponent((booking.guest_count || 1) + " Guests") +
+        "&experience=" + encodeURIComponent(booking.experience || "") +
+        "&time=" + encodeURIComponent(booking.start_time || "09:00 AM") + "#documents";
+      actions.append(docBtn);
       const bookingDate = String(booking.booking_date || "");
       const todayString = localDate(new Date());
       if (booking.booking_status === "Cancelled" || (bookingDate && bookingDate < todayString)) {
