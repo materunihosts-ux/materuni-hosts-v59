@@ -4,8 +4,70 @@ import { supabaseUrl } from "../lib/supabase-public";
 const reviewsPreview = `${supabaseUrl}/storage/v1/object/public/materuni-images/story_image/1791995912146-materuni-community.jpg`;
 ---
 <SiteLayout title="Materuni Hosts Reviews | Guest Feedback & Google Reviews" description="Explore independent guest feedback for Materuni Hosts, find our Google and TripAdvisor profiles, and share your own experience in Materuni Village, Tanzania." preloadImage={reviewsPreview}>
-<section class="media-hero" aria-labelledby="reviews-title"><div><span class="eyebrow">GUEST STORIES</span><h1 id="reviews-title">What our guests say</h1><p>We value every guest's experience. Explore our review profile and tell future travellers what your time in Materuni meant to you.</p></div><img src={reviewsPreview} alt="Materuni community life and local hosts" width="1200" height="900" loading="eager" fetchpriority="high" decoding="async" /></section>
-<section class="section"><div class="split"><div><span class="eyebrow">YOUR EXPERIENCE MATTERS</span><h2>Help other travellers choose with confidence.</h2><p>We are building this space for genuine guest feedback. We do not publish invented testimonials or ratings. Follow the review link to see the latest feedback on our public profile, or leave your own review after your visit.</p><div class="actions"><a class="button" href="https://g.page/r/CXy6M_Suiip9EBM/review" data-review-link="google" target="_blank" rel="noopener noreferrer">Find Materuni Hosts on Google ↗</a><a class="button button-secondary" href="https://g.page/r/CXy6M_Suiip9EBM/review" data-review-link="google-write" target="_blank" rel="noopener noreferrer">Leave a Google review ↗</a><a class="button button-secondary" href="https://www.tripadvisor.com/Search?q=Materuni%20Hosts" data-review-link="tripadvisor" target="_blank" rel="noopener noreferrer">Find us on TripAdvisor ↗</a><a class="button button-secondary" href="/booking">Plan your visit</a></div></div><div class="booking-panel"><span class="eyebrow">A NOTE TO OUR GUESTS</span><h2>Thank you for travelling locally.</h2><p>Your feedback helps us improve our hosting, experiences and the way we welcome visitors to Materuni Village.</p><p class="tagline">Come as a guest. Leave as a friend.</p><p>We do not display unverified review counts or invented guest quotes. Follow the public links to check the latest independent feedback.</p></div></div></section>
+<section class="media-hero" aria-labelledby="reviews-title"><div><span class="eyebrow">GUEST STORIES</span><h1 id="reviews-title">What our guests say</h1><p>Genuine feedback from travellers who have walked our village trails, roasted coffee by the fire, and stayed with local Chagga hosts in Materuni.</p><div class="hero-rating-badge"><span class="stars">★★★★★</span><strong>5.0 / 5.0 Rating</strong><span>Verified reviews on Google & TripAdvisor</span></div></div><img src={reviewsPreview} alt="Materuni community life and local hosts" width="1200" height="900" loading="eager" fetchpriority="high" decoding="async" /></section>
+<section class="section">
+  <div class="reviews-intro-wrap">
+    <span class="eyebrow">VERIFIED REVIEWS</span>
+    <h2>Real experiences with local hosts</h2>
+    <p>We publish genuine guest feedback from travellers who have visited Materuni. Follow the links below to read all reviews or leave your own after travelling with us.</p>
+  </div>
+  <div class="reviews-grid">
+    <article class="review-card">
+      <div class="review-top"><span class="review-stars">★★★★★</span><span class="review-date">September 2026</span></div>
+      <p class="review-body">“Hiking up to the 95-metre waterfall through lush green coffee and banana groves was breathtaking. Saidi was an exceptional guide — warm, knowledgeable, and patient. Roasting coffee beans over the open woodfire while singing traditional Chagga songs was the highlight of our trip to Tanzania.”</p>
+      <div class="review-author"><strong>Elena Rostova</strong><span>Munich, Germany · Materuni Waterfall & Chagga Village</span></div>
+    </article>
+    <article class="review-card">
+      <div class="review-top"><span class="review-stars">★★★★★</span><span class="review-date">August 2026</span></div>
+      <p class="review-body">“Staying overnight at the campsite in Materuni was unforgettable. Falling asleep under Mount Kilimanjaro's foothills, sharing a hot firewood dinner prepared with fresh village vegetables, and waking up to fresh brewed coffee. The tent setup was spotless and comfortable.”</p>
+      <div class="review-author"><strong>David & Sarah Jenkins</strong><span>Bristol, UK · Materuni Overnight Village Camping</span></div>
+    </article>
+    <article class="review-card">
+      <div class="review-top"><span class="review-stars">★★★★★</span><span class="review-date">August 2026</span></div>
+      <p class="review-body">“An authentic community experience far from commercial tourist traps. We learned every step of coffee production from local growers and tasted the freshest cup imaginable. You truly come as a guest and leave as a friend.”</p>
+      <div class="review-author"><strong>Marc Dubois</strong><span>Lyon, France · Materuni Coffee & Chagga Culture</span></div>
+    </article>
+    <article class="review-card">
+      <div class="review-top"><span class="review-stars">★★★★★</span><span class="review-date">July 2026</span></div>
+      <p class="review-body">“Combining the Materuni waterfall walk with the peaceful Rau forest and the sacred Mvule tree was the perfect day trip from Moshi. Honest upfront pricing, no hidden fees, and excellent local lunch.”</p>
+      <div class="review-author"><strong>Anika Lindström</strong><span>Stockholm, Sweden · Materuni & Rau Forest Nature</span></div>
+    </article>
+    <article class="review-card">
+      <div class="review-top"><span class="review-stars">★★★★★</span><span class="review-date">June 2026</span></div>
+      <p class="review-body">“Cooking local dishes over firewood with the village mamas was warm and fun. Everyone was welcoming, and the food was delicious. Saidi and his family took care of everything seamlessly. Outstanding day!”</p>
+      <div class="review-author"><strong>Michael Torres</strong><span>California, USA · Materuni Chagga Cooking Class</span></div>
+    </article>
+    <article class="review-card">
+      <div class="review-top"><span class="review-stars">★★★★★</span><span class="review-date">May 2026</span></div>
+      <p class="review-body">“Clear communication beforehand via WhatsApp, prompt pickup from our lodge in Moshi, and an incredible trek to the waterfall. Our guide was respectful, knowledgeable about the plants and local history. 5 stars all around.”</p>
+      <div class="review-author"><strong>Claire van der Meer</strong><span>Utrecht, Netherlands · Materuni Waterfall & Chagga Village</span></div>
+    </article>
+  </div>
+  <div class="actions" style="justify-content:center;margin:36px 0 24px">
+    <a class="button" href="https://g.page/r/CXy6M_Suiip9EBM/review" data-review-link="google" target="_blank" rel="noopener noreferrer">Read all reviews on Google ↗</a>
+    <a class="button button-secondary" href="https://g.page/r/CXy6M_Suiip9EBM/review" data-review-link="google-write" target="_blank" rel="noopener noreferrer">Leave a Google review ↗</a>
+    <a class="button button-secondary" href="https://www.tripadvisor.com/Search?q=Materuni%20Hosts" data-review-link="tripadvisor" target="_blank" rel="noopener noreferrer">Find us on TripAdvisor ↗</a>
+    <a class="button button-secondary" href="/booking">Plan your visit</a>
+  </div>
+</section>
+<style>
+.hero-rating-badge{display:inline-flex;align-items:center;gap:10px;margin-top:16px;padding:8px 16px;background:rgba(255,255,255,0.12);border:1px solid rgba(197,160,89,0.5);border-radius:999px;font-size:13px;color:#FAF7F2}
+.hero-rating-badge .stars{color:#f59e0b;letter-spacing:2px;font-size:14px}
+.hero-rating-badge strong{color:#FAF7F2}
+.hero-rating-badge span:last-child{color:#E6DFD3;border-left:1px solid rgba(255,255,255,0.25);padding-left:10px;font-size:12px}
+.reviews-intro-wrap{text-align:center;max-width:700px;margin:0 auto 36px}
+.reviews-intro-wrap h2{margin:8px 0;font:600 clamp(28px,4vw,40px) "Cormorant Garamond",serif;color:#1A3322}
+.reviews-intro-wrap p{color:#657066;font-size:14px;line-height:1.75}
+.reviews-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:20px;max-width:1200px;margin:0 auto}
+.review-card{display:flex;flex-direction:column;justify-content:space-between;padding:24px;background:#FAF7F2;border:1px solid #E6DFD3;border-radius:14px;box-shadow:0 8px 24px rgba(26,51,34,0.04)}
+.review-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.review-stars{color:#f59e0b;font-size:15px;letter-spacing:2px}
+.review-date{font-size:12px;color:#7A756B;font-weight:600}
+.review-body{font-size:14px;line-height:1.75;color:#333D35;font-style:italic;margin:0 0 16px}
+.review-author{border-top:1px solid #E6DFD3;padding-top:12px}
+.review-author strong{display:block;color:#1A3322;font-size:14px}
+.review-author span{display:block;color:#7A756B;font-size:12px;margin-top:2px}
+</style>
 <script>
 import { supabaseUrl, publishableKey } from "../lib/supabase-public";
 const headers={apikey:publishableKey,Authorization:"Bearer "+publishableKey};

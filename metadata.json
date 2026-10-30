@@ -1,0 +1,8 @@
+{
+  "name": "Materuni Hosts",
+  "description": "Authentic local Kilimanjaro cultural, coffee, and waterfall experiences in Materuni, Tanzania.",
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ],
+  "permissions": []
+}

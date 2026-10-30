@@ -6,24 +6,32 @@ const termsPreview = `${supabaseUrl}/storage/v1/object/public/materuni-images/wa
 <SiteLayout title="Booking Terms & Conditions | Materuni Hosts" description="Review Materuni Hosts booking requests, per-person prices, availability, payment arrangements, transport and practical conditions before your visit." preloadImage={termsPreview}>
 <section class="page-hero"><span class="eyebrow" data-i18n="terms_eyebrow">BEFORE YOU BOOK</span><h1 data-i18n="terms_title">Simple, clear booking terms.</h1><p data-i18n="terms_intro">What to expect when planning a Materuni experience with a local host.</p></section>
 <section class="section legal-copy">
-  <h2 data-i18n="terms_booking_title">Booking requests</h2>
-  <p data-i18n="terms_booking_body">Submitting a booking form sends a request. It does not create a confirmed reservation. Your local host will review the requested experience, date, group size and availability, then contact you to confirm the arrangements.</p>
-  <h2 data-i18n="terms_prices_title">Prices</h2>
-  <p data-i18n="terms_prices_body">Published experience prices are shown in US dollars and are per person. The total depends on the selected experience and number of guests. Your host will confirm the final details before the booking is accepted.</p>
-  <h2 data-i18n="terms_transport_title">Transport and pickup</h2>
-  <p data-i18n="terms_transport_body">Pickup and transport arrangements must be discussed and confirmed separately. Please provide your hotel or preferred pickup point when you enquire. Do not assume transport is included unless your host has confirmed it in writing.</p>
-  <h2 data-i18n="terms_payment_title">Payment</h2>
-  <p data-i18n="terms_payment_body">There is no live card payment on this website at present. After your host confirms the booking details, you will receive the applicable payment instructions. Do not send payment to an account that has not been confirmed by Materuni Hosts.</p>
-  <h2 data-i18n="terms_safety_title">Experience conditions and safety</h2>
-  <p data-i18n="terms_safety_body">Some experiences include walking on uneven, wet or steep natural paths. Wear suitable footwear and follow your guide’s instructions. Waterfall and swimming conditions can change; swimming is only appropriate when local conditions and your guide permit it. Tell us in advance about mobility, health, dietary or other practical requirements so we can discuss what is suitable.</p>
-  <h2 data-i18n="terms_weather_title">Weather and trail conditions</h2>
-  <p data-i18n="terms_weather_body">Rain, trail conditions and water levels can affect the waterfall walk and other outdoor activities. For safety, your guide may recommend adjusting the route, changing the activity or rescheduling. Before you accept a change, your host will explain the available options and any difference in price. No alternative activity should be treated as agreed until you have accepted it.</p>
-  <h2 data-i18n="terms_deposit_title">Deposits and payment timing</h2>
-  <p data-i18n="terms_deposit_body">Submitting an enquiry does not require a deposit or payment. If a deposit is required for your confirmed booking, your host will state the amount, due date, payment method and refund conditions in writing with the final quote. Do not pay until you have reviewed those terms and received written booking confirmation.</p>
-  <h2 data-i18n="terms_children_title">Children and young guests</h2>
-  <p data-i18n="terms_children_body">Please include the ages of any children in your enquiry. A responsible adult must accompany guests under 18. The waterfall trail, uneven ground, weather and overnight camping arrangements may not suit every age; your host will discuss suitability and any practical limits before accepting the booking.</p>
-  <h2 data-i18n="terms_changes_title">Changes and cancellations</h2>
-  <p data-i18n="terms_changes_body">If you need to change or cancel a confirmed booking, contact your host as soon as possible and include your booking reference. Changes are subject to availability and any applicable costs will be explained before you agree to them. The cancellation deadlines, refund arrangements and any weather-related rescheduling or refund terms that apply to your booking must be provided to you in writing before you make payment. Please ask your host for these terms if they have not yet been shared.</p>
+  <h2 data-i18n="terms_booking_title">Booking requests & reply-time promise</h2>
+  <p data-i18n="terms_booking_body">Submitting a booking request is 100% free with no upfront payment or credit card required. Our founder Saidi Materu and our hosting team review every request and reply within <strong>3–6 hours (guaranteed within 12 hours)</strong> with confirmed availability, final pricing, and vehicle pickup details.</p>
+  <h2 data-i18n="terms_prices_title">Prices & group discounts</h2>
+  <p data-i18n="terms_prices_body">Published experience prices are shown in US dollars per person and include all local guide fees, village entry permits, coffee activities, and lunches as listed on each experience page. Automatic group discounts apply for direct bookings: 5% off for 4–5 guests, 8% off for 6–9 guests, and 10% off for 10–14 guests. Custom quotations are provided for groups of 15 or more.</p>
+  <h2 data-i18n="terms_transport_title">Door-to-door transport & private transfers</h2>
+  <p data-i18n="terms_transport_body">Private roundtrip vehicle transfers can be added directly when booking for a transparent, fixed price per vehicle (accommodating up to 6 passengers with luggage):</p>
+  <ul>
+    <li><strong>Moshi town pickup & return:</strong> $25 per vehicle (approx. 45–60 minutes drive time).</li>
+    <li><strong>Kilimanjaro International Airport (KIA):</strong> $50 per vehicle (approx. 1.5–2 hours drive time).</li>
+    <li><strong>Arusha city pickup & return:</strong> $80 per vehicle (approx. 2.5–3 hours drive time).</li>
+  </ul>
+  <h2 data-i18n="terms_deposit_title">Deposits & payment timing</h2>
+  <p data-i18n="terms_deposit_body">You pay nothing until you have reviewed your confirmed itinerary and agreed to the arrangements. Once confirmed, a 20% deposit (waived for bookings made within 7 days of arrival) secures your private guide and date. The remaining balance is payable on arrival in cash (USD or Tanzanian Shillings at prevailing rates) or via local mobile money (M-Pesa). No unexpected fees or surprises.</p>
+  <h2 data-i18n="terms_changes_title">Cancellation & refund policy</h2>
+  <p data-i18n="terms_changes_body">We understand travel plans can shift. We offer a transparent, fair cancellation policy:</p>
+  <ul>
+    <li><strong>More than 48 hours before start time:</strong> Free cancellation with a 100% full refund of any deposit paid.</li>
+    <li><strong>Between 24 and 48 hours before start time:</strong> 50% refund, or 100% credit toward free date rescheduling within 12 months.</li>
+    <li><strong>Under 24 hours or no-show:</strong> Non-refundable, as local village guides, cooks, and fresh provisions are already dedicated to your group.</li>
+  </ul>
+  <h2 data-i18n="terms_weather_title">Weather guarantee & trail conditions</h2>
+  <p data-i18n="terms_weather_body">Materuni is located in the lush Kilimanjaro rainforest zone. Most rain showers are brief and refresh the waterfall. However, if extreme weather or river conditions make the waterfall trail or camping unsafe, your guide will arrange a 100% free date reschedule or a 100% full refund if rescheduling is not possible.</p>
+  <h2 data-i18n="terms_safety_title">Experience conditions & safety</h2>
+  <p data-i18n="terms_safety_body">Some trails include walking on uneven, moist, or sloping forest paths. We recommend sturdy walking shoes or hiking sneakers, a rain layer, and sun protection. Swimming in the waterfall pool is refreshing and permitted when water levels are calm and your guide approves. Please advise us in advance of any dietary requirements, allergies, or mobility considerations.</p>
+  <h2 data-i18n="terms_children_title">Children & family visits</h2>
+  <p data-i18n="terms_children_body">Children of all ages are welcome in Materuni! The village coffee tour, cultural dance, and cooking classes are family favorites. For the waterfall hike, children under 10 should be accompanied by an adult as the forest trail has gentle rocky sections.</p>
   <h2 data-i18n="terms_contact_title">Contact</h2>
   <p>For booking questions, contact <a href="mailto:materunihosts@gmail.com">materunihosts@gmail.com</a> or WhatsApp <a href="https://wa.me/255612068540">+255 612 068 540</a>.</p>
   <p class="muted legal-updated">Last updated: 15 October 2026.</p>

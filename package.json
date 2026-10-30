@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "astro dev",
+    "dev": "astro dev --host 0.0.0.0 --port 3000",
     "build": "npm run check && astro build && npm run qa",
     "preview": "astro preview",
     "check": "astro check",
