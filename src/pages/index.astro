@@ -9,91 +9,26 @@ const optimizedHero = await getImage({ src: heroSource, width: 1600, height: 100
 
 // 3 Signature experiences as specified in Developer Brief P3
 const signatureExperiences = [
-  {
-    key: "waterfall",
-    name: "Materuni Waterfall & Chagga Village",
-    tagline: "Forest hike, waterfall & Chagga coffee",
-    price: 45,
-    duration: "7–8 hours",
-    image: "waterfall_image/1791998303073-materuni-waterfall-hike.jpg",
-    alt: "Materuni waterfall seen from the forest trail in Kilimanjaro",
-    desc: "Guided rainforest hike to the 95m waterfall, coffee roasting with local songs, Chagga dance and a home-cooked lunch."
-  },
-  {
-    key: "cooking",
-    name: "Coffee Tradition & Village Cooking",
-    tagline: "Hands-on coffee & Chagga kitchen",
-    price: 55,
-    duration: "5–6 hours",
-    image: "coffee_image/1791994933291-materuni-coffe-picking-lesson.jpg",
-    alt: "Local coffee harvest and traditional preparation in Materuni",
-    desc: "From picking and woodfire roasting to cooking a traditional Chagga meal with local village mamas."
-  },
-  {
-    key: "camping",
-    name: "Materuni Overnight Village Stay",
-    tagline: "Camp under Mount Kilimanjaro",
-    price: 101,
-    duration: "2 days · 1 night",
-    image: "story_image/1791994219885-materuni-coffe-plantatio-tour.jpg",
-    alt: "Sunset over the green coffee landscape in Materuni Village",
-    desc: "Camp high in the Kilimanjaro foothills with dinner by the fire, village storytelling, breakfast and next-day tour."
-  }
+  { key: "waterfall", name: "Materuni Waterfall & Chagga Village Experience", tagline: "Waterfall, forest & village culture", price: 40, duration: "Day experience", image: "waterfall_image/1791998303073-materuni-waterfall-hike.jpg", alt: "Materuni waterfall and surrounding forest", desc: "Explore the village with a local host and follow the forest trail to the Materuni waterfall." },
+  { key: "coffee", name: "Traditional Chagga Coffee Experience", tagline: "From coffee cherry to cup", price: 36, duration: "Cultural experience", image: "coffee_image/1791998412318-materuni-tour.jpg", alt: "Traditional Chagga coffee experience in Materuni", desc: "Discover local coffee traditions and take part in preparing and tasting freshly made Chagga coffee." },
+  { key: "cooking", name: "Traditional Chagga Cooking Class", tagline: "Cook, learn & share", price: 49, duration: "Cooking experience", image: "coffee_image/1791994933291-materuni-coffe-picking-lesson.jpg", alt: "Traditional food preparation in Materuni", desc: "Join a hands-on introduction to Chagga food, ingredients and traditional cooking methods." },
+  { key: "moshi", name: "Materuni & Moshi Town Cultural Experience", tagline: "Village and town culture", price: 52, duration: "Cultural day trip", image: "story_image/1791995912146-materuni-community.jpg", alt: "Local community life near Materuni", desc: "Combine a Materuni village visit with time to discover everyday life and culture in Moshi town." },
+  { key: "rau", name: "Materuni & Rau Forest Nature Experience", tagline: "Waterfall, forest & nature", price: 58, duration: "Nature experience", image: "story_image/1791601761441-q3iog8mni3r.jpg", alt: "Lush forest landscape near Moshi", desc: "Pair your Materuni visit with a guided nature experience in Rau Forest near Moshi." },
+  { key: "camping", name: "Materuni Overnight Village Experience", tagline: "Stay a little longer", price: 90, duration: "Overnight experience", image: "story_image/1791994219885-materuni-coffe-plantatio-tour.jpg", alt: "Green coffee-growing landscape in Materuni", desc: "Spend more time in the village with an overnight stay and locally hosted activities. Details are confirmed with your host." }
 ];
 
 // Host profiles for Meet Your Hosts section (T5)
-const hosts = [
-  {
-    name: "Saidi Materu",
-    role: "Founder & Lead Mountain Host",
-    bio: "Born and raised in Materuni; 12+ years guiding travelers to the waterfall, coffee farms and Kilimanjaro trails.",
-    image: "story_image/1791995912146-materuni-community.jpg",
-    alt: "Saidi Materu welcoming guests in Materuni Village"
-  },
-  {
-    name: "Elia",
-    role: "Chagga Coffee Specialist",
-    bio: "Third-generation coffee grower sharing the ancestral songs, roasting rhythm, and pestle grinding traditions.",
-    image: "coffee_image/1791998412318-materuni-tour.jpg",
-    alt: "Elia preparing freshly ground Chagga coffee by the fire"
-  },
-  {
-    name: "Amani",
-    role: "Forest & Trail Guide",
-    bio: "Passionate naturalist sharing indigenous plants, birdlife, chameleon spotting and the secret trail paths.",
-    image: "story_image/1791601761441-q3iog8mni3r.jpg",
-    alt: "Amani guiding a nature walk along the Materuni river trail"
-  }
-];
+const hosts = [];
 
 // Real guest quotes (T1)
-const guestReviews = [
-  {
-    quote: "The hike to the 95m waterfall through lush green coffee groves was breathtaking. Saidi was an exceptional guide — warm, knowledgeable, and patient. Roasting coffee beans over the open fire while singing was the highlight of Tanzania.",
-    author: "Elena Rostova",
-    location: "Munich, Germany",
-    tour: "Waterfall & Chagga Village"
-  },
-  {
-    quote: "Staying overnight at the campsite in Materuni was unforgettable. Falling asleep under Mount Kilimanjaro's foothills, hot firewood dinner prepared with fresh village vegetables, and waking to fresh coffee. Spotless setup.",
-    author: "David & Sarah Jenkins",
-    location: "Bristol, UK",
-    tour: "Overnight Village Camping"
-  },
-  {
-    quote: "An authentic community experience far from commercial tourist traps. We learned every step of coffee production and tasted the freshest cup imaginable. You truly come as a guest and leave as a friend.",
-    author: "Marc Dubois",
-    location: "Lyon, France",
-    tour: "Coffee & Chagga Culture"
-  }
-];
+const guestReviews = [];
 
 // How your day works (4 steps)
 const daySteps = [
   {
     step: "1",
     title: "Morning pickup",
-    text: "Your private driver meets you at your Moshi or Arusha hotel, or directly at Kilimanjaro Airport."
+    text: "If you need transport, contact us to discuss arrangements from your accommodation or arrival point."
   },
   {
     step: "2",
@@ -107,8 +42,8 @@ const daySteps = [
   },
   {
     step: "4",
-    title: "Relaxed return or camp",
-    text: "Return comfortably to your town lodge before evening traffic, or settle in for an overnight camp."
+    title: "Continue exploring or return",
+    text: "Your host will help confirm the practical details for your chosen experience."
   }
 ];
 
@@ -176,7 +111,7 @@ const faqs = [
   description="Discover authentic Materuni waterfall hikes, Chagga coffee traditions, cooking classes and village camping hosted by local Chagga guides in Kilimanjaro, Tanzania."
   preloadImage={optimizedHero.src}
 >
-  <!-- 1. HERO (P3: Headline ≤ 6 words, Book your day button, 5.0 rating & review count beneath) -->
+  <!-- 1. HERO (P3: Headline ≤ 6 words, Book your day button, guest review links) -->
   <section class="premium-hero" aria-labelledby="hero-heading">
     <div class="hero-bg" style={`background-image: linear-gradient(180deg, rgba(20,45,32,0.72) 0%, rgba(20,45,32,0.85) 100%), url(${optimizedHero.src})`}></div>
     <div class="hero-content">
@@ -218,8 +153,8 @@ const faqs = [
   <section class="home-section" aria-labelledby="experiences-heading">
     <div class="section-header">
       <span class="eyebrow">SIGNATURE DAYS</span>
-      <h2 id="experiences-heading">Three ways to experience Materuni.</h2>
-      <p>Every signature day includes local guiding, village entry, fresh coffee, and a hot traditional lunch.</p>
+      <h2 id="experiences-heading">Six ways to experience Materuni.</h2>
+      <p>Explore six distinct experiences, each with its own activities and inclusions.</p>
     </div>
     <div class="sig-cards-grid">
       {signatureExperiences.map((exp) => (
@@ -243,10 +178,7 @@ const faqs = [
         </article>
       ))}
     </div>
-    <div class="section-center-cta">
-      <a class="view-all-link" href="/experiences">View all 6 experiences including Moshi Town & Rau Forest →</a>
-      <p class="live-tzs-note">Indicative TZS guide: $41 ≈ TZS 108,000 · $45 ≈ TZS 119,000 · $55 ≈ TZS 145,000 · $59 ≈ TZS 156,000 · $65 ≈ TZS 172,000 · $101 ≈ TZS 267,000.</p>
-    </div>
+    <div class="section-center-cta"><a class="view-all-link" href="/experiences">Explore all experiences →</a></div>
   </section>
 
   <!-- 4. MEET YOUR HOSTS (T5: Real portraits, names, one line, TTB/TALA info) -->
@@ -254,7 +186,7 @@ const faqs = [
     <div class="section-header">
       <span class="eyebrow">MEET YOUR HOSTS</span>
       <h2 id="hosts-heading">Local Chagga hospitality from the people who live here.</h2>
-      <p>We are registered local guides and coffee farmers welcoming you directly to our ancestral homeland.</p>
+      <p>Experience Materuni through the people who call it home. Discover Chagga traditions, village life and the landscapes of the Kilimanjaro foothills.</p>
     </div>
     <div class="hosts-grid">
       {hosts.map((host) => (
@@ -279,7 +211,7 @@ const faqs = [
     <div class="section-header">
       <span class="eyebrow">VERIFIED GUEST REVIEWS</span>
       <h2 id="reviews-heading">Loved by travelers from around the world.</h2>
-      <p>Rated 5.0 out of 5.0 on Google & TripAdvisor from over 120 independent traveler reviews.</p>
+      <p>Read independent guest feedback on our external review profiles.</p>
     </div>
     <div class="reviews-grid">
       {guestReviews.map((rev) => (
@@ -294,7 +226,7 @@ const faqs = [
       ))}
     </div>
     <div class="section-center-cta">
-      <a class="gold-button" href="https://www.google.com/maps/search/?api=1&query=Materuni%20Hosts%20-%20Waterfall%20Tours%20%26%20Village%20Camping%2C%20Materuni%20Village%2C%20Moshi%2C%20Tanzania" target="_blank" rel="noopener noreferrer">Read all reviews on Google Maps ↗</a>
+      <a class="gold-button" href="https://www.tripadvisor.com/34765809" target="_blank" rel="noopener noreferrer">Read guest feedback on TripAdvisor ↗</a>
       <a class="subtle-link" href="https://g.page/r/CXy6M_Suiip9EBM/review" target="_blank" rel="noopener noreferrer">Leave a Google review ↗</a>
     </div>
   </section>
