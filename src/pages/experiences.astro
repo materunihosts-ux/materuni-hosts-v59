@@ -28,7 +28,7 @@ const base=`${supabaseUrl}/storage/v1/object/public/materuni-images/`;
   </div>
   <div class="cards" style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr));max-width:1100px;margin:0 auto">
     <article class="experience-card" style="border-radius:12px;overflow:hidden">
-      <img src={`${base}hero_image/1791995544192-materuni-waterfall.jpg`} alt="Materuni waterfall trail in northern Tanzania" width="600" height="340" loading="lazy" decoding="async" style="height:200px;object-fit:cover" />
+      <Image src={base+"hero_image/1791995544192-materuni-waterfall.jpg"} alt="Materuni waterfall trail in northern Tanzania" width={600} height={340} loading="lazy" decoding="async" format="webp" quality={76} style="height:200px;object-fit:cover" />
       <div class="card-body">
         <span class="pill" style="align-self:flex-start">GETTING HERE · 5 MIN READ</span>
         <h3 style="margin:10px 0 6px"><a href="/journal/how-to-get-to-materuni">How to Get to Materuni Village from Moshi, Arusha and KIA</a></h3>
@@ -37,7 +37,7 @@ const base=`${supabaseUrl}/storage/v1/object/public/materuni-images/`;
       </div>
     </article>
     <article class="experience-card" style="border-radius:12px;overflow:hidden">
-      <img src={`${base}coffee_image/1791998412318-materuni-tour.jpg`} alt="Chagga coffee harvesting and roasting" width="600" height="340" loading="lazy" decoding="async" style="height:200px;object-fit:cover" />
+      <Image src={base+"coffee_image/1791998412318-materuni-tour.jpg"} alt="Chagga coffee harvesting and roasting" width={600} height={340} loading="lazy" decoding="async" format="webp" quality={76} style="height:200px;object-fit:cover" />
       <div class="card-body">
         <span class="pill" style="align-self:flex-start">CULTURE & FOOD · 4 MIN READ</span>
         <h3 style="margin:10px 0 6px"><a href="/journal">How Traditional Chagga Coffee is Made</a></h3>
