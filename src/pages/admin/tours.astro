@@ -40,7 +40,8 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
    <span class="eyebrow">PUBLISH AVAILABILITY</span><h2>Create available dates</h2>
    <form id="slot-form" class="form-grid">
     <div class="field full"><label for="slot-experience">Experience *</label><select id="slot-experience" required><option value="">Select a tour</option></select></div>
-    <div class="field"><label for="slot-date">Date *</label><input id="slot-date" type="date" required></div>
+    <div class="field"><label for="slot-date">Start date *</label><input id="slot-date" type="date" required></div>
+    <div class="field"><label for="slot-end-date">End date (optional – publish range up to 90 days)</label><input id="slot-end-date" type="date"></div>
     <div class="field"><label for="slot-capacity">Guest capacity *</label><input id="slot-capacity" type="number" min="1" max="100" value="10" required></div>
     <div class="field"><label for="slot-start">Start time *</label><input id="slot-start" type="time" value="08:00" required></div>
     <div class="field"><label for="slot-end">End time *</label><input id="slot-end" type="time" value="14:00" required></div>
@@ -152,14 +153,40 @@ el("slot-form").addEventListener("submit",async e=>{
  try{
   const start=el("slot-start").value,end=el("slot-end").value;
   if(end<=start)throw new Error("End time must be later than start time.");
-  if(!el("slot-date").value||el("slot-date").value<minDate)throw new Error("Choose today or a future date.");
-  if(Number(el("slot-capacity").value)<1||Number(el("slot-capacity").value)>100)throw new Error("Capacity must be between 1 and 100 guests.");
-  await api("/rest/v1/availability_slots",{method:"POST",headers:{"Prefer":"return=minimal"},body:JSON.stringify({experience:el("slot-experience").value,slot_date:el("slot-date").value,start_time:start,end_time:end,capacity:Number(el("slot-capacity").value),booked_count:0,is_active:true})});
-  feedback.textContent="Availability published. Guests can now select this date and time.";await refreshAvailability();
+  const startDate=el("slot-date").value;
+  if(!startDate||startDate<minDate)throw new Error("Choose today or a future date.");
+  const cap=Number(el("slot-capacity").value);
+  if(cap<1||cap>100)throw new Error("Capacity must be between 1 and 100 guests.");
+  const exp=el("slot-experience").value;
+  const endDate=el("slot-end-date")?.value;
+  if(endDate && endDate < startDate) throw new Error("End date cannot be earlier than start date.");
+
+  const dates=[];
+  if(!endDate || endDate === startDate){
+   dates.push(startDate);
+  } else {
+   let curr = new Date(startDate + "T12:00:00Z");
+   const stop = new Date(endDate + "T12:00:00Z");
+   const maxDays = 90;
+   let count = 0;
+   while(curr <= stop && count < maxDays){
+    dates.push(curr.toISOString().slice(0,10));
+    curr.setDate(curr.getDate() + 1);
+    count++;
+   }
+  }
+
+  const payload = dates.map(d=>({
+   experience:exp,slot_date:d,start_time:start,end_time:end,capacity:cap,booked_count:0,is_active:true
+  }));
+
+  await api("/rest/v1/availability_slots",{method:"POST",headers:{"Prefer":"return=minimal"},body:JSON.stringify(payload)});
+  feedback.textContent=`Availability published for ${dates.length} date${dates.length===1?'':'s'}. Guests can now select these times.`;
+  await refreshAvailability();
  }catch(error){feedback.textContent=error.message}
 });
 el("logout").addEventListener("click",async()=>{try{await fetch(supabaseUrl+"/auth/v1/logout",{method:"POST",headers:apiHeaders()})}catch{}accessToken="";adminId="";el("manager").hidden=true;el("login-panel").hidden=false;el("login-form").reset()});
-const minDate=new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,10);el("slot-date").min=minDate;
+const minDate=new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,10);el("slot-date").min=minDate;if(el("slot-end-date"))el("slot-end-date").min=minDate;
 </script>
 <style>
 .admin-package-editor{margin-top:.75rem;padding:.85rem 1rem;border:1px solid #e6dfd3;border-radius:12px;background:#faf7f2}.admin-package-editor summary{cursor:pointer;font-weight:600;color:#1a3322}.admin-package-editor[open] summary{margin-bottom:1rem}.admin-package-editor .form-grid{margin-top:.5rem}
