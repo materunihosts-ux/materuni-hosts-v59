@@ -55,9 +55,6 @@ const bookingPreview = `${supabaseUrl}/storage/v1/object/public/materuni-images/
     <a id="manage-wa-btn" href="https://wa.me/255612068540" target="_blank" rel="noopener noreferrer" class="button" style="background:#25D366;color:#fff;border-color:#25D366;display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none">
       <span>💬</span> Chat with Host on WhatsApp
     </a>
-    <a id="manage-email-btn" href="mailto:hello@materunihosts.com" class="button button-secondary" style="display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none">
-      <span>✉️</span> Email Hosts Directly
-    </a>
     <a href="https://www.google.com/maps/search/?api=1&query=Materuni%20Hosts%20-%20Waterfall%20Tours%20%26%20Village%20Camping%2C%20Materuni%20Village%2C%20Moshi%2C%20Tanzania" target="_blank" rel="noopener noreferrer" class="button button-secondary" style="display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none">
       <span>📍</span> Meeting Point & Directions
     </a>
@@ -140,7 +137,6 @@ const manageRefDisplay=$("manage-ref-display");
 const manageInputRef=$("manage-input-ref");
 const manageApplyRef=$("manage-apply-ref");
 const manageWaBtn=$("manage-wa-btn");
-const manageEmailBtn=$("manage-email-btn");
 
 function updateManageLinks(ref){
  const cleanRef=String(ref||"").trim();
@@ -151,10 +147,6 @@ function updateManageLinks(ref){
    ? "Hello Materuni Hosts, I am managing my booking reference: "+cleanRef+". I would like to check details or request an update."
    : "Hello Materuni Hosts, I have a question regarding my reservation.";
   manageWaBtn.href="https://wa.me/255612068540?text="+encodeURIComponent(text);
- }
- if(manageEmailBtn){
-  const subject=cleanRef ? "Managing Booking: "+cleanRef : "Materuni Hosts Reservation Enquiry";
-  manageEmailBtn.href="mailto:hello@materunihosts.com?subject="+encodeURIComponent(subject);
  }
 }
 
