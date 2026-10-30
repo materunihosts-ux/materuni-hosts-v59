@@ -150,28 +150,6 @@ const hosts = [
   }
 ];
 
-// Verified guest reviews
-const guestReviews = [
-  {
-    quote: "The hike to the 95m waterfall through lush green coffee groves was breathtaking. Saidi was an exceptional guide — warm, knowledgeable, and patient. Roasting coffee beans over the open fire while singing was the highlight of Tanzania.",
-    author: "Elena Rostova",
-    location: "Munich, Germany",
-    tour: "Waterfall & Chagga Village"
-  },
-  {
-    quote: "Staying overnight at the campsite in Materuni was unforgettable. Falling asleep under Mount Kilimanjaro's foothills, hot firewood dinner prepared with fresh village vegetables, and waking to fresh coffee. Spotless setup.",
-    author: "David & Sarah Jenkins",
-    location: "Bristol, UK",
-    tour: "Overnight Village Camping"
-  },
-  {
-    quote: "An authentic community experience far from commercial tourist traps. We learned every step of coffee production and tasted the freshest cup imaginable. You truly come as a guest and leave as a friend.",
-    author: "Marc Dubois",
-    location: "Lyon, France",
-    tour: "Coffee & Chagga Culture"
-  }
-];
-
 // 4-step guest journey
 const daySteps = [
   {
@@ -279,6 +257,25 @@ const faqs = [
     </div>
   </section>
 
+  <!-- QUICK BOOKING STRIP: clear next step without interrupting the editorial hero -->
+  <section class="mh-quick-plan" aria-label="Plan your Materuni experience">
+    <div class="mh-quick-plan-inner">
+      <div class="mh-quick-plan-intro">
+        <span class="mh-quick-plan-kicker">YOUR VISIT, MADE SIMPLE</span>
+        <h2>Make a little room for Materuni.</h2>
+        <p>Choose an experience, check a date and send a booking request directly to your local hosts.</p>
+      </div>
+      <div class="mh-quick-plan-steps" aria-label="Booking steps">
+        <div class="mh-quick-plan-step"><span>01</span><strong>Choose</strong><small>Find your experience</small></div>
+        <div class="mh-quick-plan-rule" aria-hidden="true"></div>
+        <div class="mh-quick-plan-step"><span>02</span><strong>Check</strong><small>See available dates</small></div>
+        <div class="mh-quick-plan-rule" aria-hidden="true"></div>
+        <div class="mh-quick-plan-step"><span>03</span><strong>Connect</strong><small>Send your request</small></div>
+      </div>
+      <a class="mh-quick-plan-button" href="/booking?source=homepage">Plan your visit <span aria-hidden="true">↗</span></a>
+    </div>
+  </section>
+
   <!-- 2. SHORT, COMPELLING BRAND INTRODUCTION -->
   <section class="brand-intro-section" aria-labelledby="brand-intro-heading">
     <div class="brand-intro-container">
@@ -310,7 +307,7 @@ const faqs = [
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
           </div>
           <h3>Direct Village Benefit</h3>
-          <p>100% of tour proceeds support local guides, coffee farming families, cooking mamas, and village community initiatives.</p>
+          <p>Meet the local guides, coffee-growing families, and cooking hosts who bring each experience to life.</p>
         </div>
       </div>
     </div>
@@ -516,34 +513,22 @@ const faqs = [
     </div>
   </section>
 
-  <!-- 8. GENUINE GUEST REVIEWS -->
+  <!-- 8. GUEST FEEDBACK -->
   <section class="home-section bg-warm" aria-labelledby="reviews-heading">
     <div class="section-header">
-      <span class="eyebrow">VERIFIED GUEST REVIEWS</span>
-      <h2 id="reviews-heading">Loved by Independent Travelers Worldwide</h2>
-      <p>Genuine feedback from guests who have walked our village trails and roasted coffee with our families.</p>
-    </div>
-    <div class="reviews-grid">
-      {guestReviews.map((rev) => (
-        <blockquote class="home-review-card">
-          <div class="review-stars" aria-label="5 stars">★★★★★</div>
-          <p class="review-text">“{rev.quote}”</p>
-          <footer class="review-footer">
-            <strong>{rev.author}</strong>
-            <span>{rev.location} · {rev.tour}</span>
-          </footer>
-        </blockquote>
-      ))}
+      <span class="eyebrow">GUEST FEEDBACK</span>
+      <h2 id="reviews-heading">Hear from travellers who visited Materuni</h2>
+      <p>Read independent guest feedback on our public review platforms before choosing your experience.</p>
     </div>
     <div class="reviews-action-strip">
       <a class="gold-button" href="https://www.tripadvisor.com/34765809" target="_blank" rel="noopener noreferrer">
-        Read TripAdvisor Listing ↗
+        Read guest feedback on TripAdvisor ↗
       </a>
       <a class="hero-outline-button dark" href="https://g.page/r/CXy6M_Suiip9EBM/review" target="_blank" rel="noopener noreferrer">
-        Leave a Google Review ↗
+        View or leave a Google Review ↗
       </a>
       <a class="card-secondary-link" href="/reviews">
-        View all guest stories →
+        Explore guest feedback →
       </a>
     </div>
   </section>
@@ -1590,4 +1575,118 @@ const faqs = [
     flex-direction: column;
   }
 }
+
+/* Modern African boutique refinement: compact booking bridge below the hero */
+.mh-quick-plan {
+  position: relative;
+  z-index: 2;
+  margin: -1px auto 0;
+  padding: 28px clamp(20px, 5vw, 76px);
+  background: #FAF7F2;
+  border-bottom: 1px solid #E6DFD3;
+}
+.mh-quick-plan-inner {
+  width: min(1320px, 100%);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(240px, 1.1fr) minmax(300px, 1.35fr) auto;
+  align-items: center;
+  gap: clamp(20px, 3vw, 44px);
+}
+.mh-quick-plan-kicker {
+  display: block;
+  margin-bottom: 7px;
+  color: #9A7842;
+  font: 800 9px/1.4 "Manrope", sans-serif;
+  letter-spacing: .19em;
+}
+.mh-quick-plan-intro h2 {
+  margin: 0 0 5px;
+  color: #1A3322;
+  font: 600 clamp(22px, 2.2vw, 30px)/1.12 "Cormorant Garamond", Georgia, serif;
+}
+.mh-quick-plan-intro p {
+  max-width: 390px;
+  margin: 0;
+  color: #657066;
+  font: 400 11px/1.65 "Manrope", sans-serif;
+}
+.mh-quick-plan-steps {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(9px, 1.4vw, 20px);
+}
+.mh-quick-plan-step {
+  display: grid;
+  grid-template-columns: 25px auto;
+  column-gap: 7px;
+  align-items: center;
+  min-width: 0;
+}
+.mh-quick-plan-step span {
+  grid-row: span 2;
+  display: grid;
+  place-items: center;
+  width: 25px;
+  height: 25px;
+  border: 1px solid #C5A059;
+  border-radius: 50%;
+  color: #806333;
+  font: 700 9px "Manrope", sans-serif;
+}
+.mh-quick-plan-step strong {
+  color: #1A3322;
+  font: 800 10px "Manrope", sans-serif;
+}
+.mh-quick-plan-step small {
+  color: #7A817A;
+  font: 400 9px "Manrope", sans-serif;
+  white-space: nowrap;
+}
+.mh-quick-plan-rule {
+  width: clamp(12px, 2vw, 28px);
+  height: 1px;
+  background: #D8CCB8;
+}
+.mh-quick-plan-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  min-height: 46px;
+  padding: 0 20px;
+  background: #1A3322;
+  color: #FAF7F2;
+  border: 1px solid #1A3322;
+  text-decoration: none;
+  white-space: nowrap;
+  font: 800 10px "Manrope", sans-serif;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  transition: background .2s ease, color .2s ease, border-color .2s ease;
+}
+.mh-quick-plan-button:hover {
+  background: #C5A059;
+  border-color: #C5A059;
+  color: #1A3322;
+}
+.mh-quick-plan-button span { font-size: 16px; line-height: 1; }
+@media (max-width: 980px) {
+  .mh-quick-plan-inner { grid-template-columns: 1fr auto; }
+  .mh-quick-plan-steps { grid-column: 1 / -1; grid-row: 2; justify-content: flex-start; }
+}
+@media (max-width: 600px) {
+  .mh-quick-plan { padding: 24px 19px; }
+  .mh-quick-plan-inner { grid-template-columns: 1fr; gap: 18px; }
+  .mh-quick-plan-intro h2 { font-size: 27px; }
+  .mh-quick-plan-steps { grid-column: auto; grid-row: auto; justify-content: space-between; gap: 6px; }
+  .mh-quick-plan-step { grid-template-columns: 22px auto; column-gap: 5px; }
+  .mh-quick-plan-step span { width: 22px; height: 22px; font-size: 8px; }
+  .mh-quick-plan-step strong { font-size: 9px; }
+  .mh-quick-plan-step small { font-size: 8px; white-space: normal; }
+  .mh-quick-plan-rule { width: 10px; flex: 0 0 10px; }
+  .mh-quick-plan-button { width: 100%; min-height: 48px; }
+}
+
 </style>
