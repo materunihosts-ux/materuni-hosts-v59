@@ -24,6 +24,7 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
     <div class="admin-topbar">
       <div class="admin-topbar-links">
         <a class="button button-secondary" href="/admin/">← Dashboard</a>
+        <a class="button button-secondary" href="/admin/seo">SEO & Metadata</a>
         <a class="button button-secondary" href="/admin/tours">Tours & Photos</a>
         <a class="button button-secondary" href="/admin/media">Media Library</a>
         <a class="button button-secondary" href="/about-us" target="_blank" rel="noopener">Preview About Us ↗</a>
@@ -637,17 +638,89 @@ el("home-copy-form")?.addEventListener("submit", async event => {
 
 // ================= MULTILINGUAL LOGIC =================
 const translationKeys = {
+  // Navigation
+  nav_experiences: { label: "Nav: All Experiences", type: "input", max: 60 },
+  nav_about: { label: "Nav: About Us", type: "input", max: 60 },
+  nav_day_trips: { label: "Nav: Day Trips", type: "input", max: 60 },
+  nav_camping: { label: "Nav: Camping", type: "input", max: 60 },
+  nav_reviews: { label: "Nav: Guest Reviews", type: "input", max: 60 },
+  nav_faqs: { label: "Nav: FAQs", type: "input", max: 60 },
+  nav_availability: { label: "Nav: Check Availability CTA", type: "input", max: 60 },
+  // Homepage & Hero
   hero_title: { label: "Hero headline", type: "input", max: 120 },
   hero_intro: { label: "Hero introduction", type: "textarea", max: 500 },
   experiences_title: { label: "Experiences heading", type: "input", max: 120 },
   experiences_intro: { label: "Experiences introduction", type: "textarea", max: 500 },
   experiences_page_title: { label: "Experiences page headline", type: "input", max: 140 },
-  experiences_page_intro: { label: "Experiences page introduction", type: "textarea", max: 500 }
+  experiences_page_intro: { label: "Experiences page introduction", type: "textarea", max: 500 },
+  // Badges & Labels
+  exp_per_person: { label: "Per person badge label", type: "input", max: 40 },
+  exp_shared_inclusions: { label: "Shared inclusions headline", type: "input", max: 120 },
+  exp_best_for: { label: "Best for label", type: "input", max: 60 },
+  exp_signature_moments: { label: "Signature moments label", type: "input", max: 60 },
+  exp_unique_experience: { label: "Your unique experience label", type: "input", max: 60 }
 };
 const defaultTranslations = {
-  es: { hero_title: "Acércate al corazón de la cultura chagga.", hero_intro: "Descubre la cascada, el café y la vida del pueblo con anfitriones locales en Materuni." },
-  fr: { hero_title: "Au cœur de la culture chagga.", hero_intro: "Découvrez la cascade, le café et la vie du village avec des hôtes locaux à Materuni." },
-  de: { hero_title: "Erleben Sie das Herz der Chagga-Kultur.", hero_intro: "Entdecken Sie Wasserfall, Kaffee und das Dorfleben mit lokalen Gastgebern in Materuni." }
+  es: {
+    nav_experiences: "Experiencias",
+    nav_about: "Sobre nosotros",
+    nav_day_trips: "Excursiones de un día",
+    nav_camping: "Camping en Materuni",
+    nav_reviews: "Opiniones de huéspedes",
+    nav_faqs: "Preguntas frecuentes",
+    nav_availability: "Consultar disponibilidad",
+    hero_title: "Acércate al corazón de la cultura chagga.",
+    hero_intro: "Descubre la cascada, el café y la vida del pueblo con anfitriones locales en Materuni.",
+    experiences_title: "Experiencias locales en Materuni",
+    experiences_intro: "Elige entre caminatas a la cascada, café chagga, cocina tradicional y estancias nocturnas.",
+    experiences_page_title: "Descubre Materuni con anfitriones chagga locales.",
+    experiences_page_intro: "Explora una variedad de experiencias en Materuni y elige la visita que mejor encaje con tu viaje.",
+    exp_per_person: "POR PERSONA",
+    exp_shared_inclusions: "Incluido en todas las experiencias de Materuni Hosts",
+    exp_best_for: "IDEAL PARA",
+    exp_signature_moments: "MOMENTOS DESTACADOS",
+    exp_unique_experience: "TU EXPERIENCIA ÚNICA"
+  },
+  fr: {
+    nav_experiences: "Expériences",
+    nav_about: "À propos de nous",
+    nav_day_trips: "Excursions à la journée",
+    nav_camping: "Camping à Materuni",
+    nav_reviews: "Avis des voyageurs",
+    nav_faqs: "FAQ",
+    nav_availability: "Voir les disponibilités",
+    hero_title: "Au cœur de la culture chagga.",
+    hero_intro: "Découvrez la cascade, le café et la vie du village avec des hôtes locaux à Materuni.",
+    experiences_title: "Expériences locales à Materuni",
+    experiences_intro: "Choisissez parmi les randonnées vers la cascade, le café chagga, la cuisine locale et les séjours avec nuitée.",
+    experiences_page_title: "Découvrez Materuni avec des hôtes chagga locaux.",
+    experiences_page_intro: "Explorez une gamme d’expériences à Materuni et choisissez la visite qui correspond à votre voyage.",
+    exp_per_person: "PAR PERSONNE",
+    exp_shared_inclusions: "Inclus dans toutes les expériences Materuni Hosts",
+    exp_best_for: "IDÉAL POUR",
+    exp_signature_moments: "MOMENTS SIGNATURE",
+    exp_unique_experience: "VOTRE EXPÉRIENCE UNIQUE"
+  },
+  de: {
+    nav_experiences: "Erlebnisse",
+    nav_about: "Über uns",
+    nav_day_trips: "Tagesausflüge",
+    nav_camping: "Camping in Materuni",
+    nav_reviews: "Gästebewertungen",
+    nav_faqs: "Häufige Fragen",
+    nav_availability: "Verfügbarkeit prüfen",
+    hero_title: "Erleben Sie das Herz der Chagga-Kultur.",
+    hero_intro: "Entdecken Sie Wasserfall, Kaffee und das Dorfleben mit lokalen Gastgebern in Materuni.",
+    experiences_title: "Lokale Erlebnisse in Materuni",
+    experiences_intro: "Wählen Sie aus geführten Wasserfallwanderungen, Chagga-Kaffeetouren und Übernachtungen.",
+    experiences_page_title: "Entdecken Sie Materuni mit lokalen Chagga-Gastgebern.",
+    experiences_page_intro: "Wählen Sie das passende Erlebnis für Ihre Reise und erleben Sie authentische Gastfreundschaft.",
+    exp_per_person: "PRO PERSON",
+    exp_shared_inclusions: "In allen Erlebnissen von Materuni Hosts enthalten",
+    exp_best_for: "IDEAL FÜR",
+    exp_signature_moments: "BESONDERE MOMENTE",
+    exp_unique_experience: "IHR EINZIGARTIGES ERLEBNIS"
+  }
 };
 let languageContent = JSON.parse(JSON.stringify(defaultTranslations));
 function renderTranslations() {
