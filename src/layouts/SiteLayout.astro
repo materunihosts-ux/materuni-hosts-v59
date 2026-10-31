@@ -585,6 +585,34 @@ p{ text-wrap:pretty }
 .admin-shell .snippet-desc,.admin-shell .social-card-desc{font-size:13px;line-height:1.6}
 .admin-shell .social-card-title{font-size:17px;line-height:1.35}
 
+/* High-specificity final pass over older page-level overrides */
+body.public-shell .site-header{min-height:78px;height:auto;padding:9px clamp(16px,4vw,56px);gap:14px}
+body.public-shell .site-header .brand-logo{width:58px;height:58px}
+body.public-shell .site-header .brand-lockup strong{font-size:16px}
+body.public-shell .site-header .brand-lockup small{font-size:9px;letter-spacing:.12em}
+body.public-shell .site-header nav{gap:clamp(9px,1.15vw,17px);font-size:11.5px}
+body.public-shell .site-header nav .nav-cta{min-height:42px;padding:10px 15px;font-size:12px!important}
+body.public-shell .hero.hero-home{min-height:clamp(520px,62vh,640px);max-height:680px}
+body.public-shell .hero.hero-home h1{font-size:clamp(38px,5.2vw,64px);line-height:1.06;letter-spacing:-.02em}
+body.public-shell .hero.hero-home p{font-size:clamp(15px,1.2vw,17px);line-height:1.7}
+body.public-shell .hero.hero-home .hero-copy{width:min(100%,800px);max-width:800px;padding:clamp(54px,6vw,78px) clamp(24px,7vw,92px)}
+body.public-shell .hero.hero-home .actions{margin-top:24px;gap:10px}
+body.public-shell .hero.hero-home .actions .button{min-height:46px;padding:11px 18px;font-size:12px!important}
+body.public-shell .home-section,body.public-shell .section{padding:clamp(38px,4.8vw,62px) clamp(18px,4.5vw,64px)}
+body.public-shell .section>.section-head{margin-bottom:28px}
+body.public-shell .cards,body.public-shell .reviews-grid,body.public-shell .team-grid,body.public-shell .values-grid,body.public-shell .experience-grid{gap:16px}
+body.public-shell .experience-card,body.public-shell .boutique-card,body.public-shell .feature-card,body.public-shell .host-boutique-card,body.public-shell .review-card,body.public-shell .journal-card{border-radius:10px;box-shadow:var(--mh-shadow)}
+body.public-shell .experience-card img,body.public-shell .experience-card>img,body.public-shell .experience-photo{height:auto;aspect-ratio:16/10;object-fit:cover}
+body.public-shell .experience-card .card-body,body.public-shell .boutique-card-content{padding:18px}
+body.public-shell .experience-card h3,body.public-shell .boutique-card-content h3{font-size:21px;line-height:1.25}
+body.public-shell .experience-card p,body.public-shell .boutique-card-content p,body.public-shell .card-desc{font-size:14px;line-height:1.65}
+body.public-shell .experience-card ul{font-size:12px;line-height:1.55}
+body.public-shell .booking-wrap{max-width:880px;padding:38px 18px}
+body.public-shell .booking-panel,body.public-shell .manage-panel,body.public-shell .booking-estimate{padding:clamp(18px,3vw,30px);border-radius:9px;box-shadow:var(--mh-shadow)}
+body.public-shell .field input,body.public-shell .field select,body.public-shell .field textarea{min-height:46px;padding:11px 12px;border-radius:4px;font-size:16px}
+body.public-shell .nav-cta,body.public-shell .button,body.public-shell .button-secondary,body.public-shell .button-danger{min-height:44px;padding:10px 18px;border-radius:5px;font-size:13px!important}
+body.public-shell .site-footer{padding:42px clamp(18px,5vw,72px) 22px;gap:26px}
+
 /* Tablet and mobile */
 @media(max-width:900px){
  .public-shell .site-header{min-height:72px;padding:8px 16px}
