@@ -533,6 +533,34 @@ p{ text-wrap:pretty }
 .admin-shell .admin-main input,.admin-shell .admin-main select,.admin-shell .admin-main textarea{max-width:100%}
 .admin-shell .admin-main :focus-visible{outline:3px solid var(--mh-gold);outline-offset:2px}
 
+/* Booking manager: semantic component styles, no scattered inline declarations */
+.public-shell .booking-trust-link{color:inherit;text-decoration:underline;text-underline-offset:3px}
+.public-shell .booking-feedback-links{margin:0 0 16px;font-size:13px;line-height:1.6}
+.public-shell .booking-feedback-links a{color:var(--mh-forest);font-weight:700;text-underline-offset:3px}
+.public-shell .manage-booking-bar{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:4px 8px;margin:0 0 16px;text-align:center;font-size:13px}
+.public-shell .manage-toggle-link{min-height:38px;padding:6px 8px;border:0;background:transparent;color:var(--mh-forest);font-weight:700;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.public-shell .manage-panel{margin:0 0 24px;padding:clamp(16px,3vw,24px);border:1px solid var(--mh-gold);border-radius:10px;background:var(--mh-ivory);box-shadow:var(--mh-shadow)}
+.public-shell .manage-panel-heading{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin:0 0 16px;padding:0 0 14px;border-bottom:1px solid var(--mh-line)}
+.public-shell .manage-panel-kicker{display:block;color:#80652f}
+.public-shell .manage-panel-title{margin:2px 0 0;color:var(--mh-forest);font:600 24px/1.2 var(--mh-display)}
+.public-shell .manage-reference{text-align:right}
+.public-shell .manage-reference-label{display:block;color:var(--mh-muted);font-size:11px;letter-spacing:.1em;text-transform:uppercase}
+.public-shell #manage-ref-display{display:inline-block;padding:5px 10px;border:1px solid var(--mh-gold);border-radius:4px;background:#fff;color:var(--mh-forest);font:700 14px/1.4 ui-monospace,monospace;overflow-wrap:anywhere}
+.public-shell .manage-intro{margin:0 0 16px;color:var(--mh-ink);font-size:14px;line-height:1.7}
+.public-shell .manage-reference-form{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin:0 0 18px}
+.public-shell .manage-reference-form label{color:var(--mh-forest);font-size:13px;font-weight:700}
+.public-shell #manage-input-ref{max-width:260px;font-family:ui-monospace,monospace}
+.public-shell .manage-apply-button{min-height:42px;padding:9px 14px;font-size:12px}
+.public-shell .manage-contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:10px;margin:0 0 18px}
+.public-shell .manage-contact-grid .manage-contact-button,.public-shell .manage-contact-grid .manage-whatsapp-button{display:flex;align-items:center;justify-content:center;gap:8px;min-height:46px;text-align:center;text-decoration:none}
+.public-shell .manage-contact-grid .manage-whatsapp-button{background:#21864b;border-color:#21864b;color:#fff}
+.public-shell .manage-contact-grid .manage-whatsapp-button:hover{background:#176b3a;border-color:#176b3a;color:#fff!important}
+.public-shell .manage-policy-card{margin:0 0 16px;padding:16px;border:1px solid var(--mh-line);border-radius:8px;background:#fff}
+.public-shell .manage-policy-title{display:block;margin:0 0 8px;color:var(--mh-forest);font-size:12px;letter-spacing:.07em;text-transform:uppercase}
+.public-shell .manage-policy-list{margin:0;padding-left:18px;color:#4f554f;font-size:13px;line-height:1.7}
+.public-shell .manage-close-row{text-align:right}
+.public-shell .manage-close-button{min-height:40px;padding:8px 14px;font-size:12px}
+
 /* Admin module grids retained after removing duplicated global overrides */
 .admin-shell .admin-home-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
 .admin-shell .admin-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
