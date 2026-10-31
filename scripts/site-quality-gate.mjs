@@ -181,7 +181,7 @@ const walkSources = (directory) => {
 };
 walkSources(publicSourceRoot);
 const outdatedContactPages = sourceFiles.filter((file) => /materunihosts@gmail\.com/i.test(read(file)));
-if (outdatedContactPages.length) fail("Public pages still contain the retired materunihosts@gmail.com contact address: " + outdatedContactPages.map((file) => path.relative(process.cwd(), file)).join(", "));
+if (outdatedContactPages.length) fail("Public pages still contain the retired hello@materunihosts.com contact address: " + outdatedContactPages.map((file) => path.relative(process.cwd(), file)).join(", "));
 else pass("Public pages contain no retired Gmail contact address");
 let checkedImages = 0;
 for (const file of sourceFiles) {
@@ -211,7 +211,7 @@ walk(root);
 for (const file of htmlFiles) {
   const html = read(file);
   const relative = path.relative(root, file);
-  const isRedirectRoute = relative === "about/index.html";
+  const isRedirectRoute = relative === "about/index.html" || relative === "materuni-camping/index.html";
   if (isRedirectRoute) {
     if (!/http-equiv/i.test(html) || !/refresh/i.test(html)) fail(relative + ": legacy About URL must redirect to /about-us");
     else pass(relative + ": legacy About URL redirects to the canonical About Us page");
