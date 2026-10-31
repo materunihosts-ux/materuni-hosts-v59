@@ -1,5 +1,6 @@
 ---
 import SiteLayout from "../layouts/SiteLayout.astro";
+import { Image } from "astro:assets";
 import LocalBusinessSchema from "../components/LocalBusinessSchema.astro";
 import { supabaseUrl } from "../lib/supabase-public";
 
@@ -75,7 +76,7 @@ const faqs = [
         </div>
       </div>
       <div class="hero-media">
-        <img src={heroImg} alt="Scenic foothills of Mount Kilimanjaro near Marangu with lush greenery" width="800" height="600" loading="eager" fetchpriority="high" decoding="async" class="hero-img" />
+        <Image src={heroImg} alt="Scenic foothills of Mount Kilimanjaro near Marangu with lush greenery" width={800} height={600} loading="eager" fetchpriority="high" decoding="async" class="hero-img" format="webp" quality={76} />
       </div>
     </section>
 
@@ -88,15 +89,15 @@ const faqs = [
       </div>
       <div class="gallery-grid">
         <figure class="gallery-item">
-          <img src={photo1} alt="Dense green rainforest trail in Kilimanjaro National Park near Marangu Gate" width="600" height="420" loading="lazy" decoding="async" />
+          <Image src={photo1} alt="Dense green rainforest trail in Kilimanjaro National Park near Marangu Gate" width={600} height={420} loading="lazy" decoding="async" format="webp" quality={76} />
           <figcaption>Winding rainforest paths lined with giant ferns, ancient moss, and wild orchids.</figcaption>
         </figure>
         <figure class="gallery-item">
-          <img src={photo2} alt="Gushing waterfalls nestled in the forested valleys around Marangu" width="600" height="420" loading="lazy" decoding="async" />
+          <Image src={photo2} alt="Gushing waterfalls nestled in the forested valleys around Marangu" width={600} height={420} loading="lazy" decoding="async" format="webp" quality={76} />
           <figcaption>Spectacular mountain waterfalls cascading through volcanic basalt gorges.</figcaption>
         </figure>
         <figure class="gallery-item">
-          <img src={photo3} alt="Local Chagga mountain guides and village hospitality in Kilimanjaro Region" width="600" height="420" loading="lazy" decoding="async" />
+          <Image src={photo3} alt="Local Chagga mountain guides and village hospitality in Kilimanjaro Region" width={600} height={420} loading="lazy" decoding="async" format="webp" quality={76} />
           <figcaption>Certified local guides sharing historical tales, botany, and mountaineering lore.</figcaption>
         </figure>
       </div>

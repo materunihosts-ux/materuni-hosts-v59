@@ -2,79 +2,42 @@
 import SiteLayout from "../../layouts/SiteLayout.astro";
 ---
 <SiteLayout title="Email Studio | Materuni Hosts Admin" description="Create and manage branded guest and partner email templates." noindex={true}>
-<section class="page-hero"><span class="eyebrow">PRIVATE ADMIN · COMMUNICATIONS</span><h1>Email Studio</h1><p>Branded, reusable email templates for guest journeys, automated booking confirmations, and partner invitations.</p></section>
+<section class="page-hero"><span class="eyebrow">PRIVATE ADMIN · COMMUNICATIONS</span><h1>Email Studio</h1><p>Branded, reusable email templates for guest journeys and partner invitations.</p></section>
 <section class="booking-wrap">
  <div class="booking-panel" id="login-panel"><h2>Administrator sign in</h2><form id="login-form" class="form-grid"><div class="field full"><label for="admin-email">Admin email</label><input id="admin-email" type="email" autocomplete="username" required></div><div class="field full"><label for="admin-password">Password</label><input id="admin-password" type="password" autocomplete="current-password" required></div><div class="field full"><button class="button" id="login-button" type="submit">Sign in securely</button><p id="login-feedback" class="muted" aria-live="polite"></p></div></form></div>
  <div id="manager" hidden>
   <div class="booking-panel">
-   <div class="section-heading"><div><span class="eyebrow">TEMPLATE LIBRARY</span><h2>Choose an email journey</h2><p class="muted">Edit the subject, message, and branding, then save your luxury African boutique template.</p></div><button class="button button-secondary" id="logout" type="button">Sign out</button></div>
-   <div class="admin-shortcuts"><a class="button button-secondary" href="/admin/">Dashboard</a><a class="button button-secondary" href="/admin/bookings">Bookings</a><a class="button button-secondary" href="/admin/operations#documents">Document Studio</a><a class="button button-secondary" href="/admin/partners">Partners</a></div>
-   <div class="field full" style="margin-top:1rem"><label for="template-choice">Template journey to edit</label><select id="template-choice"></select></div>
+   <div class="section-heading"><div><span class="eyebrow">TEMPLATE LIBRARY</span><h2>Choose an email journey</h2><p class="muted">Edit the subject and message, then save your branded template.</p></div><button class="button button-secondary" id="logout" type="button">Sign out</button></div>
+   <div class="admin-shortcuts"><a class="button button-secondary" href="/admin/">Dashboard</a><a class="button button-secondary" href="/admin/bookings">Bookings</a><a class="button button-secondary" href="/admin/partners">Partners</a><a class="button button-secondary" href="/admin/conversations">Guest CRM</a></div>
+   <div class="field full" style="margin-top:1rem"><label for="template-choice">Template</label><select id="template-choice"></select></div>
    <form id="template-form" class="form-grid" style="margin-top:1rem">
     <div class="field full"><label for="template-name">Internal template name</label><input id="template-name" maxlength="90" required></div>
-    <div class="field full"><label for="template-subject">Email subject line *</label><input id="template-subject" maxlength="180" required></div>
-    <div class="field full"><label for="template-body">Email message body *</label><textarea id="template-body" rows="16" maxlength="12000" required></textarea></div>
-    <div class="field full"><p class="muted">Available dynamic merge tags: <code>{"{{guest_name}}"}</code>, <code>{"{{partner_name}}"}</code>, <code>{"{{experience}}"}</code>, <code>{"{{booking_date}}"}</code>, <code>{"{{guest_count}}"}</code>, <code>{"{{host_name}}"}</code>, <code>{"{{booking_reference}}"}</code>, <code>{"{{manage_url}}"}</code>, <code>{"{{reply_email}}"}</code>, <code>{"{{whatsapp}}"}</code>.</p></div>
+    <div class="field full"><label for="template-subject">Email subject</label><input id="template-subject" maxlength="180" required></div>
+    <div class="field full"><label for="template-body">Email message</label><textarea id="template-body" rows="17" maxlength="12000" required></textarea></div>
+    <div class="field full"><p class="muted">Available merge tags: <code>{"{{guest_name}}"}</code>, <code>{"{{partner_name}}"}</code>, <code>{"{{experience}}"}</code>, <code>{"{{booking_date}}"}</code>, <code>{"{{guest_count}}"}</code>, <code>{"{{host_name}}"}</code>, <code>{"{{booking_reference}}"}</code>, <code>{"{{reply_email}}"}</code>, <code>{"{{whatsapp}}"}</code>. Replace these when preparing each message.</p></div>
     <div class="field full"><div class="actions"><button class="button" id="save-template" type="submit">Save template</button><button class="button button-secondary" id="preview-template" type="button">Refresh preview</button></div><p id="template-feedback" class="muted" aria-live="polite"></p></div>
    </form>
   </div>
-
-  <div class="booking-panel" style="margin-top:1.2rem">
-   <span class="eyebrow">BRAND & SENDER CUSTOMIZER</span><h2>Automated email identity</h2>
-   <p class="muted">Customize the sender name, contact email, emergency WhatsApp number and official footer across automated emails.</p>
-   <form id="brand-form" class="form-grid">
-    <div class="field"><label for="sender-name">Host / Sender display name</label><input id="sender-name" maxlength="100" placeholder="Saidi Materu & Local Hosts"></div>
-    <div class="field"><label for="sender-email">Reply-to email</label><input id="sender-email" type="email" maxlength="254" placeholder="materunihosts@gmail.com"></div>
-    <div class="field"><label for="sender-whatsapp">Public WhatsApp number</label><input id="sender-whatsapp" maxlength="50" placeholder="+255 612 068 540"></div>
-    <div class="field"><label for="sender-tagline">Brand tagline</label><input id="sender-tagline" maxlength="120" placeholder="Come as a guest. Leave as a friend."></div>
-    <div class="field full"><label for="sender-address">Official village & office address</label><input id="sender-address" maxlength="200" placeholder="Materuni Village, Moshi, Kilimanjaro, Tanzania"></div>
-    <div class="field full"><button class="button button-secondary" id="save-brand" type="submit">Save sender & brand settings</button><p id="brand-feedback" class="muted" aria-live="polite"></p></div>
-   </form>
-  </div>
-
   <div class="booking-panel" style="margin-top:1.2rem">
    <span class="eyebrow">WHATSAPP BUSINESS AUTOMATION</span><h2>Partner invitation template</h2>
-   <p class="muted">Enter the exact approved Meta WhatsApp message-template name and language code.</p>
+   <p class="muted">Enter the exact approved Meta WhatsApp message-template name and language. The approved template in WhatsApp Manager must contain three body variables in this order: partner business name, contact person, Materuni Hosts WhatsApp number.</p>
    <form id="whatsapp-template-form" class="form-grid">
     <div class="field"><label for="wa-template-name">Approved Meta template name</label><input id="wa-template-name" maxlength="100" placeholder="e.g. materuni_partner_invitation" required></div>
     <div class="field"><label for="wa-template-language">Template language code</label><input id="wa-template-language" maxlength="12" value="en" placeholder="en" required></div>
     <div class="field full"><button class="button" id="save-wa-template" type="submit">Save WhatsApp template settings</button><p id="wa-template-feedback" class="muted" aria-live="polite"></p></div>
    </form>
+   <p class="muted">Meta approval and WhatsApp Cloud API credentials are required before automated messages can be delivered. Saving the template name does not approve it.</p>
   </div>
-
   <div class="booking-panel" style="margin-top:1.2rem"><span class="eyebrow">DELIVERY MONITOR</span><h2>Recent invitation deliveries</h2><p class="muted">Email and WhatsApp attempts made from Partner Management.</p><div id="communication-history" class="admin-notification-list"><p class="muted">Loading delivery history…</p></div></div>
-
-  <div class="booking-panel" style="margin-top:1.2rem">
-   <div class="section-heading">
-    <div>
-     <span class="eyebrow">AFRICAN BOUTIQUE PREVIEW</span>
-     <h2 id="preview-subject">Email subject</h2>
-     <p class="muted">Live preview of how guests experience this email in Apple Mail, Gmail and Outlook.</p>
-    </div>
-   </div>
-   <div id="preview-body" style="margin-top:1rem"></div>
-   <div class="actions" style="margin-top:1rem">
-    <button class="button button-secondary" id="copy-email" type="button">Copy subject & message</button>
-    <button class="button" id="open-email" type="button">Open in email app</button>
-   </div>
-   <p class="muted" style="margin-top:1rem">Email Studio saves and synchronizes templates directly with the live Supabase booking engine and notifications worker.</p>
-  </div>
+  <div class="booking-panel" style="margin-top:1.2rem"><span class="eyebrow">LIVE PREVIEW</span><h2 id="preview-subject">Email subject</h2><div id="preview-body" style="white-space:pre-wrap;line-height:1.8;padding:1rem;background:#f7f2e8;border:1px solid #e6dfd3;color:#242421"></div><div class="actions" style="margin-top:1rem"><button class="button button-secondary" id="copy-email" type="button">Copy subject & message</button><button class="button" id="open-email" type="button">Open in email app</button></div><p class="muted">Email Studio saves and prepares messages. Actual automatic delivery requires a configured email provider; opening the email app does not send a message automatically.</p></div>
  </div>
 </section>
-
 <script>
 // @ts-nocheck
 import { supabaseUrl, publishableKey } from "../../lib/supabase-public";
-let token="",templates={},brandSettings={
- sender_name:"Saidi Materu & Local Hosts",
- reply_email:"materunihosts@gmail.com",
- whatsapp:"+255 612 068 540",
- tagline:"Come as a guest. Leave as a friend.",
- address:"Materuni Village, Moshi, Kilimanjaro, Tanzania"
-};
+let token="",templates={};
 const el=id=>document.getElementById(id), headers=()=>({apikey:publishableKey,Authorization:"Bearer "+token,"Content-Type":"application/json"});
 async function api(path,options={}){const r=await fetch(supabaseUrl+path,{...options,headers:{...headers(),...(options.headers||{})}});const d=await r.json().catch(()=>null);if(!r.ok)throw new Error(d?.message||d?.details||"Request failed");return d}
-
 const starter={
  partner:{name:"Partner invitation · Boutique collaboration",subject:"An invitation to collaborate with Materuni Hosts",body:`Hello {{partner_name}},
 
@@ -93,7 +56,6 @@ Warm regards,
 Materuni Hosts
 {{reply_email}}
 Come as a guest. Leave as a friend.`},
-
  welcome:{name:"Guest welcome · Enquiry received",subject:"Your Materuni experience starts here",body:`Hello {{guest_name}},
 
 Thank you for contacting Materuni Hosts. We are delighted that you are considering spending time with us in Materuni Village.
@@ -106,105 +68,88 @@ Warm regards,
 {{host_name}}
 Materuni Hosts
 {{reply_email}}`},
+ received:{name:"Booking request · Received, not confirmed",subject:"We have received your Materuni booking request",body:`Hello {{guest_name}},
 
- received:{name:"Booking request · Received & review in progress",subject:"Booking Request Received · {{experience}} ({{booking_reference}})",body:`Hello {{guest_name}},
+Thank you for sending your request to Materuni Hosts.
 
-Thank you for sending your booking request to Materuni Hosts. We are delighted to welcome you to our Chagga community in the fertile foothills of Mount Kilimanjaro.
-
-Your requested experience details:
+Your request details:
 Experience: {{experience}}
 Preferred date: {{booking_date}}
-Group size: {{guest_count}} guest(s)
-Booking reference: {{booking_reference}}
+Group size: {{guest_count}}
+Reference: {{booking_reference}}
 
-Please note: This is an initial booking acknowledgement. Our local team is reviewing slot availability and guide arrangements, and will confirm your reservation shortly.
+Please note that this is a request received, not a confirmed reservation. Our team will check the arrangements and contact you to confirm availability and next steps.
 
-What happens next:
-1. A host will review your request and confirm availability within a few hours.
-2. You will receive an official booking confirmation voucher with your guide details and meeting location.
-3. No payment is required right now; payment can be settled via secure link or on arrival.
-
-If you have any questions or need to arrange transport from Moshi or Arusha, simply reply to this email or message us on WhatsApp: {{whatsapp}}.
+Questions? Reply to this email or WhatsApp {{whatsapp}}.
 
 Warm regards,
 {{host_name}}
-Materuni Hosts
-{{reply_email}}`},
+Materuni Hosts`},
+ confirmed:{name:"Booking · Confirmation",subject:"Your Materuni experience is confirmed",body:`Hello {{guest_name}},
 
- confirmed:{name:"Booking · Confirmation & Guarantee",subject:"Reservation Confirmed · {{experience}} ({{booking_reference}})",body:`Hello {{guest_name}},
+We are pleased to confirm your Materuni Hosts experience.
 
-We are thrilled to confirm your Materuni experience! Your availability slot is secured and our local hosts are preparing to welcome you.
-
-Confirmed reservation details:
 Experience: {{experience}}
 Date: {{booking_date}}
-Time: 09:00 AM (East Africa Time)
-Guests: {{guest_count}} guest(s)
-Booking reference: {{booking_reference}}
-Meeting point: Materuni Cultural Tourism Centre, Materuni Village (GPS: -3.2505° S, 37.3912° E)
+Guests: {{guest_count}}
+Reference: {{booking_reference}}
 
-Essential traveller guidance:
-• Footwear: Sturdy walking shoes or sneakers with good traction (trails may be moist)
-• Attire: Lightweight layers, light rain jacket, modest village clothing
-• Waterfall dip: Bring a swimsuit and small towel if you wish to swim in the cool waterfall pool
-• Currency: Small Tanzanian Shillings cash for handcrafted souvenirs or village coffee beans
+Please keep this message for your records. If any details need to be updated, contact your local host using {{reply_email}} or WhatsApp {{whatsapp}}.
 
-If you need roundtrip taxi transfers from Moshi town or have dietary requirements, reply to this email or contact us on WhatsApp {{whatsapp}}.
+We look forward to welcoming you to Materuni Village.
 
 Warm regards,
 {{host_name}}
 Materuni Hosts
-{{reply_email}}
 Come as a guest. Leave as a friend.`},
+ cancelled:{name:"Booking · Cancellation",subject:"An update to your Materuni Hosts booking",body:`Hello {{guest_name}},
 
- cancelled:{name:"Booking · Cancellation update",subject:"Booking Cancellation · {{experience}} ({{booking_reference}})",body:`Hello {{guest_name}},
+We are writing to confirm that your Materuni Hosts booking has been cancelled.
 
-We are writing to confirm that your booking request for {{experience}} on {{booking_date}} (Reference: {{booking_reference}}) has been cancelled as requested.
+Booking details:
+Experience: {{experience}}
+Date: {{booking_date}}
+Guests: {{guest_count}}
+Reference: {{booking_reference}}
 
-No cancellation fees have been charged. If you believe this cancellation was made in error, or if your travel dates change and you would like to reschedule, simply reply to this email or WhatsApp us on {{whatsapp}}.
+If you believe this change was made in error or would like help arranging another date, please reply to this email or contact us on WhatsApp {{whatsapp}}.
 
-Thank you for considering Materuni Hosts. We hope to welcome you to Kilimanjaro on a future journey.
+Thank you for considering Materuni Hosts. We would be glad to assist with a future visit.
 
 Warm regards,
 {{host_name}}
 Materuni Hosts
 {{reply_email}}`},
+ rescheduled:{name:"Booking · Rescheduled",subject:"Your Materuni Hosts booking has been rescheduled",body:`Hello {{guest_name}},
 
- rescheduled:{name:"Booking · Rescheduled & Updated",subject:"Booking Rescheduled · {{experience}} ({{booking_reference}})",body:`Hello {{guest_name}},
+Your Materuni Hosts booking has been successfully rescheduled.
 
-Your booking for {{experience}} has been successfully rescheduled.
-
-Updated reservation details:
+Updated booking details:
 Experience: {{experience}}
 New date: {{booking_date}}
-Time: 09:00 AM
-Guests: {{guest_count}} guest(s)
+Guests: {{guest_count}}
 Reference: {{booking_reference}}
-Meeting point: Materuni Cultural Tourism Centre (GPS: -3.2505° S, 37.3912° E)
 
-Please keep this email for your records. If you have any further questions or need transport, contact your local host on WhatsApp {{whatsapp}} or reply directly.
+Please keep this message for your records. If you need any further assistance, reply to this email or contact us on WhatsApp {{whatsapp}}.
+
+We look forward to welcoming you to Materuni Village.
 
 Warm regards,
 {{host_name}}
 Materuni Hosts
 {{reply_email}}`},
+ followup:{name:"Guest follow-up · Thank you",subject:"Thank you for spending time in Materuni",body:`Hello {{guest_name}},
 
- followup:{name:"Guest follow-up · Thank you & feedback",subject:"Thank you for spending time in Materuni with us",body:`Hello {{guest_name}},
+Thank you for choosing to spend part of your journey with Materuni Hosts. We hope your time in the village brought you closer to Chagga culture, local flavours and the beauty of the Kilimanjaro foothills.
 
-Thank you for choosing to spend part of your journey with Materuni Hosts. We hope your time with us brought you closer to authentic Chagga culture, local flavours, and the natural beauty of the Kilimanjaro foothills.
+We would value hearing about your experience. If you have a moment, you can reply to this email with your feedback or contact us on {{whatsapp}}.
 
-Your visit directly supports local guides, village mamas, and community conservation projects in Materuni.
-
-We would love to hear your thoughts and memories from your visit. If you have a moment, please reply to this email or leave us a review on Google or TripAdvisor.
-
-Thank you again, and safe travels wherever your journey leads.
+Thank you again, and safe travels.
 
 Warm regards,
 {{host_name}}
-Materuni Hosts
-{{reply_email}}`}
+Materuni Hosts`}
 };
-
 async function loadCommunicationHistory(){
  const root=el("communication-history");root.replaceChildren();
  try{
@@ -221,308 +166,38 @@ async function loadCommunicationHistory(){
    const status=document.createElement("span");status.className="status-pill status-"+String(row.delivery_status||"pending").toLowerCase();status.textContent=row.delivery_status||"pending";
    meta.append(channel,status);line.append(main,meta);
    if(row.error_message){const error=document.createElement("p");error.className="notification-error";error.textContent=row.error_message;line.append(error)}
+   if(row.delivery_status==="failed"&&row.partner_id&&row.idempotency_key){
+    const retry=document.createElement("button");retry.type="button";retry.className="button button-secondary";retry.textContent="Retry failed invitation";
+    retry.addEventListener("click",async()=>{
+     retry.disabled=true;retry.textContent="Retrying…";
+     try{
+      const response=await fetch(supabaseUrl+"/functions/v1/admin-communications",{method:"POST",headers:headers(),body:JSON.stringify({action:"partner_invitation",partner_id:row.partner_id,request_id:row.idempotency_key})});
+      const result=await response.json().catch(()=>({}));
+      if(!response.ok)throw new Error(result.error||"Invitation retry failed.");
+      retry.textContent="Retry processed";
+      const outcomes=result.outcomes||{};
+      const notice=document.createElement("p");notice.className="muted";notice.textContent="Retry — Email: "+(outcomes.email||"not sent").replaceAll("_"," ")+" · WhatsApp: "+(outcomes.whatsapp||"not sent").replaceAll("_"," ")+".";line.append(notice);
+      await loadCommunicationHistory();
+     }catch(error){retry.disabled=false;retry.textContent="Retry failed invitation";const notice=document.createElement("p");notice.className="notification-error";notice.textContent=error.message;line.append(notice)}
+    });
+    line.append(retry);
+   }
    root.append(line);
   });
  }catch(error){root.textContent="Delivery history unavailable: "+error.message}
 }
-
 function selected(){return el("template-choice").value}
 function fill(){const t=templates[selected()];if(!t)return;el("template-name").value=t.name;el("template-subject").value=t.subject;el("template-body").value=t.body;preview()}
-
-function sample(text){
- return text
-  .replaceAll("{{guest_name}}","Alex Morgan")
-  .replaceAll("{{partner_name}}","Kilimanjaro View Lodge")
-  .replaceAll("{{experience}}","Materuni Waterfall & Chagga Coffee Tour")
-  .replaceAll("{{booking_date}}","15 November 2026")
-  .replaceAll("{{guest_count}}","2")
-  .replaceAll("{{host_name}}",brandSettings.sender_name||"Saidi Materu & Local Hosts")
-  .replaceAll("{{booking_reference}}","MH-CONF-2026-8492")
-  .replaceAll("{{manage_url}}","https://materunihosts.com/booking?ref=MH-CONF-2026-8492&manage=true")
-  .replaceAll("{{reply_email}}",brandSettings.reply_email||"materunihosts@gmail.com")
-  .replaceAll("{{whatsapp}}",brandSettings.whatsapp||"+255 612 068 540");
-}
-
-function preview(){
- const rawSubject=el("template-subject").value||"Email subject";
- const rawBody=el("template-body").value||"Your email preview will appear here.";
- const subject=sample(rawSubject);
- const body=sample(rawBody);
- el("preview-subject").textContent=subject;
- const safe=value=>String(value).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-
- const paragraphs=body.split("\n").map(line=>line?`<p style="margin:0 0 12px;line-height:1.75;font-size:14px;color:#242421">${safe(line)}</p>`:'<div style="height:6px"></div>').join("");
-
- el("preview-body").innerHTML=`
-  <div style="max-width:600px;margin:0 auto;background:#FAF7F2;border:1px solid #E6DFD3;border-radius:12px;overflow:hidden;color:#242421;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;box-shadow:0 12px 36px rgba(26,51,34,.08)">
-   
-   <!-- Header -->
-   <div style="padding:32px 28px;background:#1A3322;border-bottom:4px solid #C5A059;color:#FAF7F2">
-    <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="border-collapse:collapse">
-     <tr>
-      <td valign="middle" align="left">
-       <div style="font-size:11px;font-weight:800;letter-spacing:2.5px;color:#C5A059;text-transform:uppercase">MATERUNI HOSTS</div>
-       <h2 style="font-family:Georgia,'Times New Roman',serif;font-size:24px;line-height:30px;font-weight:700;margin:6px 0 0;color:#FAF7F2">${safe(subject)}</h2>
-       <div style="font-size:12px;color:#E6DFD3;margin-top:5px;letter-spacing:0.3px">Authentic Chagga Hospitality · Mount Kilimanjaro</div>
-      </td>
-      <td valign="middle" align="right" style="padding-left:12px">
-       <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="background-color:#FAF7F2;border:1px solid #C5A059;border-radius:6px;padding:8px 12px;text-align:right">
-        <tr>
-         <td align="right">
-          <span style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:#7A756B;display:block">BOOKING REF</span>
-          <strong style="font-family:'Courier New',Courier,monospace;font-size:14px;font-weight:800;color:#1A3322;display:block;letter-spacing:0.5px">MH-CONF-2026</strong>
-         </td>
-        </tr>
-       </table>
-      </td>
-     </tr>
-    </table>
-   </div>
-
-   <!-- Status Banner -->
-   <div style="background-color:#EBF3ED;border-bottom:1px solid #C5E0CB;padding:11px 24px;text-align:center">
-    <span style="font-size:12px;font-weight:800;letter-spacing:1px;color:#1A3322;text-transform:uppercase">
-     ✅ STATUS: RESERVATION CONFIRMED &amp; GUARANTEED
-    </span>
-   </div>
-
-   <!-- Content Area -->
-   <div style="padding:28px 24px 20px;background-color:#FAF7F2">
-    <p style="font-family:Georgia,'Times New Roman',serif;font-size:19px;line-height:26px;color:#1A3322;margin:0 0 14px;font-weight:600">
-     Habari Alex Morgan,
-    </p>
-
-    ${paragraphs}
-
-    <!-- Structured Reservation Summary -->
-    <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;border-collapse:separate;background-color:#FFFFFF;border:1px solid #E6DFD3;border-radius:10px;margin:20px 0 24px;overflow:hidden;box-shadow:0 4px 16px rgba(26,51,34,0.04)">
-     <tr>
-      <td colspan="2" bgcolor="#F8F5EE" style="background-color:#F8F5EE;padding:12px 18px;border-bottom:1px solid #E6DFD3">
-       <span style="font-size:11px;font-weight:800;letter-spacing:1.5px;color:#1A3322;text-transform:uppercase">
-        📋 RESERVATION SUMMARY
-       </span>
-      </td>
-     </tr>
-     <tr>
-      <td width="38%" style="padding:12px 18px;border-bottom:1px solid #F0ECE1;font-size:12px;font-weight:600;color:#7A756B;text-transform:uppercase;letter-spacing:0.5px">Experience</td>
-      <td width="62%" style="padding:12px 18px;border-bottom:1px solid #F0ECE1;font-size:14px;font-weight:700;color:#1A3322">Materuni Waterfall &amp; Chagga Coffee Tour</td>
-     </tr>
-     <tr>
-      <td style="padding:12px 18px;border-bottom:1px solid #F0ECE1;font-size:12px;font-weight:600;color:#7A756B;text-transform:uppercase;letter-spacing:0.5px">Date &amp; Time</td>
-      <td style="padding:12px 18px;border-bottom:1px solid #F0ECE1;font-size:14px;font-weight:700;color:#1A3322">15 November 2026 &middot; 09:00 AM <span style="font-size:11px;font-weight:400;color:#7A756B">(East Africa Time)</span></td>
-     </tr>
-     <tr>
-      <td style="padding:12px 18px;border-bottom:1px solid #F0ECE1;font-size:12px;font-weight:600;color:#7A756B;text-transform:uppercase;letter-spacing:0.5px">Party Size</td>
-      <td style="padding:12px 18px;border-bottom:1px solid #F0ECE1;font-size:14px;color:#1A3322"><strong>2</strong> guests</td>
-     </tr>
-     <tr>
-      <td style="padding:12px 18px;border-bottom:1px solid #F0ECE1;font-size:12px;font-weight:600;color:#7A756B;text-transform:uppercase;letter-spacing:0.5px">Lead Traveler</td>
-      <td style="padding:12px 18px;border-bottom:1px solid #F0ECE1;font-size:14px;color:#1A3322">Alex Morgan</td>
-     </tr>
-     <tr>
-      <td style="padding:12px 18px;border-bottom:1px solid #F0ECE1;font-size:12px;font-weight:600;color:#7A756B;text-transform:uppercase;letter-spacing:0.5px">Meeting Location</td>
-      <td style="padding:12px 18px;border-bottom:1px solid #F0ECE1;font-size:13px;color:#1A3322;line-height:1.5">
-       <strong>Materuni Cultural Tourism Centre</strong><br>
-       <span style="font-size:12px;color:#555">Materuni Village, Moshi Rural, Kilimanjaro<br>GPS: -3.2505° S, 37.3912° E</span>
-      </td>
-     </tr>
-     <tr>
-      <td style="padding:12px 18px;font-size:12px;font-weight:600;color:#7A756B;text-transform:uppercase;letter-spacing:0.5px">Payment Terms</td>
-      <td style="padding:12px 18px;font-size:13px;color:#1A3322;line-height:1.5">
-       <strong>Pay on arrival</strong> (USD or TZS cash, or Vodacom M-Pesa). Zero prepayment required today.
-      </td>
-     </tr>
-    </table>
-
-    <!-- Manage My Booking CTA -->
-    <div style="margin:24px 0 14px;text-align:center">
-     <a href="https://materunihosts.com/booking?ref=MH-CONF-2026-8492&manage=true" target="_blank" style="display:inline-block;padding:14px 34px;background-color:#1A3322;border-radius:6px;font-size:15px;font-weight:800;color:#FAF7F2;text-decoration:none;letter-spacing:0.5px;box-shadow:0 6px 18px rgba(26,51,34,0.18)">
-      Manage My Booking &rarr;
-     </a>
-     <p style="font-size:12px;color:#6E7268;margin:8px 0 0;text-align:center">
-      View live status, request rescheduling, or update party size online.
-     </p>
-    </div>
-
-    <!-- Quick Action Links -->
-    <div style="margin:12px 0 24px;text-align:center">
-     <a href="https://calendar.google.com" target="_blank" style="display:inline-block;background-color:#FFFFFF;color:#1A3322;border:1px solid #1A3322;padding:10px 18px;border-radius:5px;text-decoration:none;font-size:13px;font-weight:700;margin-right:8px">
-      &plus; Add to Google Calendar
-     </a>
-     <a href="https://wa.me/255612068540" target="_blank" style="display:inline-block;background-color:#25D366;color:#FFFFFF;border:1px solid #25D366;padding:10px 18px;border-radius:5px;text-decoration:none;font-size:13px;font-weight:700">
-      💬 Chat on WhatsApp
-     </a>
-    </div>
-
-    <!-- Traveler Checklist Card -->
-    <div style="background-color:#F8F5EE;border:1px solid #E6DFD3;border-radius:8px;padding:16px 18px;margin:16px 0 10px">
-     <div style="font-size:11px;font-weight:800;letter-spacing:1.5px;color:#1A3322;text-transform:uppercase;margin-bottom:10px">
-      🌿 ESSENTIAL PREPARATION FOR MATERUNI
-     </div>
-     <div style="font-size:13px;line-height:1.6;color:#333">
-      <p style="margin:0 0 6px">👟 <strong>Footwear:</strong> Sturdy walking shoes or sneakers with good traction.</p>
-      <p style="margin:0 0 6px">🧥 <strong>Clothing:</strong> Lightweight layers, light rain jacket, and comfortable modest attire.</p>
-      <p style="margin:0 0 6px">🏊 <strong>Waterfall Swim:</strong> Pack swimwear and a small towel if you wish to swim in the pool.</p>
-      <p style="margin:0">💵 <strong>Village Cash:</strong> Small Tanzanian Shillings for fresh roasted village coffee beans or local crafts.</p>
-     </div>
-    </div>
-   </div>
-
-   <!-- Official Brand Footer -->
-   <div style="padding:24px 28px;background:#E6DFD3;color:#555;font-size:12px;border-top:1px solid #D8CFC0;text-align:center;line-height:1.6">
-    <div style="font-family:Georgia,'Times New Roman',serif;font-size:15px;font-style:italic;color:#1A3322;font-weight:600;margin-bottom:6px">
-     &ldquo;${safe(brandSettings.tagline||"Come as a guest. Leave as a friend.")}&rdquo;
-    </div>
-    <div style="font-weight:700;color:#1A3322;font-size:13px">
-     ${safe(brandSettings.sender_name||"Materuni Hosts")} &middot; Cultural Tourism &amp; Local Experiences
-    </div>
-    <div style="color:#666;margin:4px 0 10px">
-     ${safe(brandSettings.address||"Materuni Village, Moshi, Kilimanjaro, Tanzania")}<br>
-     WhatsApp: <a href="https://wa.me/255612068540" style="color:#1A3322;text-decoration:underline;font-weight:700">${safe(brandSettings.whatsapp||"+255 612 068 540")}</a> &middot; Email: <a href="mailto:materunihosts@gmail.com" style="color:#1A3322;text-decoration:underline;font-weight:700">${safe(brandSettings.reply_email||"materunihosts@gmail.com")}</a>
-    </div>
-    <div style="border-top:1px solid #D4CABC;padding-top:10px;font-size:11px;color:#777">
-     <a href="https://materunihosts.com" style="color:#1A3322;text-decoration:none;font-weight:700">materunihosts.com</a> &middot;
-     <a href="https://www.tripadvisor.com/34765809" target="_blank" style="color:#1A3322;text-decoration:none">TripAdvisor Verified</a> &middot;
-     <a href="https://g.page/r/CXy6M_Suiip9EBM/review" target="_blank" style="color:#1A3322;text-decoration:none">Google Reviews</a>
-    </div>
-   </div>
-  </div>
- `;
-}
-
-function validateTemplate(key,subject,body){
- if(!subject.trim()||!body.trim())throw new Error("Add both an email subject and message before saving.");
- if(key==="partner"){
-  const allowed=new Set(["partner_name","host_name","reply_email","whatsapp"]);
-  const tags=[...subject.matchAll(/\{\{([a-z_]+)\}\}/g),...body.matchAll(/\{\{([a-z_]+)\}\}/g)].map(match=>match[1]);
-  const unsupported=[...new Set(tags.filter(tag=>!allowed.has(tag)))];
-  if(unsupported.length)throw new Error("The partner invitation supports only {{partner_name}}, {{host_name}}, {{reply_email}} and {{whatsapp}}. Remove: "+unsupported.map(tag=>"{{"+tag+"}}").join(", "));
- }
-}
-
-function renderChoices(){
- const s=el("template-choice");s.replaceChildren();
- Object.entries(templates).forEach(([key,t])=>{
-  const o=document.createElement("option");o.value=key;o.textContent=t.name;s.append(o);
- });
- fill();
-}
-
-el("login-form").addEventListener("submit",async e=>{
- e.preventDefault();const b=el("login-button");b.disabled=true;el("login-feedback").textContent="Verifying administrator…";
- try{
-  const r=await fetch(supabaseUrl+"/auth/v1/token?grant_type=password",{method:"POST",headers:{apikey:publishableKey,"Content-Type":"application/json"},body:JSON.stringify({email:el("admin-email").value.trim(),password:el("admin-password").value})});
-  const s=await r.json();if(!r.ok)throw new Error(s.msg||s.message||"Sign in failed");
-  token=s.access_token;
-  const admins=await api("/rest/v1/admin_users?select=user_id&user_id=eq."+encodeURIComponent(s.user.id));
-  if(!admins.length)throw new Error("This account is not authorised as an administrator");
-
-  const rows=await api("/rest/v1/site_settings?select=setting_key,setting_value&setting_key=eq.email_templates");
-  if(rows[0]?.setting_value){
-   try{templates=JSON.parse(rows[0].setting_value)}catch{templates={}}
-  }
-  templates={...structuredClone(starter),...templates};
-
-  const brandRows=await api("/rest/v1/site_settings?select=setting_value&setting_key=eq.email_brand_settings");
-  if(brandRows[0]?.setting_value){
-   try{
-    const bData=JSON.parse(brandRows[0].setting_value);
-    brandSettings={...brandSettings,...bData};
-   }catch{}
-  }
-  el("sender-name").value=brandSettings.sender_name||"Saidi Materu & Local Hosts";
-  el("sender-email").value=brandSettings.reply_email||"materunihosts@gmail.com";
-  el("sender-whatsapp").value=brandSettings.whatsapp||"+255 612 068 540";
-  el("sender-tagline").value=brandSettings.tagline||"Come as a guest. Leave as a friend.";
-  el("sender-address").value=brandSettings.address||"Materuni Village, Moshi, Kilimanjaro, Tanzania";
-
-  const waRows=await api("/rest/v1/site_settings?select=setting_value&setting_key=eq.whatsapp_partner_template");
-  if(waRows[0]?.setting_value){
-   try{
-    const wa=JSON.parse(waRows[0].setting_value);
-    el("wa-template-name").value=wa.name||"";el("wa-template-language").value=wa.language||"en";
-   }catch{}
-  }
-  el("login-panel").hidden=true;el("manager").hidden=false;
-  renderChoices();loadCommunicationHistory();
- }catch(err){token="";el("login-feedback").textContent=err.message}
- finally{b.disabled=false}
-});
-
-el("brand-form").addEventListener("submit",async e=>{
- e.preventDefault();const b=el("save-brand");b.disabled=true;el("brand-feedback").textContent="Saving brand settings…";
- try{
-  brandSettings={
-   sender_name:el("sender-name").value.trim()||"Saidi Materu & Local Hosts",
-   reply_email:el("sender-email").value.trim()||"materunihosts@gmail.com",
-   whatsapp:el("sender-whatsapp").value.trim()||"+255 612 068 540",
-   tagline:el("sender-tagline").value.trim()||"Come as a guest. Leave as a friend.",
-   address:el("sender-address").value.trim()||"Materuni Village, Moshi, Kilimanjaro, Tanzania"
-  };
-  await api("/rest/v1/site_settings?on_conflict=setting_key",{
-   method:"POST",
-   headers:{Prefer:"resolution=merge-duplicates,return=minimal"},
-   body:JSON.stringify({setting_key:"email_brand_settings",setting_value:JSON.stringify(brandSettings),updated_at:new Date().toISOString()})
-  });
-  el("brand-feedback").textContent="Sender and brand settings saved across automated emails.";
-  preview();
- }catch(err){el("brand-feedback").textContent=err.message}
- finally{b.disabled=false}
-});
-
-el("whatsapp-template-form").addEventListener("submit",async e=>{
- e.preventDefault();const b=el("save-wa-template");b.disabled=true;el("wa-template-feedback").textContent="Saving WhatsApp template settings…";
- try{
-  const value={name:el("wa-template-name").value.trim(),language:el("wa-template-language").value.trim()||"en"};
-  if(!/^[a-z0-9_]{3,100}$/.test(value.name))throw new Error("Use the exact Meta template name (lowercase letters, numbers and underscores).");
-  if(!/^[a-z]{2,3}(_[A-Z]{2})?$/.test(value.language))throw new Error("Enter a valid language code such as en or en_US.");
-  await api("/rest/v1/site_settings?on_conflict=setting_key",{
-   method:"POST",
-   headers:{Prefer:"resolution=merge-duplicates,return=minimal"},
-   body:JSON.stringify({setting_key:"whatsapp_partner_template",setting_value:JSON.stringify(value),updated_at:new Date().toISOString()})
-  });
-  el("wa-template-feedback").textContent="WhatsApp template settings saved.";
- }catch(error){el("wa-template-feedback").textContent=error.message}
- finally{b.disabled=false}
-});
-
-el("template-choice").addEventListener("change",fill);
-el("template-subject").addEventListener("input",preview);
-el("template-body").addEventListener("input",preview);
-el("preview-template").addEventListener("click",preview);
-
-el("template-form").addEventListener("submit",async e=>{
- e.preventDefault();const b=el("save-template");b.disabled=true;el("template-feedback").textContent="Checking and saving template…";
- try{
-  const key=selected(),name=el("template-name").value.trim(),subject=el("template-subject").value.trim(),body=el("template-body").value;
-  if(!name)throw new Error("Add an internal template name.");
-  validateTemplate(key,subject,body);
-  templates[key]={name,subject,body};
-  await api("/rest/v1/site_settings?on_conflict=setting_key",{
-   method:"POST",
-   headers:{Prefer:"resolution=merge-duplicates,return=minimal"},
-   body:JSON.stringify({setting_key:"email_templates",setting_value:JSON.stringify(templates),updated_at:new Date().toISOString()})
-  });
-  const option=el("template-choice").selectedOptions[0];option.textContent=name;
-  el("template-feedback").textContent="Template saved and synchronized with live booking engine.";
- }catch(err){el("template-feedback").textContent=err.message}
- finally{b.disabled=false}
-});
-
-el("copy-email").addEventListener("click",async()=>{
- const value=el("template-subject").value+"\n\n"+el("template-body").value;
- try{await navigator.clipboard.writeText(value);el("template-feedback").textContent="Email copied to clipboard."}
- catch{el("template-feedback").textContent="Clipboard unavailable. Select and copy the preview manually."}
-});
-
-el("open-email").addEventListener("click",()=>{
- const subject=sample(el("template-subject").value),body=sample(el("template-body").value);
- location.href="mailto:?subject="+encodeURIComponent(subject)+"&body="+encodeURIComponent(body);
-});
-
-el("logout").addEventListener("click",async()=>{
- try{await fetch(supabaseUrl+"/auth/v1/logout",{method:"POST",headers:headers()})}catch{}
- token="";el("manager").hidden=true;el("login-panel").hidden=false;el("login-form").reset();
-});
+function preview(){const subject=sample(el("template-subject").value)||"Email subject";const body=sample(el("template-body").value)||"Your email preview will appear here.";el("preview-subject").textContent=subject;const safe=value=>String(value).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));const parts=body.split(/\nWarm regards,\n/i);const paragraphs=(parts[0]||body).split("\n").map(line=>line?'<p style="margin:0 0 14px">'+safe(line)+'</p>':'<div style="height:5px"></div>').join("");el("preview-body").innerHTML='<div style="max-width:640px;margin:0 auto;background:#FAF7F2;border:1px solid #E6DFD3;border-radius:12px;overflow:hidden;color:#242421;font:14px/1.8 Arial,sans-serif"><div style="padding:24px;background:#1A3322;border-bottom:4px solid #C5A059;color:#fff"><div style="font-size:16px;font-weight:800;letter-spacing:2px">MATERUNI HOSTS</div><div style="font-size:9px;letter-spacing:1.5px;color:#E6DFD3">LOCAL EXPERIENCES · KILIMANJARO</div><div style="font:26px Georgia,serif;margin-top:22px">A local connection begins here.</div></div><div style="padding:28px">'+paragraphs+'<div style="border-top:1px solid #E6DFD3;padding-top:18px;margin-top:24px"><div style="font-size:10px;font-weight:800;letter-spacing:1.4px;color:#80652F">WARM REGARDS</div><strong style="display:block;color:#1A3322;font-size:16px;margin-top:5px">Your local host</strong><span>Materuni Hosts · Local Chagga Experiences</span><div style="margin-top:10px;color:#1A3322">WhatsApp: +255 612 068 540<br>materunihosts@gmail.com</div><em style="display:block;color:#80652F;font:italic 14px Georgia,serif;margin-top:12px">Come as a guest. Leave as a friend.</em></div></div><div style="padding:16px 28px;background:#E6DFD3;color:#555;font-size:11px">Materuni Village · Moshi · Kilimanjaro, Tanzania</div></div>'}
+function sample(text){return text.replaceAll("{{guest_name}}","Alex Morgan").replaceAll("{{partner_name}}","Kilimanjaro View Lodge").replaceAll("{{experience}}","Waterfalls & Coffee Tour").replaceAll("{{booking_date}}","15 November 2026").replaceAll("{{guest_count}}","2").replaceAll("{{host_name}}","Your local host").replaceAll("{{booking_reference}}","MH-DEMO-001").replaceAll("{{reply_email}}","materunihosts@gmail.com").replaceAll("{{whatsapp}}","+255 612 068 540")}
+function validateTemplate(key,subject,body){if(!subject.trim()||!body.trim())throw new Error("Add both an email subject and message before saving.");if(key==="partner"){const allowed=new Set(["partner_name","host_name","reply_email","whatsapp"]);const tags=[...subject.matchAll(/\{\{([a-z_]+)\}\}/g),...body.matchAll(/\{\{([a-z_]+)\}\}/g)].map(match=>match[1]);const unsupported=[...new Set(tags.filter(tag=>!allowed.has(tag)))];if(unsupported.length)throw new Error("The partner invitation supports only {{partner_name}}, {{host_name}}, {{reply_email}} and {{whatsapp}}. Remove: "+unsupported.map(tag=>"{{"+tag+"}}").join(", "));if(!body.includes("{{partner_name}}"))throw new Error("Include {{partner_name}} so the invitation is addressed to the partner.");}}
+function renderChoices(){const s=el("template-choice");s.replaceChildren();Object.entries(templates).forEach(([key,t])=>{const o=document.createElement("option");o.value=key;o.textContent=t.name;s.append(o)});fill()}
+el("login-form").addEventListener("submit",async e=>{e.preventDefault();const b=el("login-button");b.disabled=true;el("login-feedback").textContent="Verifying administrator…";try{const r=await fetch(supabaseUrl+"/auth/v1/token?grant_type=password",{method:"POST",headers:{apikey:publishableKey,"Content-Type":"application/json"},body:JSON.stringify({email:el("admin-email").value.trim(),password:el("admin-password").value})});const s=await r.json();if(!r.ok)throw new Error(s.msg||s.message||"Sign in failed");token=s.access_token;const admins=await api("/rest/v1/admin_users?select=user_id&user_id=eq."+encodeURIComponent(s.user.id));if(!admins.length)throw new Error("This account is not authorised as an administrator");const rows=await api("/rest/v1/site_settings?select=setting_key,setting_value&setting_key=eq.email_templates");if(rows[0]?.setting_value){try{templates=JSON.parse(rows[0].setting_value)}catch{templates={}}}templates={...structuredClone(starter),...templates};const waRows=await api("/rest/v1/site_settings?select=setting_value&setting_key=eq.whatsapp_partner_template");if(waRows[0]?.setting_value){try{const wa=JSON.parse(waRows[0].setting_value);el("wa-template-name").value=wa.name||"";el("wa-template-language").value=wa.language||"en"}catch{}}el("login-panel").hidden=true;el("manager").hidden=false;renderChoices();loadCommunicationHistory()}catch(err){token="";el("login-feedback").textContent=err.message}finally{b.disabled=false}});
+el("whatsapp-template-form").addEventListener("submit",async e=>{e.preventDefault();const b=el("save-wa-template");b.disabled=true;el("wa-template-feedback").textContent="Saving WhatsApp template settings…";try{const value={name:el("wa-template-name").value.trim(),language:el("wa-template-language").value.trim()||"en"};if(!/^[a-z0-9_]{3,100}$/.test(value.name))throw new Error("Use the exact Meta template name (lowercase letters, numbers and underscores).");if(!/^[a-z]{2,3}(_[A-Z]{2})?$/.test(value.language))throw new Error("Enter a valid language code such as en or en_US.");await api("/rest/v1/site_settings?on_conflict=setting_key",{method:"POST",headers:{Prefer:"resolution=merge-duplicates,return=minimal"},body:JSON.stringify({setting_key:"whatsapp_partner_template",setting_value:JSON.stringify(value),updated_at:new Date().toISOString()})});el("wa-template-feedback").textContent="WhatsApp template settings saved. Meta approval and API credentials are still required for delivery."}catch(error){el("wa-template-feedback").textContent=error.message}finally{b.disabled=false}});
+el("template-choice").addEventListener("change",fill);el("template-subject").addEventListener("input",preview);el("template-body").addEventListener("input",preview);el("preview-template").addEventListener("click",preview);
+el("template-form").addEventListener("submit",async e=>{e.preventDefault();const b=el("save-template");b.disabled=true;el("template-feedback").textContent="Checking and saving template…";try{const key=selected(),name=el("template-name").value.trim(),subject=el("template-subject").value.trim(),body=el("template-body").value;if(!name)throw new Error("Add an internal template name.");validateTemplate(key,subject,body);templates[key]={name,subject,body};await api("/rest/v1/site_settings?on_conflict=setting_key",{method:"POST",headers:{Prefer:"resolution=merge-duplicates,return=minimal"},body:JSON.stringify({setting_key:"email_templates",setting_value:JSON.stringify(templates),updated_at:new Date().toISOString()})});const option=el("template-choice").selectedOptions[0];option.textContent=name;el("template-feedback").textContent="Template saved. Partner invitation merge tags have been checked against the live email sender."}catch(err){el("template-feedback").textContent=err.message}finally{b.disabled=false}});
+el("copy-email").addEventListener("click",async()=>{const value=el("template-subject").value+"\n\n"+el("template-body").value;try{await navigator.clipboard.writeText(value);el("template-feedback").textContent="Email copied to clipboard."}catch{el("template-feedback").textContent="Clipboard unavailable on this browser. Select and copy the preview manually."}});
+el("open-email").addEventListener("click",()=>{const subject=sample(el("template-subject").value),body=sample(el("template-body").value);location.href="mailto:?subject="+encodeURIComponent(subject)+"&body="+encodeURIComponent(body)});
+el("logout").addEventListener("click",async()=>{try{await fetch(supabaseUrl+"/auth/v1/logout",{method:"POST",headers:headers()})}catch{}token="";el("manager").hidden=true;el("login-panel").hidden=false;el("login-form").reset()});
 </script>
 </SiteLayout>

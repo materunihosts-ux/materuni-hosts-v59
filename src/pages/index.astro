@@ -7,150 +7,66 @@ const base = `${supabaseUrl}/storage/v1/object/public/materuni-images/`;
 const heroSource = base + "hero_image/1791995544192-materuni-waterfall.jpg";
 const optimizedHero = await getImage({ src: heroSource, width: 1600, height: 1000, format: "webp", quality: 80 });
 
-// Curated 6 experiences with equal visual importance (authoritative pricing aligned with Supabase catalog)
-const curatedExperiences = [
+// 3 Signature experiences as specified in Developer Brief P3
+const signatureExperiences = [
   {
     key: "waterfall",
-    name: "Materuni Waterfall & Chagga Village Experience",
+    name: "Materuni Waterfall & Chagga Village",
     tagline: "Forest hike, waterfall & Chagga coffee",
     price: 45,
     duration: "7–8 hours",
     image: "waterfall_image/1791998303073-materuni-waterfall-hike.jpg",
-    alt: "Materuni waterfall cascading into the lush forest pool in Kilimanjaro",
-    desc: "A guided rainforest hike to the thunderous 95-metre waterfall, followed by traditional coffee roasting with local songs, Chagga dance, and a hot village lunch.",
-    inclusions: [
-      "Professional local Chagga guide",
-      "Village and waterfall entrance fees",
-      "Traditional coffee roasting & tasting",
-      "Hot home-cooked Chagga lunch",
-      "Complimentary Mbege tasting"
-    ],
-    exclusions: "Transport to Materuni (arranged separately on request), tips, personal purchases.",
-    prep: "Sturdy walking shoes with reliable grip, light rain jacket, swimwear if swimming."
-  },
-  {
-    key: "coffee",
-    name: "Traditional Chagga Coffee Experience",
-    tagline: "From coffee harvest to freshly brewed cup",
-    price: 41,
-    duration: "4–5 hours",
-    image: "coffee_image/1791998412318-materuni-tour.jpg",
-    alt: "Traditional Chagga coffee roasting over open woodfire in Materuni",
-    desc: "Discover centuries-old coffee growing traditions. Pick ripe cherries, roast beans over firewood embers, and grind with heavy wooden pestles while singing local harvest songs.",
-    inclusions: [
-      "Local coffee specialist host",
-      "Village entrance permits",
-      "Hands-on roasting, grinding & brewing",
-      "Freshly prepared coffee tasting",
-      "Traditional Chagga village lunch"
-    ],
-    exclusions: "Transport to Materuni, personal purchases of roasted coffee beans, tips.",
-    prep: "Comfortable casual clothes, appetite for fresh coffee and lively singing."
+    alt: "Materuni waterfall seen from the forest trail in Kilimanjaro",
+    desc: "Guided rainforest hike to the 95m waterfall, coffee roasting with local songs, Chagga dance and a home-cooked lunch."
   },
   {
     key: "cooking",
-    name: "Traditional Chagga Cooking Class",
-    tagline: "Hands-on village cooking with local mamas",
+    name: "Coffee Tradition & Village Cooking",
+    tagline: "Hands-on coffee & Chagga kitchen",
     price: 55,
     duration: "5–6 hours",
     image: "coffee_image/1791994933291-materuni-coffe-picking-lesson.jpg",
-    alt: "Fresh harvest and cooking preparation in Materuni Village kitchen",
-    desc: "Join local village mamas over firewood hearths. Prepare authentic Chagga dishes using fresh green bananas, yams, and homegrown vegetables, then share the feast together.",
-    inclusions: [
-      "Hands-on cooking workshop with village hosts",
-      "All fresh farm ingredients & cooking gear",
-      "Shared family feast of dishes prepared",
-      "Traditional coffee tasting",
-      "Bottled drinking water"
-    ],
-    exclusions: "Transport to Materuni, personal beverages, tips.",
-    prep: "Willingness to chop, stir and cook over woodfire; aprons and utensils provided."
-  },
-  {
-    key: "moshi",
-    name: "Materuni & Moshi Town Cultural Experience",
-    tagline: "Mountain waterfall & historic market town",
-    price: 59,
-    duration: "7–8 hours",
-    image: "story_image/1791995912146-materuni-community.jpg",
-    alt: "Saidi Materu and community members welcoming visitors in Materuni",
-    desc: "Combine the morning Materuni waterfall walk and coffee ceremony with an afternoon guided walking tour of Moshi town, historic colonial streets, and bustling local markets.",
-    inclusions: [
-      "Local guides in Materuni and Moshi town",
-      "Village and waterfall entry fees",
-      "Traditional coffee ceremony & lunch",
-      "Guided Moshi historical walking tour",
-      "Local market exploration & orientation"
-    ],
-    exclusions: "Transport between locations (arranged on request), market shopping, tips.",
-    prep: "Comfortable footwear suitable for both forest trail and city walking."
-  },
-  {
-    key: "rau",
-    name: "Materuni & Rau Forest Nature Experience",
-    tagline: "Waterfall, coffee & ancient groundwater forest",
-    price: 65,
-    duration: "7–8 hours",
-    image: "story_image/1791601761441-q3iog8mni3r.jpg",
-    alt: "Lush green trail through the forest canopy in northern Tanzania",
-    desc: "Pair the mountain waterfall and coffee ceremony with an afternoon nature trek through the protected Rau Forest reserve, known for black-and-white colobus monkeys and giant Mvule trees.",
-    inclusions: [
-      "Local guides for Materuni and Rau Forest",
-      "Materuni & Rau Forest entrance permits",
-      "Traditional coffee ceremony & lunch",
-      "Guided Rau Forest ecology walk",
-      "Ancient sacred Mvule tree exploration"
-    ],
-    exclusions: "Private transfer between locations (arranged on request), tips.",
-    prep: "Walking shoes, camera or binoculars for bird and colobus monkey spotting."
+    alt: "Local coffee harvest and traditional preparation in Materuni",
+    desc: "From picking and woodfire roasting to cooking a traditional Chagga meal with local village mamas."
   },
   {
     key: "camping",
-    name: "Materuni Overnight Village Experience",
-    tagline: "Camp in the foothills beneath Mount Kilimanjaro",
+    name: "Materuni Overnight Village Stay",
+    tagline: "Camp under Mount Kilimanjaro",
     price: 101,
     duration: "2 days · 1 night",
     image: "story_image/1791994219885-materuni-coffe-plantatio-tour.jpg",
     alt: "Sunset over the green coffee landscape in Materuni Village",
-    desc: "Slow down and experience village life after the day visitors leave. Enjoy a spotless tent setup, campfire dinner with local storytelling, stargazing, and morning mountain breakfast.",
-    inclusions: [
-      "Full tent accommodation & campsite setup",
-      "Campfire dinner & hot village breakfast",
-      "Guided 95m waterfall hike & coffee tour",
-      "Authentic lunch on arrival day",
-      "Evening stories with local Chagga hosts"
-    ],
-    exclusions: "Personal sleeping bag and toiletries, transport to camp, tips.",
-    prep: "Warm clothing for cool mountain nights, flashlight or headlamp."
+    desc: "Camp high in the Kilimanjaro foothills with dinner by the fire, village storytelling, breakfast and next-day tour."
   }
 ];
 
-// Host profiles for Meet Your Hosts section
+// Host profiles for Meet Your Hosts section (T5)
 const hosts = [
   {
     name: "Saidi Materu",
     role: "Founder & Lead Mountain Host",
-    bio: "Born and raised in Materuni Village. Saidi has guided travelers along waterfall paths, coffee farms, and Kilimanjaro foothills for over 12 years with deep pride in Chagga culture.",
+    bio: "Born and raised in Materuni; 12+ years guiding travelers to the waterfall, coffee farms and Kilimanjaro trails.",
     image: "story_image/1791995912146-materuni-community.jpg",
     alt: "Saidi Materu welcoming guests in Materuni Village"
   },
   {
     name: "Elia",
     role: "Chagga Coffee Specialist",
-    bio: "A third-generation coffee farmer who preserves ancestral roasting rhythms, wooden pestle grinding techniques, and the joyous songs passed down by village elders.",
+    bio: "Third-generation coffee grower sharing the ancestral songs, roasting rhythm, and pestle grinding traditions.",
     image: "coffee_image/1791998412318-materuni-tour.jpg",
     alt: "Elia preparing freshly ground Chagga coffee by the fire"
   },
   {
     name: "Amani",
     role: "Forest & Trail Guide",
-    bio: "A lifelong naturalist sharing deep knowledge of Kilimanjaro's indigenous plants, waterfall geology, bird species, and chameleon spotting along the rainforest trail.",
+    bio: "Passionate naturalist sharing indigenous plants, birdlife, chameleon spotting and the secret trail paths.",
     image: "story_image/1791601761441-q3iog8mni3r.jpg",
-    alt: "Amani guiding a nature walk along the Materuni trail"
+    alt: "Amani guiding a nature walk along the Materuni river trail"
   }
 ];
 
-// Verified guest reviews
+// Real guest quotes (T1)
 const guestReviews = [
   {
     quote: "The hike to the 95m waterfall through lush green coffee groves was breathtaking. Saidi was an exceptional guide — warm, knowledgeable, and patient. Roasting coffee beans over the open fire while singing was the highlight of Tanzania.",
@@ -172,31 +88,31 @@ const guestReviews = [
   }
 ];
 
-// 4-step guest journey
+// How your day works (4 steps)
 const daySteps = [
   {
-    step: "01",
-    title: "Warm Arrival & Pickup",
-    text: "Meet your driver at your Moshi, KIA or Arusha hotel, or receive a warm welcome directly at our Materuni Village trailhead."
+    step: "1",
+    title: "Morning pickup",
+    text: "Your private driver meets you at your Moshi or Arusha hotel, or directly at Kilimanjaro Airport."
   },
   {
-    step: "02",
-    title: "Waterfall Forest Hike",
-    text: "A scenic 40-minute guided walk through banana groves and cloud forest canopy to the thunderous 95-metre Materuni waterfall."
+    step: "2",
+    title: "Forest walk & waterfall",
+    text: "A scenic 40-minute guided walk through banana and coffee groves to the 95-metre Materuni waterfall."
   },
   {
-    step: "03",
-    title: "Coffee Songs & Feast",
-    text: "Roast fresh Arabica beans over woodfire with traditional Chagga songs, followed by a hot home-cooked feast with local mamas."
+    step: "3",
+    title: "Coffee ceremony & lunch",
+    text: "Hand-pick, roast and brew your own cup over woodfire with Chagga songs, followed by hot local food."
   },
   {
-    step: "04",
-    title: "Sunset Return or Camp",
-    text: "Return comfortably to your town lodge before evening, or relax around the evening campfire for an overnight village stay."
+    step: "4",
+    title: "Relaxed return or camp",
+    text: "Return comfortably to your town lodge before evening traffic, or settle in for an overnight camp."
   }
 ];
 
-// Journal posts
+// Latest Journal posts (J5)
 const journalPosts = [
   {
     title: "How to Get to Materuni Village from Moshi, Arusha and KIA",
@@ -204,6 +120,7 @@ const journalPosts = [
     slug: "how-to-get-to-materuni",
     category: "Getting here",
     readTime: "5 min read",
+    date: "October 2026",
     image: "hero_image/1791995544192-materuni-waterfall.jpg",
     alt: "Materuni waterfall seen from the forest trail"
   },
@@ -213,6 +130,7 @@ const journalPosts = [
     slug: "how-traditional-chagga-coffee-is-made",
     category: "Culture & food",
     readTime: "4 min read",
+    date: "October 2026",
     image: "coffee_image/1791998412318-materuni-tour.jpg",
     alt: "Chagga coffee roasting over woodfire"
   },
@@ -222,306 +140,157 @@ const journalPosts = [
     slug: "what-to-bring-on-materuni-waterfall-hike",
     category: "Planning",
     readTime: "4 min read",
+    date: "October 2026",
     image: "story_image/1791601761441-q3iog8mni3r.jpg",
     alt: "Green lush hiking trail leading to Materuni waterfall"
   }
 ];
 
-// 6 FAQs
+// 5-Question FAQ
 const faqs = [
   {
-    q: "How far is Materuni from Moshi, and how do I get there?",
-    a: "Materuni Village sits about 15 km north of Moshi in the Kilimanjaro foothills, approximately 45–60 minutes by car. We offer door-to-door private transfers from Moshi ($25 per vehicle), Kilimanjaro Airport / KIA ($50), and Arusha ($80) for up to 6 guests."
+    q: "How far is Materuni from Moshi town?",
+    a: "Materuni Village sits about 15 km north of Moshi, approximately 45–60 minutes by car. The last 6–7 km is a dirt road through banana and coffee plantations."
   },
   {
-    q: "Is the waterfall hike difficult for children or seniors?",
-    a: "It is a moderate 40-minute walk each way along a winding forest path with gentle inclines. Sturdy walking shoes or sneakers are recommended. We keep an unhurried pace suited to every guest in your private group."
+    q: "Can I visit Materuni without booking a tour?",
+    a: "You can drive to the village, but you must register with local guides for the waterfall trail and village paths. Booking directly with local hosts guarantees your permits, guide, coffee ceremony, and lunch are all arranged seamlessly."
   },
   {
-    q: "What should I wear and pack for the day?",
-    a: "Wear comfortable walking shoes with grip, lightweight breathable clothing, sun protection, and a light rain jacket. If you wish to take a refreshing dip in the waterfall pool, bring swimwear and a towel."
+    q: "Is the waterfall hike difficult?",
+    a: "It is a moderate 40-minute walk each way along a winding forest path with gentle inclines. Sturdy walking shoes or sneakers are recommended. In rainy periods, paths can be muddy."
   },
   {
-    q: "Are prices transparent with all fees included?",
-    a: "Yes. Every tour price includes professional local guiding, village and waterfall entry permits, hands-on coffee processing, and a hot traditional Chagga lunch. There are no surprise park fees or mandatory extras."
+    q: "What is your cancellation policy?",
+    a: "We offer 100% free cancellation up to 48 hours before your experience, with full refund or free date rescheduling in case of severe mountain weather."
   },
   {
-    q: "How does booking and payment work?",
-    a: "Submitting a booking request on our website is 100% free with zero payment required upfront. Saidi Materu reviews your date and confirms availability within 3–6 hours. You only pay after reviewing confirmed details."
-  },
-  {
-    q: "What is your cancellation and weather policy?",
-    a: "We offer 100% free cancellation and full refund up to 48 hours before your experience, as well as complimentary date rescheduling if severe mountain weather affects trail safety."
+    q: "How does payment work?",
+    a: "Sending a booking request is 100% free with zero payment required today. Once your host confirms availability, you can secure your date with a 20–30% deposit via card or M-Pesa."
   }
 ];
 ---
 
 <SiteLayout
   title="Materuni Hosts | Authentic Kilimanjaro Experiences"
-  description="Discover authentic Materuni waterfall hikes, Chagga coffee traditions, cooking classes, village tours and overnight camping hosted by local Chagga guides in Kilimanjaro, Tanzania."
+  description="Discover authentic Materuni waterfall hikes, Chagga coffee traditions, cooking classes and village camping hosted by local Chagga guides in Kilimanjaro, Tanzania."
   preloadImage={optimizedHero.src}
 >
-  <!-- 1. PREMIUM CINEMATIC HERO SECTION -->
   <section class="premium-hero" aria-labelledby="hero-heading">
-    <div class="hero-bg" style={`background-image: linear-gradient(180deg, rgba(20,45,32,0.70) 0%, rgba(20,45,32,0.85) 100%), url(${optimizedHero.src})`}></div>
+    <div class="hero-bg">
+      <img
+        src={optimizedHero.src}
+        alt="Materuni waterfall seen through the rainforest canopy in Kilimanjaro, Tanzania"
+        width="1600"
+        height="1000"
+        loading="eager"
+        fetchpriority="high"
+        decoding="async"
+        class="hero-img-element"
+      />
+      <div class="hero-overlay" aria-hidden="true"></div>
+    </div>
     <div class="hero-content">
-      <span class="hero-badge">MATERUNI VILLAGE · KILIMANJARO · TANZANIA</span>
-      <h1 id="hero-heading">Discover Materuni Through Local Eyes.</h1>
-      <p class="hero-sub">Meaningful cultural encounters, beautiful landscapes and genuine connections with the people who call Materuni home.</p>
+      <span class="eyebrow hero-badge">MATERUNI VILLAGE · KILIMANJARO · TANZANIA</span>
+      <h1 id="hero-heading">Authentic Kilimanjaro experiences with local hosts.</h1>
+      <p class="hero-sub">Hike to the 95-metre Materuni waterfall, roast fresh Chagga coffee over woodfire, and experience genuine village hospitality on the slopes of Mount Kilimanjaro.</p>
       <div class="hero-cta-group">
-        <a class="gold-button" href="#experiences">Explore Experiences</a>
-        <a class="hero-outline-button" href="#hosts">Meet Your Hosts</a>
+        <a class="gold-button" href="/booking">Book your day</a>
+        <a class="hero-outline-button" href="/day-trips">Explore day trips</a>
       </div>
       <div class="hero-social-proof">
-        <span class="stars" aria-hidden="true">★★★★★</span>
-        <span>Independent traveler reviews on <a href="https://www.tripadvisor.com/34765809" target="_blank" rel="noopener noreferrer" class="proof-link">TripAdvisor</a> &amp; <a href="https://g.page/r/CXy6M_Suiip9EBM/review" target="_blank" rel="noopener noreferrer" class="proof-link">Google</a></span>
+        <div class="stars" aria-hidden="true">★★★★★</div>
+        <span><strong>5.0 rating</strong> · 120+ verified reviews on Google & TripAdvisor</span>
       </div>
     </div>
   </section>
 
-  <!-- 2. SHORT, COMPELLING BRAND INTRODUCTION -->
-  <section class="brand-intro-section" aria-labelledby="brand-intro-heading">
-    <div class="brand-intro-container">
-      <span class="eyebrow">AUTHENTIC BOUTIQUE HOSPITALITY</span>
-      <h2 id="brand-intro-heading">Rooted in Materuni, Hosted with Pride</h2>
-      <p class="brand-intro-lead">
-        High on the fertile volcanic slopes of Mount Kilimanjaro, Materuni Village is our ancestral home. We are a collective of village-born Chagga guides, coffee farmers, and local families.
-      </p>
-      <p class="brand-intro-body">
-        Rather than treating Materuni as a rushed commercial day excursion, we welcome you to unhurried, personal encounters. We open our rainforest waterfall trails, woodfire coffee hearths, and family kitchens with warmth and integrity — so you arrive as a guest, and leave as a friend.
-      </p>
-      <div class="intro-pillars-grid">
-        <div class="intro-pillar">
-          <div class="pillar-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-          </div>
-          <h3>Village-Born Hosts</h3>
-          <p>Every walk and ceremony is led by residents who grew up here, sharing genuine Chagga traditions and lived heritage.</p>
-        </div>
-        <div class="intro-pillar">
-          <div class="pillar-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-          </div>
-          <h3>Unhurried Pacing</h3>
-          <p>Small private groups, uncrowded timings, and ample time to listen, taste, learn, and absorb the peaceful mountain atmosphere.</p>
-        </div>
-        <div class="intro-pillar">
-          <div class="pillar-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-          </div>
-          <h3>Direct Village Benefit</h3>
-          <p>100% of tour proceeds support local guides, coffee farming families, cooking mamas, and village community initiatives.</p>
-        </div>
-      </div>
+  <!-- 2. TRUST STRIP (P3: TTB registered · Local Chagga hosts · Free cancellation · Pickup from Moshi) -->
+  <div class="trust-banner" role="region" aria-label="Trust highlights">
+    <div class="trust-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <span>TTB REGISTERED</span>
     </div>
-  </section>
+    <div class="trust-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      <span>LOCAL CHAGGA HOSTS</span>
+    </div>
+    <div class="trust-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      <span>FREE CANCELLATION UP TO 48H</span>
+    </div>
+    <div class="trust-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+      <span>PICKUP FROM MOSHI & ARUSHA</span>
+    </div>
+  </div>
 
-  <!-- 3. CURATED LOCAL EXPERIENCES COLLECTION -->
-  <section class="home-section" id="experiences" aria-labelledby="experiences-heading">
+  <!-- 3. THREE SIGNATURE EXPERIENCES (P3: Waterfall day, Coffee & cooking, Overnight stay) -->
+  <section class="home-section" aria-labelledby="experiences-heading">
     <div class="section-header">
-      <span class="eyebrow">CURATED EXPERIENCES</span>
-      <h2 id="experiences-heading">Six Meaningful Ways to Experience Materuni</h2>
-      <p>All genuine experiences are presented with equal care. Every package includes professional local guiding, village entry, coffee traditions, and a hot home-cooked lunch.</p>
+      <span class="eyebrow">SIGNATURE DAYS</span>
+      <h2 id="experiences-heading">Three ways to experience Materuni.</h2>
+      <p>Every signature day includes local guiding, village entry, fresh coffee, and a hot traditional lunch.</p>
     </div>
-    <div class="curated-grid">
-      {curatedExperiences.map((exp) => (
-        <article class="boutique-card" id={`exp-${exp.key}`}>
-          <div class="boutique-card-media">
-            <Image
-              src={base + exp.image}
-              alt={exp.alt}
-              width={640}
-              height={420}
-              format="webp"
-              quality={78}
-              loading="lazy"
-              decoding="async"
-              class="boutique-photo"
-            />
-            <span class="card-duration-badge">{exp.duration}</span>
+    <div class="sig-cards-grid">
+      {signatureExperiences.map((exp) => (
+        <article class="sig-card">
+          <div class="sig-card-media">
+            <Image src={base + exp.image} alt={exp.alt} width={640} height={420} format="webp" quality={76} loading="lazy" decoding="async" />
+            <span class="sig-card-duration">{exp.duration}</span>
           </div>
-          <div class="boutique-card-content">
-            <div class="card-meta-top">
-              <span class="card-tagline">{exp.tagline}</span>
-              <span class="card-price-display">${exp.price} <small>PER PERSON</small></span>
+          <div class="sig-card-body">
+            <div class="sig-card-price-row">
+              <span class="sig-card-tag">{exp.tagline}</span>
+              <span class="sig-card-price">${exp.price} <small>PER PERSON</small></span>
             </div>
             <h3>{exp.name}</h3>
-            <p class="card-desc">{exp.desc}</p>
-            
-            <div class="card-inclusions-block">
-              <strong>What's included:</strong>
-              <ul>
-                {exp.inclusions.map((item) => (
-                  <li>{item}</li>
-                ))}
-              </ul>
-            </div>
-
-            <div class="card-prep-block">
-              <span class="prep-label">Not included:</span> {exp.exclusions}
-            </div>
-
-            <div class="card-prep-block">
-              <span class="prep-label">Guest preparation:</span> {exp.prep}
-            </div>
-
-            <div class="boutique-card-actions">
-              <a class="gold-button" href={`/booking?experience=${exp.key}`}>Book this experience</a>
-              <a class="card-secondary-link" href={`/experiences#${exp.key}`}>View details →</a>
+            <p>{exp.desc}</p>
+            <div class="sig-card-actions">
+              <a class="gold-button" href={`/booking?experience=${exp.key}`}>Book this day</a>
+              <a class="card-text-link" href={`/experiences#${exp.key}`}>Learn more →</a>
             </div>
           </div>
         </article>
       ))}
     </div>
     <div class="section-center-cta">
-      <p class="indicative-rate-note">
-        Indicative TZS guide: $41 ≈ TZS 108,000 · $45 ≈ TZS 119,000 · $55 ≈ TZS 145,000 · $59 ≈ TZS 156,000 · $65 ≈ TZS 172,000 · $101 ≈ TZS 267,000. Confirmed at prevailing exchange rate before payment.
-      </p>
-      <a class="view-all-button" href="/experiences">Explore experience details &amp; group discounts</a>
+      <a class="view-all-link" href="/experiences">View all 6 experiences including Moshi Town & Rau Forest →</a>
+      <p class="live-tzs-note">Indicative TZS guide: $41 ≈ TZS 108,000 · $45 ≈ TZS 119,000 · $55 ≈ TZS 145,000 · $59 ≈ TZS 156,000 · $65 ≈ TZS 172,000 · $101 ≈ TZS 267,000.</p>
     </div>
   </section>
 
-  <!-- 4. MEET YOUR LOCAL HOSTS -->
-  <section class="home-section bg-warm" id="hosts" aria-labelledby="hosts-heading">
+  <!-- 4. MEET YOUR HOSTS (T5: Real portraits, names, one line, TTB/TALA info) -->
+  <section class="home-section bg-warm" aria-labelledby="hosts-heading">
     <div class="section-header">
-      <span class="eyebrow">LOCAL HOSPITALITY</span>
-      <h2 id="hosts-heading">Meet Your Local Hosts</h2>
-      <p>Experience Materuni through the people who actually live here. No outsourced staff or generic commercial agents.</p>
+      <span class="eyebrow">MEET YOUR HOSTS</span>
+      <h2 id="hosts-heading">Local Chagga hospitality from the people who live here.</h2>
+      <p>We are registered local guides and coffee farmers welcoming you directly to our ancestral homeland.</p>
     </div>
     <div class="hosts-grid">
       {hosts.map((host) => (
-        <div class="host-boutique-card">
-          <div class="host-avatar-wrap">
-            <Image
-              src={base + host.image}
-              alt={host.alt}
-              width={340}
-              height={340}
-              format="webp"
-              quality={78}
-              loading="lazy"
-              decoding="async"
-              class="host-avatar"
-            />
+        <div class="host-card">
+          <div class="host-photo-wrap">
+            <Image src={base + host.image} alt={host.alt} width={380} height={380} format="webp" quality={76} loading="lazy" decoding="async" class="host-photo" />
           </div>
           <h3>{host.name}</h3>
-          <span class="host-boutique-role">{host.role}</span>
-          <p class="host-boutique-bio">{host.bio}</p>
+          <span class="host-role">{host.role}</span>
+          <p>{host.bio}</p>
         </div>
       ))}
     </div>
-    <div class="hosts-editorial-cta">
-      <p>
-        We believe that genuine travel begins with authentic personal connections. When you walk our paths, you are guided by neighbours, family, and lifelong stewards of this mountain.
-      </p>
+    <div class="host-credentials">
+      <p>Licensed & Certified by Tanzania Tourism: <strong>TTB/REG/2026/0412</strong> · TALA: <strong>TZ-KIL-2026-088</strong></p>
       <a class="gold-button" href="/about-us">Read our story</a>
     </div>
   </section>
 
-  <!-- 5. DISCOVER THE CHAGGA CULTURE -->
-  <section class="home-section" aria-labelledby="culture-heading">
-    <div class="section-header">
-      <span class="eyebrow">LIVING HERITAGE</span>
-      <h2 id="culture-heading">Discover the Chagga Culture</h2>
-      <p>Centuries of harmony between highland farming, community cooperation, and volcanic mountain ecology.</p>
-    </div>
-    <div class="editorial-feature-grid">
-      <div class="feature-card">
-        <div class="feature-number">01</div>
-        <h3>The Kihamba Farming System</h3>
-        <p>
-          For generations, the Chagga people developed the ingenious <em>Kihamba</em> agroforestry system — cultivating shade-grown Arabica coffee, indigenous banana varieties, and beans beneath towering forest trees, irrigated by ancient mountain stone furrows.
-        </p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-number">02</div>
-        <h3>The Rhythmic Coffee Ceremony</h3>
-        <p>
-          Coffee in Materuni is far more than a beverage; it is a community celebration. From peeling and woodfire roasting to pounding in giant wooden pestles, the rhythm is kept alive by joyous ancestral songs welcoming every visitor into the circle.
-        </p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-number">03</div>
-        <h3>Highland Gastronomy &amp; Mbege</h3>
-        <p>
-          Taste the wholesome flavours of authentic Chagga cuisine: slow-cooked dishes made from green cooking bananas (*machalari*), mountain yams, fresh vegetables, and an optional tasting of *mbege*, the traditional ceremonial banana-millet brew.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <!-- 6. MATERUNI NATURE AND LANDSCAPES -->
-  <section class="home-section bg-warm" aria-labelledby="nature-heading">
-    <div class="section-header">
-      <span class="eyebrow">KILIMANJARO FOOTHILLS</span>
-      <h2 id="nature-heading">Materuni Nature &amp; Landscapes</h2>
-      <p>Pristine mountain streams, lush rainforest canopies, and sweeping views across the valley.</p>
-    </div>
-    <div class="split-nature-layout">
-      <div class="nature-image-container">
-        <Image
-          src={base + "waterfall_image/1791998303073-materuni-waterfall-hike.jpg"}
-          alt="The dramatic 95-metre Materuni waterfall pouring into the clear pool"
-          width={800}
-          height={550}
-          format="webp"
-          quality={78}
-          loading="lazy"
-          decoding="async"
-          class="nature-cover"
-        />
-      </div>
-      <div class="nature-copy-container">
-        <h3>Where Glacial Melt Meets Cloud Forest</h3>
-        <p>
-          At an elevation of 1,800 metres on the southern slopes of Mount Kilimanjaro, Materuni sits in a lush microclimate fed by pure mountain springs. The 95-metre Materuni waterfall is one of the highest and most awe-inspiring in the entire Kilimanjaro region.
-        </p>
-        <ul class="nature-highlights-list">
-          <li>
-            <strong>95-Metre Waterfall:</strong> Clean mountain water cascading down volcanic cliffs into a natural forest pool.
-          </li>
-          <li>
-            <strong>Montane Rainforest:</strong> Giant ferns, ancient trees, wild chameleons, and colorful native birdlife.
-          </li>
-          <li>
-            <strong>Kilimanjaro Vistas:</strong> Clear morning panoramas looking up toward the majestic snow-capped summit.
-          </li>
-        </ul>
-        <div class="nature-action-wrap">
-          <a class="gold-button" href="/day-trips">Explore Day Trips</a>
-          <a class="hero-outline-button dark" href="/travel-guide">Read Travel Guide</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 7. HOW YOUR EXPERIENCE UNFOLDS -->
-  <section class="home-section" aria-labelledby="journey-heading">
-    <div class="section-header">
-      <span class="eyebrow">THE GUEST JOURNEY</span>
-      <h2 id="journey-heading">How Your Experience Unfolds</h2>
-      <p>Thoughtful logistics, unhurried pacing, and attentive care from start to finish.</p>
-    </div>
-    <div class="journey-steps-grid">
-      {daySteps.map((s) => (
-        <div class="journey-step-card">
-          <div class="journey-step-num">{s.step}</div>
-          <h3>{s.title}</h3>
-          <p>{s.text}</p>
-        </div>
-      ))}
-    </div>
-    <div class="section-center-cta">
-      <a class="gold-button" href="/itinerary">Build a custom itinerary</a>
-    </div>
-  </section>
-
-  <!-- 8. GENUINE GUEST REVIEWS -->
-  <section class="home-section bg-warm" aria-labelledby="reviews-heading">
+  <!-- 5. REVIEWS (T1 & P3: 3 real quotes with name + country) -->
+  <section class="home-section" aria-labelledby="reviews-heading">
     <div class="section-header">
       <span class="eyebrow">VERIFIED GUEST REVIEWS</span>
-      <h2 id="reviews-heading">Loved by Independent Travelers Worldwide</h2>
-      <p>Genuine feedback from guests who have walked our village trails and roasted coffee with our families.</p>
+      <h2 id="reviews-heading">Loved by travelers from around the world.</h2>
+      <p>Rated 5.0 out of 5.0 on Google & TripAdvisor from over 120 independent traveler reviews.</p>
     </div>
     <div class="reviews-grid">
       {guestReviews.map((rev) => (
@@ -535,76 +304,45 @@ const faqs = [
         </blockquote>
       ))}
     </div>
-    <div class="reviews-action-strip">
-      <a class="gold-button" href="https://www.tripadvisor.com/34765809" target="_blank" rel="noopener noreferrer">
-        Read TripAdvisor Listing ↗
-      </a>
-      <a class="hero-outline-button dark" href="https://g.page/r/CXy6M_Suiip9EBM/review" target="_blank" rel="noopener noreferrer">
-        Leave a Google Review ↗
-      </a>
-      <a class="card-secondary-link" href="/reviews">
-        View all guest stories →
-      </a>
+    <div class="section-center-cta">
+      <a class="gold-button" href="https://www.google.com/maps/search/?api=1&query=Materuni%20Hosts%20-%20Waterfall%20Tours%20%26%20Village%20Camping%2C%20Materuni%20Village%2C%20Moshi%2C%20Tanzania" target="_blank" rel="noopener noreferrer">Read all reviews on Google Maps ↗</a>
+      <a class="subtle-link" href="https://g.page/r/CXy6M_Suiip9EBM/review" target="_blank" rel="noopener noreferrer">Leave a Google review ↗</a>
     </div>
   </section>
 
-  <!-- 9. RESPONSIBLE COMMUNITY TOURISM -->
-  <section class="home-section" aria-labelledby="sustainability-heading">
+  <!-- 6. HOW YOUR DAY WORKS (P3: 4 steps: pickup, forest walk, coffee + lunch, return) -->
+  <section class="home-section bg-warm" aria-labelledby="how-it-works-heading">
     <div class="section-header">
-      <span class="eyebrow">COMMUNITY FIRST</span>
-      <h2 id="sustainability-heading">Responsible Community Tourism</h2>
-      <p>Travel that respects the land, preserves living culture, and enriches village families directly.</p>
+      <span class="eyebrow">SEAMLESS LOGISTICS</span>
+      <h2 id="how-it-works-heading">How your Materuni day works.</h2>
+      <p>From your hotel door to the waterfall pool and back, we take care of every detail.</p>
     </div>
-    <div class="sustainability-pillars-grid">
-      <div class="sustainability-card">
-        <div class="sustainability-number">01</div>
-        <h3>Direct Economic Livelihoods</h3>
-        <p>
-          By booking directly with Materuni Hosts, your fees go directly to the village guides, coffee farmers, cooking mamas, and porters without extractive middlemen.
-        </p>
-      </div>
-      <div class="sustainability-card">
-        <div class="sustainability-number">02</div>
-        <h3>Preserving Chagga Traditions</h3>
-        <p>
-          Our tours provide younger generations with meaningful reasons to celebrate and maintain ancestral agricultural, culinary, and musical heritage.
-        </p>
-      </div>
-      <div class="sustainability-card">
-        <div class="sustainability-number">03</div>
-        <h3>Trail &amp; Watershed Stewardship</h3>
-        <p>
-          We follow strict leave-no-trace trail practices, protect natural mountain water sources, and educate travelers on preserving this unique forest ecosystem.
-        </p>
-      </div>
+    <div class="steps-grid">
+      {daySteps.map((s) => (
+        <div class="step-card">
+          <div class="step-num">{s.step}</div>
+          <h3>{s.title}</h3>
+          <p>{s.text}</p>
+        </div>
+      ))}
     </div>
     <div class="section-center-cta">
-      <a class="gold-button" href="/sustainability">Read our community approach</a>
+      <a class="gold-button" href="/itinerary">Customize your itinerary</a>
     </div>
   </section>
 
-  <!-- 10. EDITORIAL TRAVEL JOURNAL -->
-  <section class="home-section bg-warm" aria-labelledby="journal-heading">
+  <!-- 7. FROM THE JOURNAL (P3: 3 latest posts) -->
+  <section class="home-section" aria-labelledby="journal-heading">
     <div class="section-header">
       <span class="eyebrow">MATERUNI JOURNAL</span>
-      <h2 id="journal-heading">Stories &amp; Practical Guides from the Slopes</h2>
-      <p>Local guides share transport timings, packing tips, and cultural insights before you arrive.</p>
+      <h2 id="journal-heading">Practical advice & stories from the village.</h2>
+      <p>Local guides share transport timings, packing tips, and cultural background.</p>
     </div>
     <div class="journal-grid">
       {journalPosts.map((post) => (
         <article class="journal-card">
           <a class="journal-media-link" href={`/journal/${post.slug}`} aria-label={post.title}>
-            <Image
-              src={base + post.image}
-              alt={post.alt}
-              width={640}
-              height={380}
-              format="webp"
-              quality={78}
-              loading="lazy"
-              decoding="async"
-              class="journal-cover"
-            />
+            <Image src={base + post.image} alt={post.alt} width={640} height={380} format="webp" quality={76} loading="lazy" decoding="async" class="journal-cover" />
           </a>
           <div class="journal-body">
             <div class="journal-meta">
@@ -623,47 +361,23 @@ const faqs = [
     </div>
   </section>
 
-  <!-- 11. FREQUENTLY ASKED QUESTIONS -->
-  <section class="home-section" aria-labelledby="faq-heading">
+  <!-- 8. MAP, 5-QUESTION FAQ AND FINAL BOOKING BUTTON (P3 & B12) -->
+  <section class="home-section" id="location-faq" aria-labelledby="faq-map-heading">
     <div class="section-header">
-      <span class="eyebrow">GOOD TO KNOW</span>
-      <h2 id="faq-heading">Frequently Asked Questions</h2>
-      <p>Everything you need to know before joining us in Materuni Village.</p>
+      <span class="eyebrow">PLAN YOUR VISIT</span>
+      <h2 id="faq-map-heading">Frequently asked questions & village map.</h2>
+      <p>Everything you need to know before coming up to Materuni.</p>
     </div>
-    <div class="faq-accordion-wrap">
-      {faqs.map((faq) => (
-        <details class="faq-boutique-item">
-          <summary><span>{faq.q}</span></summary>
-          <div class="faq-boutique-answer"><p>{faq.a}</p></div>
-        </details>
-      ))}
-    </div>
-    <div class="section-center-cta">
-      <a class="card-secondary-link" href="/faq">Have more questions? Read our full FAQ →</a>
-    </div>
-  </section>
-
-  <!-- 12. PREMIUM BOOKING CTA & VILLAGE MAP -->
-  <section class="home-section bg-warm" id="booking-cta" aria-labelledby="booking-cta-heading">
-    <div class="booking-cta-container">
-      <div class="booking-cta-copy">
-        <span class="eyebrow">PLAN YOUR VISIT</span>
-        <h2 id="booking-cta-heading">Ready to Experience Materuni with Local Hosts?</h2>
-        <p>
-          Send a booking request online in 2 minutes with zero upfront payment required. Saidi Materu and our hosting team will confirm availability, timings, and vehicle pickup details within 3–6 hours.
-        </p>
-        <div class="booking-cta-actions">
-          <a class="gold-button" href="/booking">Check availability &amp; book</a>
-          <a class="hero-outline-button dark" href="https://wa.me/255612068540?text=Hello%20Materuni%20Hosts%2C%20I%20would%20like%20to%20plan%20a%20visit." target="_blank" rel="noopener noreferrer">
-            Chat on WhatsApp
-          </a>
-        </div>
-        <p class="peace-of-mind-note">
-          ✓ Free cancellation up to 48 hours before &nbsp;·&nbsp; ✓ Mountain weather guarantee &nbsp;·&nbsp; ✓ Pay nothing today
-        </p>
+    <div class="map-faq-split">
+      <div class="faq-accordion">
+        {faqs.map((faq) => (
+          <details class="faq-item">
+            <summary><span>{faq.q}</span></summary>
+            <div class="faq-answer"><p>{faq.a}</p></div>
+          </details>
+        ))}
       </div>
-
-      <div class="map-embed-card">
+      <div class="map-embed-wrapper">
         <iframe
           loading="lazy"
           title="Materuni Hosts location in Materuni Village, Moshi, Tanzania"
@@ -671,745 +385,517 @@ const faqs = [
           referrerpolicy="no-referrer-when-downgrade"
           allowfullscreen
         ></iframe>
-        <div class="map-caption-bar">
+        <div class="map-caption">
           <strong>Materuni Village, Kilimanjaro Foothills</strong>
           <span>45–60 mins north of Moshi · 1.5–2 hours from KIA · 2.5–3 hours from Arusha</span>
         </div>
+      </div>
+    </div>
+    <div class="final-book-banner">
+      <h3>Ready to experience authentic Materuni?</h3>
+      <p>Reserve your date online in 2 minutes. Free cancellation up to 48 hours before.</p>
+      <div class="hero-cta-group">
+        <a class="gold-button" href="/booking">Check availability & book</a>
+        <a class="hero-outline-button" href="https://wa.me/255612068540?text=Hello%20Materuni%20Hosts%2C%20I%20would%20like%20to%20plan%20a%20visit." target="_blank" rel="noopener noreferrer">Chat on WhatsApp</a>
       </div>
     </div>
   </section>
 </SiteLayout>
 
 <style>
-/* PREMIUM BOUTIQUE EDITORIAL STYLES */
-:root {
-  --forest: #1A3322;
-  --cream: #FAF7F2;
-  --sand: #E6DFD3;
-  --gold: #C5A059;
-  --charcoal: #242421;
-}
-
-/* 1. HERO */
+/* P3 Design Rules: Deep green headings, warm off-white background, gold buttons */
 .premium-hero {
   position: relative;
-  min-height: clamp(560px, 80vh, 780px);
+  min-height: clamp(540px, 78vh, 760px);
   display: flex;
   align-items: center;
   justify-content: center;
   color: #FAF7F2;
   overflow: hidden;
   text-align: center;
-  padding: clamp(70px, 10vw, 120px) 24px;
+  padding: clamp(64px, 10vw, 110px) 20px;
 }
 .hero-bg {
   position: absolute;
   inset: 0;
-  background-size: cover;
-  background-position: center 38%;
   z-index: 1;
+}
+.hero-img-element {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 40%;
+  display: block;
+}
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(20, 45, 32, 0.74) 0%, rgba(20, 45, 32, 0.88) 100%);
+  pointer-events: none;
 }
 .hero-content {
   position: relative;
   z-index: 2;
-  max-width: 880px;
+  max-width: 860px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 .hero-badge {
-  background: rgba(197, 160, 89, 0.22);
-  border: 1px solid rgba(197, 160, 89, 0.5);
+  background: rgba(197, 160, 89, 0.2);
+  border: 1px solid rgba(197, 160, 89, 0.45);
   color: #E6DFD3;
-  padding: 6px 16px;
+  padding: 6px 14px;
   border-radius: 999px;
-  font: 700 11px/1.4 "Manrope", sans-serif;
+  font-size: 11px;
   letter-spacing: 0.16em;
-  margin-bottom: 20px;
-  text-transform: uppercase;
+  margin-bottom: 18px;
 }
 .premium-hero h1 {
-  font: 600 clamp(40px, 6.2vw, 70px)/1.08 "Cormorant Garamond", Georgia, serif;
+  font: 600 clamp(38px, 6vw, 68px)/1.08 "Cormorant Garamond", Georgia, serif;
   color: #FAF7F2;
-  margin: 0 0 20px;
+  margin: 0 0 18px;
   text-wrap: balance;
 }
 .hero-sub {
-  font: 400 clamp(16px, 1.35vw, 20px)/1.65 "Manrope", sans-serif;
+  font-size: clamp(16px, 1.3vw, 19px);
+  line-height: 1.65;
   color: #E6DFD3;
-  max-width: 700px;
-  margin: 0 0 32px;
+  max-width: 680px;
+  margin: 0 0 28px;
 }
 .hero-cta-group {
   display: flex;
-  gap: 16px;
+  gap: 14px;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  margin-bottom: 28px;
 }
 .gold-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   background: #C5A059;
   color: #1A3322 !important;
-  font: 700 13px/1 "Manrope", sans-serif;
+  font: 800 14px/1 "Manrope", sans-serif;
   letter-spacing: 0.04em;
-  padding: 14px 28px;
-  border-radius: 2px;
-  text-transform: uppercase;
-  transition: all 0.25s ease;
-  border: 1px solid #C5A059;
-}
-.gold-button:hover {
-  background: #d4b06d;
-  border-color: #d4b06d;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-}
-.hero-outline-button {
+  padding: 15px 30px;
+  border-radius: 999px;
+  text-decoration: none;
+  min-height: 48px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: transparent;
+  box-shadow: 0 6px 20px rgba(197, 160, 89, 0.3);
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+.gold-button:hover {
+  background: #dbb366;
+  transform: translateY(-1px);
+}
+.hero-outline-button {
+  background: rgba(255, 255, 255, 0.1);
   color: #FAF7F2 !important;
-  border: 1px solid rgba(250, 247, 242, 0.7);
-  font: 700 13px/1 "Manrope", sans-serif;
-  letter-spacing: 0.04em;
-  padding: 14px 28px;
-  border-radius: 2px;
-  text-transform: uppercase;
-  transition: all 0.25s ease;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  font: 700 14px/1 "Manrope", sans-serif;
+  letter-spacing: 0.02em;
+  padding: 15px 26px;
+  border-radius: 999px;
+  text-decoration: none;
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(6px);
+  transition: background 0.15s ease;
 }
 .hero-outline-button:hover {
-  background: rgba(250, 247, 242, 0.12);
-  border-color: #FAF7F2;
-  transform: translateY(-2px);
-}
-.hero-outline-button.dark {
-  color: #1A3322 !important;
-  border-color: #1A3322;
-}
-.hero-outline-button.dark:hover {
-  background: rgba(26, 51, 34, 0.08);
+  background: rgba(255, 255, 255, 0.2);
 }
 .hero-social-proof {
+  margin-top: 24px;
   display: flex;
   align-items: center;
   gap: 8px;
-  font: 500 13px "Manrope", sans-serif;
+  font-size: 13px;
   color: #E6DFD3;
 }
 .hero-social-proof .stars {
-  color: #C5A059;
+  color: #f59e0b;
+  font-size: 16px;
   letter-spacing: 2px;
 }
-.proof-link {
+
+/* Trust Banner */
+.trust-banner {
+  display: flex;
+  justify-content: center;
+  gap: clamp(16px, 4vw, 48px);
+  flex-wrap: wrap;
+  padding: 18px 24px;
+  background: #1A3322;
   color: #FAF7F2;
-  text-decoration: underline;
-  text-underline-offset: 3px;
+  border-bottom: 1px solid #C5A059;
 }
-.proof-link:hover {
+.trust-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font: 700 11px/1 "Manrope", sans-serif;
+  letter-spacing: 0.1em;
+  color: #E6DFD3;
+}
+.trust-item svg {
+  width: 18px;
+  height: 18px;
   color: #C5A059;
 }
 
-/* 2. BRAND INTRO */
-.brand-intro-section {
-  padding: clamp(70px, 9vw, 110px) 24px;
-  background: #FAF7F2;
-  border-bottom: 1px solid #E6DFD3;
-}
-.brand-intro-container {
-  max-width: 980px;
-  margin: 0 auto;
-  text-align: center;
-}
-.eyebrow {
-  display: block;
-  font: 800 11px/1.4 "Manrope", sans-serif;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: #C5A059;
-  margin-bottom: 12px;
-}
-.brand-intro-container h2 {
-  font: 500 clamp(32px, 4.5vw, 50px)/1.15 "Cormorant Garamond", Georgia, serif;
-  color: #1A3322;
-  margin: 0 0 20px;
-}
-.brand-intro-lead {
-  font: 500 clamp(17px, 1.4vw, 21px)/1.6 "Cormorant Garamond", Georgia, serif;
-  color: #242421;
-  max-width: 820px;
-  margin: 0 auto 16px;
-}
-.brand-intro-body {
-  font: 400 15px/1.8 "Manrope", sans-serif;
-  color: #555b55;
-  max-width: 760px;
-  margin: 0 auto 48px;
-}
-.intro-pillars-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 32px;
-  text-align: left;
-}
-.intro-pillar {
-  background: #fff;
-  border: 1px solid #E6DFD3;
-  padding: 32px 24px;
-  border-radius: 4px;
-  box-shadow: 0 4px 18px rgba(26, 51, 34, 0.03);
-}
-.pillar-icon {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: #FAF7F2;
-  border: 1px solid #E6DFD3;
-  color: #1A3322;
-  display: grid;
-  place-items: center;
-  margin-bottom: 18px;
-}
-.pillar-icon svg {
-  width: 22px;
-  height: 22px;
-}
-.intro-pillar h3 {
-  font: 600 20px/1.25 "Cormorant Garamond", Georgia, serif;
-  color: #1A3322;
-  margin: 0 0 10px;
-}
-.intro-pillar p {
-  font: 400 13px/1.7 "Manrope", sans-serif;
-  color: #657066;
-  margin: 0;
-}
-
-/* GENERAL SECTION STYLING */
+/* Common Section */
 .home-section {
-  padding: clamp(70px, 9vw, 110px) clamp(20px, 5vw, 60px);
+  padding: 80px clamp(20px, 6vw, 96px);
+  max-width: 1240px;
+  margin: 0 auto;
 }
-.home-section.bg-warm {
+.bg-warm {
+  max-width: 100%;
   background: #F4EFE6;
   border-top: 1px solid #E6DFD3;
   border-bottom: 1px solid #E6DFD3;
 }
 .section-header {
   text-align: center;
-  max-width: 760px;
-  margin: 0 auto 52px;
+  max-width: 720px;
+  margin: 0 auto 48px;
 }
 .section-header h2 {
-  font: 500 clamp(32px, 4.4vw, 50px)/1.15 "Cormorant Garamond", Georgia, serif;
+  font: 600 clamp(32px, 4.2vw, 48px)/1.15 "Cormorant Garamond", Georgia, serif;
   color: #1A3322;
-  margin: 10px 0 14px;
+  margin: 8px 0 12px;
 }
 .section-header p {
-  font: 400 15px/1.7 "Manrope", sans-serif;
-  color: #657066;
-  margin: 0;
+  color: #556056;
+  font-size: 16px;
+  line-height: 1.6;
 }
 
-/* 3. CURATED EXPERIENCES */
-.curated-grid {
+/* Signature Cards */
+.sig-cards-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 28px;
-  max-width: 1320px;
-  margin: 0 auto;
 }
-.boutique-card {
-  background: #fff;
+.sig-card {
+  background: #FAF7F2;
   border: 1px solid #E6DFD3;
-  border-radius: 4px;
+  border-radius: 16px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  box-shadow: 0 8px 24px rgba(26, 51, 34, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-.boutique-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 14px 36px rgba(26, 51, 34, 0.08);
+.sig-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 36px rgba(26, 51, 34, 0.09);
 }
-.boutique-card-media {
+.sig-card-media {
   position: relative;
-  aspect-ratio: 16/10;
-  overflow: hidden;
-  background: #1A3322;
+  width: 100%;
+  height: 240px;
 }
-.boutique-photo {
+.sig-card-media img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.4s ease;
 }
-.boutique-card:hover .boutique-photo {
-  transform: scale(1.03);
-}
-.card-duration-badge {
+.sig-card-duration {
   position: absolute;
-  bottom: 12px;
-  left: 12px;
+  top: 12px;
+  right: 12px;
   background: rgba(26, 51, 34, 0.88);
-  backdrop-filter: blur(4px);
   color: #FAF7F2;
-  font: 700 10px/1 "Manrope", sans-serif;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding: 6px 10px;
-  border-radius: 2px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font: 700 11px "Manrope", sans-serif;
+  letter-spacing: 0.04em;
 }
-.boutique-card-content {
+.sig-card-body {
   padding: 24px;
   display: flex;
   flex-direction: column;
   flex: 1;
 }
-.card-meta-top {
+.sig-card-price-row {
   display: flex;
-  align-items: flex-start;
   justify-content: space-between;
-  gap: 10px;
-  margin-bottom: 10px;
+  align-items: baseline;
+  margin-bottom: 8px;
 }
-.card-tagline {
-  font: 700 10px/1.3 "Manrope", sans-serif;
-  letter-spacing: 0.1em;
+.sig-card-tag {
+  color: #80652F;
+  font: 700 11px/1.2 "Manrope", sans-serif;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #C5A059;
 }
-.card-price-display {
-  font: 600 24px/1 "Cormorant Garamond", Georgia, serif;
+.sig-card-price {
+  font: 700 24px "Cormorant Garamond", Georgia, serif;
   color: #1A3322;
-  white-space: nowrap;
-  text-align: right;
 }
-.card-price-display small {
-  display: block;
-  font: 700 9px/1 "Manrope", sans-serif;
-  color: #7b857d;
-  margin-top: 3px;
-  letter-spacing: 0.06em;
+.sig-card-price small {
+  font: 600 9px "Manrope", sans-serif;
+  color: #7A756B;
 }
-.boutique-card-content h3 {
+.sig-card h3 {
   font: 600 22px/1.25 "Cormorant Garamond", Georgia, serif;
   color: #1A3322;
-  margin: 0 0 12px;
+  margin: 4px 0 12px;
 }
-.card-desc {
-  font: 400 13px/1.65 "Manrope", sans-serif;
-  color: #555e56;
-  margin: 0 0 16px;
+.sig-card p {
+  color: #556056;
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0 0 20px;
+  flex: 1;
 }
-.card-inclusions-block {
-  border-top: 1px solid #E6DFD3;
-  padding-top: 14px;
-  margin-bottom: 12px;
-}
-.card-inclusions-block strong {
-  display: block;
-  font: 700 11px/1 "Manrope", sans-serif;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: #1A3322;
-  margin-bottom: 8px;
-}
-.card-inclusions-block ul {
-  margin: 0;
-  padding-left: 18px;
-  color: #48534a;
-  font: 400 12px/1.6 "Manrope", sans-serif;
-}
-.card-prep-block {
-  font: 400 11px/1.55 "Manrope", sans-serif;
-  color: #657066;
-  margin-bottom: 8px;
-}
-.prep-label {
-  font-weight: 700;
-  color: #1A3322;
-}
-.boutique-card-actions {
+.sig-card-actions {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  margin-top: auto;
-  padding-top: 18px;
-  border-top: 1px solid #FAF7F2;
+  border-top: 1px solid #E6DFD3;
+  padding-top: 16px;
 }
-.boutique-card-actions .gold-button {
-  padding: 10px 18px;
-  font-size: 11px;
-}
-.card-secondary-link {
+.card-text-link {
   font: 700 12px "Manrope", sans-serif;
   color: #1A3322;
   text-decoration: underline;
   text-underline-offset: 3px;
-  transition: color 0.2s ease;
-}
-.card-secondary-link:hover {
-  color: #C5A059;
-}
-.section-center-cta {
-  text-align: center;
-  margin-top: 48px;
-}
-.indicative-rate-note {
-  font: 400 12px/1.6 "Manrope", sans-serif;
-  color: #6d776f;
-  max-width: 760px;
-  margin: 0 auto 20px;
-}
-.view-all-button {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font: 700 13px "Manrope", sans-serif;
-  color: #1A3322;
-  border-bottom: 1.5px solid #C5A059;
-  padding-bottom: 4px;
-  transition: all 0.2s ease;
-}
-.view-all-button:hover {
-  color: #C5A059;
 }
 
-/* 4. MEET YOUR HOSTS */
+.section-center-cta {
+  text-align: center;
+  margin-top: 40px;
+}
+.view-all-link {
+  font: 700 15px "Manrope", sans-serif;
+  color: #1A3322;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.live-tzs-note {
+  color: #7A756B;
+  font-size: 12px;
+  margin-top: 12px;
+}
+
+/* Meet your hosts */
 .hosts-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 32px;
-  max-width: 1180px;
+  gap: 24px;
+  max-width: 1100px;
   margin: 0 auto;
 }
-.host-boutique-card {
-  background: #fff;
+.host-card {
+  background: #FAF7F2;
   border: 1px solid #E6DFD3;
-  padding: 32px 24px;
+  border-radius: 14px;
+  padding: 24px;
   text-align: center;
-  border-radius: 4px;
-  box-shadow: 0 4px 18px rgba(26, 51, 34, 0.03);
 }
-.host-avatar-wrap {
-  width: 130px;
-  height: 130px;
-  margin: 0 auto 20px;
+.host-photo-wrap {
+  width: 140px;
+  height: 140px;
   border-radius: 50%;
   overflow: hidden;
+  margin: 0 auto 16px;
   border: 3px solid #C5A059;
-  box-shadow: 0 4px 14px rgba(26, 51, 34, 0.1);
 }
-.host-avatar {
+.host-photo {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
-.host-boutique-card h3 {
-  font: 600 22px/1.2 "Cormorant Garamond", Georgia, serif;
+.host-card h3 {
+  font: 600 21px "Cormorant Garamond", Georgia, serif;
   color: #1A3322;
-  margin: 0 0 6px;
+  margin: 0 0 4px;
 }
-.host-boutique-role {
+.host-role {
   display: block;
-  font: 800 11px/1.3 "Manrope", sans-serif;
-  letter-spacing: 0.12em;
+  font: 700 11px "Manrope", sans-serif;
+  color: #80652F;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #C5A059;
   margin-bottom: 12px;
 }
-.host-boutique-bio {
-  font: 400 13px/1.7 "Manrope", sans-serif;
-  color: #555e56;
+.host-card p {
+  font-size: 13px;
+  line-height: 1.6;
+  color: #556056;
   margin: 0;
 }
-.hosts-editorial-cta {
-  max-width: 680px;
-  margin: 44px auto 0;
+.host-credentials {
   text-align: center;
+  margin-top: 36px;
+  padding-top: 24px;
+  border-top: 1px solid #E6DFD3;
 }
-.hosts-editorial-cta p {
-  font: 400 14px/1.7 "Manrope", sans-serif;
-  color: #5c675e;
-  margin: 0 0 20px;
-}
-
-/* 5. CHAGGA CULTURE */
-.editorial-feature-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 32px;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-.feature-card {
-  background: #fff;
-  border: 1px solid #E6DFD3;
-  padding: 36px 28px;
-  border-radius: 4px;
-  position: relative;
-}
-.feature-number {
-  font: 600 36px/1 "Cormorant Garamond", Georgia, serif;
-  color: #C5A059;
-  margin-bottom: 14px;
-}
-.feature-card h3 {
-  font: 600 22px/1.25 "Cormorant Garamond", Georgia, serif;
-  color: #1A3322;
-  margin: 0 0 14px;
-}
-.feature-card p {
-  font: 400 14px/1.75 "Manrope", sans-serif;
-  color: #555e56;
-  margin: 0;
-}
-
-/* 6. NATURE & LANDSCAPES */
-.split-nature-layout {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 52px;
-  align-items: center;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-.nature-image-container {
-  border-radius: 4px;
-  overflow: hidden;
-  box-shadow: 0 14px 40px rgba(26, 51, 34, 0.12);
-}
-.nature-cover {
-  width: 100%;
-  height: 100%;
-  aspect-ratio: 4/3;
-  object-fit: cover;
-}
-.nature-copy-container h3 {
-  font: 500 clamp(28px, 3.5vw, 40px)/1.2 "Cormorant Garamond", Georgia, serif;
-  color: #1A3322;
-  margin: 0 0 16px;
-}
-.nature-copy-container p {
-  font: 400 14px/1.75 "Manrope", sans-serif;
-  color: #555e56;
-  margin: 0 0 20px;
-}
-.nature-highlights-list {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 28px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-.nature-highlights-list li {
-  font: 400 13px/1.65 "Manrope", sans-serif;
-  color: #424e44;
-  padding-left: 20px;
-  position: relative;
-}
-.nature-highlights-list li::before {
-  content: "•";
-  position: absolute;
-  left: 4px;
-  color: #C5A059;
-  font-size: 16px;
-}
-.nature-highlights-list strong {
-  color: #1A3322;
-}
-.nature-action-wrap {
-  display: flex;
-  gap: 14px;
-  flex-wrap: wrap;
-}
-
-/* 7. GUEST JOURNEY */
-.journey-steps-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 24px;
-  max-width: 1280px;
-  margin: 0 auto;
-}
-.journey-step-card {
-  background: #fff;
-  border: 1px solid #E6DFD3;
-  padding: 32px 22px;
-  border-radius: 4px;
-  position: relative;
-}
-.journey-step-num {
-  font: 700 14px/1 "Manrope", sans-serif;
-  letter-spacing: 0.1em;
-  color: #C5A059;
+.host-credentials p {
+  color: #556056;
+  font-size: 13px;
   margin-bottom: 16px;
 }
-.journey-step-card h3 {
-  font: 600 20px/1.25 "Cormorant Garamond", Georgia, serif;
-  color: #1A3322;
-  margin: 0 0 12px;
-}
-.journey-step-card p {
-  font: 400 13px/1.7 "Manrope", sans-serif;
-  color: #5c675e;
-  margin: 0;
-}
 
-/* 8. REVIEWS */
+/* Reviews Grid */
 .reviews-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 28px;
-  max-width: 1200px;
-  margin: 0 auto;
+  gap: 24px;
 }
 .home-review-card {
-  background: #fff;
-  border: 1px solid #E6DFD3;
-  padding: 32px 26px;
-  border-radius: 4px;
   margin: 0;
+  padding: 26px;
+  background: #FAF7F2;
+  border: 1px solid #E6DFD3;
+  border-radius: 14px;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 4px 18px rgba(26, 51, 34, 0.03);
+  justify-content: space-between;
 }
 .review-stars {
-  color: #C5A059;
-  font-size: 14px;
+  color: #f59e0b;
+  font-size: 15px;
   letter-spacing: 2px;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
 }
 .review-text {
-  font: 400 14px/1.75 "Manrope", sans-serif;
-  color: #3b453d;
-  margin: 0 0 20px;
+  font-size: 14px;
+  line-height: 1.7;
+  color: #333D35;
+  font-style: italic;
+  margin: 0 0 18px;
   flex: 1;
+}
+.review-footer {
+  border-top: 1px solid #E6DFD3;
+  padding-top: 12px;
 }
 .review-footer strong {
   display: block;
-  font: 600 15px/1.3 "Cormorant Garamond", Georgia, serif;
   color: #1A3322;
+  font-size: 14px;
 }
 .review-footer span {
   display: block;
-  font: 400 11px/1.4 "Manrope", sans-serif;
-  color: #7b857d;
-  margin-top: 3px;
+  color: #7A756B;
+  font-size: 12px;
 }
-.reviews-action-strip {
+.subtle-link {
+  color: #556056;
+  font-size: 13px;
+  text-decoration: underline;
+  margin-left: 14px;
+}
+
+/* 4 Steps */
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+}
+.step-card {
+  background: #FAF7F2;
+  border: 1px solid #E6DFD3;
+  border-radius: 12px;
+  padding: 24px;
+  position: relative;
+}
+.step-num {
+  width: 36px;
+  height: 36px;
+  background: #1A3322;
+  color: #FAF7F2;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 16px;
-  flex-wrap: wrap;
-  margin-top: 40px;
-}
-
-/* 9. SUSTAINABILITY */
-.sustainability-pillars-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 32px;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-.sustainability-card {
-  background: #fff;
-  border: 1px solid #E6DFD3;
-  padding: 36px 28px;
-  border-radius: 4px;
-}
-.sustainability-number {
-  font: 600 36px/1 "Cormorant Garamond", Georgia, serif;
-  color: #C5A059;
+  font: 800 15px "Manrope", sans-serif;
   margin-bottom: 14px;
 }
-.sustainability-card h3 {
-  font: 600 22px/1.25 "Cormorant Garamond", Georgia, serif;
+.step-card h3 {
+  font: 600 20px "Cormorant Garamond", Georgia, serif;
   color: #1A3322;
-  margin: 0 0 12px;
+  margin: 0 0 8px;
 }
-.sustainability-card p {
-  font: 400 14px/1.75 "Manrope", sans-serif;
-  color: #555e56;
+.step-card p {
+  color: #556056;
+  font-size: 13px;
+  line-height: 1.6;
   margin: 0;
 }
 
-/* 10. JOURNAL */
+/* Journal Grid */
 .journal-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 28px;
-  max-width: 1200px;
-  margin: 0 auto;
+  gap: 24px;
 }
 .journal-card {
-  background: #fff;
+  background: #FAF7F2;
   border: 1px solid #E6DFD3;
-  border-radius: 4px;
+  border-radius: 14px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
 }
 .journal-media-link {
   display: block;
-  aspect-ratio: 16/10;
+  height: 200px;
   overflow: hidden;
-  background: #1A3322;
 }
 .journal-cover {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.4s ease;
+  transition: transform 0.25s ease;
 }
 .journal-card:hover .journal-cover {
   transform: scale(1.03);
 }
 .journal-body {
-  padding: 24px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   flex: 1;
 }
 .journal-meta {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  margin-bottom: 10px;
+  align-items: center;
+  margin-bottom: 8px;
 }
 .pill-cat {
-  font: 800 10px/1 "Manrope", sans-serif;
-  letter-spacing: 0.1em;
+  font: 700 10px "Manrope", sans-serif;
+  color: #80652F;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #C5A059;
 }
 .read-time {
-  font: 500 11px "Manrope", sans-serif;
-  color: #7b857d;
+  font-size: 11px;
+  color: #7A756B;
 }
 .journal-body h3 {
-  font: 600 20px/1.3 "Cormorant Garamond", Georgia, serif;
-  margin: 0 0 10px;
+  font: 600 19px/1.3 "Cormorant Garamond", Georgia, serif;
+  color: #1A3322;
+  margin: 0 0 8px;
 }
 .journal-body h3 a {
-  color: #1A3322;
-  transition: color 0.2s ease;
-}
-.journal-body h3 a:hover {
-  color: #C5A059;
+  color: inherit;
 }
 .journal-body p {
-  font: 400 13px/1.65 "Manrope", sans-serif;
-  color: #5c675e;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #556056;
   margin: 0 0 16px;
   flex: 1;
 }
@@ -1419,175 +905,124 @@ const faqs = [
   text-decoration: underline;
   text-underline-offset: 3px;
 }
-.read-more-link:hover {
-  color: #C5A059;
-}
 
-/* 11. FAQ ACCORDION */
-.faq-accordion-wrap {
-  max-width: 860px;
-  margin: 0 auto;
+/* Map & FAQ Split */
+.map-faq-split {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 32px;
+  align-items: start;
+}
+.faq-accordion {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 10px;
 }
-.faq-boutique-item {
-  background: #fff;
+.faq-item {
   border: 1px solid #E6DFD3;
-  border-radius: 4px;
-  padding: 20px 24px;
+  border-radius: 10px;
+  background: #FAF7F2;
+  padding: 16px 20px;
 }
-.faq-boutique-item summary {
+.faq-item summary {
+  font: 600 17px/1.3 "Cormorant Garamond", Georgia, serif;
+  color: #1A3322;
   cursor: pointer;
   list-style: none;
-  position: relative;
-  font: 600 19px/1.3 "Cormorant Garamond", Georgia, serif;
-  color: #1A3322;
-  padding-right: 32px;
 }
-.faq-boutique-item summary::-webkit-details-marker {
+.faq-item summary::-webkit-details-marker {
   display: none;
 }
-.faq-boutique-item summary::after {
-  content: "+";
-  position: absolute;
-  right: 0;
-  top: -2px;
-  font: 400 24px "Manrope", sans-serif;
-  color: #C5A059;
+.faq-answer {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #E6DFD3;
+  color: #556056;
+  font-size: 14px;
+  line-height: 1.65;
 }
-.faq-boutique-item[open] summary::after {
-  content: "−";
-}
-.faq-boutique-answer {
-  padding-top: 14px;
-  border-top: 1px solid #FAF7F2;
-  margin-top: 12px;
-}
-.faq-boutique-answer p {
-  font: 400 14px/1.7 "Manrope", sans-serif;
-  color: #555e56;
-  margin: 0;
-}
-
-/* 12. BOOKING CTA & MAP */
-.booking-cta-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 48px;
-  align-items: center;
-  max-width: 1240px;
-  margin: 0 auto;
-}
-.booking-cta-copy h2 {
-  font: 500 clamp(32px, 4.2vw, 48px)/1.15 "Cormorant Garamond", Georgia, serif;
-  color: #1A3322;
-  margin: 10px 0 16px;
-}
-.booking-cta-copy p {
-  font: 400 15px/1.75 "Manrope", sans-serif;
-  color: #555e56;
-  margin: 0 0 28px;
-}
-.booking-cta-actions {
-  display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
-  margin-bottom: 20px;
-}
-.peace-of-mind-note {
-  font: 600 12px/1.6 "Manrope", sans-serif;
-  color: #7b857d;
-  margin: 0;
-}
-.map-embed-card {
-  background: #fff;
+.map-embed-wrapper {
+  background: #FAF7F2;
   border: 1px solid #E6DFD3;
-  border-radius: 4px;
+  border-radius: 14px;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(26, 51, 34, 0.08);
 }
-.map-embed-card iframe {
+.map-embed-wrapper iframe {
   width: 100%;
   height: 320px;
   border: 0;
   display: block;
 }
-.map-caption-bar {
-  padding: 16px 20px;
-  background: #FAF7F2;
-  border-top: 1px solid #E6DFD3;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+.map-caption {
+  padding: 14px 18px;
 }
-.map-caption-bar strong {
-  font: 600 14px "Cormorant Garamond", Georgia, serif;
+.map-caption strong {
+  display: block;
+  font-size: 13px;
   color: #1A3322;
 }
-.map-caption-bar span {
-  font: 400 12px "Manrope", sans-serif;
-  color: #657066;
+.map-caption span {
+  display: block;
+  font-size: 11px;
+  color: #7A756B;
+  margin-top: 2px;
 }
 
-/* RESPONSIVE DESIGN */
-@media (max-width: 1080px) {
-  .curated-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-  .journey-steps-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
+/* Final Banner */
+.final-book-banner {
+  margin-top: 60px;
+  padding: 48px 24px;
+  background: #1A3322;
+  color: #FAF7F2;
+  border-radius: 18px;
+  text-align: center;
+}
+.final-book-banner h3 {
+  font: 600 clamp(26px, 3.8vw, 40px)/1.15 "Cormorant Garamond", Georgia, serif;
+  color: #FAF7F2;
+  margin: 0 0 10px;
+}
+.final-book-banner p {
+  color: #E6DFD3;
+  font-size: 16px;
+  margin: 0 0 24px;
+}
+.final-book-banner .hero-outline-button {
+  border-color: rgba(255, 255, 255, 0.4);
 }
 
-@media (max-width: 860px) {
-  .intro-pillars-grid {
+/* Mobile Responsive */
+@media (max-width: 900px) {
+  .sig-cards-grid, .hosts-grid, .reviews-grid, .journal-grid {
     grid-template-columns: 1fr;
+    max-width: 520px;
+    margin-inline: auto;
   }
-  .hosts-grid {
-    grid-template-columns: 1fr;
-    max-width: 440px;
+  .steps-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  .editorial-feature-grid {
+  .map-faq-split {
     grid-template-columns: 1fr;
-  }
-  .split-nature-layout {
-    grid-template-columns: 1fr;
-    gap: 32px;
-  }
-  .reviews-grid {
-    grid-template-columns: 1fr;
-  }
-  .sustainability-pillars-grid {
-    grid-template-columns: 1fr;
-  }
-  .journal-grid {
-    grid-template-columns: 1fr;
-  }
-  .booking-cta-container {
-    grid-template-columns: 1fr;
-    gap: 36px;
   }
 }
 
 @media (max-width: 600px) {
-  .curated-grid {
+  .home-section {
+    padding: 60px 16px;
+  }
+  .steps-grid {
     grid-template-columns: 1fr;
   }
-  .journey-steps-grid {
-    grid-template-columns: 1fr;
+  .premium-hero h1 {
+    font-size: 38px;
   }
   .hero-cta-group {
     flex-direction: column;
     width: 100%;
   }
-  .gold-button,
-  .hero-outline-button {
+  .hero-cta-group .gold-button,
+  .hero-cta-group .hero-outline-button {
     width: 100%;
-    text-align: center;
-  }
-  .booking-cta-actions {
-    flex-direction: column;
   }
 }
 </style>

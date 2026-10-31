@@ -1,4 +1,45 @@
 User-agent: *
 Allow: /
+Allow: /experiences
+Allow: /camping
+Allow: /day-trips
+Allow: /materuni-waterfall-tour
+Allow: /materuni-coffee-tour
+Allow: /chagga-cultural-tour
+Allow: /chemka-hot-springs
+Allow: /marangu-day-hike
+Allow: /moshi-day-trips
+Allow: /journal/
+Allow: /itinerary
+Allow: /booking
+Allow: /about-us
+Allow: /accommodation
+Allow: /reviews
+Allow: /faq
+Allow: /sustainability
+Allow: /travel-guide
+Allow: /work-with-us
+Allow: /privacy
+Allow: /terms
+
+# Disallow private administration, API endpoints & test dashboards
 Disallow: /admin/
+Disallow: /admin
+Disallow: /api/
+
+# Prevent crawl waste and infinite parameter / session space
+Disallow: /*?*source=
+Disallow: /*?*lang=
+Disallow: /*?*preview=
+Disallow: /*?*token=
+Disallow: /*?*session=
+Disallow: /*?*utm_
+Disallow: /*?*fbclid=
+
+# Disallow internal media drafts and unindexed temporary storage
+Disallow: /public/assets/aistudio/
+Disallow: /.tempmediaStorage/
+Disallow: /assets/aistudio/
+
+# Sitemaps
 Sitemap: https://materunihosts.com/sitemap.xml

@@ -211,10 +211,10 @@ walk(root);
 for (const file of htmlFiles) {
   const html = read(file);
   const relative = path.relative(root, file);
-  const isRedirectRoute = relative === "about/index.html";
+  const isRedirectRoute = relative === "about/index.html" || relative === "materuni-camping/index.html";
   if (isRedirectRoute) {
-    if (!/http-equiv/i.test(html) || !/refresh/i.test(html)) fail(relative + ": legacy About URL must redirect to /about-us");
-    else pass(relative + ": legacy About URL redirects to the canonical About Us page");
+    if (!/http-equiv/i.test(html) || !/refresh/i.test(html)) fail(relative + ": legacy redirect URL must define a meta-refresh redirect");
+    else pass(relative + ": legacy URL redirects to canonical destination");
     continue;
   }
   if (!/<title>\s*[^<]+<\/title>/i.test(html)) fail(relative + ": missing page title");
@@ -238,17 +238,7 @@ for (const file of htmlFiles) {
       }
     }
   }
-  const optimizedImageRoutes = ["/", "/experiences", "/camping", "/day-trips", "/sustainability"];
-for (const route of optimizedImageRoutes) {
-  const optimizedFile = routeFile(route);
-  if (optimizedFile) {
-    const optimizedHtml = read(optimizedFile);
-    const renderedImages = [...optimizedHtml.matchAll(/<img\b[^>]*>/gi)].map((match) => match[0]);
-    if (renderedImages.some((image) => /storage\/v1\/object\/public\/materuni-images/i.test(image))) fail(route + ": visible photography must use optimized local build assets");
-    else if (renderedImages.length) pass(route + ": visible photography is served from optimized build assets");
-  }
-}
-const imageTags = [...html.matchAll(/<img\b[^>]*>/gi)].map((match) => match[0]);
+  const imageTags = [...html.matchAll(/<img\b[^>]*>/gi)].map((match) => match[0]);
   for (const image of imageTags) {
     if (!/\balt\s*=\s*["'][^"']*["']/i.test(image)) {
       fail(relative + ": image is missing an alt attribute");
@@ -258,6 +248,17 @@ const imageTags = [...html.matchAll(/<img\b[^>]*>/gi)].map((match) => match[0]);
   if (/href\s*=\s*["'][^"']*REPLACE_/i.test(html)) fail(relative + ": contains a placeholder URL in href");
 }
 if (htmlFiles.length) pass("Checked SEO metadata and primary headings on " + htmlFiles.length + " HTML pages");
+
+const optimizedImageRoutes = ["/", "/experiences", "/camping", "/day-trips", "/sustainability"];
+for (const route of optimizedImageRoutes) {
+  const optimizedFile = routeFile(route);
+  if (optimizedFile) {
+    const optimizedHtml = read(optimizedFile);
+    const renderedImages = [...optimizedHtml.matchAll(/<img\b[^>]*>/gi)].map((match) => match[0]);
+    if (renderedImages.some((image) => /storage\/v1\/object\/public\/materuni-images/i.test(image))) fail(route + ": visible photography must use optimized local build assets");
+    else if (renderedImages.length) pass(route + ": visible photography is served from optimized build assets");
+  }
+}
 
 const notFoundPage = path.join(root, "404.html");
 if (!fs.existsSync(notFoundPage)) fail("Missing branded 404.html page");
