@@ -533,6 +533,30 @@ p{ text-wrap:pretty }
 .admin-shell .admin-main input,.admin-shell .admin-main select,.admin-shell .admin-main textarea{max-width:100%}
 .admin-shell .admin-main :focus-visible{outline:3px solid var(--mh-gold);outline-offset:2px}
 
+/* Admin module grids retained after removing duplicated global overrides */
+.admin-shell .admin-home-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.admin-shell .admin-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.admin-shell .admin-booking-details{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.admin-shell .admin-topbar-links,.admin-shell .admin-shortcuts{display:flex;align-items:center;flex-wrap:wrap;gap:10px}
+.admin-shell .analytics-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.admin-shell .conversation-layout{display:grid;grid-template-columns:minmax(220px,.8fr) minmax(0,1.5fr);gap:18px}
+.admin-shell .seo-layout-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.admin-shell .admin-home-card{display:flex;align-items:flex-start;gap:14px;padding:18px;border:1px solid var(--mh-line);border-radius:10px;background:#fff;box-shadow:var(--mh-shadow)}
+.admin-shell .admin-home-card strong{font-size:14px;line-height:1.4}
+.admin-shell .admin-home-card small{font-size:12px;line-height:1.5;color:var(--mh-muted)}
+.admin-shell .admin-home-icon{display:grid;place-items:center;flex:0 0 40px;width:40px;height:40px;border-radius:50%;background:#f1eadc;color:var(--mh-forest)}
+.admin-shell .admin-stat{min-width:0;padding:16px;border:1px solid var(--mh-line);border-radius:10px;background:#fff}
+.admin-shell .admin-stat strong{display:block;font-size:clamp(22px,2vw,30px);line-height:1.15}
+.admin-shell .admin-booking-card{padding:16px;border:1px solid var(--mh-line);border-radius:10px;background:#fff}
+.admin-shell .admin-booking-actions{display:flex;flex-wrap:wrap;gap:8px}
+.admin-shell .admin-booking-actions button{min-height:40px;padding:9px 13px;font-size:12px}
+.admin-shell .admin-notification-row{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--mh-line)}
+.admin-shell .route-btn{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--mh-line);border-radius:8px;background:#fff}
+.admin-shell .route-btn small,.admin-shell .char-counter,.admin-shell .social-card-domain{font-size:12px;line-height:1.5}
+.admin-shell .google-snippet-preview,.admin-shell .social-card-preview{border:1px solid var(--mh-line);border-radius:10px;background:#fff;overflow:hidden}
+.admin-shell .snippet-desc,.admin-shell .social-card-desc{font-size:13px;line-height:1.6}
+.admin-shell .social-card-title{font-size:17px;line-height:1.35}
+
 /* Tablet and mobile */
 @media(max-width:900px){
  .public-shell .site-header{min-height:72px;padding:8px 16px}
