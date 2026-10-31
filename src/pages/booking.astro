@@ -17,9 +17,9 @@ const bookingPreview = `${supabaseUrl}/storage/v1/object/public/materuni-images/
 <div class="booking-trust-bar">
   <span><a href="https://www.tripadvisor.com/34765809" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:underline">TripAdvisor Verified</a></span>
   <span><a href="https://g.page/r/CXy6M_Suiip9EBM/review" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:underline">Google Reviews</a></span>
-  <span>⚡ Host reply in 3–6 hours</span>
-  <span>✓ Free cancellation up to 48 hrs</span>
-  <span>🛡 Pay nothing until confirmed</span>
+  <span>Direct contact with local hosts</span>
+  <span>Clear booking details before confirmation</span>
+  <span>Experiences hosted in Materuni Village</span>
 </div>
 <p class="muted" style="margin:0 0 16px"><span data-i18n="booking_reviews_intro">Independent guest feedback:</span> <a href="/reviews" data-i18n="booking_reviews_link">Read guest reviews</a> · <a href="https://www.tripadvisor.com/34765809" target="_blank" rel="noopener noreferrer">TripAdvisor</a> · <a href="https://g.page/r/CXy6M_Suiip9EBM/review" target="_blank" rel="noopener noreferrer" data-i18n="booking_leave_review">Google reviews</a></p>
 
@@ -56,7 +56,7 @@ const bookingPreview = `${supabaseUrl}/storage/v1/object/public/materuni-images/
     <a id="manage-wa-btn" href="https://wa.me/255612068540" target="_blank" rel="noopener noreferrer" class="button" style="background:#25D366;color:#fff;border-color:#25D366;display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none">
       <span>💬</span> Chat with Host on WhatsApp
     </a>
-    <a id="manage-email-btn" href="mailto:materunihosts@gmail.com" class="button button-secondary" style="display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none">
+    <a id="manage-email-btn" href="mailto:hello@materunihosts.com" class="button button-secondary" style="display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none">
       <span>✉️</span> Email Hosts Directly
     </a>
     <a href="https://www.google.com/maps/search/?api=1&query=Materuni%20Hosts%20-%20Waterfall%20Tours%20%26%20Village%20Camping%2C%20Materuni%20Village%2C%20Moshi%2C%20Tanzania" target="_blank" rel="noopener noreferrer" class="button button-secondary" style="display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none">
@@ -67,9 +67,9 @@ const bookingPreview = `${supabaseUrl}/storage/v1/object/public/materuni-images/
   <div style="background:#fff;border:1px solid #E6DFD3;border-radius:8px;padding:16px;margin-bottom:16px">
     <strong style="display:block;color:#1A3322;font-size:13px;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">🌿 Booking Policies & Guarantees</strong>
     <ul style="margin:0;padding-left:18px;font-size:13px;line-height:1.7;color:#4F524D">
-      <li><strong>Free Rescheduling:</strong> Change your date at zero fee anytime due to mountain weather or flight updates.</li>
-      <li><strong>100% Free Cancellation:</strong> Cancel up to 48 hours prior with no cancellation fees.</li>
-      <li><strong>Payment on Arrival:</strong> Settle your experience directly in Materuni with USD cash, TZS cash, or Vodacom M-Pesa.</li>
+      <li><strong>Changes to your visit:</strong> Contact your host to discuss date changes and any weather-related arrangements.</li>
+      <li><strong>Cancellation:</strong> Ask your host to confirm the applicable cancellation terms before your booking is finalised.</li>
+      <li><strong>Payment:</strong> Your host will confirm available payment methods and timing with your booking details.</li>
       <li><strong>Private Transfers:</strong> Moshi Town (+$25/vehicle), KIA Airport (+$50/vehicle), Arusha (+$80/vehicle) up to 6 guests.</li>
     </ul>
   </div>
@@ -89,7 +89,7 @@ const bookingPreview = `${supabaseUrl}/storage/v1/object/public/materuni-images/
   <div><span>Private transfer</span><strong id="estimate-transfer">None</strong></div>
   <div class="booking-estimate-total"><span data-i18n="estimate_total">Estimated group total</span><strong id="estimate-total">—</strong></div>
  </div>
- <p>DIRECT GROUP DISCOUNT — automatically applied to every active package: 1–3 guests: standard rate; 4–5 guests: 5% off; 6–9 guests: 8% off; 10–14 guests: 10% off; 15+ guests: custom quotation. Private door-to-door vehicle transfers (Moshi $25, KIA $50, Arusha $80 per vehicle up to 6 guests) are priced separately per vehicle. Your host confirms the final amount before payment.</p>
+ <p>Group arrangements and private transfers are quoted separately. Share your group size and pickup point so your host can confirm the current details.</p>
 </div>
 <form id="booking-form" class="form-grid">
 <div class="field full"><label for="experience" data-i18n="booking_experience_label">Choose your experience *</label><select id="experience" required><option value="">Loading experiences…</option></select></div>
@@ -98,7 +98,7 @@ const bookingPreview = `${supabaseUrl}/storage/v1/object/public/materuni-images/
 <div class="field"><label for="email" data-i18n="booking_email_label">Email address</label><input id="email" type="email" autocomplete="email"></div><div class="field"><label for="phone" data-i18n="booking_phone_label">WhatsApp / phone</label><input id="phone" type="tel" autocomplete="tel"><small class="muted" data-i18n="booking_contact_hint">Provide at least one contact method: email or phone.</small></div><div class="field"><label for="language" data-i18n="booking_language_label">Preferred language</label><select id="language"><option value="English">English</option><option value="Spanish">Español</option><option value="French">Français</option><option value="German">Deutsch</option></select></div>
 <div class="field"><label for="pickup-origin" data-i18n="booking_transfer_label">Private transfer request (optional)</label><select id="pickup-origin"><option value="" data-i18n="booking_transfer_none">No transfer / self-arranged</option><option value="Moshi" data-i18n="booking_transfer_moshi">Pickup from Moshi town (+$25 / vehicle · 45–60 mins)</option><option value="Kilimanjaro International Airport (KIA)" data-i18n="booking_transfer_kia">Pickup from Kilimanjaro Airport / KIA (+$50 / vehicle · 1.5–2 hours)</option><option value="Arusha" data-i18n="booking_transfer_arusha">Pickup from Arusha city (+$80 / vehicle · 2.5–3 hours)</option><option value="Other">Other location (custom quote confirmed by host)</option></select><small class="muted" data-i18n="booking_transfer_note">Priced per vehicle for up to 6 passengers with luggage. Door-to-door pickup from your hotel, lodge or flight arrival. Your host will confirm the exact driver name and vehicle details with your booking.</small></div><div class="field"><label for="pickup" data-i18n="booking_pickup_label">Hotel, address or flight details</label><input id="pickup" placeholder="Hotel name, flight number or meeting point…" data-i18n-placeholder="booking_pickup_placeholder"></div>
 <div class="field full"><label for="notes" data-i18n="booking_notes_label">Special requests, dietary needs or accessibility notes</label><textarea id="notes" data-i18n-placeholder="booking_notes_placeholder"></textarea></div>
-<div class="field full"><div class="notice booking-terms-note" role="note"><strong data-i18n="booking_notice_title">A request is free — you pay nothing until you confirm.</strong><p data-i18n="booking_notice">Sending this form is 100% free with zero payment required today. Saidi Materu and our team will review your date, confirm availability and send your personalized itinerary, vehicle quote, and payment instructions within <strong>3–6 hours (guaranteed within 12 hours)</strong>. You pay nothing until you review and confirm those details.</p><p data-i18n="booking_notice_contact"><strong>Peace-of-mind guarantee:</strong> Free cancellation up to 48 hours before your experience with a 100% full refund. Free date rescheduling in case of severe mountain weather. Accepted payment methods: M-Pesa, card (Visa/Mastercard), cash (USD or TZS). A 20–30% deposit is payable via secure payment link after your host confirms availability.</p></div><button class="button" id="submit" type="submit" data-i18n="booking_submit_label">Send booking request</button><p id="feedback" aria-live="polite" class="muted"></p></div>
+<div class="field full"><div class="notice booking-terms-note" role="note"><strong data-i18n="booking_notice_title">Send a request — your host will confirm the details.</strong><p data-i18n="booking_notice">Sending this form submits a booking request; it does not confirm a reservation. Your host will contact you to discuss availability, itinerary, any transfer quote and payment instructions.</p><p data-i18n="booking_notice_contact">Cancellation terms, weather arrangements, available payment methods and any deposit requirements will be confirmed by your host before the booking is finalised.</p></div><button class="button" id="submit" type="submit" data-i18n="booking_submit_label">Send booking request</button><p id="feedback" aria-live="polite" class="muted"></p></div>
 </form></div></section>
 <script>
 // @ts-nocheck
@@ -155,7 +155,7 @@ function updateManageLinks(ref){
  }
  if(manageEmailBtn){
   const subject=cleanRef ? "Managing Booking: "+cleanRef : "Materuni Hosts Reservation Enquiry";
-  manageEmailBtn.href="mailto:materunihosts@gmail.com?subject="+encodeURIComponent(subject);
+  manageEmailBtn.href="mailto:hello@materunihosts.com?subject="+encodeURIComponent(subject);
  }
 }
 

@@ -100,9 +100,9 @@ const layoutSourcePath = path.resolve("src/layouts/SiteLayout.astro");
 const businessSchemaPath = path.resolve("src/components/LocalBusinessSchema.astro");
 if (fs.existsSync(layoutSourcePath) && /15\s+oct(?:\.|obre)?\s+2026|15\.\s+Okt\.\s+2026|2[.,]640\s+TZS/i.test(read(layoutSourcePath))) fail("Multilingual fallback copy must not publish a stale TZS exchange-rate estimate");
 else if (fs.existsSync(layoutSourcePath)) pass("Multilingual fallback copy avoids stale TZS exchange-rate estimates");
-if (fs.existsSync(layoutSourcePath) && read(layoutSourcePath).includes('mailto:materunihosts@gmail.com')) pass("Verified public email is present as a clickable footer contact");
-else fail("Public footer must include the verified materunihosts@gmail.com contact email");
-if (fs.existsSync(layoutSourcePath) && read(layoutSourcePath).includes('"email": "materunihosts@gmail.com"') && fs.existsSync(businessSchemaPath) && read(businessSchemaPath).includes('"email": "materunihosts@gmail.com"')) pass("Verified email is present in TourOperator and LocalBusiness structured data");
+if (fs.existsSync(layoutSourcePath) && read(layoutSourcePath).includes('mailto:hello@materunihosts.com')) pass("Verified public email is present as a clickable footer contact");
+else fail("Public footer must include the verified hello@materunihosts.com contact email");
+if (fs.existsSync(layoutSourcePath) && read(layoutSourcePath).includes('"email": "hello@materunihosts.com"') && fs.existsSync(businessSchemaPath) && read(businessSchemaPath).includes('"email": "hello@materunihosts.com"')) pass("Verified email is present in TourOperator and LocalBusiness structured data");
 else fail("Verified email must be present in both public business structured-data sources");
 
 const aboutUsFile = routeFile("/about-us");
@@ -180,9 +180,9 @@ const walkSources = (directory) => {
   }
 };
 walkSources(publicSourceRoot);
-const outdatedContactPages = sourceFiles.filter((file) => /hello@materunihosts\.com/i.test(read(file)));
+const outdatedContactPages = sourceFiles.filter((file) => /materunihosts@gmail\.com/i.test(read(file)));
 if (outdatedContactPages.length) fail("Public pages still contain the retired hello@materunihosts.com contact address: " + outdatedContactPages.map((file) => path.relative(process.cwd(), file)).join(", "));
-else pass("Public pages contain no retired contact email");
+else pass("Public pages contain no retired Gmail contact address");
 let checkedImages = 0;
 for (const file of sourceFiles) {
   const source = read(file);
@@ -213,8 +213,8 @@ for (const file of htmlFiles) {
   const relative = path.relative(root, file);
   const isRedirectRoute = relative === "about/index.html" || relative === "materuni-camping/index.html";
   if (isRedirectRoute) {
-    if (!/http-equiv/i.test(html) || !/refresh/i.test(html)) fail(relative + ": legacy redirect URL must define a meta-refresh redirect");
-    else pass(relative + ": legacy URL redirects to canonical destination");
+    if (!/http-equiv/i.test(html) || !/refresh/i.test(html)) fail(relative + ": legacy About URL must redirect to /about-us");
+    else pass(relative + ": legacy About URL redirects to the canonical About Us page");
     continue;
   }
   if (!/<title>\s*[^<]+<\/title>/i.test(html)) fail(relative + ": missing page title");
@@ -238,18 +238,7 @@ for (const file of htmlFiles) {
       }
     }
   }
-  const imageTags = [...html.matchAll(/<img\b[^>]*>/gi)].map((match) => match[0]);
-  for (const image of imageTags) {
-    if (!/\balt\s*=\s*["'][^"']*["']/i.test(image)) {
-      fail(relative + ": image is missing an alt attribute");
-      break;
-    }
-  }
-  if (/href\s*=\s*["'][^"']*REPLACE_/i.test(html)) fail(relative + ": contains a placeholder URL in href");
-}
-if (htmlFiles.length) pass("Checked SEO metadata and primary headings on " + htmlFiles.length + " HTML pages");
-
-const optimizedImageRoutes = ["/", "/experiences", "/camping", "/day-trips", "/sustainability"];
+  const optimizedImageRoutes = ["/", "/experiences", "/camping", "/day-trips", "/sustainability"];
 for (const route of optimizedImageRoutes) {
   const optimizedFile = routeFile(route);
   if (optimizedFile) {
@@ -259,6 +248,16 @@ for (const route of optimizedImageRoutes) {
     else if (renderedImages.length) pass(route + ": visible photography is served from optimized build assets");
   }
 }
+const imageTags = [...html.matchAll(/<img\b[^>]*>/gi)].map((match) => match[0]);
+  for (const image of imageTags) {
+    if (!/\balt\s*=\s*["'][^"']*["']/i.test(image)) {
+      fail(relative + ": image is missing an alt attribute");
+      break;
+    }
+  }
+  if (/href\s*=\s*["'][^"']*REPLACE_/i.test(html)) fail(relative + ": contains a placeholder URL in href");
+}
+if (htmlFiles.length) pass("Checked SEO metadata and primary headings on " + htmlFiles.length + " HTML pages");
 
 const notFoundPage = path.join(root, "404.html");
 if (!fs.existsSync(notFoundPage)) fail("Missing branded 404.html page");
