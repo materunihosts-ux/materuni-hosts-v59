@@ -345,20 +345,12 @@ const faqs = [
             <p class="card-desc">{exp.desc}</p>
             
             <div class="card-inclusions-block">
-              <strong>What's included:</strong>
+              <strong>Experience highlights</strong>
               <ul>
-                {exp.inclusions.map((item) => (
+                {exp.inclusions.slice(0, 3).map((item) => (
                   <li>{item}</li>
                 ))}
               </ul>
-            </div>
-
-            <div class="card-prep-block">
-              <span class="prep-label">Not included:</span> {exp.exclusions}
-            </div>
-
-            <div class="card-prep-block">
-              <span class="prep-label">Guest preparation:</span> {exp.prep}
             </div>
 
             <div class="boutique-card-actions">
@@ -370,9 +362,6 @@ const faqs = [
       ))}
     </div>
     <div class="section-center-cta">
-      <p class="indicative-rate-note">
-        Indicative TZS guide: $41 ≈ TZS 108,000 · $45 ≈ TZS 119,000 · $55 ≈ TZS 145,000 · $59 ≈ TZS 156,000 · $65 ≈ TZS 172,000 · $101 ≈ TZS 267,000. Confirmed at prevailing exchange rate before payment.
-      </p>
       <a class="view-all-button" href="/experiences">Explore experience details &amp; group discounts</a>
     </div>
   </section>
@@ -677,7 +666,7 @@ const faqs = [
 /* 1. HERO */
 .premium-hero {
   position: relative;
-  min-height: clamp(560px, 80vh, 780px);
+  min-height: clamp(500px, 68vh, 660px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -801,7 +790,7 @@ const faqs = [
 
 /* 2. BRAND INTRO */
 .brand-intro-section {
-  padding: clamp(70px, 9vw, 110px) 24px;
+  padding: clamp(56px, 6vw, 76px) 24px;
   background: #FAF7F2;
   border-bottom: 1px solid #E6DFD3;
 }
@@ -876,7 +865,7 @@ const faqs = [
 
 /* GENERAL SECTION STYLING */
 .home-section {
-  padding: clamp(70px, 9vw, 110px) clamp(20px, 5vw, 60px);
+  padding: clamp(56px, 6vw, 76px) clamp(20px, 5vw, 60px);
 }
 .home-section.bg-warm {
   background: #F4EFE6;
@@ -949,7 +938,7 @@ const faqs = [
   border-radius: 2px;
 }
 .boutique-card-content {
-  padding: 24px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -1359,7 +1348,7 @@ const faqs = [
   transform: scale(1.03);
 }
 .journal-body {
-  padding: 24px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -1516,7 +1505,11 @@ const faqs = [
 
 /* RESPONSIVE DESIGN */
 @media (max-width: 1080px) {
-  .curated-grid {
+  .curated-grid,
+  .hosts-grid,
+  .editorial-feature-grid,
+  .sustainability-pillars-grid,
+  .journal-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .journey-steps-grid {
@@ -1526,52 +1519,71 @@ const faqs = [
 
 @media (max-width: 860px) {
   .intro-pillars-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
   }
-  .hosts-grid {
-    grid-template-columns: 1fr;
-    max-width: 440px;
-  }
-  .editorial-feature-grid {
-    grid-template-columns: 1fr;
-  }
-  .split-nature-layout {
+  .split-nature-layout,
+  .booking-cta-container {
     grid-template-columns: 1fr;
     gap: 32px;
   }
   .reviews-grid {
     grid-template-columns: 1fr;
   }
-  .sustainability-pillars-grid {
-    grid-template-columns: 1fr;
-  }
-  .journal-grid {
-    grid-template-columns: 1fr;
-  }
-  .booking-cta-container {
-    grid-template-columns: 1fr;
-    gap: 36px;
-  }
 }
 
 @media (max-width: 600px) {
-  .curated-grid {
-    grid-template-columns: 1fr;
-  }
+  .curated-grid,
+  .hosts-grid,
+  .intro-pillars-grid,
+  .editorial-feature-grid,
+  .sustainability-pillars-grid,
+  .journal-grid,
   .journey-steps-grid {
     grid-template-columns: 1fr;
   }
-  .hero-cta-group {
+  .hosts-grid {
+    max-width: 440px;
+  }
+  .premium-hero {
+    min-height: 500px;
+    padding: 72px 20px;
+  }
+  .premium-hero h1 {
+    font-size: clamp(36px, 10vw, 44px);
+    line-height: 1.08;
+  }
+  .hero-sub {
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  .hero-cta-group,
+  .booking-cta-actions {
     flex-direction: column;
     width: 100%;
   }
   .gold-button,
   .hero-outline-button {
     width: 100%;
+    min-height: 46px;
     text-align: center;
   }
-  .booking-cta-actions {
-    flex-direction: column;
+  .intro-pillar,
+  .host-boutique-card,
+  .feature-card,
+  .journey-step-card,
+  .sustainability-card {
+    padding: 22px 20px;
+  }
+  .boutique-card-content,
+  .journal-body {
+    padding: 18px;
+  }
+  .section-header {
+    margin-bottom: 32px;
+  }
+  .section-center-cta {
+    margin-top: 32px;
   }
 }
 

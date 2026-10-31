@@ -418,57 +418,283 @@ if (chatEl("mh-chat-open") && chatEl("mh-chat-panel") && languageSelect && chatE
 <div><strong>Talk to a local host</strong><a href="mailto:hello@materunihosts.com">hello@materunihosts.com</a><a href="https://wa.me/255612068540" target="_blank" rel="noopener noreferrer">WhatsApp +255 612 068 540</a><span>Materuni Village, Moshi · Tanzania</span><a href="https://www.google.com/maps/search/?api=1&query=Materuni%20Hosts%2C%20Materuni%20Village%2C%20Moshi%2C%20Tanzania" target="_blank" rel="noopener noreferrer">Find us on Google Maps</a></div><div class="copyright"><span>Materuni Hosts. All rights reserved. Authentic community-based experiences in Materuni, Kilimanjaro, Tanzania.</span></div></footer>}
 
 <style is:inline>
-/* Last-in-document UI refinements: keep scoped legacy page styles from shrinking key content. */
-.public-shell .premium-hero h1{font-size:clamp(40px,6vw,70px)!important;line-height:1.08!important}
-.public-shell .hero-sub{font-size:clamp(16px,1.35vw,19px)!important;line-height:1.7!important}
-.public-shell .mh-quick-plan-kicker{font-size:12px!important}
-.public-shell .mh-quick-plan-intro p{font-size:14px!important;line-height:1.65!important}
-.public-shell .mh-quick-plan-step strong{font-size:12px!important}
-.public-shell .mh-quick-plan-step small{font-size:12px!important;line-height:1.4!important}
-.public-shell .card-tagline,.public-shell .card-duration-badge{font-size:12px!important;line-height:1.4!important}
-.public-shell .card-price-display small{font-size:12px!important}
-.public-shell .card-desc{font-size:14px!important;line-height:1.75!important}
-.public-shell .peace-of-mind-note{font-size:13px!important;line-height:1.6!important}
-.public-shell .map-caption-bar span{font-size:13px!important;line-height:1.5!important}
-.public-shell .gold-button,.public-shell .hero-outline-button{min-height:48px!important;padding:13px 22px!important;font-size:13px!important;line-height:1.4!important}
-.public-shell .cookie-copy p{font-size:14px!important;line-height:1.6!important}
-.public-shell .cookie-btn{min-height:44px!important;padding:9px 14px!important;font:800 13px/1.35 var(--sans)!important}
-.public-shell .cookie-btn-link{font-size:13px!important}
-.public-shell .cookie-settings{font-size:13px!important}
-.public-shell .cookie-settings button{min-height:40px!important;font-size:13px!important}
-.public-shell .booking-trust-bar{font-size:13px!important;line-height:1.5!important}
-.public-shell .booking-terms-note{font-size:14px!important;line-height:1.75!important}
-.public-shell .booking-terms-note p{font-size:14px!important;line-height:1.75!important}
-.public-shell .booking-panel .text-link{min-height:44px!important;font-size:14px!important}
-.public-shell .availability-refresh{min-height:44px!important;font-size:13px!important}
-.admin-shell .route-btn small,.admin-shell .social-card-domain,.admin-shell .char-counter{font-size:12px!important}
-.admin-shell .admin-main .field label{font-size:13px!important}
-.admin-shell .admin-main .field input,.admin-shell .admin-main .field select,.admin-shell .admin-main .field textarea{font-size:16px!important;min-height:48px!important}
-.admin-shell .admin-main .button{min-height:44px!important;font-size:13px!important}
-.public-shell .boutique-card{border-radius:14px!important;box-shadow:0 8px 26px rgba(26,51,34,.07)!important}
-.public-shell .boutique-card:hover{box-shadow:0 16px 38px rgba(26,51,34,.12)!important}
-.public-shell .boutique-card-content{padding:clamp(20px,2.2vw,28px)!important}
-.public-shell .boutique-card-content h3{font-size:clamp(20px,1.65vw,24px)!important;line-height:1.3!important}
-.public-shell .boutique-card-content p,.public-shell .intro-pillar p{font-size:14px!important;line-height:1.75!important}
-.public-shell .card-price-display{font-size:26px!important;line-height:1.2!important}
-.public-shell .boutique-card-actions .gold-button{min-height:46px!important;font-size:13px!important}
-.public-shell .group-discount-heading p,.public-shell .group-discount-foot,.public-shell .cross-sell p,.public-shell .steps p{font-size:14px!important;line-height:1.7!important}
-.public-shell .group-discount-grid span{font-size:13px!important;line-height:1.5!important}
-.public-shell .body p{font-size:15px!important;line-height:1.75!important}
-.public-shell .body ul,.public-shell .shared-standard ul{font-size:14px!important;line-height:1.75!important}
-.public-shell .note,.public-shell .product-best-for{font-size:13px!important;line-height:1.6!important}
-.public-shell .hero-rating-badge{font-size:13px!important}
-.public-shell .hero-rating-badge span:last-child,.public-shell .review-date,.public-shell .review-author span{font-size:12px!important;line-height:1.5!important}
-.public-shell .eyebrow,.public-shell .pill,.public-shell .card-tagline,.public-shell .card-duration-badge{font-size:12px!important;line-height:1.5!important}
-.public-shell small{font-size:max(12px,1em)!important;line-height:1.5!important}
+/* Materuni Hosts — unified, responsive public and admin interface system */
+:root {
+  --mh-forest:#1A3322; --mh-gold:#C5A059; --mh-ivory:#FAF7F2;
+  --mh-sand:#E6DFD3; --mh-ink:#242421; --mh-muted:#626B63;
+  --mh-line:#E6DFD3; --mh-paper:#FFFFFF; --mh-radius:10px;
+  --mh-shadow:0 6px 22px rgba(26,51,34,.055);
+  --mh-shadow-hover:0 12px 28px rgba(26,51,34,.10);
+  --mh-body:"Manrope",Arial,sans-serif;
+  --mh-display:"Cormorant Garamond",Georgia,serif;
+}
+html{scroll-padding-top:88px}
+body{font-family:var(--mh-body);font-size:15px;line-height:1.65;color:var(--mh-ink)}
+button,input,select,textarea{font:inherit}
+img{max-width:100%}
+a,button{-webkit-tap-highlight-color:transparent}
+:focus-visible{outline:3px solid var(--mh-gold);outline-offset:3px}
+h1,h2,h3,h4{ text-wrap:balance }
+p{ text-wrap:pretty }
 
+/* Header */
+.public-shell .site-header{height:auto;min-height:78px;padding:9px clamp(16px,4vw,56px);gap:14px;box-shadow:0 2px 12px rgba(26,51,34,.035)}
+.public-shell .brand{gap:9px;flex-shrink:0}
+.public-shell .brand-logo{width:58px;height:58px;object-fit:contain}
+.public-shell .brand-lockup{display:flex;flex-direction:column;gap:3px}
+.public-shell .brand-lockup strong{font:700 16px/1.15 var(--mh-body);letter-spacing:-.02em}
+.public-shell .brand-lockup small{display:block;font:700 9px/1.3 var(--mh-body);letter-spacing:.12em;color:#806333}
+.public-shell .site-header nav{gap:clamp(9px,1.15vw,17px);font-size:11.5px;font-weight:700}
+.public-shell .site-header nav a:not(.nav-cta){white-space:nowrap}
+.public-shell .nav-cta,.public-shell .button{min-height:44px;padding:11px 18px;border-radius:5px;font:700 12px/1.35 var(--mh-body);letter-spacing:.015em;box-shadow:none;transition:background-color .18s ease,border-color .18s ease,color .18s ease}
+.public-shell .nav-cta:hover,.public-shell .button:hover{transform:none;background:var(--mh-gold);color:var(--mh-forest)!important}
+.public-shell .language-control select{min-height:38px;padding:7px 9px;border:1px solid var(--mh-line);border-radius:4px;background:#fff;color:var(--mh-forest);font:700 11px var(--mh-body)}
+.public-shell .menu-toggle{min-width:42px;min-height:42px;border:1px solid var(--mh-line);border-radius:4px;font-size:22px}
+
+/* Type scale */
+.public-shell .premium-hero h1,.public-shell .hero h1,.public-shell .page-hero h1,.public-shell .media-hero h1,.public-shell .about-hero h1{font-family:var(--mh-display);font-size:clamp(36px,5vw,62px);font-weight:600;line-height:1.08;letter-spacing:-.02em}
+.public-shell .hero-sub,.public-shell .premium-hero p{font-size:clamp(15px,1.2vw,17px);line-height:1.7}
+.public-shell .section h2,.public-shell .home-section h2,.public-shell .section-heading h2{font-family:var(--mh-display);font-size:clamp(28px,3.2vw,40px);font-weight:600;line-height:1.16;letter-spacing:-.015em}
+.public-shell .eyebrow,.public-shell .pill,.public-shell .card-tagline,.public-shell .card-duration-badge,.public-shell .mh-quick-plan-kicker{font-size:11px;line-height:1.45;letter-spacing:.11em}
+.public-shell .body p,.public-shell .shared-standard p,.public-shell .boutique-card-content p,.public-shell .intro-pillar p{font-size:14px;line-height:1.7;color:var(--mh-muted)}
+.public-shell .body ul,.public-shell .shared-standard ul{font-size:14px;line-height:1.7}
+.public-shell .note,.public-shell .product-best-for,.public-shell .review-date{font-size:12px;line-height:1.55}
+.public-shell .mh-quick-plan-intro p{font-size:13px;line-height:1.6}
+.public-shell .mh-quick-plan-step strong,.public-shell .mh-quick-plan-step small{font-size:11px;line-height:1.45}
+.public-shell .card-price-display{font-size:24px;line-height:1.2}
+.public-shell .card-price-display small{font-size:11px}
+
+/* Consistent page rhythm and widths */
+.public-shell .home-section,.public-shell .section{padding:clamp(38px,5vw,66px) clamp(18px,5vw,72px)}
+.public-shell .section-head{max-width:680px;margin:0 auto 30px}
+.public-shell .premium-hero{min-height:min(640px,calc(100svh - 78px))}
+.public-shell .split{gap:clamp(22px,4vw,48px)}
+.public-shell .split img{height:clamp(270px,34vw,420px);object-fit:cover}
+.public-shell .page-hero{padding:clamp(48px,7vw,82px) 20px}
+
+/* Public cards */
+.public-shell .boutique-card,.public-shell .experience-card,.public-shell .feature-card,.public-shell .host-boutique-card,.public-shell .review-card,.public-shell .journal-card,.public-shell .team-card{
+  min-width:0;border:1px solid var(--mh-line);border-radius:var(--mh-radius);box-shadow:var(--mh-shadow);overflow:hidden;
+  transition:box-shadow .18s ease,border-color .18s ease;
+}
+.public-shell .boutique-card:hover,.public-shell .experience-card:hover,.public-shell .feature-card:hover,.public-shell .host-boutique-card:hover,.public-shell .review-card:hover,.public-shell .journal-card:hover,.public-shell .team-card:hover{transform:none;box-shadow:var(--mh-shadow-hover);border-color:#d4c7ad}
+.public-shell .boutique-card-content,.public-shell .card-body{padding:18px}
+.public-shell .boutique-card-content h3,.public-shell .experience-card h3,.public-shell .team-card h3{font-family:var(--mh-display);font-size:21px;line-height:1.25;font-weight:600}
+.public-shell .experience-card img,.public-shell .experience-photo{height:210px;object-fit:cover}
+.public-shell .experience-card p{font-size:14px;line-height:1.6}
+.public-shell .experience-card ul{font-size:12px;line-height:1.55}
+.public-shell .boutique-card-actions .gold-button,.public-shell .gold-button,.public-shell .hero-outline-button{min-height:44px;padding:11px 18px;font:700 12px/1.35 var(--mh-body);border-radius:5px}
+.public-shell .cards,.public-shell .reviews-grid,.public-shell .team-grid,.public-shell .values-grid,.public-shell .experience-grid{gap:18px}
+
+/* Booking and forms */
+.public-shell .booking-wrap{max-width:880px;padding:42px 18px}
+.public-shell .booking-panel,.public-shell .manage-panel,.public-shell .booking-estimate{padding:clamp(18px,3vw,30px);border:1px solid var(--mh-line);border-radius:8px;box-shadow:var(--mh-shadow)}
+.public-shell .form-grid{gap:14px}
+.public-shell .field{gap:6px}
+.public-shell .field label{font-size:12px;font-weight:700}
+.public-shell .field input,.public-shell .field select,.public-shell .field textarea{min-height:46px;padding:11px 12px;border:1px solid #d8d2c7;border-radius:4px;background:#fff;font:14px var(--mh-body)}
+.public-shell .field textarea{min-height:100px}
+.public-shell .field input:focus,.public-shell .field select:focus,.public-shell .field textarea:focus{border-color:var(--mh-forest);outline:2px solid rgba(26,51,34,.12);outline-offset:1px}
+.public-shell .text-link,.public-shell .availability-refresh{min-height:42px}
+.public-shell .booking-terms-note{font-size:13px;line-height:1.7}
+
+/* About, reviews, FAQ, itinerary */
+.public-shell .review-card{padding:18px}
+.public-shell .review-body{font-size:14px;line-height:1.7}
+.public-shell .faq-item{border-bottom:1px solid var(--mh-line)}
+.public-shell .faq-item summary{padding:16px 0;font-weight:700;line-height:1.45}
+.public-shell .faq-item p{font-size:14px;line-height:1.7}
+.public-shell .metrics-grid,.public-shell .values-grid{gap:14px}
+.public-shell .metric-item,.public-shell .value-card{min-width:0}
+.public-shell .itinerary-output{min-width:0;overflow-wrap:anywhere}
+
+/* Footer and overlays */
+.public-shell .site-footer{padding:42px clamp(18px,5vw,72px) 22px;gap:28px}
+.public-shell .site-footer>div{font-size:13px;line-height:1.7}
+.public-shell .site-footer a{overflow-wrap:anywhere}
+.public-shell .copyright{font-size:11px;line-height:1.6}
+.public-shell .mh-concierge{z-index:40}
+.public-shell .mh-chat-panel{max-width:min(370px,calc(100vw - 24px));max-height:min(510px,calc(100svh - 110px))}
+.public-shell .cookie-consent{max-width:100%;gap:12px}
+.public-shell .cookie-btn{min-height:42px;font:700 12px/1.35 var(--mh-body)}
+
+/* Admin: independent, compact operational workspace */
+.admin-shell{background:#f4f0e8;color:var(--mh-ink);font-family:var(--mh-body);font-size:14px}
+.admin-shell .admin-main{width:min(100%,1440px);margin:0 auto;padding:clamp(16px,2.5vw,32px);min-height:calc(100vh - 58px)}
+.admin-shell .admin-main>.page-hero{margin:0 0 20px;padding:0;background:transparent}
+.admin-shell .admin-main .booking-wrap{width:100%;max-width:none;margin:0;padding:0}
+.admin-shell .admin-main .booking-panel{border:1px solid var(--mh-line);border-radius:10px;box-shadow:var(--mh-shadow)}
+.admin-shell .admin-main .field label{font-size:12px;font-weight:700}
+.admin-shell .admin-main .field input,.admin-shell .admin-main .field select,.admin-shell .admin-main .field textarea{min-height:44px;padding:10px 12px;font-size:14px;border-radius:4px}
+.admin-shell .admin-main .button{min-height:42px;font-size:12px;border-radius:5px}
+.admin-shell .admin-main table{width:100%;border-collapse:collapse}
+.admin-shell .admin-main th,.admin-shell .admin-main td{padding:11px 12px;border-bottom:1px solid var(--mh-line);text-align:left;font-size:13px;vertical-align:top}
+.admin-shell .admin-main th{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#59645b;background:#f8f5ef}
+.admin-shell .admin-main input,.admin-shell .admin-main select,.admin-shell .admin-main textarea{max-width:100%}
+.admin-shell .admin-main :focus-visible{outline:3px solid var(--mh-gold);outline-offset:2px}
+
+/* Booking manager: semantic component styles, no scattered inline declarations */
+.public-shell .booking-trust-link{color:inherit;text-decoration:underline;text-underline-offset:3px}
+.public-shell .booking-feedback-links{margin:0 0 16px;font-size:13px;line-height:1.6}
+.public-shell .booking-feedback-links a{color:var(--mh-forest);font-weight:700;text-underline-offset:3px}
+.public-shell .manage-booking-bar{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:4px 8px;margin:0 0 16px;text-align:center;font-size:13px}
+.public-shell .manage-toggle-link{min-height:38px;padding:6px 8px;border:0;background:transparent;color:var(--mh-forest);font-weight:700;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.public-shell .manage-panel{margin:0 0 24px;padding:clamp(16px,3vw,24px);border:1px solid var(--mh-gold);border-radius:10px;background:var(--mh-ivory);box-shadow:var(--mh-shadow)}
+.public-shell .manage-panel-heading{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin:0 0 16px;padding:0 0 14px;border-bottom:1px solid var(--mh-line)}
+.public-shell .manage-panel-kicker{display:block;color:#80652f}
+.public-shell .manage-panel-title{margin:2px 0 0;color:var(--mh-forest);font:600 24px/1.2 var(--mh-display)}
+.public-shell .manage-reference{text-align:right}
+.public-shell .manage-reference-label{display:block;color:var(--mh-muted);font-size:11px;letter-spacing:.1em;text-transform:uppercase}
+.public-shell #manage-ref-display{display:inline-block;padding:5px 10px;border:1px solid var(--mh-gold);border-radius:4px;background:#fff;color:var(--mh-forest);font:700 14px/1.4 ui-monospace,monospace;overflow-wrap:anywhere}
+.public-shell .manage-intro{margin:0 0 16px;color:var(--mh-ink);font-size:14px;line-height:1.7}
+.public-shell .manage-reference-form{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin:0 0 18px}
+.public-shell .manage-reference-form label{color:var(--mh-forest);font-size:13px;font-weight:700}
+.public-shell #manage-input-ref{max-width:260px;font-family:ui-monospace,monospace}
+.public-shell .manage-apply-button{min-height:42px;padding:9px 14px;font-size:12px}
+.public-shell .manage-contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:10px;margin:0 0 18px}
+.public-shell .manage-contact-grid .manage-contact-button,.public-shell .manage-contact-grid .manage-whatsapp-button{display:flex;align-items:center;justify-content:center;gap:8px;min-height:46px;text-align:center;text-decoration:none}
+.public-shell .manage-contact-grid .manage-whatsapp-button{background:#21864b;border-color:#21864b;color:#fff}
+.public-shell .manage-contact-grid .manage-whatsapp-button:hover{background:#176b3a;border-color:#176b3a;color:#fff!important}
+.public-shell .manage-policy-card{margin:0 0 16px;padding:16px;border:1px solid var(--mh-line);border-radius:8px;background:#fff}
+.public-shell .manage-policy-title{display:block;margin:0 0 8px;color:var(--mh-forest);font-size:12px;letter-spacing:.07em;text-transform:uppercase}
+.public-shell .manage-policy-list{margin:0;padding-left:18px;color:#4f554f;font-size:13px;line-height:1.7}
+.public-shell .manage-close-row{text-align:right}
+.public-shell .manage-close-button{min-height:40px;padding:8px 14px;font-size:12px}
+
+/* Admin module grids retained after removing duplicated global overrides */
+.admin-shell .admin-home-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.admin-shell .admin-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.admin-shell .admin-booking-details{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.admin-shell .admin-topbar-links,.admin-shell .admin-shortcuts{display:flex;align-items:center;flex-wrap:wrap;gap:10px}
+.admin-shell .analytics-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.admin-shell .conversation-layout{display:grid;grid-template-columns:minmax(220px,.8fr) minmax(0,1.5fr);gap:18px}
+.admin-shell .seo-layout-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.admin-shell .admin-home-card{display:flex;align-items:flex-start;gap:14px;padding:18px;border:1px solid var(--mh-line);border-radius:10px;background:#fff;box-shadow:var(--mh-shadow)}
+.admin-shell .admin-home-card strong{font-size:14px;line-height:1.4}
+.admin-shell .admin-home-card small{font-size:12px;line-height:1.5;color:var(--mh-muted)}
+.admin-shell .admin-home-icon{display:grid;place-items:center;flex:0 0 40px;width:40px;height:40px;border-radius:50%;background:#f1eadc;color:var(--mh-forest)}
+.admin-shell .admin-stat{min-width:0;padding:16px;border:1px solid var(--mh-line);border-radius:10px;background:#fff}
+.admin-shell .admin-stat strong{display:block;font-size:clamp(22px,2vw,30px);line-height:1.15}
+.admin-shell .admin-booking-card{padding:16px;border:1px solid var(--mh-line);border-radius:10px;background:#fff}
+.admin-shell .admin-booking-actions{display:flex;flex-wrap:wrap;gap:8px}
+.admin-shell .admin-booking-actions button{min-height:40px;padding:9px 13px;font-size:12px}
+.admin-shell .admin-notification-row{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--mh-line)}
+.admin-shell .route-btn{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--mh-line);border-radius:8px;background:#fff}
+.admin-shell .route-btn small,.admin-shell .char-counter,.admin-shell .social-card-domain{font-size:12px;line-height:1.5}
+.admin-shell .google-snippet-preview,.admin-shell .social-card-preview{border:1px solid var(--mh-line);border-radius:10px;background:#fff;overflow:hidden}
+.admin-shell .snippet-desc,.admin-shell .social-card-desc{font-size:13px;line-height:1.6}
+.admin-shell .social-card-title{font-size:17px;line-height:1.35}
+
+/* High-specificity final pass over older page-level overrides */
+body.public-shell .site-header{min-height:78px;height:auto;padding:9px clamp(16px,4vw,56px);gap:14px}
+body.public-shell .site-header .brand-logo{width:58px;height:58px}
+body.public-shell .site-header .brand-lockup strong{font-size:16px}
+body.public-shell .site-header .brand-lockup small{font-size:9px;letter-spacing:.12em}
+body.public-shell .site-header nav{gap:clamp(9px,1.15vw,17px);font-size:11.5px}
+body.public-shell .site-header nav .nav-cta{min-height:42px;padding:10px 15px;font-size:12px!important}
+body.public-shell .hero.hero-home{min-height:clamp(520px,62vh,640px);max-height:680px}
+body.public-shell .hero.hero-home h1{font-size:clamp(38px,5.2vw,64px);line-height:1.06;letter-spacing:-.02em}
+body.public-shell .hero.hero-home p{font-size:clamp(15px,1.2vw,17px);line-height:1.7}
+body.public-shell .hero.hero-home .hero-copy{width:min(100%,800px);max-width:800px;padding:clamp(54px,6vw,78px) clamp(24px,7vw,92px)}
+body.public-shell .hero.hero-home .actions{margin-top:24px;gap:10px}
+body.public-shell .hero.hero-home .actions .button{min-height:46px;padding:11px 18px;font-size:12px!important}
+body.public-shell .home-section,body.public-shell .section{padding:clamp(38px,4.8vw,62px) clamp(18px,4.5vw,64px)}
+body.public-shell .section>.section-head{margin-bottom:28px}
+body.public-shell .cards,body.public-shell .reviews-grid,body.public-shell .team-grid,body.public-shell .values-grid,body.public-shell .experience-grid{gap:16px}
+body.public-shell .experience-card,body.public-shell .boutique-card,body.public-shell .feature-card,body.public-shell .host-boutique-card,body.public-shell .review-card,body.public-shell .journal-card{border-radius:10px;box-shadow:var(--mh-shadow)}
+body.public-shell .experience-card img,body.public-shell .experience-card>img,body.public-shell .experience-photo{height:auto;aspect-ratio:16/10;object-fit:cover}
+body.public-shell .experience-card .card-body,body.public-shell .boutique-card-content{padding:18px}
+body.public-shell .experience-card h3,body.public-shell .boutique-card-content h3{font-size:21px;line-height:1.25}
+body.public-shell .experience-card p,body.public-shell .boutique-card-content p,body.public-shell .card-desc{font-size:14px;line-height:1.65}
+body.public-shell .experience-card ul{font-size:12px;line-height:1.55}
+body.public-shell .booking-wrap{max-width:880px;padding:38px 18px}
+body.public-shell .booking-panel,body.public-shell .manage-panel,body.public-shell .booking-estimate{padding:clamp(18px,3vw,30px);border-radius:9px;box-shadow:var(--mh-shadow)}
+body.public-shell .field input,body.public-shell .field select,body.public-shell .field textarea{min-height:46px;padding:11px 12px;border-radius:4px;font-size:16px}
+body.public-shell .nav-cta,body.public-shell .button,body.public-shell .button-secondary,body.public-shell .button-danger{min-height:44px;padding:10px 18px;border-radius:5px;font-size:13px!important}
+body.public-shell .site-footer{padding:42px clamp(18px,5vw,72px) 22px;gap:26px}
+
+/* Tablet and mobile */
+@media(max-width:900px){
+ .public-shell .site-header{min-height:72px;padding:8px 16px}
+ .public-shell .brand-logo{width:50px;height:50px}
+ .public-shell .site-header nav{top:71px;left:0;right:0;padding:18px 20px;gap:14px}
+ .public-shell .site-header nav a{padding:5px 0}
+ .public-shell .site-header nav .nav-cta{width:100%}
+ .public-shell .premium-hero{min-height:0}
+ .public-shell .premium-hero h1,.public-shell .hero h1,.public-shell .page-hero h1,.public-shell .media-hero h1,.public-shell .about-hero h1{font-size:clamp(34px,6vw,48px)}
+ .public-shell .home-section,.public-shell .section{padding:42px 20px}
+ .public-shell .split{grid-template-columns:1fr;gap:24px}
+ .public-shell .split img{height:clamp(240px,52vw,360px)}
+ .public-shell .booking-wrap{padding:28px 16px}
+ .public-shell .site-footer{gap:22px}
+}
 @media(max-width:600px){
- .public-shell .cookie-consent{gap:10px!important;padding:12px!important}
- .public-shell .cookie-copy p{font-size:13px!important}
- .public-shell .cookie-actions{grid-template-columns:1fr 1fr!important}
- .public-shell .cookie-btn-link{grid-column:1/-1!important;justify-self:center!important}
- .public-shell .mh-quick-plan-step strong,.public-shell .mh-quick-plan-step small{font-size:11px!important}
- .public-shell .gold-button,.public-shell .hero-outline-button{width:100%!important}
+ body{font-size:14px}
+ .public-shell .site-header{min-height:68px;padding:7px 14px}
+ .public-shell .brand-logo{width:46px;height:46px}
+ .public-shell .brand-lockup strong{font-size:14px}
+ .public-shell .brand-lockup small{font-size:8px;letter-spacing:.09em}
+ .public-shell .site-header nav{top:67px}
+ .public-shell .premium-hero h1,.public-shell .hero h1,.public-shell .page-hero h1,.public-shell .media-hero h1,.public-shell .about-hero h1{font-size:clamp(32px,9vw,40px);line-height:1.1}
+ .public-shell .section h2,.public-shell .home-section h2,.public-shell .section-heading h2{font-size:30px}
+ .public-shell .home-section,.public-shell .section{padding:36px 16px}
+ .public-shell .cards,.public-shell .reviews-grid,.public-shell .team-grid,.public-shell .values-grid,.public-shell .experience-grid{grid-template-columns:1fr;gap:14px}
+ .public-shell .experience-card img,.public-shell .experience-photo{height:205px}
+ .public-shell .boutique-card-content,.public-shell .card-body{padding:16px}
+ .public-shell .form-grid{grid-template-columns:1fr}
+ .public-shell .field.full{grid-column:auto}
+ .public-shell .booking-panel,.public-shell .manage-panel,.public-shell .booking-estimate{padding:17px}
+ .public-shell .actions{gap:9px}
+ .public-shell .actions .button,.public-shell .gold-button,.public-shell .hero-outline-button{width:100%;justify-content:center}
+ .public-shell .site-footer{grid-template-columns:1fr;padding:34px 18px 20px;gap:20px}
+ .public-shell .site-footer>div:first-child,.public-shell .copyright{grid-column:auto}
+ .public-shell .cookie-consent{padding:12px;gap:9px}
+ .public-shell .cookie-copy p{font-size:12px;line-height:1.5}
+ .public-shell .cookie-actions{grid-template-columns:1fr 1fr;gap:8px}
+ .public-shell .cookie-btn{padding:9px 10px}
+ .public-shell .mh-chat-panel{right:12px;left:12px;width:auto;max-width:none;max-height:calc(100svh - 100px)}
+ .admin-shell .admin-main{padding:14px}
+ .admin-shell .admin-main th,.admin-shell .admin-main td{padding:9px 8px;font-size:12px}
+}
+@media(prefers-reduced-motion:reduce){
+ *,*::before,*::after{scroll-behavior:auto!important;transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important}
+}
+
+/* Final responsive overrides: keep legacy hero dimensions from expanding mobile pages */
+@media(max-width:850px){
+ body.public-shell .site-header{min-height:70px;padding:8px 16px}
+ body.public-shell .hero.hero-home{min-height:clamp(540px,68svh,620px)!important;max-height:none}
+ body.public-shell .hero.hero-home .hero-copy{width:100%;max-width:100%;padding:54px 24px}
+ body.public-shell .hero.hero-home h1{font-size:clamp(36px,6vw,48px);line-height:1.08}
+ body.public-shell .home-section,body.public-shell .section{padding:42px 20px}
+ body.public-shell .experience-card .card-body,body.public-shell .boutique-card-content{padding:17px}
+}
+@media(max-width:600px){
+ body.public-shell .site-header{min-height:68px;padding:7px 14px}
+ body.public-shell .site-header .brand-logo{width:46px;height:46px}
+ body.public-shell .site-header .brand-lockup strong{font-size:14px}
+ body.public-shell .site-header .brand-lockup small{font-size:8px}
+ body.public-shell .hero.hero-home{min-height:clamp(490px,70svh,560px)!important;max-height:none}
+ body.public-shell .hero.hero-home .hero-copy{padding:46px 20px 40px}
+ body.public-shell .hero.hero-home h1{font-size:clamp(33px,9vw,40px);line-height:1.1}
+ body.public-shell .hero.hero-home p{font-size:15px;line-height:1.65}
+ body.public-shell .hero.hero-home .actions{display:grid;grid-template-columns:1fr;width:100%;gap:9px;margin-top:18px}
+ body.public-shell .hero.hero-home .actions .button{width:100%;min-height:44px;padding:10px 14px;font-size:12px!important}
+ body.public-shell .home-section,body.public-shell .section{padding:36px 16px}
+ body.public-shell .cards,body.public-shell .reviews-grid,body.public-shell .team-grid,body.public-shell .values-grid,body.public-shell .experience-grid{grid-template-columns:1fr;gap:14px}
+ body.public-shell .experience-card img,body.public-shell .experience-photo{height:auto;aspect-ratio:16/10}
+ body.public-shell .experience-card .card-body,body.public-shell .boutique-card-content{padding:16px}
+ body.public-shell .booking-wrap{padding:26px 14px}
+ body.public-shell .booking-panel,body.public-shell .manage-panel,body.public-shell .booking-estimate{padding:16px}
+ body.public-shell .site-footer{grid-template-columns:1fr;padding:34px 18px 20px;gap:20px}
+ body.public-shell .site-footer>div:first-child,body.public-shell .copyright{grid-column:auto}
+ body.admin-shell .admin-home-grid,body.admin-shell .admin-stats,body.admin-shell .admin-booking-details,body.admin-shell .admin-topbar-links,body.admin-shell .admin-shortcuts,body.admin-shell .analytics-grid,body.admin-shell .conversation-layout,body.admin-shell .seo-layout-grid{grid-template-columns:1fr}
+}
+@media(max-width:380px){
+ body.public-shell .site-header{padding-inline:10px;gap:8px}
+ body.public-shell .brand-lockup strong{font-size:13px}
+ body.public-shell .brand-lockup small{font-size:7px;letter-spacing:.07em}
+ body.public-shell .language-control select{min-height:40px;padding:6px 18px 6px 6px}
 }
 </style>
 
