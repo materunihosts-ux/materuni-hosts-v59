@@ -218,7 +218,7 @@ async function loadExperienceCatalog(){
  const select=$("experience");
  try {
   const q=new URLSearchParams({select:"experience_key,display_name,price_usd,duration_label",is_active:"eq.true",order:"sort_order.asc"});
-  const response=await fetch(url+"/rest/v1/experience_catalog?"+q,{headers,cache:"no-store"});
+  const response=await fetchWithTimeout(url+"/rest/v1/experience_catalog?"+q,{headers,cache:"no-store"});
   if(!response.ok) throw new Error("Experiences could not be loaded. Please refresh the page.");
   const catalog=await response.json();
   select.innerHTML='<option value="">Select an experience</option>';
@@ -330,7 +330,7 @@ async function refreshAvailability(){
    select:"id,experience,slot_date,start_time,end_time,capacity,booked_count",
    experience:"eq."+exp,slot_date:"eq."+date,is_active:"eq.true",order:"start_time.asc"
   });
-  const response=await fetch(url+"/rest/v1/availability_slots?"+q,{headers,cache:"no-store"});
+  const response=await fetchWithTimeout(url+"/rest/v1/availability_slots?"+q,{headers,cache:"no-store"});
   const rows=await response.json().catch(()=>null);
   if(!response.ok)throw new Error(safeError(rows,response.status));
   if(!Array.isArray(rows))throw new Error("The availability calendar returned an unexpected response.");
