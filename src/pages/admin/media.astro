@@ -43,7 +43,7 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
         <h3 style="margin:4px 0 8px;font-size:18px;color:#1A3322">Upload Photo for Tours, Hosts or Stories</h3>
         <p class="muted" style="margin-bottom:12px">Upload any high-resolution image to get an optimized public URL to paste into tour packages or host bios.</p>
         <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
-          <input type="file" id="general-file-input" accept="image/jpeg,image/png,image/webp" style="display:none" />
+          <input type="file" id="general-file-input" aria-label="Upload a new media image" accept="image/jpeg,image/png,image/webp" style="display:none" />
           <button type="button" class="button" id="general-upload-btn">📷 Select & Upload Photo</button>
           <span id="general-upload-status" class="muted" style="font-size:13px" aria-live="polite"></span>
         </div>
@@ -51,7 +51,7 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
           <img id="general-thumb" src="" alt="Uploaded thumbnail" width="80" height="60" style="width:80px;height:60px;object-fit:cover;border-radius:6px" />
           <div style="flex:1;min-width:200px">
             <span style="font-size:11px;font-weight:700;color:#1A3322;display:block">Public Image URL:</span>
-            <input type="text" id="general-url-input" readonly style="width:100%;font-size:12px;padding:4px 8px;margin-top:2px" />
+            <input type="text" id="general-url-input" aria-label="Media file URL" readonly style="width:100%;font-size:12px;padding:4px 8px;margin-top:2px" />
           </div>
           <button type="button" class="button button-secondary" id="copy-url-btn" style="padding:6px 14px;font-size:12px">📋 Copy URL</button>
         </div>

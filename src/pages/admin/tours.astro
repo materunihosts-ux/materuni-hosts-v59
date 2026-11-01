@@ -66,11 +66,11 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
             
             <div class="image-upload-row">
               <div class="upload-btn-wrap">
-                <input type="file" id="tour-file-input" accept="image/jpeg,image/png,image/webp" style="display:none" />
+                <input type="file" id="tour-file-input" aria-label="Upload an experience image" accept="image/jpeg,image/png,image/webp" style="display:none" />
                 <button type="button" class="button button-secondary" id="tour-file-btn">📷 Upload photo from device</button>
               </div>
               <span class="muted" style="font-size:12px">or enter image URL:</span>
-              <input id="tour-image" type="url" placeholder="https://..." style="flex:1;min-width:200px" />
+              <input id="tour-image" type="url" aria-label="Experience image URL" placeholder="https://..." style="flex:1;min-width:200px" />
             </div>
             <p id="tour-upload-status" class="muted" style="font-size:12px;margin:6px 0 0" aria-live="polite"></p>
 
