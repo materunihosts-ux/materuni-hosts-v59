@@ -2275,3 +2275,35 @@ body.admin-shell .admin-main .button{min-height:44px}
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 }
+
+/* ===========================================================================
+   Improvement pass: mobile header fit + missing utility class
+   1. `.visually-hidden` is used by the language <label> but was never defined,
+      so the word "Language" rendered as visible text inside the header row.
+   2. The brand lockup could not shrink, so at <=390px the header was wider than
+      the viewport and the language select / menu toggle were pushed off-canvas.
+   3. Header nav links get a 44px tall hit area (no width change, so the wide
+      desktop nav rows keep their fit).
+   =========================================================================== */
+.visually-hidden{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0 0 0 0)!important;clip-path:inset(50%)!important;white-space:nowrap!important;border:0!important}
+.site-header{max-width:100%}
+.site-header>.brand{min-width:0;overflow:hidden}
+.brand-lockup{display:flex;flex-direction:column;min-width:0;max-width:100%;overflow:hidden}
+.brand-lockup strong,.brand-lockup small{display:block;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.site-header nav a:not(.nav-cta){display:inline-flex;align-items:center;min-height:44px}
+@media(max-width:900px){
+  .site-header>.brand{flex:1 1 auto}
+  .brand-lockup small{letter-spacing:.1em}
+}
+@media(max-width:640px){
+  .brand-lockup small{display:none}
+  .brand-lockup strong{font-size:15px;letter-spacing:.01em}
+  .site-header{gap:10px}
+}
+@media(max-width:400px){
+  .site-header{padding-inline:12px;gap:8px}
+  .brand-logo{width:46px;height:46px;flex-basis:46px}
+  .brand-lockup strong{font-size:14px}
+  .site-header .menu-toggle{width:40px;height:40px;min-width:40px;min-height:40px}
+  .language-control select{min-width:44px;padding-inline:6px 16px;font-size:12px}
+}
