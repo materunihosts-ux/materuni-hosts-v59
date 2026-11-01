@@ -12,6 +12,9 @@ const bookingPreview = `${supabaseUrl}/storage/v1/object/public/materuni-images/
 .booking-terms-note strong{display:block;color:#1a3322;margin-bottom:6px}
 .booking-terms-note p{margin:6px 0 0}
 .booking-terms-note p+p{font-size:.92em;color:#55564f}
+.booking-direct-fallback{display:block;margin-top:10px;line-height:1.6;color:#4a4a44;max-width:60ch}
+.booking-direct-fallback a{color:#1a3322;font-weight:700;text-decoration:underline;text-underline-offset:2px}
+.booking-direct-fallback a:hover,.booking-direct-fallback a:focus-visible{color:#6F3428}
 </style>
 <section class="booking-wrap"><div class="booking-panel">
 <div class="booking-trust-bar">
@@ -254,8 +257,12 @@ async function loadExperienceCatalog(){
   updateBookingEstimate();
  } catch(error) {
   console.error("Experience catalogue request failed:",error);
-  select.innerHTML='<option value="">Experiences could not be loaded — refresh the page</option>';
-  showFeedback("We could not load the experience list. Please refresh the page or contact us on WhatsApp. "+(error.message||""),"error");
+  const timedOut=error&&error.name==="TimeoutError";
+  select.innerHTML='<option value="">Experiences could not be loaded</option>';
+  showFeedback((timedOut
+   ? "Loading the experience list took too long, so we stopped waiting. "
+   : "We could not load the experience list. ")+
+    "Please refresh the page, or use the WhatsApp and email links under the Experience field to arrange directly with your host.","error");
   return;
  }
  // Availability is a separate service. A calendar error must never erase a catalogue that loaded successfully.
