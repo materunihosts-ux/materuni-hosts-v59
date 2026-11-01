@@ -73,7 +73,7 @@ where experience_key in (
 order by sort_order;
 
 -- Synchronize legacy public-site fallback values only when all expected keys exist.
-do $
+do $site_content_sync$
 declare
   matched_count integer;
   updated_count integer;
@@ -103,7 +103,7 @@ begin
   if updated_count <> 6 then
     raise exception 'Expected to update 6 legacy site_content price keys, updated %; transaction rolled back.', updated_count;
   end if;
-end $;
+end $site_content_sync$;
 
 select id, content from public.site_content
 where id in ('waterfall_price','coffee_price','cooking_price','culturalday_price','camping_price','ultimate_price')
