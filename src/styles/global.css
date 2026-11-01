@@ -2307,3 +2307,15 @@ body.admin-shell .admin-main .button{min-height:44px}
   .site-header .menu-toggle{width:40px;height:40px;min-width:40px;min-height:40px}
   .language-control select{min-width:44px;padding-inline:6px 16px;font-size:12px}
 }
+
+/* Card header row (.pill + .price) was a nowrap space-between flex row: at 320px
+   the pill and the 32px price together are wider than the card, so both spilled
+   past the viewport. Let the row wrap and stack on narrow phones. */
+.card-top{flex-wrap:wrap;min-width:0}
+.card-top .pill,.card-top .price{min-width:0}
+.pill{white-space:normal}
+@media(max-width:560px){
+  .card-top{flex-direction:column;align-items:flex-start;gap:8px}
+  .experience-card .price{white-space:normal;font-size:26px;line-height:1.15}
+  .experience-card .price small{text-align:left}
+}
