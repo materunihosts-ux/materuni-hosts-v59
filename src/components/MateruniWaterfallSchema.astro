@@ -1,0 +1,19 @@
+---
+const waterfallId = "https://materunihosts.com/#materuni-waterfall";
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "TouristAttraction",
+  "@id": waterfallId,
+  "name": "Materuni Waterfall",
+  "url": "https://materunihosts.com/materuni-waterfall-tour",
+  "description": "Materuni Waterfall is a natural feature visited on locally hosted walks from Materuni Village near Moshi, Tanzania.",
+  "touristType": ["Nature lovers", "Cultural travellers"],
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Materuni Village",
+    "addressRegion": "Kilimanjaro",
+    "addressCountry": "TZ"
+  }
+};
+---
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />
