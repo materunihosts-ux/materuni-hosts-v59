@@ -59,9 +59,9 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
         <div class="field full image-manager-box">
           <label style="font-weight:700">About Us Main Photograph</label>
           <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:6px">
-            <input type="file" id="about-hero-file" accept="image/jpeg,image/png,image/webp" style="display:none" />
+            <input type="file" id="about-hero-file" aria-label="Upload the About Us main photograph" accept="image/jpeg,image/png,image/webp" style="display:none" />
             <button type="button" class="button button-secondary" id="about-hero-upload-btn">📷 Upload photo</button>
-            <input id="about-hero-image" type="url" placeholder="https://..." style="flex:1;min-width:240px" />
+            <input id="about-hero-image" type="url" aria-label="About Us main photograph URL" placeholder="https://..." style="flex:1;min-width:240px" />
           </div>
           <p id="about-hero-status" class="muted" style="font-size:12px;margin:4px 0 0" aria-live="polite"></p>
         </div>
