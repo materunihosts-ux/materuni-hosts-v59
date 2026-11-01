@@ -16,8 +16,8 @@ const experienceKeys: Record<string,string> = {"Materuni Waterfall & Chagga Vill
 const base=`${supabaseUrl}/storage/v1/object/public/materuni-images/`;
 ---
 <SiteLayout title="Materuni Tours & Experiences | Waterfall & Chagga Culture" description="Explore Materuni tours near Moshi with local Chagga hosts: waterfall hikes, coffee and cooking experiences, village culture, Moshi day trips and nature walks." preloadImage={`${base}waterfall_image/1791998303073-materuni-waterfall-hike.jpg`}>
-<section class="page-hero"><span class="eyebrow" data-i18n="home_section_eyebrow">LOCAL CHAGGA EXPERIENCES</span><h1 data-i18n="experiences_hero_title">Discover Materuni with local Chagga hosts.</h1><p data-i18n="experiences_hero_intro">Choose a guided waterfall and village experience, Chagga coffee traditions, hands-on cooking, a Moshi town visit, Rau Forest nature or an overnight village stay. Every package includes the shared Materuni day essentials, with its own added experience.</p></section>
-<section class="section"><div class="cards">{items.map((e)=><article class="experience-card" id={e[0] === "Materuni Overnight Village Experience" ? "camping" : undefined} data-experience-key={experienceKeys[e[0]]}>{e[0] === "Traditional Chagga Cooking Class" ? <div class="experience-placeholder" role="img" aria-label="Authentic Chagga cooking class photography will be added when a verified local image is available">CHAGGA COOKING EXPERIENCE</div> : <Image src={base+e[3]} alt={e[0]} loading="lazy" decoding="async" width={640} height={420} format="webp" quality={76} class="experience-photo" />}<div class="card-body"><div class="card-top"><span class="pill">{e[2]}</span><span class="price" data-catalog-price>${e[1]}<small data-i18n="exp_per_person">PER PERSON</small></span></div><h3 data-catalog-name>{e[0]}</h3><p data-catalog-description>{e[4]}</p><strong style="font-size:12px;color:#173b2d" data-i18n="exp_experience_label">THE EXPERIENCE</strong><ul>{[...new Set(e[5])].map(x=><li>{x}</li>)}</ul><strong style="font-size:12px;color:#173b2d" data-i18n="exp_included_label">WHAT YOUR EXPERIENCE INCLUDES</strong><ul>{[...new Set(e[6])].map(x=><li>{x}</li>)}</ul><strong data-exclusions-title="true" style="display:block;margin-top:1rem;font-size:12px;color:#173b2d" data-i18n="exp_excluded_label">NOT INCLUDED</strong><ul data-exclusions-list="true">{defaultExclusions.map(x=><li>{x}</li>)}</ul><a class="button" href={"/booking?experience="+encodeURIComponent(experienceKeys[e[0]])} data-i18n="exp_check_availability">Check availability</a></div></article>)}</div><aside class="group-discount-panel" aria-labelledby="group-discount-title"><div class="group-discount-heading"><span class="eyebrow">TRAVELLING TOGETHER?</span><h3 id="group-discount-title">Ask about group arrangements</h3><p>For groups of four or more, contact your local host for a tailored quote. Any group pricing is confirmed before booking.</p></div><a class="button" href="/booking">Ask about your group</a></aside><p class="notice" style="margin-top:18px" data-i18n="exp_notice">All prices are per person in USD. Your host will confirm Rau Forest access arrangements and any applicable fees before booking. Transport is arranged separately and any pickup availability or quote is confirmed by your host. A booking request is not confirmed until your host replies with availability and final arrangements.</p></section>
+<section class="page-hero"><span class="eyebrow" data-i18n="home_section_eyebrow">LOCAL CHAGGA EXPERIENCES</span><h1 data-i18n="experiences_hero_title">Discover Materuni with local Chagga hosts.</h1><p data-i18n="experiences_hero_intro">Choose a guided waterfall and village experience, Chagga coffee traditions, hands-on cooking, a Moshi town visit, Rau Forest nature or an overnight village stay. Compare the highlights, inclusions and local arrangements for each experience.</p></section>
+<section class="section"><div class="cards">{items.map((e)=><article class="experience-card" id={e[0] === "Materuni Overnight Village Experience" ? "camping" : undefined} data-experience-key={experienceKeys[e[0]]}>{e[0] === "Traditional Chagga Cooking Class" ? <div class="experience-placeholder" role="img" aria-label="Authentic Chagga cooking class photography will be added when a verified local image is available">CHAGGA COOKING EXPERIENCE</div> : <Image src={base+e[3]} alt={e[0]} loading="lazy" decoding="async" width={640} height={420} format="webp" quality={76} class="experience-photo" />}<div class="card-body"><div class="card-top"><span class="pill">{e[2]}</span><span class="price" data-catalog-price>${e[1]}<small data-i18n="exp_per_person">PER PERSON</small></span></div><h3 data-catalog-name>{e[0]}</h3><p data-catalog-description>{e[4]}</p><details class="experience-details"><summary>Experience details &amp; inclusions</summary><div class="experience-details-content"><strong style="font-size:12px;color:#173b2d" data-i18n="exp_experience_label">THE EXPERIENCE</strong><ul>{[...new Set(e[5])].map(x=><li>{x}</li>)}</ul><strong style="font-size:12px;color:#173b2d" data-i18n="exp_included_label">WHAT YOUR EXPERIENCE INCLUDES</strong><ul>{[...new Set(e[6])].map(x=><li>{x}</li>)}</ul><strong data-exclusions-title="true" style="display:block;margin-top:1rem;font-size:12px;color:#173b2d" data-i18n="exp_excluded_label">NOT INCLUDED</strong><ul data-exclusions-list="true">{defaultExclusions.map(x=><li>{x}</li>)}</ul></div></details><a class="button" href={"/booking?experience="+encodeURIComponent(experienceKeys[e[0]])} data-i18n="exp_check_availability">Check availability</a></div></article>)}</div><aside class="group-discount-panel" aria-labelledby="group-discount-title"><div class="group-discount-heading"><span class="eyebrow">TRAVELLING TOGETHER?</span><h3 id="group-discount-title">Ask about group arrangements</h3><p>For groups of four or more, contact your local host for a tailored quote. Any group pricing is confirmed before booking.</p></div><a class="button" href="/booking">Ask about your group</a></aside><p class="notice" style="margin-top:18px" data-i18n="exp_notice">All prices are per person in USD. The published Rau Forest package price includes the Rau Forest entrance fee. Transport to Materuni and between locations is arranged separately and quoted on request. A booking request is not confirmed until your host replies with availability and final arrangements.</p></section>
 
 <!-- From the Journal (J5) -->
 <section class="section" style="background:#f7f4ed;padding-top:48px;padding-bottom:56px">
@@ -74,6 +74,167 @@ const base=`${supabaseUrl}/storage/v1/object/public/materuni-images/`;
 .shared-standard h2{margin:0 0 14px;color:#1a3322;font:600 clamp(22px,3vw,30px) "Cormorant Garamond",serif}
 .shared-standard ul{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 24px;margin:0;padding-left:18px;color:#425347;font-size:13px;line-height:1.7}
 @media(max-width:620px){.shared-standard{padding:20px}.shared-standard ul{grid-template-columns:1fr}}
+
+/* Experiences catalogue: compact editorial cards with optional detail disclosure */
+.public-shell .section:has(>.cards) {
+  max-width: 1400px;
+  margin-inline: auto;
+  padding: clamp(48px, 6vw, 82px) clamp(18px, 4vw, 60px);
+}
+.public-shell .section > .cards:not([style]) {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(18px, 2vw, 28px);
+  align-items: stretch;
+}
+.public-shell .experience-card {
+  min-width: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid rgba(26,51,34,.12);
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 8px 28px rgba(26,51,34,.055);
+  transition: transform .24s ease, box-shadow .24s ease, border-color .24s ease;
+}
+.public-shell .experience-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(197,160,89,.65);
+  box-shadow: 0 18px 42px rgba(26,51,34,.11);
+}
+.public-shell .experience-photo,
+.public-shell .experience-placeholder {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 10;
+  min-height: 0;
+  flex: 0 0 auto;
+}
+.public-shell .card-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0;
+  padding: clamp(19px, 2vw, 26px);
+}
+.public-shell .card-top {
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.public-shell .card-top .pill {
+  max-width: 65%;
+  font-size: 10px;
+  line-height: 1.45;
+}
+.public-shell .experience-card h3 {
+  margin: 0 0 10px;
+  color: #1a3322;
+  font: 600 clamp(22px, 1.8vw, 27px)/1.2 "Cormorant Garamond", Georgia, serif;
+}
+.public-shell .experience-card .card-body > p {
+  margin: 0 0 18px;
+  color: #59645b;
+  font-size: 13px;
+  line-height: 1.72;
+}
+.public-shell .experience-details {
+  margin: 0 0 18px;
+  border-top: 1px solid #eee8de;
+  border-bottom: 1px solid #eee8de;
+}
+.public-shell .experience-details summary {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 10px 26px 10px 0;
+  color: #294431;
+  cursor: pointer;
+  list-style: none;
+  font: 700 11px/1.4 Manrope, sans-serif;
+}
+.public-shell .experience-details summary::-webkit-details-marker { display: none; }
+.public-shell .experience-details summary::after {
+  content: "+";
+  position: absolute;
+  right: 2px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9a7842;
+  font: 500 20px/1 Manrope, sans-serif;
+}
+.public-shell .experience-details[open] summary::after { content: "−"; }
+.public-shell .experience-details-content {
+  padding: 0 0 12px;
+  color: #566258;
+  font-size: 12px;
+  line-height: 1.65;
+}
+.public-shell .experience-details-content ul {
+  margin: 5px 0 12px;
+  padding-left: 18px;
+  font-size: 12px;
+  line-height: 1.65;
+}
+.public-shell .experience-details-content li { margin: 3px 0; }
+.public-shell .catalog-product-tagline {
+  color: #8b6b35;
+  font-size: 10px;
+  line-height: 1.5;
+  letter-spacing: .09em;
+}
+.public-shell .catalog-best-for {
+  margin: 6px 0 10px;
+  color: #526055;
+  font-size: 12px !important;
+  line-height: 1.6;
+}
+.public-shell .catalog-detail-heading {
+  margin: 10px 0 3px;
+  color: #294431;
+  font-size: 10px;
+  line-height: 1.5;
+  letter-spacing: .07em;
+}
+.public-shell .experience-card .button {
+  width: 100%;
+  min-height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: auto;
+  border-radius: 3px;
+  font-size: 11px;
+}
+.public-shell .group-discount-panel {
+  margin-top: 36px;
+  border-radius: 16px;
+}
+.public-shell .section > .notice {
+  max-width: 920px;
+  margin: 20px auto 0;
+  font-size: 13px;
+  line-height: 1.75;
+}
+@media (max-width: 1040px) {
+  .public-shell .section > .cards:not([style]) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 640px) {
+  .public-shell .section:has(>.cards) { padding: 48px 16px; }
+  .public-shell .section > .cards:not([style]) { grid-template-columns: 1fr; gap: 18px; }
+  .public-shell .experience-photo,
+  .public-shell .experience-placeholder { aspect-ratio: 16 / 9; }
+  .public-shell .card-body { padding: 19px; }
+  .public-shell .experience-card h3 { font-size: 24px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .public-shell .experience-card { transition: none; }
+  .public-shell .experience-card:hover { transform: none; }
+}
+
 </style>
 <script>
 // @ts-nocheck
@@ -141,15 +302,18 @@ function makeCatalogCard(tour) {
   top.append(duration, price);
   const heading = document.createElement("h3"); heading.textContent = tour.display_name || "Materuni experience";
   const description = document.createElement("p"); description.textContent = tour.full_description || tour.short_description || "Ask our local hosts for details about this experience.";
-  body.append(top, heading, description);
-  appendProductMeta(body, tour);
+  const details = document.createElement("details"); details.className = "experience-details";
+  const summary = document.createElement("summary"); summary.textContent = "Experience details & inclusions";
+  const detailsContent = document.createElement("div"); detailsContent.className = "experience-details-content";
+  appendProductMeta(detailsContent, tour);
   if (Array.isArray(tour.exclusions) && tour.exclusions.length) {
     const label = document.createElement("strong"); label.style.cssText = "display:block;margin-top:1rem;font-size:12px;color:#173b2d"; label.textContent = "NOT INCLUDED"; label.dataset.i18n = "exp_excluded_label";
-    const list = document.createElement("ul"); tour.exclusions.forEach(value => { const li = document.createElement("li"); li.textContent = value; list.append(li); }); body.append(label, list);
+    const list = document.createElement("ul"); list.dataset.exclusionsList = "true"; tour.exclusions.forEach(value => { const li = document.createElement("li"); li.textContent = value; list.append(li); }); label.dataset.exclusionsTitle = "true"; detailsContent.append(label, list);
   }
+  details.append(summary, detailsContent);
   const link = document.createElement("a"); link.className = "button"; link.textContent = "Check availability"; link.dataset.i18n = "exp_check_availability";
   link.href = "/booking?experience=" + encodeURIComponent(tour.experience_key);
-  body.append(link); card.append(body); return card;
+  body.append(top, heading, description, details, link); card.append(body); return card;
 }
 async function syncPublicCatalogue() {
   try {
@@ -180,22 +344,20 @@ async function syncPublicCatalogue() {
       const pill = card.querySelector(".pill");
       if (pill && item.duration_label) pill.textContent = item.duration_label;
       const body = card.querySelector(".card-body");
-      if (body) {
-        body.querySelectorAll("[data-product-meta]").forEach(node => node.remove());
-        const lists = body.querySelectorAll(":scope > ul");
-        if (lists[0]) lists[0].remove();
-        if (lists[1]) lists[1].remove();
-        appendProductMeta(body, item);
+      const detailsContent = card.querySelector(".experience-details-content");
+      if (detailsContent) {
+        detailsContent.querySelectorAll("[data-product-meta]").forEach(node => node.remove());
+        detailsContent.querySelectorAll(":scope > strong, :scope > ul").forEach(node => node.remove());
+        appendProductMeta(detailsContent, item);
       }
       let exTitle = card.querySelector("[data-exclusions-title]");
       let exList = card.querySelector("[data-exclusions-list]");
-      if (!exTitle) { exTitle = document.createElement("strong"); exTitle.dataset.exclusionsTitle = "true"; exTitle.style.cssText = "display:block;margin-top:1rem;font-size:12px;color:#173b2d"; exTitle.textContent = "NOT INCLUDED"; }
+      if (!exTitle) { exTitle = document.createElement("strong"); exTitle.dataset.exclusionsTitle = "true"; exTitle.style.cssText = "display:block;margin-top:1rem;font-size:12px;color:#173b2d"; exTitle.textContent = "NOT INCLUDED"; exTitle.dataset.i18n = "exp_excluded_label"; }
       if (!exList) { exList = document.createElement("ul"); exList.dataset.exclusionsList = "true"; }
-      if (Array.isArray(item.exclusions) && item.exclusions.length) {
+      if (Array.isArray(item.exclusions) && item.exclusions.length && detailsContent) {
         exList.replaceChildren(...item.exclusions.map(value => { const li = document.createElement("li"); li.textContent = value; return li; }));
-        const bookingLink = card.querySelector('a[href^="/booking"]');
-        if (bookingLink) { const body = card.querySelector(".card-body"); body.insertBefore(exTitle, bookingLink); body.insertBefore(exList, bookingLink); }
-      } else { exTitle.remove(); exList.remove(); }
+        detailsContent.append(exTitle, exList);
+      } else { exTitle?.remove(); exList?.remove(); }
       const bookingLink = card.querySelector('a[href^="/booking"]');
       if (bookingLink) bookingLink.href = "/booking?experience=" + encodeURIComponent(item.experience_key);
     });
