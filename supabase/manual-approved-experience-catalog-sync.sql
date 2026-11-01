@@ -174,4 +174,36 @@ select id, content from public.site_content
 where id in ('waterfall_price','coffee_price','cooking_price','culturalday_price','camping_price','ultimate_price')
 order by id;
 
+do $landing_copy_sync$
+declare
+  current_copy jsonb;
+begin
+  select setting_value::jsonb into current_copy
+  from public.site_settings
+  where setting_key = 'landing_pages_content'
+  for update;
+
+  if current_copy is null or jsonb_typeof(current_copy->'camping') <> 'object' then
+    raise exception 'Expected landing_pages_content.camping object; no landing copy was changed.';
+  end if;
+
+  current_copy := jsonb_set(current_copy, '{camping,hero_title}', to_jsonb('An overnight village experience in Materuni'::text), true);
+  current_copy := jsonb_set(current_copy, '{camping,hero_intro}', to_jsonb('Spend more time in Materuni with local hosts. Accommodation arrangements, meals and activities are confirmed by your host before booking.'::text), true);
+  current_copy := jsonb_set(current_copy, '{camping,story_title}', to_jsonb('More time to experience Materuni Village.'::text), true);
+  current_copy := jsonb_set(current_copy, '{camping,story_intro}', to_jsonb('The overnight village experience gives you more time to connect with local hosts and learn about daily life. Accommodation, meals and activities are confirmed for your dates before booking.'::text), true);
+  current_copy := jsonb_set(current_copy, '{camping,offers_title}', to_jsonb('Explore an overnight village experience in Materuni.'::text), true);
+  current_copy := jsonb_set(current_copy, '{camping,offers_intro}', to_jsonb('Ask about availability and the arrangements for your dates. Your host will confirm accommodation, meals and activities before booking.'::text), true);
+  current_copy := jsonb_set(current_copy, '{camping,final_title}', to_jsonb('Stay a little longer in Materuni.'::text), true);
+  current_copy := jsonb_set(current_copy, '{camping,final_intro}', to_jsonb('Tell us when you would like to visit and your host will confirm the available overnight arrangements.'::text), true);
+  current_copy := jsonb_set(current_copy, '{camping,final_cta}', to_jsonb('Ask about overnight availability'::text), true);
+
+  update public.site_settings
+  set setting_value = current_copy::text, updated_at = now()
+  where setting_key = 'landing_pages_content';
+
+  if not found then
+    raise exception 'landing_pages_content setting was not updated.';
+  end if;
+end $landing_copy_sync$;
+
 commit;
