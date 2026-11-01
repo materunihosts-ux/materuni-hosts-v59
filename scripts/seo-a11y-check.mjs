@@ -86,7 +86,11 @@ for (const file of pages) {
     failures.push(`${rel}: <main> is missing id="main-content" (skip-link target)`);
   }
   if (!/<header\b/i.test(html)) failures.push(`${rel}: no <header> landmark`);
-  if (!/<footer\b/i.test(html)) failures.push(`${rel}: no <footer> landmark`);
+  // The private admin dashboard replaces the public footer with its own topbar,
+  // so only the footer landmark requirement is relaxed there.
+  if (!/<footer\b/i.test(html) && !rel.startsWith("/admin")) {
+    failures.push(`${rel}: no <footer> landmark`);
+  }
   if (!/<nav\b/i.test(html)) failures.push(`${rel}: no <nav> landmark`);
 
   // Images must carry an alt attribute (empty alt allowed for decorative images).
