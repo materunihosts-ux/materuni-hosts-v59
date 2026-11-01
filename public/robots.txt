@@ -40,5 +40,30 @@ Disallow: /public/assets/aistudio/
 Disallow: /.tempmediaStorage/
 Disallow: /assets/aistudio/
 
-# Limit bulk AI training crawlers while keeping search and user-request fetchers available.\nUser-agent: GPTBot\nDisallow: /\n\nUser-agent: ClaudeBot\nDisallow: /\n\nUser-agent: anthropic-ai\nDisallow: /\n\nUser-agent: Google-Extended\nDisallow: /\n\nUser-agent: CCBot\nDisallow: /\n\nUser-agent: Bytespider\nDisallow: /\n\nUser-agent: Meta-ExternalAgent\nDisallow: /\n\n# OAI-SearchBot, ChatGPT-User, Claude-SearchBot, Claude-User and PerplexityBot\n# intentionally inherit the general crawl policy so search/referral discovery remains possible.\n\n# Sitemaps
+# Limit bulk AI training crawlers while keeping search and user-request fetchers available.
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+User-agent: Meta-ExternalAgent
+Disallow: /
+
+# OAI-SearchBot, ChatGPT-User, Claude-SearchBot, Claude-User and PerplexityBot
+# intentionally inherit the general crawl policy so search/referral discovery remains possible.
+
+# Sitemaps
 Sitemap: https://materunihosts.com/sitemap.xml
