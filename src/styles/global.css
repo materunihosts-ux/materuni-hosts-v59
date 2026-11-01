@@ -474,8 +474,6 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--gold);outline-offse
 .site-header>.brand .brand-logo{width:68px;height:68px;flex:0 0 68px;object-fit:contain}
 .site-header nav{position:static;display:flex;flex:1 1 auto;align-items:center;justify-content:center;flex-direction:row;flex-wrap:nowrap;gap:clamp(12px,1.55vw,24px);padding:0;background:transparent;border:0;font-size:13px;font-weight:650;white-space:nowrap}
 .site-header nav a:not(.nav-cta){padding:10px 0}
-.site-header nav a.nav-camping{color:#8b682f;font-weight:800}
-.site-header nav a.nav-camping:after{right:0;height:2px}
 .site-header nav a.nav-cta{padding:12px 17px;min-height:44px;background:var(--forest);border:1px solid var(--forest);font-size:12px}
 .site-header nav a.nav-cta:hover{background:var(--gold);border-color:var(--gold);color:var(--ink)!important}
 .language-control{position:static;transform:none;flex:0 0 auto;margin-left:2px}
@@ -488,7 +486,6 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--gold);outline-offse
  .site-header nav{display:none;position:absolute;top:75px;left:0;right:0;flex-direction:column;align-items:stretch;justify-content:flex-start;gap:5px;padding:16px 22px 22px;background:var(--cream);border-bottom:1px solid var(--sand);box-shadow:0 14px 24px rgba(26,51,34,.09);white-space:normal}
  .site-header nav.open{display:flex}
  .site-header nav a:not(.nav-cta){padding:12px 4px}
- .site-header nav a.nav-camping{color:#8b682f}
  .site-header nav a.nav-cta{margin-top:8px;justify-content:center}
  .language-control{position:static;transform:none;margin-left:auto}
  .menu-toggle{display:grid;place-items:center;position:static;transform:none;width:42px;height:42px;border:1px solid var(--sand);border-radius:2px;background:#fff;font-size:23px;line-height:1;cursor:pointer}
@@ -500,8 +497,6 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--gold);outline-offse
 .brand{min-width:112px;min-height:82px;align-items:center;justify-content:flex-start}
 .brand-logo{display:block;width:78px;height:78px;max-width:100%;object-fit:contain;object-position:center;flex:0 0 78px;border-radius:0;clip-path:none;overflow:visible}
 .site-header nav{gap:clamp(14px,2vw,28px);font-size:12px;letter-spacing:.015em}
-.site-header nav .nav-camping{color:var(--forest);font-weight:800;position:relative}
-.site-header nav .nav-camping:after{content:"";position:absolute;left:0;right:0;bottom:-8px;height:2px;background:var(--gold)}
 .site-header nav .nav-cta{padding:12px 17px;white-space:nowrap}
 .menu-toggle{min-width:44px;min-height:44px;cursor:pointer}
 .trust-strip{align-items:center;gap:clamp(18px,3.2vw,48px);padding:22px clamp(18px,4vw,50px)}
@@ -515,9 +510,6 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--gold);outline-offse
 .experience-card{border-radius:5px;overflow:hidden;box-shadow:0 8px 28px rgba(36,36,33,.045);transition:transform .22s ease,box-shadow .22s ease}
 .experience-card:hover{transform:translateY(-4px);box-shadow:0 16px 36px rgba(36,36,33,.10)}
 .experience-card img{display:block;aspect-ratio:1.52;object-fit:cover}
-.experience-card:first-child{border-color:var(--gold);box-shadow:0 12px 34px rgba(26,51,34,.11)}
-.experience-card:first-child .pill{background:var(--forest);color:#fff}
-.experience-card:first-child h3{font-size:27px}
 .card-body{padding:clamp(20px,2.4vw,28px)}
 .experience-card p{font-size:13px;line-height:1.75}
 .experience-card ul{font-size:12px;line-height:1.7}
@@ -532,7 +524,6 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--gold);outline-offse
  .brand{min-width:72px;min-height:72px}
  .brand-logo{width:66px;height:66px;flex-basis:66px}
  .site-header nav{gap:15px;padding:22px clamp(22px,6vw,44px);box-shadow:0 12px 22px rgba(26,51,34,.08)}
- .site-header nav .nav-camping:after{display:none}
 }
 @media(max-width:560px){
  .site-header{padding:0 16px}
