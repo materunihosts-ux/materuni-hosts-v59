@@ -68,6 +68,13 @@ else pass("AI training crawlers are restricted without explicitly blocking searc
 const globalCssPath = path.resolve("src/styles/global.css");
 if (fs.existsSync(globalCssPath) && /prefers-reduced-motion\s*:\s*reduce/i.test(read(globalCssPath))) pass("Reduced-motion preference is respected in the public stylesheet");
 else fail("Public stylesheet must respect prefers-reduced-motion");
+if (fs.existsSync(globalCssPath)) {
+  const css = read(globalCssPath);
+  if (css.includes(".public-shell .eyebrow{color:#76551f}") && contrastRatio("#76551f", "#FAF7F2") >= 4.5 && contrastRatio("#76551f", "#E6DFD3") >= 4.5) pass("Small gold labels on light surfaces meet WCAG AA contrast");
+  else fail("Small labels on light surfaces must meet WCAG AA contrast");
+  if (css.includes(".public-shell .hero .eyebrow,.public-shell .band .eyebrow{color:#e7c67c}") && contrastRatio("#e7c67c", "#1A3322") >= 4.5) pass("Gold labels on forest surfaces meet WCAG AA contrast");
+  else fail("Gold labels on forest surfaces must meet WCAG AA contrast");
+}
 
 const expectedRoutes = [
   "/", "/experiences", "/camping", "/day-trips", "/booking", "/itinerary", "/reviews", "/faq",
