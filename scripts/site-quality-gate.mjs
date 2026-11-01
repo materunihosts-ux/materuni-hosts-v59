@@ -360,6 +360,16 @@ if (fs.existsSync(hostingConfigPath)) {
   if (requiredHeaders.every((header) => hostingConfig.includes(header))) pass("Hosting configuration defines baseline browser security headers");
 }
 
+// Never ship AI Studio drafts, internal briefs or temporary media as public assets.
+const internalPublicAssets = path.join(root, "assets", "aistudio");
+const internalSourceAssets = path.resolve("public/assets/aistudio");
+if (fs.existsSync(internalPublicAssets) && fs.readdirSync(internalPublicAssets).length) {
+  fail("Build contains internal AI Studio drafts under /assets/aistudio");
+} else pass("No internal AI Studio drafts are exposed in the public build");
+if (fs.existsSync(internalSourceAssets) && fs.readdirSync(internalSourceAssets).length) {
+  fail("Source contains files in public/assets/aistudio; internal drafts must stay outside public/");
+} else pass("No internal AI Studio drafts remain in the public source directory");
+
 if (errors.length) {
   console.error("\nQUALITY GATE FAILED");
   for (const error of errors) console.error(" - " + error);
