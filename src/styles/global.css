@@ -2087,7 +2087,6 @@ h1,h2,h3,h4{color:var(--forest);text-wrap:balance}
 .site-header nav{gap:clamp(12px,1.7vw,24px);font-size:13px;line-height:1.4}
 .site-header nav a:not(.nav-cta){padding:10px 0}
 .site-header nav a:focus-visible,.site-header a:focus-visible,.site-footer a:focus-visible{outline:3px solid var(--gold);outline-offset:4px;border-radius:4px}
-.site-header nav a[href="/camping"],.site-header nav a[href="/materuni-camping"]{display:none!important}
 .brand-mark{font-size:clamp(34px,3vw,42px)}
 .brand-word{font-size:17px;letter-spacing:.13em}
 .brand-word small{font-size:10px;letter-spacing:.34em}
