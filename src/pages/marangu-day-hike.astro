@@ -60,7 +60,7 @@ const faqs = [
   <script type="application/ld+json" set:html={JSON.stringify(serviceData)} />
   <script type="application/ld+json" set:html={JSON.stringify({"@context":"https://schema.org","@type":"FAQPage","mainEntity":faqs.map(f=>({"@type":"Question","name":f.q,"acceptedAnswer":{"@type":"Answer","text":f.a}}))})} />
 
-  <main class="marangu-page">
+  <div class="marangu-page">
     <section class="hero-split">
       <div class="hero-text">
         <span class="eyebrow">KILIMANJARO NATIONAL PARK · DAY HIKES FROM MOSHI</span>
@@ -149,7 +149,7 @@ const faqs = [
         <a class="button outline" href="/itinerary">Customise an itinerary</a>
       </div>
     </section>
-  </main>
+  </div>
 
   <!-- Sticky Mobile Booking Bar (T6) -->
   <div class="sticky-mobile-booking-bar" role="region" aria-label="Quick booking bar">

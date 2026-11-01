@@ -60,7 +60,7 @@ const faqs = [
   <script type="application/ld+json" set:html={JSON.stringify(serviceData)} />
   <script type="application/ld+json" set:html={JSON.stringify({"@context":"https://schema.org","@type":"FAQPage","mainEntity":faqs.map(f=>({"@type":"Question","name":f.q,"acceptedAnswer":{"@type":"Answer","text":f.a}}))})} />
 
-  <main class="chemka-page">
+  <div class="chemka-page">
     <section class="hero-split">
       <div class="hero-text">
         <span class="eyebrow">CHEMKA · KIKULETWA · DAY TRIPS FROM MOSHI</span>
@@ -150,7 +150,7 @@ const faqs = [
         <a class="button outline" href="/itinerary">Customise multi-day itinerary</a>
       </div>
     </section>
-  </main>
+  </div>
 
   <!-- Sticky Mobile Booking Bar (T6) -->
   <div class="sticky-mobile-booking-bar" role="region" aria-label="Quick booking bar">
