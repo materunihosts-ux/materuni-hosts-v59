@@ -316,6 +316,45 @@ for (const pathname of internalLinks) {
 }
 if (internalLinks.size) pass("Checked " + internalLinks.size + " unique internal href targets");
 
+
+/* International standards source-level regression checks.
+   These checks validate implementation intent, not external certification. */
+const builtRobots = fs.existsSync(robotsPath) ? read(robotsPath) : "";
+for (const crawler of ["GPTBot", "Google-Extended", "CCBot", "anthropic-ai", "ClaudeBot", "Bytespider", "Meta-ExternalAgent"]) {
+  const escaped = crawler.replace(/[.*+?^${}()|[\]\\]/g, "\\if (errors.length) {
+  console.error("\nQUALITY GATE FAILED");");
+  const rule = new RegExp("User-agent:\\s*" + escaped + "[\\s\\S]*?Disallow:\\s*/", "i");
+  if (!rule.test(builtRobots)) fail("robots.txt must express the AI training-crawler preference for " + crawler);
+}
+if (builtRobots.includes("Sitemap: https://materunihosts.com/sitemap.xml")) pass("robots.txt advertises the canonical sitemap");
+const securityTxt = path.join(root, ".well-known", "security.txt");
+if (!fs.existsSync(securityTxt)) fail("Missing /.well-known/security.txt responsible disclosure contact");
+else {
+  const disclosure = read(securityTxt);
+  if (!disclosure.includes("mailto:hello@materunihosts.com") || !disclosure.includes("Expires:") || !disclosure.includes("Canonical: https://materunihosts.com/.well-known/security.txt")) fail("security.txt must include a contact, expiry and canonical location");
+  else pass("Responsible security disclosure contact is published");
+}
+const privacySourcePath = path.resolve("src/pages/privacy.astro");
+if (fs.existsSync(privacySourcePath)) {
+  const privacySource = read(privacySourcePath);
+  if (!privacySource.includes("persistent Privacy settings control")) fail("Privacy policy must explain how to reopen and withdraw cookie consent");
+  else pass("Privacy policy explains how visitors can reopen and change cookie preferences");
+  for (const phrase of ["international transfers", "Your privacy rights", "do not sell personal information"]) {
+    if (!privacySource.toLowerCase().includes(phrase.toLowerCase())) fail("Privacy policy is missing disclosure: " + phrase);
+  }
+}
+const termsSourcePath = path.resolve("src/pages/terms.astro");
+if (fs.existsSync(termsSourcePath) && /©\\s*2026\\s+Materuni Hosts/.test(read(termsSourcePath))) pass("Terms page includes a dated Materuni Hosts copyright notice");
+else fail("Terms page must include the Materuni Hosts copyright notice");
+const hostingConfigPath = path.resolve("vercel.json");
+if (fs.existsSync(hostingConfigPath)) {
+  const hostingConfig = read(hostingConfigPath);
+  for (const header of ["Strict-Transport-Security", "X-Content-Type-Options", "X-Frame-Options", "Referrer-Policy", "Permissions-Policy"]) {
+    if (!hostingConfig.includes(header)) fail("Hosting header configuration is missing " + header);
+  }
+  if (["Strict-Transport-Security", "X-Content-Type-Options", "X-Frame-Options", "Referrer-Policy", "Permissions-Policy"].every((header) => hostingConfig.includes(header))) pass("Hosting configuration defines baseline browser security headers");
+}
+
 if (errors.length) {
   console.error("\nQUALITY GATE FAILED");
   for (const error of errors) console.error(" - " + error);
