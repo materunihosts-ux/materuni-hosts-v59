@@ -1,5 +1,6 @@
 ---
 import SiteLayout from "../layouts/SiteLayout.astro";
+import MateruniWaterfallSchema from "../components/MateruniWaterfallSchema.astro";
 import { supabaseUrl } from "../lib/supabase-public";
 const waterfallHero = `${supabaseUrl}/storage/v1/object/public/materuni-images/waterfall_image/1791998303073-materuni-waterfall-hike.jpg`;
 const serviceData = {
@@ -20,6 +21,7 @@ const serviceData = {
 };
 ---
 <SiteLayout title="Materuni Waterfall Tour from Moshi | Local Chagga Hosts" description="Plan a guided Materuni Waterfall hike near Moshi, Tanzania. Walk forest and village paths with local Chagga hosts and discover coffee traditions." preloadImage={waterfallHero}>
+  <MateruniWaterfallSchema />
 
 <script type="application/ld+json" set:html={JSON.stringify(serviceData)} />
 <main class="landing">
