@@ -87,7 +87,7 @@ Deno.serve(async (request: Request) => {
           `${item.display_name}: ${Number(item.price_usd).toFixed(2)} per person`
         ).join("; ")
       : "Materuni Waterfall & Chagga Village Experience: $40; Traditional Chagga Coffee Experience: $36; Traditional Chagga Cooking Class: $49; Materuni & Moshi Town Cultural Experience: $52; Materuni & Rau Forest Nature Experience: $58; Materuni Overnight Village Experience: $90 (all per person).";
-    const liveSystemPrompt = `${systemPrompt}\\n\\nLIVE CATALOGUE — source of truth for active packages and prices: ${catalogueContext}. If the catalogue is unavailable, use only this fallback catalogue. Never invent a package, price, discount, availability or tax.`;
+    const liveSystemPrompt = `${systemPrompt}\n\nLIVE CATALOGUE — source of truth for active packages and prices: ${catalogueContext}. If the catalogue is unavailable, use only this fallback catalogue. Never invent a package, price, discount, availability or tax.`;
     const livePriceReply = {
       en: `Our current experiences and prices per person are: ${catalogueContext}. Which experience interests you?`,
       es: `Nuestras experiencias actuales y sus precios por persona son: ${catalogueContext}. ¿Qué experiencia te interesa?`,
