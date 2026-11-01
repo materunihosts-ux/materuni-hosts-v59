@@ -2285,4 +2285,8 @@ body.admin-shell .admin-main .button{min-height:44px}
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 }
-\n\n/* Contrast correction for small gold labels on light surfaces (WCAG AA). */\n.public-shell .page-hero .eyebrow,.public-shell .section-head .eyebrow{color:#76551f}\n.public-shell .hero .eyebrow,.public-shell .band .eyebrow{color:#e7c67c}\n
+
+ 
+/* Contrast correction for small gold labels on light surfaces (WCAG AA). */
+.public-shell .page-hero .eyebrow,.public-shell .section-head .eyebrow{color:#76551f}
+.public-shell .hero .eyebrow,.public-shell .band .eyebrow{color:#e7c67c}
