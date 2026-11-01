@@ -39,51 +39,116 @@
 <script is:inline>
 (() => {
   const key = "materuni-cookie-consent-v1";
-  // Queue conversion-friendly events for the consent-gated GTM container.
-  // No guest names, emails, phone numbers or booking references are sent.
+  const measurementId = "G-9SV4ECJFM1";
+  let saved = null;
+  try {
+    saved = JSON.parse(localStorage.getItem(key) || "null");
+  } catch {
+    saved = null;
+  }
+
+  const banner = document.getElementById("cookie-consent");
+  if (!banner) return;
+  const settings = document.getElementById("cookie-settings");
+  const analytics = document.getElementById("cookie-analytics");
+  const settingsButton = banner.querySelector("[data-cookie-settings]");
+
+  const setSettingsOpen = (open) => {
+    settings.hidden = !open;
+    settingsButton?.setAttribute("aria-expanded", String(open));
+  };
+
+  const revokeAnalytics = () => {
+    window["ga-disable-" + measurementId] = true;
+    if (typeof window.gtag === "function") {
+      window.gtag("consent", "update", {
+        analytics_storage: "denied",
+        ad_storage: "denied",
+        ad_user_data: "denied",
+        ad_personalization: "denied"
+      });
+    }
+    // Remove readable GA cookies where the browser permits it.
+    for (const cookie of document.cookie.split(";")) {
+      const name = cookie.trim().split("=")[0];
+      if (name === "_ga" || name.startsWith("_ga_")) {
+        document.cookie = name + "=; Max-Age=0; path=/; SameSite=Lax";
+        document.cookie = name + "=; Max-Age=0; path=/; domain=.materunihosts.com; SameSite=Lax";
+      }
+    }
+  };
+
+  const loadAnalytics = () => {
+    if (window.__materuniGtmLoaded) return;
+    window["ga-disable-" + measurementId] = false;
+    window.__materuniGtmLoaded = true;
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function(){ window.dataLayer.push(arguments); };
+    window.gtag("consent", "default", {
+      analytics_storage: "denied",
+      ad_storage: "denied",
+      ad_user_data: "denied",
+      ad_personalization: "denied",
+      functionality_storage: "granted",
+      security_storage: "granted"
+    });
+    window.gtag("consent", "update", {
+      analytics_storage: "granted",
+      ad_storage: "denied",
+      ad_user_data: "denied",
+      ad_personalization: "denied"
+    });
+    window.dataLayer.push({ "gtm.start": Date.now(), event: "gtm.js" });
+    const script = document.createElement("script");
+    script.async = true;
+    script.src = "https://www.googletagmanager.com/gtm.js?id=GTM-TLB463PS";
+    script.onerror = () => {
+      window.__materuniGtmLoaded = false;
+      window["ga-disable-" + measurementId] = true;
+      console.warn("Optional analytics could not be loaded.");
+    };
+    document.head.appendChild(script);
+  };
+
+  const apply = (choice) => {
+    saved = { analytics: !!choice.analytics, savedAt: new Date().toISOString() };
+    try {
+      localStorage.setItem(key, JSON.stringify(saved));
+    } catch {
+      // Keep the in-memory choice for this page; ask again on a later visit.
+    }
+    banner.hidden = true;
+    setSettingsOpen(false);
+    if (saved.analytics) loadAnalytics();
+    else revokeAnalytics();
+  };
+
+  if (!saved || typeof saved.analytics !== "boolean") banner.hidden = false;
+  else if (saved.analytics) loadAnalytics();
+  else banner.hidden = true;
+
+  banner.querySelector("[data-cookie-accept]")?.addEventListener("click", () => apply({ analytics: true }));
+  banner.querySelector("[data-cookie-reject]")?.addEventListener("click", () => apply({ analytics: false }));
+  settingsButton?.setAttribute("aria-controls", "cookie-settings");
+  settingsButton?.setAttribute("aria-expanded", "false");
+  settingsButton?.addEventListener("click", () => {
+    setSettingsOpen(settings.hidden);
+    if (!settings.hidden) analytics.checked = !!saved?.analytics;
+  });
+  banner.querySelector("[data-cookie-save]")?.addEventListener("click", () => apply({ analytics: analytics.checked }));
+  document.querySelector("[data-cookie-reopen]")?.addEventListener("click", () => {
+    analytics.checked = !!saved?.analytics;
+    setSettingsOpen(false);
+    banner.hidden = false;
+    settingsButton?.focus();
+  });
+
+  // Analytics conversion events are emitted only while the saved choice is opted in.
   document.addEventListener("click", (event) => {
     const link = event.target instanceof Element ? event.target.closest('a[href*="wa.me"]') : null;
     if (!link || !saved?.analytics || !window.__materuniGtmLoaded) return;
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({ event: "whatsapp_click", link_url: "https://wa.me/" });
-  });
-  const banner = document.getElementById("cookie-consent");
-  if (!banner) return;
-  const settings = document.getElementById("cookie-settings");
-  const analytics = document.getElementById("cookie-analytics");
-  const loadAnalytics = () => {
-    if (window.__materuniGtmLoaded) return;
-    window.__materuniGtmLoaded = true;
-    window.dataLayer = window.dataLayer || [];
-    window.gtag = function(){ window.dataLayer.push(arguments); };
-    window.gtag("consent", "default", { analytics_storage: "denied", ad_storage: "denied", ad_user_data: "denied", ad_personalization: "denied", functionality_storage: "granted", security_storage: "granted" });
-    window.gtag("consent", "update", { analytics_storage: "granted", ad_storage: "denied", ad_user_data: "denied", ad_personalization: "denied" });
-    window.dataLayer.push({ "gtm.start": Date.now(), event: "gtm.js" });
-    const script = document.createElement("script");
-    script.async = true;
-    script.src = "https://www.googletagmanager.com/gtm.js?id=GTM-TLB463PS";
-    document.head.appendChild(script);
-  };
-  const apply = (choice) => {
-    saved = { analytics: !!choice.analytics, savedAt: new Date().toISOString() };
-    localStorage.setItem(key, JSON.stringify(saved));
-    banner.hidden = true;
-    if (choice.analytics) loadAnalytics();
-    else if (typeof window.gtag === "function") window.gtag("consent", "update", { analytics_storage: "denied", ad_storage: "denied", ad_user_data: "denied", ad_personalization: "denied" });
-  };
-  let saved = null;
-  try { saved = JSON.parse(localStorage.getItem(key) || "null"); } catch {}
-  if (!saved || typeof saved.analytics !== "boolean") banner.hidden = false;
-  else if (saved.analytics) loadAnalytics();
-  banner.querySelector("[data-cookie-accept]")?.addEventListener("click", () => apply({ analytics: true }));
-  banner.querySelector("[data-cookie-reject]")?.addEventListener("click", () => apply({ analytics: false }));
-  banner.querySelector("[data-cookie-settings]")?.addEventListener("click", () => { settings.hidden = !settings.hidden; analytics.checked = !!saved?.analytics; });
-  banner.querySelector("[data-cookie-save]")?.addEventListener("click", () => apply({ analytics: analytics.checked }));
-  document.querySelector("[data-cookie-reopen]")?.addEventListener("click", () => {
-    analytics.checked = !!saved?.analytics;
-    settings.hidden = true;
-    banner.hidden = false;
-    banner.querySelector("[data-cookie-settings]")?.focus();
   });
 })();
 </script>

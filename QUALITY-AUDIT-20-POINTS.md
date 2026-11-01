@@ -77,3 +77,22 @@ This is an implementation and release-readiness audit, not a legal opinion, pene
 
 **Release state: NOT DEPLOYED. NOT SECURITY-TESTED. NOT LEGALLY CERTIFIED. NOT WCAG-CERTIFIED.**  
 The code branch can be build-verified; external infrastructure, legal and human testing gates remain explicit and must not be represented as complete.
+
+
+## Second-pass review and source remediation — 1 November 2026
+
+A second source review found additional defects that were not adequately covered by the first pass. The following changes are included in this branch:
+
+- Corrected the public FAQ's six experience prices to the active catalogue values: $40, $36, $49, $52, $58 and $90 per person.
+- Removed stale FAQ claims about guaranteed reply windows, fixed transfer prices, group-discount percentages, deposits, cancellation percentages and automatic temporary booking holds. The FAQ now explains that an enquiry is not a reservation and that commercial/payment conditions must be confirmed in writing.
+- Reduced the primary navigation to the main visitor tasks (Home, Experiences, About, Day trips, Reviews, FAQs and Check availability). Camping, Journal and sustainability remain discoverable through the wider site/footer, without giving camping priority in the header.
+- Guarded the language preference read against browsers that deny localStorage access, so a storage exception does not prevent the mobile navigation script from initialising.
+- Improved mobile-menu dismissal for outside clicks and desktop viewport resizing.
+- Added font-display: swap to the Manrope stylesheet request.
+- Removed global content-visibility:auto from all images; image loading remains controlled with explicit per-image loading/decoding hints and avoids a blanket paint deferral.
+- Added an overflow-x fallback for browsers without overflow:clip.
+- Removed unverified village latitude/longitude from LocalBusiness structured data until the exact business pin is confirmed.
+- Pinned the remaining upload-artifact workflow actions to an immutable commit SHA.
+- Extended the source quality gate to detect stale FAQ prices, unsupported booking promises, unsafe localStorage access, oversized/incorrect primary navigation, missing CSS fallbacks and unverified structured-data coordinates.
+
+These are source-level fixes. They do not constitute real-device performance results, cross-browser certification, WCAG AA certification, a penetration test, legal/tax advice, provider configuration, monitoring activation, CDN verification or a green-hosting attestation. Those remain release gates and deployment remains deferred.

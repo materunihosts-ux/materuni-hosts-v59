@@ -414,6 +414,51 @@ if (fs.existsSync(operationsSamplePath)) {
   else pass("Admin sample invoice uses the current $40 package price and matching 3-guest total");
 }
 
+
+/* Second-pass regressions: accurate public FAQ, privacy-safe storage and compact navigation. */
+const faqSourcePath = path.resolve("src/pages/faq.astro");
+if (!fs.existsSync(faqSourcePath)) fail("Public FAQ source is missing");
+else {
+  const faqSource = read(faqSourcePath);
+  for (const [price, label] of [["$40", "waterfall"], ["$36", "coffee"], ["$49", "cooking"], ["$52", "Moshi"], ["$58", "Rau Forest"], ["$90", "overnight"]]) {
+    if (!faqSource.includes(price)) fail("Public FAQ is missing the current " + label + " price " + price);
+  }
+  if (/\$(?:45|41|55|59|65|101)\b/.test(faqSource)) fail("Public FAQ contains a retired experience price");
+  for (const claim of ["guaranteed within 12 hours", "3 to 6 hours", "20% deposit", "$25 per vehicle", "$50 per vehicle", "$80 per vehicle", "5% for 4–5 guests"]) {
+    if (faqSource.includes(claim)) fail("Public FAQ contains an unverified booking promise: " + claim);
+  }
+  if (faqSource.includes("does not reserve or hold a space")) pass("Public FAQ accurately distinguishes enquiries from confirmed reservations");
+  else fail("Public FAQ must state that an enquiry is not a reservation or confirmation");
+}
+
+const layoutSourcePath2 = path.resolve("src/layouts/SiteLayout.astro");
+if (fs.existsSync(layoutSourcePath2)) {
+  const layoutSource = read(layoutSourcePath2);
+  if (!layoutSource.includes('safeLocal.get("materuni-language")') || layoutSource.includes('saved=localStorage.getItem("materuni-language")')) fail("Language preference access must tolerate browsers that block localStorage");
+  else pass("Language preference storage is guarded for private/restricted browser contexts");
+  const navStart = layoutSource.indexOf('<nav id="primary-navigation"');
+  const navEnd = layoutSource.indexOf("</nav>", navStart);
+  const navSource = navStart >= 0 && navEnd > navStart ? layoutSource.slice(navStart, navEnd) : "";
+  if (!navSource || !navSource.includes('href="/experiences"') || !navSource.includes('href="/booking"')) fail("Primary navigation must expose Experiences and Check availability");
+  else if ((navSource.match(/<a\b/g) || []).length > 8) fail("Primary navigation exceeds the compact navigation link budget");
+  else if (navSource.includes('href="/camping"')) fail("Camping must not be a primary navigation priority");
+  else pass("Primary navigation prioritises core visitor tasks without promoting camping above other experiences");
+}
+
+const globalStylePath2 = path.resolve("src/styles/global.css");
+if (fs.existsSync(globalStylePath2)) {
+  const globalStyle = read(globalStylePath2);
+  if (!globalStyle.includes("@supports not (overflow: clip)")) fail("Global styles need a fallback for browsers without overflow:clip");
+  if (!globalStyle.includes(":focus-visible") || !globalStyle.includes("prefers-reduced-motion:reduce")) fail("Global styles must preserve visible keyboard focus and reduced-motion support");
+  if (!globalStyle.includes("@media(max-width:850px)")) fail("Global styles must retain the mobile navigation breakpoint");
+  if (globalStyle.includes("img{content-visibility:auto}")) fail("Do not apply content-visibility:auto globally to images");
+  else pass("Responsive CSS retains focus/motion support and avoids global image content-visibility");
+}
+
+const schemaSourcePath2 = path.resolve("src/components/LocalBusinessSchema.astro");
+if (fs.existsSync(schemaSourcePath2) && /"latitude"\s*:|"longitude"\s*:/.test(read(schemaSourcePath2))) fail("LocalBusiness schema must not publish unverified village coordinates");
+else if (fs.existsSync(schemaSourcePath2)) pass("LocalBusiness schema omits unverified map coordinates until the business pin is confirmed");
+
 if (errors.length) {
   console.error("\nQUALITY GATE FAILED");
   for (const error of errors) console.error(" - " + error);
