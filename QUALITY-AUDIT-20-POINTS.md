@@ -88,7 +88,7 @@ A second source review found additional defects that were not adequately covered
 - Reduced the primary navigation to the main visitor tasks (Home, Experiences, About, Day trips, Reviews, FAQs and Check availability). Camping, Journal and sustainability remain discoverable through the wider site/footer, without giving camping priority in the header.
 - Guarded the language preference read against browsers that deny localStorage access, so a storage exception does not prevent the mobile navigation script from initialising.
 - Improved mobile-menu dismissal for outside clicks and desktop viewport resizing.
-- Added font-display: swap to the Manrope stylesheet request.
+- Confirmed and retained `display=swap` on the Manrope stylesheet request so text remains visible while the font loads.
 - Removed global content-visibility:auto from all images; image loading remains controlled with explicit per-image loading/decoding hints and avoids a blanket paint deferral.
 - Added an overflow-x fallback for browsers without overflow:clip.
 - Removed unverified village latitude/longitude from LocalBusiness structured data until the exact business pin is confirmed.
