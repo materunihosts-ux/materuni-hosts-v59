@@ -407,6 +407,12 @@ if (fs.existsSync(accommodationSourcePath) && read(accommodationSourcePath).incl
 else fail("Overnight accommodation copy must match the current $90 catalogue price");
 if (fs.existsSync(adminFaqSourcePath) && /\(\$75\)|\(\$65\)|\(\$85\)|\(\$110\)|\(\$135\)/.test(read(adminFaqSourcePath))) fail("Admin FAQ defaults must not restore retired package prices");
 else if (fs.existsSync(adminFaqSourcePath)) pass("Admin FAQ defaults no longer contain retired package prices");
+const operationsSamplePath = path.resolve("src/pages/admin/operations.astro");
+if (fs.existsSync(operationsSamplePath)) {
+  const operationsSample = read(operationsSamplePath);
+  if (!operationsSample.includes('Materuni Waterfall & Chagga Village Experience | 3 | 40.00') || !operationsSample.includes('el("doc-amount").value="120.00"')) fail("Admin sample invoice must use the current $40 package price and matching 3-guest total");
+  else pass("Admin sample invoice uses the current $40 package price and matching 3-guest total");
+}
 
 if (errors.length) {
   console.error("\nQUALITY GATE FAILED");
