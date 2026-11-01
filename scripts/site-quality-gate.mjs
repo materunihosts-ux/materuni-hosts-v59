@@ -115,6 +115,11 @@ for (const sourcePath of groupDiscountPages) {
   else pass(sourcePath + ": group discount label contrast passes WCAG AA (" + contrast.toFixed(2) + ":1)");
 }
 
+const homeSourcePath = path.resolve("src/pages/index.astro");
+const layoutSourceForPreload = fs.existsSync(layoutSourcePath) ? read(layoutSourcePath) : "";
+const homeSourceForPreload = fs.existsSync(homeSourcePath) ? read(homeSourcePath) : "";
+if (!homeSourceForPreload.includes("optimizedHeroMobile") || !homeSourceForPreload.includes("preloadImageMobile={optimizedHeroMobile.src}") || !layoutSourceForPreload.includes('media="(max-width: 768px)"')) fail("Homepage must use a separately optimized and preloaded mobile hero image");
+else pass("Homepage serves and preloads a smaller mobile hero image");
 const homeFile = routeFile("/");
 if (homeFile) {
   const homeHtml = read(homeFile);
