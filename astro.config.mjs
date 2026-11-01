@@ -4,6 +4,7 @@ import { defineConfig } from 'astro/config';
 // Supabase remains the remote backend; never put a service-role key in this frontend.
 export default defineConfig({
   site: 'https://materunihosts.com',
+  trailingSlash: 'never',
   server: {
     port: 3000,
     host: '0.0.0.0',
