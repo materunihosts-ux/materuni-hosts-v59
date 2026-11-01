@@ -188,7 +188,8 @@ import { supabaseUrl, publishableKey } from "../lib/supabase-public";
   fr:{skip:"Aller au contenu",ask:"Parler à un hôte local",footer:"Expériences chagga communautaires à Materuni Village, Moshi, Tanzanie.",explore:"Explorer",book:"Réserver votre expérience"},
   de:{skip:"Zum Inhalt",ask:"Lokalen Gastgeber fragen",footer:"Gemeinschaftsbasierte Chagga-Erlebnisse in Materuni Village, Moshi, Tansania.",explore:"Entdecken",book:"Erlebnis buchen"}
  };
- const select=document.getElementById("site-language"), saved=localStorage.getItem("materuni-language"), requested=new URLSearchParams(location.search).get("lang");
+ const getSavedLanguage=()=>{try{return localStorage.getItem("materuni-language")}catch{return null}};
+ const select=document.getElementById("site-language"), saved=getSavedLanguage(), requested=new URLSearchParams(location.search).get("lang");
  const menuButton=document.querySelector(".menu-toggle"),mainNav=document.getElementById("primary-navigation");
  const closeMenu=()=>{mainNav?.classList.remove("open");menuButton?.setAttribute("aria-expanded","false");menuButton?.setAttribute("aria-label","Open menu");if(menuButton)menuButton.textContent="☰"};
  menuButton?.addEventListener("click",()=>{const open=mainNav?.classList.toggle("open")??false;menuButton.setAttribute("aria-expanded",String(open));menuButton.setAttribute("aria-label",open?"Close menu":"Open menu");menuButton.textContent=open?"×":"☰"});
