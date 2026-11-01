@@ -1,7 +1,6 @@
 ---
 import SiteLayout from "../layouts/SiteLayout.astro";
 import { Image } from "astro:assets";
-import LocalBusinessSchema from "../components/LocalBusinessSchema.astro";
 import { supabaseUrl } from "../lib/supabase-public";
 
 const base = `${supabaseUrl}/storage/v1/object/public/materuni-images/`;
@@ -49,7 +48,6 @@ const faqs = [
   description="Ask about a Marangu day hike near Mount Kilimanjaro. Route, guide arrangements, access requirements and transport are confirmed individually before booking."
   preloadImage={heroImg}
 >
-  <LocalBusinessSchema />
   <script type="application/ld+json" set:html={JSON.stringify(serviceData)} />
   <script type="application/ld+json" set:html={JSON.stringify({"@context":"https://schema.org","@type":"FAQPage","mainEntity":faqs.map(f=>({"@type":"Question","name":f.q,"acceptedAnswer":{"@type":"Answer","text":f.a}}))})} />
 
