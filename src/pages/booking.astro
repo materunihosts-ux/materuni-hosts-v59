@@ -618,8 +618,7 @@ $("booking-form").addEventListener("submit",async e=>{
   try {
    const consent=JSON.parse(localStorage.getItem("materuni-cookie-consent-v1")||"null");
    if(consent?.analytics===true&&window.__materuniGtmLoaded===true){
-    window.dataLayer=window.dataLayer||[];
-    window.dataLayer.push({event:"booking_request_success",conversion_type:"lead",experience_name:experience,guest_count:guestCount,request_status:"pending_confirmation"});
+    if(typeof window.gtag==="function")window.gtag("event","booking_request_success",{conversion_type:"lead",experience_name:experience,guest_count:guestCount,request_status:"pending_confirmation"});
    }
   }catch(analyticsError){}
   let notice="";
