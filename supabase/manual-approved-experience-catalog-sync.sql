@@ -50,7 +50,7 @@ begin
       when 'Traditional Coffee Experience' then 'Discover Chagga coffee traditions in Materuni through local growing stories, roasting, grinding, brewing and tasting.'
       when 'Traditional Chagga Cooking Class' then 'Join a hands-on Chagga cooking session with a local host. Dishes and ingredients are confirmed before booking.'
       when 'Materuni & Moshi Town Tour' then 'Combine a locally hosted Materuni experience with a guided visit to Moshi town and its everyday culture.'
-      when 'Materuni & Rau Forest Experience' then 'Combine a Materuni village experience with a guided nature walk in Rau Forest. Access arrangements are confirmed before booking.'
+      when 'Materuni & Rau Forest Experience' then 'Combine a Materuni village experience with a guided nature walk in Rau Forest. The Rau Forest entrance fee is included in the published package price.'
       when 'Camping & Village Life' then 'Enjoy an overnight village experience in Materuni. Accommodation arrangements, meals and activities are confirmed by your host.'
       else short_description
     end,
@@ -59,7 +59,7 @@ begin
       when 'Traditional Coffee Experience' then 'Discover traditional Chagga coffee making in Materuni with a local host, from roasting and grinding to brewing and tasting. Your host confirms the route and shared village activities for your date.'
       when 'Traditional Chagga Cooking Class' then 'Take part in a hands-on Chagga cooking session with a local host. The menu, ingredients and shared village activities are confirmed before booking.'
       when 'Materuni & Moshi Town Tour' then 'Pair a locally hosted Materuni experience with a guided Moshi town visit. The town route, local interpretation and any optional purchases are explained before booking.'
-      when 'Materuni & Rau Forest Experience' then 'Combine a locally hosted Materuni experience with a guided nature walk in Rau Forest. Forest access arrangements and any applicable fees are confirmed by your host before booking.'
+      when 'Materuni & Rau Forest Experience' then 'Combine a locally hosted Materuni experience with a guided nature walk in Rau Forest. The Rau Forest entrance fee is included in the published package price.'
       when 'Camping & Village Life' then 'Enjoy an overnight village experience in Materuni with local hosting and time to discover village life. Accommodation type, meals and next-day activities are confirmed by your host before booking.'
       else full_description
     end,
@@ -68,7 +68,7 @@ begin
       when 'Traditional Coffee Experience' then '["Local guide","Materuni village and waterfall entrance fees","Hands-on traditional coffee making","Freshly prepared coffee tasting","Local lunch","Drinking water"]'::jsonb
       when 'Traditional Chagga Cooking Class' then '["Local host-led cooking session","Materuni village experience as confirmed by host","Menu and ingredient details confirmed before booking"]'::jsonb
       when 'Materuni & Moshi Town Tour' then '["Local Materuni host","Guided Moshi town visit","Town route and inclusions confirmed before booking"]'::jsonb
-      when 'Materuni & Rau Forest Experience' then '["Local Materuni host","Guided Rau Forest nature walk","Forest access arrangements confirmed before booking"]'::jsonb
+      when 'Materuni & Rau Forest Experience' then '["Local Materuni host","Materuni village and waterfall entrance fees","Rau Forest entrance fee included","Guided Rau Forest nature walk","Local lunch","Drinking water","Traditional coffee tasting"]'::jsonb
       when 'Camping & Village Life' then '["Overnight village experience with local hosting","Accommodation type and arrangements confirmed by host","Meals and activities confirmed before booking"]'::jsonb
       else inclusions
     end,
