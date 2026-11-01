@@ -198,6 +198,21 @@ for (const file of sourceFiles) {
 }
 if (checkedImages) pass("Checked alt text, dimensions and loading/decoding hints on " + checkedImages + " public source images");
 
+// Keep the guest concierge grounded in the live, active experience catalogue.
+const conciergePath = path.resolve("supabase/functions/guest-concierge/index.ts");
+if (!fs.existsSync(conciergePath)) fail("Guest concierge Edge Function source is missing");
+else {
+  const concierge = read(conciergePath);
+  if (!/from\(["']experience_catalog["']\)[\s\S]*?select\(["']display_name, price_usd["']\)[\s\S]*?eq\(["']is_active["'],\s*true\)/.test(concierge)) {
+    fail("Guest concierge must retrieve active experience names and prices from Supabase");
+  } else pass("Guest concierge reads current active package prices from Supabase");
+  if (!concierge.includes("liveSystemPrompt") || !concierge.includes("catalogueContext")) fail("Guest concierge AI prompt must include the live catalogue context");
+  else pass("Guest concierge model prompt receives the live package catalogue");
+  if (/From Bean to Cup|The Waterfall & Heritage Trail|The Materuni Signature Escape|\$65|\$75|\$85|\$110|\$135/.test(concierge)) {
+    fail("Guest concierge contains retired package names or prices");
+  } else pass("Guest concierge fallback no longer advertises retired package prices");
+}
+
 const htmlFiles = [];
 const walk = (directory) => {
   for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
