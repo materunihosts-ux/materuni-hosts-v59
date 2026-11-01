@@ -21,6 +21,13 @@ jobs:
         with:
           node-version: 22
       - run: npm install --no-audit --no-fund
+      - name: Export generated dependency lockfile for review
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: dependency-lockfile-review
+          path: package-lock.json
+          if-no-files-found: error
+          retention-days: 1
       - name: Build, type-check and run website quality gate
         env:
           PUBLIC_SUPABASE_URL: https://sskmzswoeljxwojcszta.supabase.co
@@ -30,9 +37,10 @@ jobs:
         run: npm audit --audit-level=high
 
       - name: Package deployable website ZIP
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: materuni-hosts-dist
           path: dist/
           if-no-files-found: error
           retention-days: 7
+          include-hidden-files: true

@@ -198,6 +198,32 @@ for (const file of sourceFiles) {
 }
 if (checkedImages) pass("Checked alt text, dimensions and loading/decoding hints on " + checkedImages + " public source images");
 
+// Cookie consent must gate analytics events and support withdrawal after opt-in.
+const consentPath = path.resolve("src/components/CookieConsent.astro");
+if (!fs.existsSync(consentPath)) fail("Cookie consent component is missing");
+else {
+  const consent = read(consentPath);
+  if (!consent.includes("!saved?.analytics") || !consent.includes("!window.__materuniGtmLoaded")) fail("Analytics conversion events must be blocked before valid opt-in");
+  else pass("Analytics conversion events are gated behind recorded opt-in");
+  if (!/analytics_storage:\s*"denied"/.test(consent) || !/typeof window\.gtag === "function"/.test(consent)) fail("Cookie preference withdrawal must revoke Google analytics consent");
+  else pass("Cookie preference withdrawal updates analytics consent to denied");
+}
+
+// Keep the guest concierge grounded in the live, active experience catalogue.
+const conciergePath = path.resolve("supabase/functions/guest-concierge/index.ts");
+if (!fs.existsSync(conciergePath)) fail("Guest concierge Edge Function source is missing");
+else {
+  const concierge = read(conciergePath);
+  if (!/from\(["']experience_catalog["']\)[\s\S]*?select\(["']display_name, price_usd["']\)[\s\S]*?eq\(["']is_active["'],\s*true\)/.test(concierge)) {
+    fail("Guest concierge must retrieve active experience names and prices from Supabase");
+  } else pass("Guest concierge reads current active package prices from Supabase");
+  if (!concierge.includes("liveSystemPrompt") || !concierge.includes("catalogueContext")) fail("Guest concierge AI prompt must include the live catalogue context");
+  else pass("Guest concierge model prompt receives the live package catalogue");
+  if (/From Bean to Cup|The Waterfall & Heritage Trail|The Materuni Signature Escape|\$65|\$75|\$85|\$110|\$135/.test(concierge)) {
+    fail("Guest concierge contains retired package names or prices");
+  } else pass("Guest concierge fallback no longer advertises retired package prices");
+}
+
 const htmlFiles = [];
 const walk = (directory) => {
   for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
@@ -289,6 +315,149 @@ for (const pathname of internalLinks) {
   }
 }
 if (internalLinks.size) pass("Checked " + internalLinks.size + " unique internal href targets");
+
+
+/* International standards source-level regression checks.
+   These checks validate implementation intent, not external certification. */
+const builtRobots = fs.existsSync(robotsPath) ? read(robotsPath) : "";
+const robotLines = builtRobots.split(/\r?\n/);
+for (const crawler of ["GPTBot", "Google-Extended", "CCBot", "anthropic-ai", "ClaudeBot", "Bytespider", "Meta-ExternalAgent"]) {
+  const index = robotLines.findIndex((line) => /^User-agent:\s*/i.test(line) && line.split(":")[1].trim().toLowerCase() === crawler.toLowerCase());
+  const nextGroup = robotLines.findIndex((line, lineIndex) => lineIndex > index && /^User-agent:\s*/i.test(line));
+  const group = index >= 0 ? robotLines.slice(index, nextGroup >= 0 ? nextGroup : undefined).join("\n") : "";
+  if (!/^Disallow:\s*\/\s*$/im.test(group)) fail("robots.txt must express the AI training-crawler preference for " + crawler);
+}
+if (builtRobots.includes("Sitemap: https://materunihosts.com/sitemap.xml")) pass("robots.txt advertises the canonical sitemap");
+const securityTxt = path.join(root, ".well-known", "security.txt");
+if (!fs.existsSync(securityTxt)) fail("Missing /.well-known/security.txt responsible disclosure contact");
+else {
+  const disclosure = read(securityTxt);
+  if (!disclosure.includes("mailto:hello@materunihosts.com") || !disclosure.includes("Expires:") || !disclosure.includes("Canonical: https://materunihosts.com/.well-known/security.txt")) fail("security.txt must include a contact, expiry and canonical location");
+  else pass("Responsible security disclosure contact is published");
+}
+const privacySourcePath = path.resolve("src/pages/privacy.astro");
+if (fs.existsSync(privacySourcePath)) {
+  const privacySource = read(privacySourcePath);
+  if (!privacySource.includes("persistent Privacy settings control")) fail("Privacy policy must explain how to reopen and withdraw cookie consent");
+  else pass("Privacy policy explains how visitors can reopen and change cookie preferences");
+  for (const phrase of ["international transfers", "Your privacy rights", "do not sell personal information"]) {
+    if (!privacySource.toLowerCase().includes(phrase.toLowerCase())) fail("Privacy policy is missing disclosure: " + phrase);
+  }
+}
+const termsSourcePath = path.resolve("src/pages/terms.astro");
+if (fs.existsSync(termsSourcePath) && /©\s*2026\s+Materuni Hosts/.test(read(termsSourcePath))) pass("Terms page includes a dated Materuni Hosts copyright notice");
+else fail("Terms page must include the Materuni Hosts copyright notice");
+const termsBody = fs.existsSync(termsSourcePath) ? read(termsSourcePath) : "";
+for (const unsupportedClaim of ["guaranteed within 12 hours", "5% off for 4–5 guests", "20% deposit", "$25 per vehicle", "$50 per vehicle", "$80 per vehicle"]) {
+  if (termsBody.includes(unsupportedClaim)) fail("Booking terms must not publish an unverified commercial promise: " + unsupportedClaim);
+}
+if (termsBody.includes("does not accept card payments") && termsBody.includes("Cancellation deadlines")) pass("Booking terms reflect enquiry-only payments and require written cancellation conditions");
+const hostingConfigPath = path.resolve("vercel.json");
+if (fs.existsSync(hostingConfigPath)) {
+  const hostingConfig = read(hostingConfigPath);
+  const requiredHeaders = ["Strict-Transport-Security", "X-Content-Type-Options", "X-Frame-Options", "Referrer-Policy", "Permissions-Policy"];
+  for (const header of requiredHeaders) if (!hostingConfig.includes(header)) fail("Hosting header configuration is missing " + header);
+  if (requiredHeaders.every((header) => hostingConfig.includes(header))) pass("Hosting configuration defines baseline browser security headers");
+}
+
+// Never ship AI Studio drafts, internal briefs or temporary media as public assets.
+const internalPublicAssets = path.join(root, "assets", "aistudio");
+const internalSourceAssets = path.resolve("public/assets/aistudio");
+if (fs.existsSync(internalPublicAssets) && fs.readdirSync(internalPublicAssets).length) {
+  fail("Build contains internal AI Studio drafts under /assets/aistudio");
+} else pass("No internal AI Studio drafts are exposed in the public build");
+if (fs.existsSync(internalSourceAssets) && fs.readdirSync(internalSourceAssets).length) {
+  fail("Source contains files in public/assets/aistudio; internal drafts must stay outside public/");
+} else pass("No internal AI Studio drafts remain in the public source directory");
+
+// Keep all public pricing, estimates and transfer wording aligned with the live catalogue.
+const catalogueSourcePath = path.resolve("src/pages/itinerary.astro");
+const bookingSourcePath = path.resolve("src/pages/booking.astro");
+const waterfallSourcePath = path.resolve("src/pages/materuni-waterfall-tour.astro");
+const accommodationSourcePath = path.resolve("src/pages/accommodation.astro");
+const adminFaqSourcePath = path.resolve("src/pages/admin/content.astro");
+const catalogueSource = fs.existsSync(catalogueSourcePath) ? read(catalogueSourcePath) : "";
+const expectedPublicPrices = [
+  ['"name":"Materuni Waterfall & Chagga Village Experience","price":40', "waterfall $40"],
+  ['"name":"Traditional Chagga Coffee Experience","price":36', "coffee $36"],
+  ['"name":"Traditional Chagga Cooking Class","price":49', "cooking $49"],
+  ['"name":"Materuni & Moshi Town Cultural Experience","price":52', "Moshi $52"],
+  ['"name":"Materuni & Rau Forest Nature Experience","price":58', "Rau Forest $58"],
+  ['"name":"Materuni Overnight Village Experience","price":90', "overnight $90"]
+];
+for (const [snippet, label] of expectedPublicPrices) {
+  if (!catalogueSource.includes(snippet)) fail("Itinerary fallback catalogue is out of sync: " + label);
+}
+if (expectedPublicPrices.every(([snippet]) => catalogueSource.includes(snippet))) pass("Itinerary fallback prices match the six active Supabase catalogue prices");
+for (const [sourcePath, label] of [
+  [bookingSourcePath, "booking"],
+  [waterfallSourcePath, "waterfall landing page"],
+  [accommodationSourcePath, "accommodation"]
+]) {
+  if (!fs.existsSync(sourcePath)) { fail("Missing " + label + " source for pricing checks"); continue; }
+  const source = read(sourcePath);
+  if (/\$(?:25|50|80)\s*(?:\/\s*vehicle|per vehicle)/i.test(source)) fail(label + " must not publish unverified fixed transfer prices");
+  if (/guaranteed within 12h|100% free with zero upfront deposit/i.test(source)) fail(label + " must not publish unverified response-time or payment promises");
+}
+if (fs.existsSync(bookingSourcePath) && /transferPrice\s*=|discount\s*=\s*guests>=/i.test(read(bookingSourcePath))) fail("Booking estimate must not calculate unverified transfer prices or fixed group-discount percentages");
+else if (fs.existsSync(bookingSourcePath)) pass("Booking estimate requests host-confirmed transfer and group quotes instead of inventing prices");
+if (fs.existsSync(waterfallSourcePath) && read(waterfallSourcePath).includes('"price": "40.00"')) pass("Waterfall structured-data offer matches the current $40 catalogue price");
+else fail("Waterfall structured-data offer must match the current $40 catalogue price");
+if (fs.existsSync(accommodationSourcePath) && read(accommodationSourcePath).includes("is $90 per person")) pass("Overnight accommodation copy matches the current $90 catalogue price");
+else fail("Overnight accommodation copy must match the current $90 catalogue price");
+if (fs.existsSync(adminFaqSourcePath) && /\(\$75\)|\(\$65\)|\(\$85\)|\(\$110\)|\(\$135\)/.test(read(adminFaqSourcePath))) fail("Admin FAQ defaults must not restore retired package prices");
+else if (fs.existsSync(adminFaqSourcePath)) pass("Admin FAQ defaults no longer contain retired package prices");
+const operationsSamplePath = path.resolve("src/pages/admin/operations.astro");
+if (fs.existsSync(operationsSamplePath)) {
+  const operationsSample = read(operationsSamplePath);
+  if (!operationsSample.includes('Materuni Waterfall & Chagga Village Experience | 3 | 40.00') || !operationsSample.includes('el("doc-amount").value="120.00"')) fail("Admin sample invoice must use the current $40 package price and matching 3-guest total");
+  else pass("Admin sample invoice uses the current $40 package price and matching 3-guest total");
+}
+
+
+/* Second-pass regressions: accurate public FAQ, privacy-safe storage and compact navigation. */
+const faqSourcePath = path.resolve("src/pages/faq.astro");
+if (!fs.existsSync(faqSourcePath)) fail("Public FAQ source is missing");
+else {
+  const faqSource = read(faqSourcePath);
+  for (const [price, label] of [["$40", "waterfall"], ["$36", "coffee"], ["$49", "cooking"], ["$52", "Moshi"], ["$58", "Rau Forest"], ["$90", "overnight"]]) {
+    if (!faqSource.includes(price)) fail("Public FAQ is missing the current " + label + " price " + price);
+  }
+  if (/\$(?:45|41|55|59|65|101)\b/.test(faqSource)) fail("Public FAQ contains a retired experience price");
+  for (const claim of ["guaranteed within 12 hours", "3 to 6 hours", "20% deposit", "$25 per vehicle", "$50 per vehicle", "$80 per vehicle", "5% for 4–5 guests"]) {
+    if (faqSource.includes(claim)) fail("Public FAQ contains an unverified booking promise: " + claim);
+  }
+  if (faqSource.includes("does not reserve or hold a space")) pass("Public FAQ accurately distinguishes enquiries from confirmed reservations");
+  else fail("Public FAQ must state that an enquiry is not a reservation or confirmation");
+}
+
+const layoutSourcePath2 = path.resolve("src/layouts/SiteLayout.astro");
+if (fs.existsSync(layoutSourcePath2)) {
+  const layoutSource = read(layoutSourcePath2);
+  if (!layoutSource.includes('safeLocal.get("materuni-language")') || layoutSource.includes('saved=localStorage.getItem("materuni-language")')) fail("Language preference access must tolerate browsers that block localStorage");
+  else pass("Language preference storage is guarded for private/restricted browser contexts");
+  const navStart = layoutSource.indexOf('<nav id="primary-navigation"');
+  const navEnd = layoutSource.indexOf("</nav>", navStart);
+  const navSource = navStart >= 0 && navEnd > navStart ? layoutSource.slice(navStart, navEnd) : "";
+  if (!navSource || !navSource.includes('href="/experiences"') || !navSource.includes('href="/booking"')) fail("Primary navigation must expose Experiences and Check availability");
+  else if ((navSource.match(/<a\b/g) || []).length > 8) fail("Primary navigation exceeds the compact navigation link budget");
+  else if (navSource.includes('href="/camping"')) fail("Camping must not be a primary navigation priority");
+  else pass("Primary navigation prioritises core visitor tasks without promoting camping above other experiences");
+}
+
+const globalStylePath2 = path.resolve("src/styles/global.css");
+if (fs.existsSync(globalStylePath2)) {
+  const globalStyle = read(globalStylePath2);
+  if (!globalStyle.includes("@supports not (overflow: clip)")) fail("Global styles need a fallback for browsers without overflow:clip");
+  if (!globalStyle.includes(":focus-visible") || !globalStyle.includes("prefers-reduced-motion:reduce")) fail("Global styles must preserve visible keyboard focus and reduced-motion support");
+  if (!globalStyle.includes("@media(max-width:850px)")) fail("Global styles must retain the mobile navigation breakpoint");
+  if (globalStyle.includes("img{content-visibility:auto}")) fail("Do not apply content-visibility:auto globally to images");
+  else pass("Responsive CSS retains focus/motion support and avoids global image content-visibility");
+}
+
+const schemaSourcePath2 = path.resolve("src/components/LocalBusinessSchema.astro");
+if (fs.existsSync(schemaSourcePath2) && /"latitude"\s*:|"longitude"\s*:/.test(read(schemaSourcePath2))) fail("LocalBusiness schema must not publish unverified village coordinates");
+else if (fs.existsSync(schemaSourcePath2)) pass("LocalBusiness schema omits unverified map coordinates until the business pin is confirmed");
 
 if (errors.length) {
   console.error("\nQUALITY GATE FAILED");

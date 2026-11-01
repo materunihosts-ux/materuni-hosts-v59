@@ -10,16 +10,16 @@ const json = (body: Record<string, unknown>, status = 200) =>
   new Response(JSON.stringify(body), { status, headers: corsHeaders });
 
 const fallback: Record<string, string> = {
-  en: "I can help you plan your Materuni visit. Our six experiences are From Bean to Cup ($65), The Waterfall & Heritage Trail ($75), Cook, Taste & Share ($85), The Complete Materuni Day ($75), Stay Beyond the Waterfall ($110) and The Materuni Signature Escape ($135) per person. Which date are you considering, and how many guests will be travelling?",
-  es: "Puedo ayudarte a planificar tu visita a Materuni. Ofrecemos seis experiencias: From Bean to Cup ($65), The Waterfall & Heritage Trail ($75), Cook, Taste & Share ($85), The Complete Materuni Day ($75), Stay Beyond the Waterfall ($110) y The Materuni Signature Escape ($135) por persona. ¿Qué fecha tienes en mente y cuántas personas viajarán?",
-  fr: "Je peux vous aider à organiser votre visite à Materuni. Nos six expériences sont : From Bean to Cup (65 $), The Waterfall & Heritage Trail (75 $), Cook, Taste & Share (85 $), The Complete Materuni Day (75 $), Stay Beyond the Waterfall (110 $) et The Materuni Signature Escape (135 $) par personne. Quelle date envisagez-vous et combien de personnes voyageront ?",
-  de: "Ich helfe Ihnen gern bei der Planung Ihres Besuchs in Materuni. Unsere sechs Erlebnisse sind: From Bean to Cup (65 $), The Waterfall & Heritage Trail (75 $), Cook, Taste & Share (85 $), The Complete Materuni Day (75 $), Stay Beyond the Waterfall (110 $) und The Materuni Signature Escape (135 $) pro Person. Für welches Datum planen Sie und wie viele Gäste reisen mit?"
+  en: "I can help you plan your Materuni visit. Our current experiences include the Materuni Waterfall & Chagga Village Experience ($40), Traditional Chagga Coffee Experience ($36), Traditional Chagga Cooking Class ($49), Materuni & Moshi Town Cultural Experience ($52), Materuni & Rau Forest Nature Experience ($58), and Materuni Overnight Village Experience ($90) per person. Which date are you considering, and how many guests will be travelling?",
+  es: "Puedo ayudarte a planificar tu visita a Materuni. Ofrecemos seis experiencias: Materuni Waterfall & Chagga Village Experience (40 $), Traditional Chagga Coffee Experience (36 $), Traditional Chagga Cooking Class (49 $), Materuni & Moshi Town Cultural Experience (52 $), Materuni & Rau Forest Nature Experience (58 $) y Materuni Overnight Village Experience (90 $) por persona. ¿Qué fecha tienes en mente y cuántas personas viajarán?",
+  fr: "Je peux vous aider à organiser votre visite à Materuni. Nos six expériences sont : Materuni Waterfall & Chagga Village Experience (40 $), Traditional Chagga Coffee Experience (36 $), Traditional Chagga Cooking Class (49 $), Materuni & Moshi Town Cultural Experience (52 $), Materuni & Rau Forest Nature Experience (58 $) et Materuni Overnight Village Experience (90 $) par personne. Quelle date envisagez-vous et combien de personnes voyageront ?",
+  de: "Ich helfe Ihnen gern bei der Planung Ihres Besuchs in Materuni. Unsere sechs Erlebnisse sind: Materuni Waterfall & Chagga Village Experience (40 $), Traditional Chagga Coffee Experience (36 $), Traditional Chagga Cooking Class (49 $), Materuni & Moshi Town Cultural Experience (52 $), Materuni & Rau Forest Nature Experience (58 $) und Materuni Overnight Village Experience (90 $) pro Person. Für welches Datum planen Sie und wie viele Gäste reisen mit?"
 };
 
 const systemPrompt = `You are the friendly guest concierge for Materuni Hosts, a boutique local experience host in Materuni Village near Moshi, Kilimanjaro, Tanzania.
 Your job is to help visitors choose an experience and move naturally toward an availability check or itinerary request.
 Use the visitor's language: English, Spanish, French or German. Be warm, concise and specific.
-Only use these approved per-person prices: From Bean to Cup $65; The Waterfall & Heritage Trail $75; Cook, Taste & Share $85; The Complete Materuni Day $75; Stay Beyond the Waterfall $110; The Materuni Signature Escape $135.
+Use only the six currently active experiences and per-person prices supplied in the live catalogue context appended to this instruction. Never quote retired or inactive packages.
 The Materuni waterfall is approximately 95 metres high. The experiences are hosted in Materuni Village and focus on Chagga coffee, food, culture, nature and village life.
 Important booking rules: a website booking is a request, not a confirmed reservation; the host must confirm availability and arrangements; no online payment is taken at this stage; transport/pickup must be confirmed separately. Do not invent schedules, available spaces, transport inclusions, policies, licences, awards, ratings, reviews or claims of registration.
 Ask only one useful follow-up at a time, usually travel date, group size, preferred experience or pickup point.
@@ -71,6 +71,33 @@ Deno.serve(async (request: Request) => {
     try { const parsedUrl = new URL(supabaseUrl); if (parsedUrl.protocol !== "https:" && parsedUrl.hostname !== "localhost") throw new Error(); }
     catch { console.error("guest-concierge configuration error: invalid SUPABASE_URL"); return json({ error: "Guest assistant is temporarily unavailable." }, 503); }
     const supabase = createClient(supabaseUrl, serviceRoleKey, { auth: { persistSession: false, autoRefreshToken: false } });
+    // Read the active package catalogue so the assistant cannot keep quoting retired prices.
+    const { data: activeCatalogue, error: catalogueError } = await supabase
+      .from("experience_catalog")
+      .select("display_name, price_usd")
+      .eq("is_active", true)
+      .order("sort_order", { ascending: true });
+    const safeCatalogue = !catalogueError && Array.isArray(activeCatalogue)
+      ? activeCatalogue.filter((item: { display_name?: string; price_usd?: number }) =>
+          typeof item.display_name === "string" && Number.isFinite(Number(item.price_usd)) && Number(item.price_usd) >= 0
+        )
+      : [];
+    const catalogueContext = safeCatalogue.length
+      ? safeCatalogue.map((item: { display_name: string; price_usd: number }) =>
+          `${item.display_name}: $${Number(item.price_usd).toFixed(2)} per person`
+        ).join("; ")
+      : "Materuni Waterfall & Chagga Village Experience: $40; Traditional Chagga Coffee Experience: $36; Traditional Chagga Cooking Class: $49; Materuni & Moshi Town Cultural Experience: $52; Materuni & Rau Forest Nature Experience: $58; Materuni Overnight Village Experience: $90 (all per person).";
+    const liveSystemPrompt = `${systemPrompt}\n\nLIVE CATALOGUE — source of truth for active packages and prices: ${catalogueContext}. If the catalogue is unavailable, use only this fallback catalogue. Never invent a package, price, discount, availability or tax.`;
+    const livePriceReply = {
+      en: `Our current experiences and prices per person are: ${catalogueContext}. Which experience interests you?`,
+      es: `Nuestras experiencias actuales y sus precios por persona son: ${catalogueContext}. ¿Qué experiencia te interesa?`,
+      fr: `Voici nos expériences actuelles et leurs tarifs par personne : ${catalogueContext}. Quelle expérience vous intéresse ?`,
+      de: `Unsere aktuellen Erlebnisse und Preise pro Person: ${catalogueContext}. Welches Erlebnis interessiert Sie?`
+    };
+    fallback.en = livePriceReply.en;
+    fallback.es = livePriceReply.es;
+    fallback.fr = livePriceReply.fr;
+    fallback.de = livePriceReply.de;
     const ip = request.headers.get("cf-connecting-ip") || request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "";
     const sha256 = async (value: string) => {
       const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(value));
@@ -179,7 +206,7 @@ Deno.serve(async (request: Request) => {
           headers: { Authorization: `Bearer ${openAiKey}`, "Content-Type": "application/json" },
           body: JSON.stringify({
             model,
-            messages: [{ role: "system", content: systemPrompt }, ...messages],
+            messages: [{ role: "system", content: liveSystemPrompt }, ...messages],
             temperature: 0.35,
             max_tokens: 350,
           }),

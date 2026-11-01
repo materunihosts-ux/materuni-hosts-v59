@@ -5,7 +5,7 @@ import { supabaseUrl } from "../lib/supabase-public";
 
 const base = `${supabaseUrl}/storage/v1/object/public/materuni-images/`;
 const heroSource = base + "hero_image/1791995544192-materuni-waterfall.jpg";
-const optimizedHero = await getImage({ src: heroSource, width: 1600, height: 1000, format: "webp", quality: 80 });
+const optimizedHero = await getImage({ src: heroSource, width: 1280, height: 800, format: "webp", quality: 72 });
 
 // Curated 6 experiences with equal visual importance (authoritative pricing aligned with Supabase catalog)
 const curatedExperiences = [

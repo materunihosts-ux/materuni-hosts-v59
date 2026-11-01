@@ -15,31 +15,44 @@ Allow: /booking
 Allow: /about-us
 Allow: /accommodation
 Allow: /reviews
-Allow: /faq
 Allow: /sustainability
 Allow: /travel-guide
 Allow: /work-with-us
 Allow: /privacy
 Allow: /terms
 
-# Disallow private administration, API endpoints & test dashboards
+# AI model-training crawlers: preference signal only, not technical access control.
+# Keep ordinary search indexing and user-requested assistant browsing available.
+User-agent: GPTBot
+Disallow: /
+User-agent: Google-Extended
+Disallow: /
+User-agent: CCBot
+Disallow: /
+User-agent: anthropic-ai
+Disallow: /
+User-agent: ClaudeBot
+Disallow: /
+User-agent: Bytespider
+Disallow: /
+User-agent: Meta-ExternalAgent
+Disallow: /
+
+# Private administration and API endpoints
+User-agent: *
 Disallow: /admin/
 Disallow: /admin
 Disallow: /api/
 
-# Prevent crawl waste and infinite parameter / session space
+# Crawl-space and temporary URL controls
 Disallow: /*?*source=
-Disallow: /*?*lang=
 Disallow: /*?*preview=
 Disallow: /*?*token=
 Disallow: /*?*session=
 Disallow: /*?*utm_
 Disallow: /*?*fbclid=
-
-# Disallow internal media drafts and unindexed temporary storage
 Disallow: /public/assets/aistudio/
 Disallow: /.tempmediaStorage/
 Disallow: /assets/aistudio/
 
-# Sitemaps
 Sitemap: https://materunihosts.com/sitemap.xml
