@@ -52,7 +52,7 @@ This is an implementation and release-readiness audit, not a legal opinion, pene
 - Removed three internal AI Studio PDF drafts from `public/assets/aistudio/` after a built-artifact inspection found they were publicly shipped; added a regression gate to prevent their reintroduction. This branch fix does not remove files from an already deployed production/CDN copy until a later approved release and cache purge.
 - Expanded privacy notice and added copyright / third-party-use / applicable-law sections to website terms.
 - Extended automated quality gate for AI crawler directives, security.txt, privacy disclosures, copyright notice and configured security headers.
-- Reconciled itinerary fallback prices with all six active Supabase catalogue records; corrected the waterfall and overnight public price/schema, updated admin FAQ defaults, and removed unverified fixed transfer fees, group-discount percentages, stale TZS conversions and response-time/payment promises. Added regression checks to prevent those claims returning.
+- Reconciled itinerary fallback prices with all six active Supabase catalogue records; corrected the waterfall and overnight public price/schema, updated admin FAQ defaults, and removed unverified fixed transfer fees, group-discount percentages, stale TZS conversions and response-time/payment promises. Added regression checks to prevent those claims returning. Updated the admin sample invoice to use the current $40 package price and a matching 3-guest total.
 
 ## Live Supabase findings recorded 1 Nov 2026
 
