@@ -17,6 +17,7 @@
 </div>
 <button class="cookie-reopen" type="button" data-cookie-reopen aria-label="Open privacy settings">Privacy settings</button>
 <style>
+.cookie-consent[hidden],.cookie-settings[hidden],.cookie-reopen[hidden]{display:none!important}
 .cookie-consent{position:fixed;z-index:10000;inset:auto 16px 16px 16px;max-width:880px;margin-inline:auto;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 18px;color:#242421;background:#FAF7F2;border:1px solid #C5A059;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,.2)}
 .cookie-copy p{margin:0;font:500 14px/1.6 var(--sans);color:#1A3322}
 .cookie-copy a{color:#80652F;font-weight:700;text-decoration:underline}
@@ -64,7 +65,8 @@
     document.head.appendChild(script);
   };
   const apply = (choice) => {
-    localStorage.setItem(key, JSON.stringify({ analytics: !!choice.analytics, savedAt: new Date().toISOString() }));
+    saved = { analytics: !!choice.analytics, savedAt: new Date().toISOString() };
+    localStorage.setItem(key, JSON.stringify(saved));
     banner.hidden = true;
     if (choice.analytics) loadAnalytics();
   };
@@ -74,12 +76,13 @@
   else if (saved.analytics) loadAnalytics();
   banner.querySelector("[data-cookie-accept]")?.addEventListener("click", () => apply({ analytics: true }));
   banner.querySelector("[data-cookie-reject]")?.addEventListener("click", () => apply({ analytics: false }));
-  banner.querySelector("[data-cookie-settings]")?.addEventListener("click", () => { settings.hidden = !settings.hidden; });
+  banner.querySelector("[data-cookie-settings]")?.addEventListener("click", () => { settings.hidden = !settings.hidden; analytics.checked = !!saved?.analytics; });
   banner.querySelector("[data-cookie-save]")?.addEventListener("click", () => apply({ analytics: analytics.checked }));
   document.querySelector("[data-cookie-reopen]")?.addEventListener("click", () => {
     analytics.checked = !!saved?.analytics;
     settings.hidden = true;
     banner.hidden = false;
+    banner.querySelector("[data-cookie-settings]")?.focus();
   });
 })();
 </script>
