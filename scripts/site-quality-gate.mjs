@@ -50,7 +50,26 @@ else {
   else pass("Private admin route is excluded in robots.txt");
 }
 
-const cookieSourcePath = path.resolve("src/components/CookieConsent.astro");\nif (fs.existsSync(cookieSourcePath)) {\n  const cookieSource = read(cookieSourcePath);\n  if (!/\\.cookie-consent\\[hidden\\][^{]*\\{[^}]*display:\\s*none\\s*!important/i.test(cookieSource) || !/\\.cookie-settings\\[hidden\\][^{]*\\{[^}]*display:\\s*none\\s*!important/i.test(cookieSource)) fail("Cookie notice and preferences must respect the native hidden state");\n  else pass("Cookie notice and preferences correctly remain hidden until requested");\n  if (!cookieSource.includes('consent?.analytics !== true') || !cookieSource.includes('if (choice.analytics) loadAnalytics()')) fail("Optional analytics must only load after explicit consent");\n  else pass("Optional analytics is gated behind explicit visitor consent");\n}\nconst robotsSource = fs.existsSync(robotsPath) ? read(robotsPath) : "";\nfor (const bot of ["GPTBot", "ClaudeBot", "Google-Extended", "CCBot", "Bytespider"]) {\n  if (!new RegExp("User-agent:\\\\s*" + bot + "[\\\\s\\\\S]*?Disallow:\\\\s*/", "i").test(robotsSource)) fail("robots.txt must include an AI-training crawler policy for " + bot);\n}\nif (robotsSource.includes("User-agent: OAI-SearchBot") || robotsSource.includes("User-agent: ChatGPT-User")) fail("Search/user-request AI fetchers must not be accidentally blocked");\nelse pass("AI training crawlers are restricted without explicitly blocking search/user-request fetchers");\nconst globalCssPath = path.resolve("src/styles/global.css");\nif (fs.existsSync(globalCssPath) && /prefers-reduced-motion\\s*:\\s*reduce/i.test(read(globalCssPath))) pass("Reduced-motion preference is respected in the public stylesheet");\nelse fail("Public stylesheet must respect prefers-reduced-motion");\n\nconst expectedRoutes = [
+const cookieSourcePath = path.resolve("src/components/CookieConsent.astro");
+if (fs.existsSync(cookieSourcePath)) {
+  const cookieSource = read(cookieSourcePath);
+  if (!/\.cookie-consent\[hidden\][^{]*\{[^}]*display:\s*none\s*!important/i.test(cookieSource) || !/\.cookie-settings\[hidden\][^{]*\{[^}]*display:\s*none\s*!important/i.test(cookieSource)) fail("Cookie notice and preferences must respect the native hidden state");
+  else pass("Cookie notice and preferences correctly remain hidden until requested");
+  if (!cookieSource.includes("consent?.analytics !== true") || !cookieSource.includes("if (choice.analytics) loadAnalytics()")) fail("Optional analytics must only load after explicit consent");
+  else pass("Optional analytics is gated behind explicit visitor consent");
+}
+const robotsSource = fs.existsSync(robotsPath) ? read(robotsPath) : "";
+for (const bot of ["GPTBot", "ClaudeBot", "Google-Extended", "CCBot", "Bytespider"]) {
+  const group = robotsSource.split(/(?=^User-agent: )/m).find((block) => new RegExp("^User-agent:\\s*" + bot + "\\s*$", "mi").test(block));
+  if (!group || !/^Disallow:\s*\/\s*$/mi.test(group)) fail("robots.txt must include an AI-training crawler policy for " + bot);
+}
+if (robotsSource.includes("User-agent: OAI-SearchBot") || robotsSource.includes("User-agent: ChatGPT-User")) fail("Search/user-request AI fetchers must not be accidentally blocked");
+else pass("AI training crawlers are restricted without explicitly blocking search/user-request fetchers");
+const globalCssPath = path.resolve("src/styles/global.css");
+if (fs.existsSync(globalCssPath) && /prefers-reduced-motion\s*:\s*reduce/i.test(read(globalCssPath))) pass("Reduced-motion preference is respected in the public stylesheet");
+else fail("Public stylesheet must respect prefers-reduced-motion");
+
+const expectedRoutes = [
   "/", "/experiences", "/camping", "/day-trips", "/booking", "/itinerary", "/reviews", "/faq",
   "/sustainability", "/travel-guide", "/work-with-us", "/privacy", "/terms", "/admin"
 ];
