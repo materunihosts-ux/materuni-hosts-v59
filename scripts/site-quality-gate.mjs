@@ -347,6 +347,11 @@ if (fs.existsSync(privacySourcePath)) {
 const termsSourcePath = path.resolve("src/pages/terms.astro");
 if (fs.existsSync(termsSourcePath) && /©\s*2026\s+Materuni Hosts/.test(read(termsSourcePath))) pass("Terms page includes a dated Materuni Hosts copyright notice");
 else fail("Terms page must include the Materuni Hosts copyright notice");
+const termsBody = fs.existsSync(termsSourcePath) ? read(termsSourcePath) : "";
+for (const unsupportedClaim of ["guaranteed within 12 hours", "5% off for 4–5 guests", "20% deposit", "$25 per vehicle", "$50 per vehicle", "$80 per vehicle"]) {
+  if (termsBody.includes(unsupportedClaim)) fail("Booking terms must not publish an unverified commercial promise: " + unsupportedClaim);
+}
+if (termsBody.includes("does not accept card payments") && termsBody.includes("Cancellation deadlines")) pass("Booking terms reflect enquiry-only payments and require written cancellation conditions");
 const hostingConfigPath = path.resolve("vercel.json");
 if (fs.existsSync(hostingConfigPath)) {
   const hostingConfig = read(hostingConfigPath);
