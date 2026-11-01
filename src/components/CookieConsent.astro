@@ -73,15 +73,20 @@
     script.src = "https://www.googletagmanager.com/gtm.js?id=GTM-TLB463PS";
     document.head.appendChild(script);
   };
+  const readSavedConsent = () => {
+    try {
+      const value = JSON.parse(localStorage.getItem(key) || "null");
+      return value && typeof value.analytics === "boolean" ? value : null;
+    } catch { return null; }
+  };
   const apply = (choice) => {
-    saved = { analytics: !!choice.analytics, savedAt: new Date().toISOString() };
-    localStorage.setItem(key, JSON.stringify(saved));
+    saved = { analytics: !!choice.analytics, savedAt: new Date().toISOString(), version: 2 };
+    try { localStorage.setItem(key, JSON.stringify(saved)); } catch {}
     banner.hidden = true;
     if (choice.analytics) loadAnalytics();
   };
-  let saved = null;
-  try { saved = JSON.parse(localStorage.getItem(key) || "null"); } catch {}
-  if (!saved || typeof saved.analytics !== "boolean") banner.hidden = false;
+  let saved = readSavedConsent();
+  if (!saved) banner.hidden = false;
   else if (saved.analytics) loadAnalytics();
   banner.querySelector("[data-cookie-accept]")?.addEventListener("click", () => apply({ analytics: true }));
   banner.querySelector("[data-cookie-reject]")?.addEventListener("click", () => apply({ analytics: false }));
