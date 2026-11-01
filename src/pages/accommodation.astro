@@ -3,7 +3,7 @@ import SiteLayout from "../layouts/SiteLayout.astro";
 import { supabaseUrl } from "../lib/supabase-public";
 const accommodationImage = `${supabaseUrl}/storage/v1/object/public/materuni-images/camping_image/1792122487239-camping.jpg`;
 ---
-<SiteLayout title="Accommodation in Materuni | Village Camping & Overnight Stays" description="Looking for accommodation in Materuni? Discover an overnight village camping experience with Materuni Hosts near Moshi, Kilimanjaro, and confirm facilities before booking.">
+<SiteLayout title="Materuni Overnight Village Experience | Accommodation" description="Plan an overnight village stay in Materuni near Moshi, Tanzania. Ask local hosts about the accommodation setup, meal arrangements and availability for your dates.">
 
 <main class="landing">
 <section class="hero hero-media" aria-labelledby="accommodation-title"><div class="hero-copy"><p class="eyebrow">OVERNIGHT STAYS · MATERUNI VILLAGE · MOSHI</p><h1 id="accommodation-title">Accommodation in Materuni Village</h1><p>Stay longer in Materuni with an overnight village experience hosted by local people. Share your preferred dates and group size so your host can confirm the available accommodation setup, meal arrangements and activities.</p><a class="button" href="/booking?source=accommodation&experience=Camping%20%26%20Village%20Life">Ask about overnight availability</a></div><img src={accommodationImage} alt="Outdoor camping setup illustrating the overnight stay; exact tent and facilities are confirmed with the host" width="1200" height="800" loading="eager" fetchpriority="high" decoding="async" /></section>
