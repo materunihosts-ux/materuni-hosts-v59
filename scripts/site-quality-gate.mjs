@@ -116,7 +116,8 @@ for (const sourcePath of groupDiscountPages) {
 }
 
 const homeSourcePath = path.resolve("src/pages/index.astro");
-const layoutSourceForPreload = fs.existsSync(layoutSourcePath) ? read(layoutSourcePath) : "";
+const layoutPreloadPath = path.resolve("src/layouts/SiteLayout.astro");
+const layoutSourceForPreload = fs.existsSync(layoutPreloadPath) ? read(layoutPreloadPath) : "";
 const homeSourceForPreload = fs.existsSync(homeSourcePath) ? read(homeSourcePath) : "";
 if (!homeSourceForPreload.includes("optimizedHeroMobile") || !homeSourceForPreload.includes("preloadImageMobile={optimizedHeroMobile.src}") || !layoutSourceForPreload.includes('media="(max-width: 768px)"')) fail("Homepage must use a separately optimized and preloaded mobile hero image");
 else pass("Homepage serves and preloads a smaller mobile hero image");
