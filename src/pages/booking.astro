@@ -423,9 +423,9 @@ $("booking-form").addEventListener("submit",async e=>{
  }
  const requestBody={...body,p_idempotency_key:idempotencyKey};
  try{
-  const response=await fetch(url+"/rest/v1/rpc/submit_booking_idempotent",{
+  const response=await fetchWithTimeout(url+"/rest/v1/rpc/submit_booking_idempotent",{
    method:"POST",headers,body:JSON.stringify(requestBody),cache:"no-store"
-  });
+  },25000);
   const payload=await response.json().catch(()=>null);
   if(!response.ok)throw new Error(safeError(payload,response.status));
   const created=Array.isArray(payload)?payload[0]:payload;
@@ -434,9 +434,9 @@ $("booking-form").addEventListener("submit",async e=>{
   const reference=created.booking_reference||created.booking_id;
   let notice="";
   try{
-   const notificationResponse=await fetch(url+"/functions/v1/booking-notifications",{
+   const notificationResponse=await fetchWithTimeout(url+"/functions/v1/booking-notifications",{
     method:"POST",headers,body:JSON.stringify({booking_id:created.booking_id,idempotency_key:idempotencyKey})
-   });
+   },15000);
    const notificationPayload=await notificationResponse.json().catch(()=>null);
    const delivery=notificationPayload?.notifications||{};
    const delivered=state=>["sent","already_processed"].includes(state);
