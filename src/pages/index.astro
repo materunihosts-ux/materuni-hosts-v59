@@ -5,7 +5,8 @@ import { supabaseUrl } from "../lib/supabase-public";
 
 const base = `${supabaseUrl}/storage/v1/object/public/materuni-images/`;
 const heroSource = base + "hero_image/1791995544192-materuni-waterfall.jpg";
-const optimizedHero = await getImage({ src: heroSource, width: 1600, height: 1000, format: "webp", quality: 80 });
+const optimizedHero = await getImage({ src: heroSource, width: 1440, height: 900, format: "webp", quality: 76 });
+const optimizedHeroMobile = await getImage({ src: heroSource, width: 768, height: 480, format: "webp", quality: 70 });
 
 // Curated 6 experiences with equal visual importance (authoritative pricing aligned with Supabase catalog)
 const curatedExperiences = [
@@ -234,10 +235,11 @@ const faqs = [
   title="Materuni Hosts | Authentic Kilimanjaro Experiences"
   description="Discover Materuni waterfall hikes, Chagga coffee traditions, cooking classes and cultural village experiences hosted by local Chagga guides in Kilimanjaro, Tanzania."
   preloadImage={optimizedHero.src}
+  preloadImageMobile={optimizedHeroMobile.src}
 >
   <!-- 1. PREMIUM CINEMATIC HERO SECTION -->
   <section class="premium-hero" aria-labelledby="hero-heading">
-    <div class="hero-bg" style={`background-image: linear-gradient(180deg, rgba(20,45,32,0.70) 0%, rgba(20,45,32,0.85) 100%), url(${optimizedHero.src})`}></div>
+    <div class="hero-bg" style={`--hero-image-desktop: url("${optimizedHero.src}"); --hero-image-mobile: url("${optimizedHeroMobile.src}");`}></div>
     <div class="hero-content">
       <span class="hero-badge">MATERUNI VILLAGE · KILIMANJARO · TANZANIA</span>
       <h1 id="hero-heading">Discover Materuni Through Local Eyes.</h1>
@@ -1896,4 +1898,6 @@ const faqs = [
   .public-shell .boutique-card:hover { transform: none; }
 }
 
+.hero-bg{background-image:linear-gradient(180deg,rgba(20,45,32,.70) 0%,rgba(20,45,32,.85) 100%),var(--hero-image-desktop)}
+@media(max-width:768px){.hero-bg{background-image:linear-gradient(180deg,rgba(20,45,32,.70) 0%,rgba(20,45,32,.85) 100%),var(--hero-image-mobile);background-position:center 38%}}
 </style>
