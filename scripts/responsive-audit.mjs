@@ -146,23 +146,32 @@ async function audit(page, route, viewport) {
   }
 
   if (viewport.width < 900) {
-    if (!metrics.campingVisible) {
-      failures.push(`${label}: /camping link not rendered in the header at mobile width`);
-    }
-    // Mobile menu: the burger must exist and toggle the panel.
+    // Mobile: the primary nav is collapsed until the burger is toggled, so the
+    // menu must be opened BEFORE asserting that /camping is reachable.
     const toggle = page.locator(".site-header [aria-controls], .site-header .nav-toggle, .site-header .menu-toggle").first();
     if (await toggle.count()) {
       await toggle.click({ timeout: 5000 }).catch(() => {});
-      await page.waitForTimeout(150);
-      const opened = await page.evaluate(() => {
+      await page.waitForTimeout(200);
+      const mobile = await page.evaluate(() => {
         const panel = document.querySelector(".site-header nav, .site-header .nav-links, .site-header .mobile-menu");
-        if (!panel) return null;
+        if (!panel) return { opened: null, camping: false };
         const rect = panel.getBoundingClientRect();
-        return rect.height > 0 && rect.width > 0;
+        const link = panel.querySelector('a[href="/camping"]');
+        const linkRect = link ? link.getBoundingClientRect() : null;
+        return {
+          opened: rect.height > 0 && rect.width > 0,
+          camping: !!linkRect && linkRect.width > 0 && linkRect.height > 0,
+        };
       });
-      if (opened === false) failures.push(`${label}: mobile menu did not open after clicking the toggle`);
+      if (mobile.opened === null) {
+        notes.push(`${label}: no nav panel matched the mobile panel selector list`);
+      } else {
+        if (mobile.opened === false) failures.push(`${label}: mobile menu did not open after clicking the toggle`);
+        if (!mobile.camping) failures.push(`${label}: /camping link not reachable inside the opened mobile menu`);
+      }
       await page.keyboard.press("Escape").catch(() => {});
-    } else {
+      await page.waitForTimeout(120);
+    } else if (!metrics.campingVisible) {
       notes.push(`${label}: no mobile menu toggle matched the selector list (menu may be always-visible)`);
     }
   } else if (!metrics.campingVisible) {
