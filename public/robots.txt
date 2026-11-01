@@ -29,7 +29,6 @@ Disallow: /api/
 
 # Prevent crawl waste and infinite parameter / session space
 Disallow: /*?*source=
-Disallow: /*?*lang=
 Disallow: /*?*preview=
 Disallow: /*?*token=
 Disallow: /*?*session=
