@@ -21,6 +21,13 @@ jobs:
         with:
           node-version: 22
       - run: npm install --no-audit --no-fund
+      - name: Export generated dependency lockfile for review
+        uses: actions/upload-artifact@v4
+        with:
+          name: dependency-lockfile-review
+          path: package-lock.json
+          if-no-files-found: error
+          retention-days: 1
       - name: Build, type-check and run website quality gate
         env:
           PUBLIC_SUPABASE_URL: https://sskmzswoeljxwojcszta.supabase.co
