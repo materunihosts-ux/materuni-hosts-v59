@@ -2319,3 +2319,18 @@ body.admin-shell .admin-main .button{min-height:44px}
   .experience-card .price{white-space:normal;font-size:26px;line-height:1.15}
   .experience-card .price small{text-align:left}
 }
+
+/* Skip link — single authoritative rule set.
+   Earlier duplicates (transform-based reveal with a transition, absolute
+   top:-60px variants) could leave the link off-screen on keyboard focus. */
+.skip-link{
+  position:fixed;left:16px;top:12px;z-index:1200;
+  display:inline-block;padding:11px 18px;
+  background:var(--cream);color:var(--forest);
+  border:2px solid var(--gold);border-radius:8px;
+  font-family:"Source Sans 3",Arial,sans-serif;font-weight:700;
+  text-decoration:none;transform:translateY(calc(-100% - 28px));
+}
+.skip-link:focus,.skip-link:focus-visible{
+  transform:none;outline:3px solid var(--gold);outline-offset:3px;
+}
