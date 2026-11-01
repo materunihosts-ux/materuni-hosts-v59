@@ -38,11 +38,14 @@
 <script is:inline>
 (() => {
   const key = "materuni-cookie-consent-v1";
-  // Queue conversion-friendly events for the consent-gated GTM container.
+  // Analytics events are queued only after the visitor has explicitly opted in.
   // No guest names, emails, phone numbers or booking references are sent.
   document.addEventListener("click", (event) => {
     const link = event.target instanceof Element ? event.target.closest('a[href*="wa.me"]') : null;
     if (!link) return;
+    let consent = null;
+    try { consent = JSON.parse(localStorage.getItem(key) || "null"); } catch {}
+    if (consent?.analytics !== true || window.__materuniGtmLoaded !== true) return;
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({ event: "whatsapp_click", link_url: "https://wa.me/" });
   });
@@ -64,7 +67,8 @@
     document.head.appendChild(script);
   };
   const apply = (choice) => {
-    localStorage.setItem(key, JSON.stringify({ analytics: !!choice.analytics, savedAt: new Date().toISOString() }));
+    saved = { analytics: !!choice.analytics, savedAt: new Date().toISOString() };
+    localStorage.setItem(key, JSON.stringify(saved));
     banner.hidden = true;
     if (choice.analytics) loadAnalytics();
   };
