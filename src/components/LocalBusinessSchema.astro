@@ -1,80 +1,35 @@
----
 const businessId = "https://materunihosts.com/#localbusiness";
-const campgroundId = "https://materunihosts.com/#campground";
+const overnightServiceId = "https://materunihosts.com/#overnight-village-experience";
 const waterfallId = "https://materunihosts.com/#materuni-waterfall";
 const graph = {
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": "LocalBusiness",
-      "@id": businessId,
-      "name": "Materuni Hosts",
-      "url": "https://materunihosts.com/",
-      "image": "https://materunihosts.com/materuni-hosts-logo-round.svg",
-      "description": "Locally hosted experiences in Materuni Village near Moshi, including guided waterfall walks, Chagga coffee traditions, cultural village visits, traditional cooking, nearby day trips and optional overnight stays.",
-      "telephone": "+255612068540",
-      "email": "hello@materunihosts.com",
-      "sameAs": [
-        "https://www.tripadvisor.com/34765809",
-        "https://g.page/r/CXy6M_Suiip9EBM/review",
-        "https://www.facebook.com/share/1VTNWPbqcc/"
-      ],
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": -3.2505,
-        "longitude": 37.3912
-      },
-      "priceRange": "$$ - $$$",
-      "currenciesAccepted": "USD, TZS, EUR",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Materuni Village",
-        "addressRegion": "Kilimanjaro",
-        "addressCountry": "TZ"
-      },
-      "areaServed": {
-        "@type": "Place",
-        "name": "Materuni Village, Moshi, Kilimanjaro, Tanzania"
-      }
-    },
-    {
-      "@type": "Campground",
-      "@id": campgroundId,
-      "name": "Materuni Hosts Overnight Camping",
-      "url": "https://materunihosts.com/camping",
-      "description": "An overnight village camping experience in Materuni with local hosting, meals and time to discover Chagga culture. Confirm the camping setup and facilities with the host before booking.",
-      "parentOrganization": { "@id": businessId },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": -3.2505,
-        "longitude": 37.3912
-      },
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Materuni Village",
-        "addressRegion": "Kilimanjaro",
-        "addressCountry": "TZ"
-      }
-    },
-    {
       "@type": "TouristAttraction",
       "@id": waterfallId,
       "name": "Materuni Waterfall",
       "url": "https://materunihosts.com/materuni-waterfall-tour",
-      "description": "Materuni Waterfall is a forest waterfall visited on guided walks from Materuni Village near Moshi, Tanzania.",
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": -3.2505,
-        "longitude": 37.3912
-      },
-      "isAccessibleForFree": false,
-      "touristType": ["EcoTourism", "CulturalTourism", "NatureLovers"],
+      "description": "Materuni Waterfall is a natural feature visited on locally hosted walks from Materuni Village near Moshi, Tanzania.",
+      "touristType": ["Nature lovers", "Cultural travellers"],
       "address": {
         "@type": "PostalAddress",
         "addressLocality": "Materuni Village",
         "addressRegion": "Kilimanjaro",
         "addressCountry": "TZ"
       }
+    },
+    {
+      "@type": "Service",
+      "@id": overnightServiceId,
+      "name": "Materuni Overnight Village Experience",
+      "serviceType": "Overnight village experience",
+      "description": "An overnight village experience in Materuni. Accommodation arrangements, meals and activities are confirmed with the local host before booking.",
+      "provider": { "@id": businessId },
+      "areaServed": {
+        "@type": "Place",
+        "name": "Materuni Village, Moshi, Kilimanjaro, Tanzania"
+      },
+      "url": "https://materunihosts.com/camping"
     }
   ]
 };
