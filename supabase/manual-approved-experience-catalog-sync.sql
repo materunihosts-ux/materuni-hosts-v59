@@ -72,4 +72,41 @@ where experience_key in (
 )
 order by sort_order;
 
+-- Synchronize legacy public-site fallback values only when all expected keys exist.
+do $
+declare
+  matched_count integer;
+  updated_count integer;
+begin
+  select count(*) into matched_count
+  from public.site_content
+  where id in ('waterfall_price','coffee_price','cooking_price','culturalday_price','camping_price','ultimate_price');
+
+  if matched_count <> 6 then
+    raise exception 'Expected 6 legacy site_content price keys, found %; catalogue transaction rolled back.', matched_count;
+  end if;
+
+  update public.site_content
+  set content = case id
+    when 'waterfall_price' then '40'
+    when 'coffee_price' then '36'
+    when 'cooking_price' then '49'
+    when 'culturalday_price' then '52'
+    when 'camping_price' then '90'
+    when 'ultimate_price' then ''
+    else content
+  end,
+  updated_at = now()
+  where id in ('waterfall_price','coffee_price','cooking_price','culturalday_price','camping_price','ultimate_price');
+
+  get diagnostics updated_count = row_count;
+  if updated_count <> 6 then
+    raise exception 'Expected to update 6 legacy site_content price keys, updated %; transaction rolled back.', updated_count;
+  end if;
+end $;
+
+select id, content from public.site_content
+where id in ('waterfall_price','coffee_price','cooking_price','culturalday_price','camping_price','ultimate_price')
+order by id;
+
 commit;
