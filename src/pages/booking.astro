@@ -70,7 +70,7 @@ const bookingPreview = `${supabaseUrl}/storage/v1/object/public/materuni-images/
       <li><strong>Changes to your visit:</strong> Contact your host to discuss date changes and any weather-related arrangements.</li>
       <li><strong>Cancellation:</strong> Ask your host to confirm the applicable cancellation terms before your booking is finalised.</li>
       <li><strong>Payment:</strong> Your host will confirm available payment methods and timing with your booking details.</li>
-      <li><strong>Private Transfers:</strong> Moshi Town (+$25/vehicle), KIA Airport (+$50/vehicle), Arusha (+$80/vehicle) up to 6 guests.</li>
+      <li><strong>Private Transfers:</strong> Transport is arranged separately. Your host will confirm pickup availability and any separate quote.</li>
     </ul>
   </div>
 
@@ -118,9 +118,9 @@ function updateBookingEstimate(){
  const transferPrice = 0;
  $("estimate-experience").textContent=option.textContent.split(" · $")[0];
  $("estimate-unit").textContent=money(unit*(1-discount));
- $("estimate-discount").textContent=guests>=4?"Group quote confirmed by host":"No group adjustment";
+ $("estimate-discount").textContent=guests>=4?"Ask host about group pricing":"No group adjustment";
  if ($("estimate-transfer")) {
-  $("estimate-transfer").textContent = pickup ? "Quote confirmed by host" : "Not requested";
+  $("estimate-transfer").textContent = pickup ? "To be confirmed by host" : "Not requested";
  }
  const expSubtotal = unit * guests * (1 - discount);
  $("estimate-total").textContent = guests >= 15 ? "Custom quotation" : money(expSubtotal + transferPrice);
