@@ -41,13 +41,20 @@
   // Analytics events are queued only after the visitor has explicitly opted in.
   // No guest names, emails, phone numbers or booking references are sent.
   document.addEventListener("click", (event) => {
-    const link = event.target instanceof Element ? event.target.closest('a[href*="wa.me"]') : null;
+    const link = event.target instanceof Element ? event.target.closest("a[href]") : null;
     if (!link) return;
+    const href = link.getAttribute("href") || "";
+    let eventName = "";
+    let safeLink = "";
+    if (/^https?:\/\/wa\.me\//i.test(href)) { eventName = "whatsapp_click"; safeLink = "https://wa.me/"; }
+    else if (/^tel:/i.test(href)) { eventName = "phone_click"; safeLink = "tel:"; }
+    else if (/^mailto:/i.test(href)) { eventName = "email_click"; safeLink = "mailto:"; }
+    if (!eventName) return;
     let consent = null;
     try { consent = JSON.parse(localStorage.getItem(key) || "null"); } catch {}
     if (consent?.analytics !== true || window.__materuniGtmLoaded !== true) return;
     window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({ event: "whatsapp_click", link_url: "https://wa.me/" });
+    window.dataLayer.push({ event: eventName, link_url: safeLink });
   });
   const banner = document.getElementById("cookie-consent");
   if (!banner) return;
