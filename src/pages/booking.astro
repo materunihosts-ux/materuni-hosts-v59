@@ -408,6 +408,14 @@ $("booking-form").addEventListener("submit",async e=>{
   if(!created?.booking_id)throw new Error("The booking response could not be verified. Please contact our host before submitting again.");
   try{const saved=JSON.parse(sessionStorage.getItem(attemptStorageKey)||"null");if(saved?.key===idempotencyKey)sessionStorage.removeItem(attemptStorageKey);}catch(storageError){}
   const reference=created.booking_reference||created.booking_id;
+  // Count a booking lead only after the database confirms the record and only with analytics consent.
+  try {
+   const consent=JSON.parse(localStorage.getItem("materuni-cookie-consent-v1")||"null");
+   if(consent?.analytics===true&&window.__materuniGtmLoaded===true){
+    window.dataLayer=window.dataLayer||[];
+    window.dataLayer.push({event:"booking_request_success",conversion_type:"lead",experience_name:experience,guest_count:guestCount,request_status:"pending_confirmation"});
+   }
+  }catch(analyticsError){}
   let notice="";
   try{
    const notificationResponse=await fetch(url+"/functions/v1/booking-notifications",{
@@ -426,9 +434,6 @@ $("booking-form").addEventListener("submit",async e=>{
    notice=" Your request is saved, but automatic notifications could not be confirmed. Our host can verify it using your reference.";
   }
   showFeedback("Booking request received — reference: "+reference+". Your request is awaiting host confirmation; it is not yet a confirmed reservation and no payment has been taken."+notice,notice?"warning":"success");
-  // A booking request is a lead, not a confirmed or paid reservation.
-  window.dataLayer = window.dataLayer || [];
-  window.dataLayer.push({event:"booking_request_submitted",conversion_type:"lead",experience_name:experience,guest_count:guestCount,request_status:"pending_confirmation"});
   $("booking-form").reset();
   updateBookingEstimate();
   $("date").min=tanzaniaToday();
