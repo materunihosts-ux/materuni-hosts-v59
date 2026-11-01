@@ -211,10 +211,25 @@ walk(root);
 for (const file of htmlFiles) {
   const html = read(file);
   const relative = path.relative(root, file);
-  const isRedirectRoute = relative === "about/index.html" || relative === "materuni-camping/index.html";
-  if (isRedirectRoute) {
-    if (!/http-equiv/i.test(html) || !/refresh/i.test(html)) fail(relative + ": legacy About URL must redirect to /about-us");
-    else pass(relative + ": legacy About URL redirects to the canonical About Us page");
+  const redirectTargets = {
+    "about/index.html": "/about-us",
+    "materuni-camping/index.html": "/camping"
+  };
+  if (Object.hasOwn(redirectTargets, relative)) {
+    const vercelConfigPath = path.resolve("vercel.json");
+    let redirectConfigured = false;
+    if (fs.existsSync(vercelConfigPath)) {
+      try {
+        const config = JSON.parse(read(vercelConfigPath));
+        redirectConfigured = (config.redirects || []).some((item) =>
+          item.source === "/" + relative.replace(/\/index\.html$/, "") &&
+          item.destination === redirectTargets[relative] &&
+          item.permanent === true
+        );
+      } catch {}
+    }
+    if (!redirectConfigured) fail(relative + ": legacy route must have a permanent Vercel redirect to " + redirectTargets[relative]);
+    else pass(relative + ": permanent Vercel redirect targets " + redirectTargets[relative]);
     continue;
   }
   if (!/<title>\s*[^<]+<\/title>/i.test(html)) fail(relative + ": missing page title");
