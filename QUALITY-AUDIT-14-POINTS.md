@@ -1,36 +1,77 @@
-# Materuni Hosts — 14-point technical quality audit
+# Materuni Hosts — International Standards Website Audit (20 Points)
 
-Branch: `quality/14-point-hardening`
-Base branch: `main`
-Deployment: deliberately deferred.
+**Branch:** `quality/14-point-hardening`  
+**Base:** `main`  
+**Deployment:** deliberately deferred. No production deploy, DNS change, CDN activation, Supabase migration or Edge Function deployment is included in this work.
 
-## Status and findings
+This is an implementation and release-readiness audit, not a legal opinion, penetration-test certificate, WCAG conformance certificate or hosting-provider attestation. A source-code check cannot prove live service behaviour.
 
-1. **Page speed / Core Web Vitals — Partially present.** Astro image optimization exists for the homepage hero. Removed the Cormorant webfont download, retained Manrope and a system serif fallback, and added responsive media defaults. Still requires real mobile/desktop Lighthouse and field-data review of LCP, INP and CLS. A universal two-second guarantee is not a valid CWV promise.
-2. **Mobile-first responsiveness — Partially present.** Existing 850px/560px breakpoints cover the main shell. Added media overflow protection. Every route, admin table, booking form and dialog still needs testing at 320, 360, 390, 768, 1024 and 1440px.
-3. **Navigation / three-click discoverability — Partially present.** Shared navigation, a labelled landmark, menu expanded state, Escape handling and focus return exist. Still test real visitor tasks: find experience, inclusions, price, location, availability, terms and contact.
-4. **SSL / HTTPS — External verification required.** Canonical URLs use HTTPS. Verify certificate chain, renewal, HTTP redirect, HSTS, mixed content and TLS on the actual domain; source code cannot certify this.
-5. **GDPR / CCPA / cookie consent — Partially present.** Existing consent separates accept/reject and optional analytics; GTM loads only after analytics opt-in. Fixed hidden UI display behavior and preference synchronization. Legal review is still required for controller identity, lawful basis, retention, data-subject requests, processors, international transfers, CCPA applicability and consent records. Do not claim certification.
-6. **Technical SEO / schema — Partially present.** robots.txt, sitemap, canonical metadata and JSON-LD exist. Removed hreflang query alternates that were not stable translated landing pages and removed the robots rule blocking lang query variants, allowing canonicalization to be observed. Add reciprocal hreflang only after stable localized URLs and translated metadata/content exist. Validate every sitemap URL and schema externally.
-7. **WCAG 2.1 AA — Partially present.** Added visible keyboard focus, skip-link focus styling, responsive media defaults and reduced-motion support. Manual keyboard, screen-reader, zoom/reflow, contrast, form-error, heading-order and touch-target testing is still required. Automated tests cannot certify WCAG.
-8. **Cross-browser — External verification required.** Test Chrome, Safari/iOS, Firefox, Edge and Android Chrome, including navigation, language selector, forms, storage, media and booking.
-9. **Global CDN / edge caching — External verification required.** No Cloudflare or global CDN configuration is certified by this source audit. Verify DNS/proxy, cache rules, immutable static assets, HTML cache policy, Brotli, image delivery, purge and origin protection with the real provider. Do not cache private/admin/booking responses publicly.
-10. **International tax / card fraud — Not implemented and not currently evidenced as needed.** Current booking terms say card payment is not available on the website; the flow is a booking enquiry. Do not invent VAT rules or claim compliance. Before online payments, confirm Tanzania and destination-market tax obligations, provider/merchant-of-record coverage, currency display, receipts, refunds, 3-D Secure/SCA where applicable, PCI scope and fraud/chargeback controls.
-11. **Error tracking / uptime — Partially present.** CI build checks exist, but they are not production uptime or error monitoring. Configure monitoring and alerts with privacy-safe filtering, recipients, escalation, retention and service targets. Never send booking PII or payment details to telemetry.
-12. **AI integration quality — Partially remediated.** The guest concierge now reads active package names and prices from `experience_catalog` rather than relying only on retired hard-coded prices; multilingual fallback prices were aligned to the active catalogue and a CI quality check guards against regressions. Still test prompt-injection resistance, grounded availability, escalation, multilingual quality, latency, cost limits, data handling and prevention of admin/database disclosure.
-13. **Green hosting — External verification required.** Hosting energy mix and data-centre sustainability cannot be inferred from Astro source. Verify provider disclosures before publishing environmental claims.
-14. **AI scraping / intellectual property — Partially present.** robots.txt expresses crawler preferences; it is not access control and cannot prevent scraping. Use provider WAF/rate limits for abuse, protect admin/API with authorization, and retain original image/font licence records. Do not block normal search crawlers or claim robots.txt protects copyright.
+## UI/UX and performance
 
-## Live service audit findings (Supabase, 1 Nov 2026)\n\n- Supabase security advisors report six RLS-enabled internal tables with no direct policies (`ai_conversations`, `ai_messages`, `booking_idempotency`, `guest_chat_rate_limits`, `guest_profiles`, `notification_logs`). This may be intentional because the Edge Functions access them using server credentials; verify that no browser role has table privileges before changing policies.\n- The advisor also flags one anonymous-executable `SECURITY DEFINER` booking RPC and 16 authenticated-executable `SECURITY DEFINER` functions. The booking RPC is part of the public booking workflow; reviewed examples `admin_cancel_booking` and `is_materuni_admin` check membership in `admin_users`, but every flagged function still needs individual code review. Do not blindly revoke grants or convert these functions because it could break booking/admin workflows.\n- Supabase Auth leaked-password protection is disabled and requires an Auth dashboard/configuration change.\n- Performance advisors list 24 unused indexes. These are informational and should not be dropped without workload evidence.\n- The active experience catalogue contains six enabled experiences at $40, $36, $49, $52, $58 and $90 per person; the concierge had previously been quoting retired $65–$135 package prices. This has now been corrected in branch source and guarded by CI.\n\n## Required verification before production
+1. **Page speed / Core Web Vitals — SOURCE IMPROVEMENTS MADE; FIELD TARGET UNVERIFIED.** Homepage hero output reduced to 1280×800 WebP quality 72; unused Cormorant webfont request removed; responsive media overflow protections retained. The target of a two-second load is not guaranteed. Still required: Lighthouse mobile and desktop on the deployed site, LCP/INP/CLS review, image waterfall, cache and real-user field data. Aim for Google's CWV good thresholds (LCP ≤2.5s, INP ≤200ms, CLS ≤0.1 at the 75th percentile), not a blanket promise for every visitor.
+2. **Mobile responsiveness — SOURCE BASELINE PRESENT; DEVICE TEST PENDING.** Main shell breakpoints and overflow protection exist. Test public pages, booking flow, chat, cookie controls and admin tables at 320, 360, 390, 768, 1024 and 1440 CSS pixels, including zoom and touch.
+3. **Intuitive navigation / three-click discoverability — PARTLY PRESENT.** Shared navigation, accessible menu state, Escape handling, focus return and direct booking CTA exist. Task-based audit remains for finding experience details, inclusions, price, location, availability, cancellation terms and contact within three clicks.
+4. **Cross-browser compatibility — NOT VERIFIED.** Run functional checks on current Chrome, Safari/iOS, Firefox, Edge and Android Chrome. Include forms, local/session storage, date inputs, menus, language selection, consent and concierge.
+5. **Cross-border CDN — PROVIDER CONFIGURATION REQUIRED.** Source has long-lived immutable caching for versioned static assets in the existing hosting configuration. No Cloudflare/AWS global CDN, DNS proxy, edge locations, Brotli, origin shielding or geographic latency has been independently verified. Do not publicly cache admin, booking, API or guest-specific responses.
 
-- [ ] `npm install` succeeds using the committed lockfile.
-- [ ] `npm run check` passes.
-- [ ] `npm run build` passes, including the quality gate.
-- [ ] Lighthouse mobile/desktop reports are saved; review field CWV when available.
-- [ ] Responsive, keyboard, screen-reader and cross-browser tests pass.
-- [ ] Consent test in a clean profile: no GTM before consent; reject stays rejected; accept loads analytics; settings reopen and can be changed.
-- [ ] Sitemap URLs resolve to intended canonical pages; no private/test pages are indexed.
-- [ ] HTTPS, redirects, security headers, CDN/cache, uptime and error alerts are verified against the live domain.
-- [ ] Booking, admin and AI flows pass end-to-end tests using test data; no personal data appears in telemetry.
+## Security and compliance
 
-**Release state: NOT DEPLOYED and NOT CERTIFIED.** This branch contains source-level remediations and requires all verification gates above.
+6. **SSL/HTTPS — CONFIGURATION PRESENT; LIVE TLS UNVERIFIED.** Canonical URLs use HTTPS and the existing hosting configuration specifies HSTS. Verify certificate chain/renewal, HTTP→HTTPS redirect, www/apex consistency, mixed content, TLS protocol and HSTS behaviour on the actual domain.
+7. **Privacy / GDPR / CCPA / cookie consent — CODE IMPROVED; LEGAL REVIEW REQUIRED.** Optional GTM analytics are gated behind consent; accept/reject/settings and withdrawal controls are present; privacy notice now explains rights, provider processing, international transfers, retention approach and how to reopen settings. Applicability, lawful basis, controller details, processor agreements, retention schedule, DSAR operations, CCPA/CPRA sale/share definitions and transfer mechanisms require a qualified privacy review. No compliance certification is claimed.
+8. **Legal terms, copyright and terms of use — CONTENT BASELINE ADDED; LAWYER REVIEW REQUIRED.** Booking terms now include website content/copyright, third-party service and applicable-law wording. Verify every operational promise, refund/cancellation rule, tax statement and business identity with the owner and Tanzanian legal counsel before publication as a binding contract. Third-party photographs, fonts, logos and media need a maintained licence/permission register.
+9. **Penetration testing / VAPT — NOT PERFORMED.** No active penetration test was conducted. Arrange an authorised scoped test before accepting online payments or sensitive documents. Include OWASP ASVS/WSTG coverage for authentication, access control, booking RPCs, Supabase RLS, Edge Functions, rate limits, injection, secrets, storage and admin. Fix findings and retest; do not describe CI or an advisor scan as a pentest.
+10. **Disaster recovery / backup — NOT VERIFIED.** Confirm Supabase database backup/PITR entitlement and schedule, Storage object backup, retention, encryption, recovery credentials, RPO/RTO and restoration runbook. Perform a restore drill to a separate test project. A backup setting without a tested restore is not a recovery plan.
+
+## Globalization and fiscal
+
+11. **Language, currency and localization — PARTLY PRESENT.** Language selector supports English, Spanish, French and German with translation fallback/content support. Public prices are quoted in USD; TZS equivalent is confirmed manually at the prevailing rate. There is no verified automatic FX feed or full locale-aware date/number/currency switch for every component. Do not show stale exchange rates. Test translated metadata/content, date inputs, time zone and keyboard/screen-reader labels for each locale.
+12. **Tax and card-fraud compliance — NOT IMPLEMENTED / NOT CURRENTLY IN SCOPE.** Website currently accepts booking enquiries and does not collect card payments. No multi-country VAT/sales-tax engine, card gateway, 3-D Secure/SCA, PCI scope assessment, fraud scoring or chargeback workflow is evidenced. Before enabling card payments, determine tax nexus/obligations with an accountant and choose a regulated provider or merchant of record that supports the business, currencies, refunds and fraud controls.
+13. **API and third-party resilience — PARTLY PRESENT; FAILURE TESTS PENDING.** Concierge has a catalogue-grounded fallback and public social-link lookups have local fallbacks. Test Supabase, AI provider, email, WhatsApp and analytics outages, timeouts, retries, idempotency and user-visible error messages. Booking must never appear confirmed merely because a provider timed out; no private data should be exposed in error output.
+
+## SEO and analytics
+
+14. **Technical SEO — SOURCE BASELINE PRESENT; LIVE CRAWL PENDING.** Sitemap, robots.txt, canonical metadata, page metadata and TourOperator/WebPage/Breadcrumb JSON-LD exist. Validate every sitemap URL, redirects, status codes, canonical destinations and structured data with Search Console/Rich Results Test after deployment. Do not add hreflang until stable translated URLs with genuinely translated content and reciprocal tags exist.
+15. **WCAG 2.1 AA — PARTIAL SOURCE SUPPORT; CONFORMANCE NOT VERIFIED.** Skip link, visible focus, semantic landmarks, menu states, alt-text quality gate and reduced-motion handling exist. Still perform axe/WAVE plus manual keyboard-only, screen-reader, 200–400% zoom/reflow, contrast, form error, focus order, heading hierarchy, touch-target and video/audio checks. Automated scans alone cannot certify AA.
+16. **Analytics cleanliness / bot filtering — PARTLY PRESENT.** Optional GTM loads only after analytics consent, and WhatsApp click events are gated. GA4's known-bot handling is not equivalent to comprehensive spam filtering; no custom server-side bot filtering or internal-traffic exclusion has been verified. Configure GA4 internal traffic/developer filters and review suspicious referrals without blocking legitimate search crawlers.
+
+## Modern technology and development
+
+17. **AI integration — LIVE CATALOGUE GROUNDING ADDED; SAFETY TESTS PENDING.** Concierge reads active experience names and prices from Supabase catalogue and has current fallback prices. Test prompt injection, hallucinated availability, privacy leakage, language quality, escalation to a human, latency, provider failure and cost/rate limits. It must not expose admin data or claim a booking is confirmed without the booking system.
+18. **AI scraping / IP protection — ROBOTS PREFERENCES ADDED; NOT A TECHNICAL BLOCK.** robots.txt now asks named AI training crawlers not to fetch the site, while leaving ordinary search crawlers available. This is voluntary and can be ignored. Actual abuse protection needs provider WAF/bot management, rate limits, origin/API access controls and monitoring. Copyright notices and licence records support rights management but cannot prevent copying.
+19. **Green hosting — EVIDENCE REQUIRED.** No verified hosting-provider renewable-energy or net-zero evidence has been supplied. Check the actual hosting and database providers' current sustainability disclosures, region and methodology before making an environmental claim.
+20. **CI/CD quality pipeline — BUILD GATES PRESENT; RELEASE PIPELINE NOT FULLY VERIFIED.** GitHub Actions run Astro type-check/build, custom SEO/accessibility/content checks and a high-severity npm audit threshold; the build workflow packages a static artifact. Latest branch runs must pass. The repository currently has no committed npm lockfile, so dependency installs are not fully reproducible. Add and commit a reviewed lockfile, use `npm ci`, pin all third-party Actions to immutable SHAs, and require green checks/review before merge. Deployment remains intentionally deferred.
+
+## Changes completed in this branch
+
+- Optimised homepage hero image dimensions/quality and removed an unused font download.
+- Added source-level responsive, keyboard-focus and reduced-motion protections.
+- Corrected consent withdrawal and gated analytics conversion events behind opt-in.
+- Updated concierge to use active Supabase experience catalogue and aligned fallback prices.
+- Added AI-training crawler preferences to robots.txt while retaining ordinary search crawl access.
+- Added `/.well-known/security.txt` responsible disclosure contact.
+- Expanded privacy notice and added copyright / third-party-use / applicable-law sections to website terms.
+- Extended automated quality gate for AI crawler directives, security.txt, privacy disclosures, copyright notice and configured security headers.
+
+## Live Supabase findings recorded 1 Nov 2026
+
+- Security advisors reported six RLS-enabled internal tables without direct policies: `ai_conversations`, `ai_messages`, `booking_idempotency`, `guest_chat_rate_limits`, `guest_profiles`, `notification_logs`. Confirm browser roles have no table grants before changing policies; Edge Functions may intentionally use server credentials.
+- Advisor flags one anonymous-executable SECURITY DEFINER booking RPC and 16 authenticated-executable SECURITY DEFINER functions. The public booking RPC and admin operations may be intentional; individually inspect function bodies and grants before modifying them.
+- Supabase Auth leaked-password protection was disabled at the time of review; enable it in project Auth settings and test sign-in/reset behaviour.
+- Performance advisors listed 24 unused indexes; do not remove them without workload evidence.
+- No migrations or Edge Function deployments were applied during this branch work.
+
+## Release gates — must be completed before production
+
+- [ ] Latest CI build, type-check, quality gate and dependency audit pass on the final branch SHA.
+- [ ] Commit a package lockfile and switch CI to deterministic `npm ci`.
+- [ ] Lighthouse mobile/desktop and real-device CWV review.
+- [ ] Responsive, cross-browser, WCAG keyboard/screen-reader/contrast tests.
+- [ ] Clean-profile cookie tests: no GTM before opt-in; reject remains rejected; accept loads analytics; reopen and withdraw works.
+- [ ] Live HTTPS/TLS, redirects, headers, CDN/cache and bot/WAF configuration verified.
+- [ ] Sitemap/canonical/schema and Search Console crawl validation.
+- [ ] Authorised VAPT, Supabase function/RLS review, Auth leaked-password protection and backup restore drill.
+- [ ] Legal review of privacy, terms, intellectual-property permissions and tax/payment model.
+- [ ] API outage tests, AI safety tests, uptime/error monitoring, green-hosting evidence and analytics spam/internal traffic review.
+
+**Release state: NOT DEPLOYED. NOT SECURITY-TESTED. NOT LEGALLY CERTIFIED. NOT WCAG-CERTIFIED.**  
+The code branch can be build-verified; external infrastructure, legal and human testing gates remain explicit and must not be represented as complete.
