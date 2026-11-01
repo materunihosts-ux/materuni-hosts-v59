@@ -92,7 +92,7 @@ const bookingPreview = `${supabaseUrl}/storage/v1/object/public/materuni-images/
  <p>Group arrangements and private transfers are quoted separately. Share your group size and pickup point so your host can confirm the current details.</p>
 </div>
 <form id="booking-form" class="form-grid">
-<div class="field full"><label for="experience" data-i18n="booking_experience_label">Choose your experience *</label><select id="experience" required><option value="">Loading experiences…</option></select></div>
+<div class="field full"><label for="experience" data-i18n="booking_experience_label">Choose your experience *</label><select id="experience" required><option value="">Loading experiences…</option></select><small class="muted booking-direct-fallback" id="experience-fallback">Prefer to arrange directly? <a href="https://wa.me/255612068540" target="_blank" rel="noopener">Message your host on WhatsApp</a> or email <a href="mailto:hello@materunihosts.com">hello@materunihosts.com</a>.</small></div>
 <div class="field"><label for="date" data-i18n="booking_date_label">Preferred date *</label><input id="date" type="date" required><small class="muted" id="date-availability-hint">Online times are shown only for dates with published availability. If your preferred date has no times, contact us and a local host can check the options.</small></div><div class="field"><label for="slot" data-i18n="booking_slot_label">Available time *</label><select id="slot" required disabled><option value="">Choose an experience and date first</option></select><small id="availability-status" class="availability-status" role="status" aria-live="polite">Choose an experience and date to see live spaces.</small><button class="availability-refresh" id="refresh-availability" type="button" disabled data-i18n="booking_refresh">Refresh available times</button></div>
 <div class="field"><label for="count" data-i18n="booking_guests_label">Number of guests *</label><input id="count" type="number" min="1" max="30" value="2" required></div><div class="field"><label for="name" data-i18n="booking_name_label">Full name *</label><input id="name" autocomplete="name" required></div>
 <div class="field"><label for="email" data-i18n="booking_email_label">Email address</label><input id="email" type="email" autocomplete="email"></div><div class="field"><label for="phone" data-i18n="booking_phone_label">WhatsApp / phone</label><input id="phone" type="tel" autocomplete="tel"><small class="muted" data-i18n="booking_contact_hint">Provide at least one contact method: email or phone.</small></div><div class="field"><label for="language" data-i18n="booking_language_label">Preferred language</label><select id="language"><option value="English">English</option><option value="Spanish">Español</option><option value="French">Français</option><option value="German">Deutsch</option></select></div>
@@ -106,6 +106,23 @@ const bookingPreview = `${supabaseUrl}/storage/v1/object/public/materuni-images/
 import { supabaseUrl as url, publishableKey as key } from "../lib/supabase-public";
 const headers={"apikey":key,"Authorization":"Bearer "+key,"Content-Type":"application/json"};
 const $=id=>document.getElementById(id);
+// A stalled network request must never leave the form in "Loading experiences…" forever.
+async function fetchWithTimeout(resource,options={},timeoutMs=12000){
+ const controller=new AbortController();
+ const timer=setTimeout(()=>controller.abort(),timeoutMs);
+ try {
+  return await fetch(resource,{...options,signal:controller.signal});
+ } catch(error){
+  if(error&&error.name==="AbortError"){
+   const timeout=new Error("The request timed out after "+Math.round(timeoutMs/1000)+" seconds.");
+   timeout.name="TimeoutError";
+   throw timeout;
+  }
+  throw error;
+ } finally {
+  clearTimeout(timer);
+ }
+}
 function updateBookingEstimate(){
  const select=$("experience"),count=Number($("count").value),option=select.selectedOptions[0];
  const panel=$("booking-estimate");
