@@ -66,10 +66,10 @@ begin
     inclusions = case experience_key
       when 'Waterfall & Chagga Culture' then '["Local guide","Materuni village and waterfall entrance fees","Traditional Chagga coffee experience and tasting","Local lunch","Drinking water"]'::jsonb
       when 'Traditional Coffee Experience' then '["Local guide","Materuni village and waterfall entrance fees","Hands-on traditional coffee making","Freshly prepared coffee tasting","Local lunch","Drinking water"]'::jsonb
-      when 'Traditional Chagga Cooking Class' then '["Local host-led cooking session","Materuni village experience as confirmed by host","Menu and ingredient details confirmed before booking"]'::jsonb
-      when 'Materuni & Moshi Town Tour' then '["Local Materuni host","Guided Moshi town visit","Town route and inclusions confirmed before booking"]'::jsonb
+      when 'Traditional Chagga Cooking Class' then '["Local guide","Materuni village and waterfall entrance fees","Traditional Chagga coffee experience","Local lunch","Drinking water","Hands-on Chagga cooking session","Menu and ingredient details confirmed before booking"]'::jsonb
+      when 'Materuni & Moshi Town Tour' then '["Local Materuni guide","Materuni village and waterfall entrance fees","Traditional Chagga coffee experience","Local lunch","Drinking water","Guided Moshi town visit","Town route and additional inclusions confirmed before booking"]'::jsonb
       when 'Materuni & Rau Forest Experience' then '["Local Materuni host","Materuni village and waterfall entrance fees","Rau Forest entrance fee included","Guided Rau Forest nature walk","Local lunch","Drinking water","Traditional coffee tasting"]'::jsonb
-      when 'Camping & Village Life' then '["Overnight village experience with local hosting","Accommodation type and arrangements confirmed by host","Meals and activities confirmed before booking"]'::jsonb
+      when 'Camping & Village Life' then '["Local guide","Materuni village and waterfall entrance fees","Traditional Chagga coffee experience","Local lunch","Drinking water","Overnight village experience with local hosting","Accommodation type, meals and activities confirmed by host"]'::jsonb
       else inclusions
     end,
     exclusions = '["Transport to and from the experience unless separately confirmed","Personal purchases and expenses","Tips and gratuities","Travel insurance","Additional food or drinks not listed under confirmed inclusions"]'::jsonb,
