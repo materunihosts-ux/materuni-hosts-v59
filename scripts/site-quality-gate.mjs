@@ -162,8 +162,8 @@ if (fs.existsSync(sitemapPath)) {
   for (const requiredPath of ["/", "/experiences", "/camping", "/day-trips", "/booking"]) {
     if (!sitemapPaths.has(requiredPath)) fail("Sitemap is missing an important public route: " + requiredPath);
   }
-  if (sitemapPaths.has("/camping") && sitemapPaths.has("/day-trips")) {
-    pass("Sitemap includes the flagship camping and day-trip landing pages");
+  if (sitemapPaths.has("/experiences") && sitemapPaths.has("/day-trips")) {
+    pass("Sitemap includes the all-experiences and day-trip landing pages without elevating camping above other experiences");
   }
 }
 
