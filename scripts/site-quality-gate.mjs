@@ -198,6 +198,17 @@ for (const file of sourceFiles) {
 }
 if (checkedImages) pass("Checked alt text, dimensions and loading/decoding hints on " + checkedImages + " public source images");
 
+// Cookie consent must gate analytics events and support withdrawal after opt-in.
+const consentPath = path.resolve("src/components/CookieConsent.astro");
+if (!fs.existsSync(consentPath)) fail("Cookie consent component is missing");
+else {
+  const consent = read(consentPath);
+  if (!consent.includes("!saved?.analytics") || !consent.includes("!window.__materuniGtmLoaded")) fail("Analytics conversion events must be blocked before valid opt-in");
+  else pass("Analytics conversion events are gated behind recorded opt-in");
+  if (!/analytics_storage:\s*"denied"/.test(consent) || !/typeof window\.gtag === "function"/.test(consent)) fail("Cookie preference withdrawal must revoke Google analytics consent");
+  else pass("Cookie preference withdrawal updates analytics consent to denied");
+}
+
 // Keep the guest concierge grounded in the live, active experience catalogue.
 const conciergePath = path.resolve("supabase/functions/guest-concierge/index.ts");
 if (!fs.existsSync(conciergePath)) fail("Guest concierge Edge Function source is missing");
