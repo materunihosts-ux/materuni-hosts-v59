@@ -2287,6 +2287,6 @@ body.admin-shell .admin-main .button{min-height:44px}
 }
 
  
-/* Contrast correction for small gold labels on light surfaces (WCAG AA). */
-.public-shell .page-hero .eyebrow,.public-shell .section-head .eyebrow{color:#76551f}
+/* WCAG AA contrast: dark gold on light surfaces, light gold on forest surfaces. */
+.public-shell .eyebrow{color:#76551f}
 .public-shell .hero .eyebrow,.public-shell .band .eyebrow{color:#e7c67c}
