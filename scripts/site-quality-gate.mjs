@@ -396,16 +396,16 @@ for (const [sourcePath, label] of [
 ]) {
   if (!fs.existsSync(sourcePath)) { fail("Missing " + label + " source for pricing checks"); continue; }
   const source = read(sourcePath);
-  if (/\\$(?:25|50|80)\\s*(?:\\/\\s*vehicle|per vehicle)/i.test(source)) fail(label + " must not publish unverified fixed transfer prices");
+  if (/\$(?:25|50|80)\s*(?:\/\s*vehicle|per vehicle)/i.test(source)) fail(label + " must not publish unverified fixed transfer prices");
   if (/guaranteed within 12h|100% free with zero upfront deposit/i.test(source)) fail(label + " must not publish unverified response-time or payment promises");
 }
-if (fs.existsSync(bookingSourcePath) && /transferPrice\\s*=|discount\\s*=\\s*guests>=/i.test(read(bookingSourcePath))) fail("Booking estimate must not calculate unverified transfer prices or fixed group-discount percentages");
+if (fs.existsSync(bookingSourcePath) && /transferPrice\s*=|discount\s*=\s*guests>=/i.test(read(bookingSourcePath))) fail("Booking estimate must not calculate unverified transfer prices or fixed group-discount percentages");
 else if (fs.existsSync(bookingSourcePath)) pass("Booking estimate requests host-confirmed transfer and group quotes instead of inventing prices");
 if (fs.existsSync(waterfallSourcePath) && read(waterfallSourcePath).includes('"price": "40.00"')) pass("Waterfall structured-data offer matches the current $40 catalogue price");
 else fail("Waterfall structured-data offer must match the current $40 catalogue price");
 if (fs.existsSync(accommodationSourcePath) && read(accommodationSourcePath).includes("is $90 per person")) pass("Overnight accommodation copy matches the current $90 catalogue price");
 else fail("Overnight accommodation copy must match the current $90 catalogue price");
-if (fs.existsSync(adminFaqSourcePath) && /\\(\\$75\\)|\\(\\$65\\)|\\(\\$85\\)|\\(\\$110\\)|\\(\\$135\\)/.test(read(adminFaqSourcePath))) fail("Admin FAQ defaults must not restore retired package prices");
+if (fs.existsSync(adminFaqSourcePath) && /\(\$75\)|\(\$65\)|\(\$85\)|\(\$110\)|\(\$135\)/.test(read(adminFaqSourcePath))) fail("Admin FAQ defaults must not restore retired package prices");
 else if (fs.existsSync(adminFaqSourcePath)) pass("Admin FAQ defaults no longer contain retired package prices");
 
 if (errors.length) {
