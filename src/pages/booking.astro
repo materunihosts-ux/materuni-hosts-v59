@@ -4,7 +4,7 @@ import { supabaseUrl } from "../lib/supabase-public";
 const bookingPreview = `${supabaseUrl}/storage/v1/object/public/materuni-images/hero_image/1791995544192-materuni-waterfall.jpg`;
 ---
 <SiteLayout title="Book Materuni Tours & Local Experiences | Materuni Hosts" description="Request a date for Materuni waterfall and village tours, Chagga coffee, cooking, Moshi day trips and nature walks near Moshi, Tanzania." preloadImage={bookingPreview}>
-<section class="page-hero"><span class="eyebrow">PLAN YOUR VISIT</span><h1 data-i18n="booking_page_title">Check availability before you book.</h1><p data-i18n="booking_page_intro">Choose your experience and preferred date. Available times are retrieved from our live Materuni Hosts calendar.</p></section>
+<section class="page-hero booking-page-hero"><span class="eyebrow">PLAN YOUR VISIT</span><h1 data-i18n="booking_page_title">Check availability before you book.</h1><p data-i18n="booking_page_intro">Choose your experience and preferred date. Available times are retrieved from our live Materuni Hosts calendar.</p></section>
 <style>
 .booking-trust-bar{display:flex;flex-wrap:wrap;justify-content:center;gap:12px 20px;padding:12px 16px;background:#FAF7F2;border:1px solid #E6DFD3;border-radius:12px;margin:0 0 20px;font-size:13px;font-weight:700;color:#1A3322}
 .booking-trust-bar span{display:inline-flex;align-items:center;gap:6px}
@@ -12,10 +12,216 @@ const bookingPreview = `${supabaseUrl}/storage/v1/object/public/materuni-images/
 .booking-terms-note strong{display:block;color:#1a3322;margin-bottom:6px}
 .booking-terms-note p{margin:6px 0 0}
 .booking-terms-note p+p{font-size:.92em;color:#55564f}
+
+/* Booking experience refinement */
+.public-shell .booking-page-hero {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: clamp(44px, 6vw, 70px) clamp(20px, 4vw, 56px) 20px;
+  text-align: left;
+}
+.public-shell .booking-page-hero h1 {
+  max-width: 780px;
+  margin: 12px 0;
+  font-size: clamp(36px, 5vw, 58px);
+  line-height: 1.05;
+  letter-spacing: -.025em;
+  text-wrap: balance;
+}
+.public-shell .booking-page-hero p {
+  max-width: 680px;
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.8;
+}
+.public-shell .booking-wrap {
+  width: min(1120px, 100%);
+  max-width: none;
+  margin: 0 auto;
+  padding: 28px clamp(16px, 3vw, 34px) 76px;
+}
+.public-shell .booking-panel {
+  padding: clamp(20px, 4vw, 42px);
+  border: 1px solid rgba(26,51,34,.12);
+  border-radius: 18px;
+  background: #fffdfa;
+  box-shadow: 0 18px 55px rgba(26,51,34,.075);
+}
+.public-shell .booking-trust-bar {
+  justify-content: flex-start;
+  gap: 10px;
+  padding: 0 0 22px;
+  margin: 0 0 18px;
+  border: 0;
+  border-bottom: 1px solid #e9e2d7;
+  border-radius: 0;
+  background: transparent;
+  color: #465448;
+  font-size: 11px;
+  font-weight: 700;
+}
+.public-shell .booking-trust-bar span {
+  min-height: 30px;
+  padding: 6px 10px;
+  border: 1px solid #e8e1d6;
+  border-radius: 999px;
+  background: #faf7f2;
+}
+.public-shell .booking-trust-bar a {
+  color: #294431 !important;
+  text-decoration: none !important;
+}
+.public-shell .manage-booking-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  background: #f5f0e7;
+}
+.public-shell .manage-panel {
+  border: 1px solid #d8c9ad !important;
+  border-radius: 14px !important;
+  box-shadow: 0 12px 30px rgba(26,51,34,.07) !important;
+}
+.public-shell .booking-estimate {
+  padding: clamp(18px, 3vw, 26px);
+  border: 1px solid #e4d8c5;
+  border-left: 4px solid #c5a059;
+  border-radius: 12px;
+  background: #f7f3eb;
+}
+.public-shell .booking-estimate-grid {
+  gap: 16px;
+}
+.public-shell .form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px 20px;
+}
+.public-shell .form-grid .field {
+  min-width: 0;
+  gap: 8px;
+}
+.public-shell .form-grid .field label {
+  color: #294431;
+  font-size: 11px;
+  line-height: 1.5;
+  letter-spacing: .025em;
+}
+.public-shell .form-grid .field input,
+.public-shell .form-grid .field select,
+.public-shell .form-grid .field textarea {
+  min-height: 48px;
+  padding: 12px 14px;
+  border: 1px solid #d8d4ca;
+  border-radius: 8px;
+  background: #fff;
+  color: #242421;
+  font: 500 14px/1.4 Manrope, sans-serif;
+  transition: border-color .18s ease, box-shadow .18s ease;
+}
+.public-shell .form-grid .field textarea {
+  min-height: 112px;
+  resize: vertical;
+}
+.public-shell .form-grid .field input:focus,
+.public-shell .form-grid .field select:focus,
+.public-shell .form-grid .field textarea:focus {
+  outline: 0;
+  border-color: #9a7842;
+  box-shadow: 0 0 0 3px rgba(197,160,89,.17);
+}
+.public-shell .form-grid .field small {
+  color: #6b746b;
+  font-size: 11px;
+  line-height: 1.6;
+}
+.public-shell .availability-status {
+  color: #5b675d;
+  font-size: 11px;
+  line-height: 1.55;
+}
+.public-shell .availability-refresh {
+  width: fit-content;
+  min-height: 34px;
+  padding: 7px 11px;
+  border: 1px solid #d9dfd7;
+  border-radius: 6px;
+  background: #f4f7f2;
+  color: #294431;
+  font: 700 11px Manrope, sans-serif;
+}
+.public-shell .booking-terms-note {
+  padding: 20px;
+  border: 1px solid #e5ddcf;
+  border-radius: 12px;
+  background: #faf7f2;
+  font-size: 13px;
+}
+.public-shell #booking-form #submit {
+  width: 100%;
+  min-height: 54px;
+  margin-top: 16px;
+  border-radius: 5px;
+  font-size: 12px;
+  letter-spacing: .04em;
+}
+.public-shell #booking-form #feedback {
+  margin: 10px 0 0;
+  font-size: 12px;
+  line-height: 1.65;
+}
+@media (max-width: 720px) {
+  .public-shell .booking-page-hero {
+    padding: 38px 18px 14px;
+  }
+  .public-shell .booking-page-hero h1 {
+    font-size: clamp(34px, 9vw, 43px);
+  }
+  .public-shell .booking-wrap {
+    padding: 18px 14px 58px;
+  }
+  .public-shell .booking-panel {
+    padding: 18px 16px;
+    border-radius: 14px;
+  }
+  .public-shell .booking-trust-bar {
+    gap: 8px;
+    padding-bottom: 16px;
+  }
+  .public-shell .booking-trust-bar span {
+    min-height: 28px;
+    padding: 5px 9px;
+    font-size: 10px;
+  }
+  .public-shell .form-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .public-shell .form-grid .field.full { grid-column: 1; }
+  .public-shell .booking-estimate-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .public-shell .booking-estimate-total {
+    grid-column: 1 / -1;
+    padding: 14px 0 0;
+    border-top: 1px solid #d8cbb7;
+    border-left: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .public-shell .form-grid .field input,
+  .public-shell .form-grid .field select,
+  .public-shell .form-grid .field textarea { transition: none; }
+}
+
 </style>
 <section class="booking-wrap"><div class="booking-panel">
 <div class="booking-trust-bar">
-  <span><a href="https://www.tripadvisor.com/34765809" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:underline">TripAdvisor Verified</a></span>
+  <span><a href="https://www.tripadvisor.com/34765809" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:underline">TripAdvisor listing</a></span>
   <span><a href="https://g.page/r/CXy6M_Suiip9EBM/review" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:underline">Google Reviews</a></span>
   <span>Direct contact with local hosts</span>
   <span>Clear booking details before confirmation</span>
@@ -65,12 +271,12 @@ const bookingPreview = `${supabaseUrl}/storage/v1/object/public/materuni-images/
   </div>
 
   <div style="background:#fff;border:1px solid #E6DFD3;border-radius:8px;padding:16px;margin-bottom:16px">
-    <strong style="display:block;color:#1A3322;font-size:13px;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">🌿 Booking Policies & Guarantees</strong>
+    <strong style="display:block;color:#1A3322;font-size:13px;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">Booking details & policies</strong>
     <ul style="margin:0;padding-left:18px;font-size:13px;line-height:1.7;color:#4F524D">
       <li><strong>Changes to your visit:</strong> Contact your host to discuss date changes and any weather-related arrangements.</li>
       <li><strong>Cancellation:</strong> Ask your host to confirm the applicable cancellation terms before your booking is finalised.</li>
       <li><strong>Payment:</strong> Your host will confirm available payment methods and timing with your booking details.</li>
-      <li><strong>Private Transfers:</strong> Moshi Town (+$25/vehicle), KIA Airport (+$50/vehicle), Arusha (+$80/vehicle) up to 6 guests.</li>
+      <li><strong>Private Transfers:</strong> Transport is arranged separately. Your host will confirm pickup availability and any separate quote.</li>
     </ul>
   </div>
 
@@ -84,8 +290,8 @@ const bookingPreview = `${supabaseUrl}/storage/v1/object/public/materuni-images/
  <div class="booking-estimate-heading"><span class="eyebrow" data-i18n="estimate_heading">YOUR EXPERIENCE SUMMARY</span><span class="booking-estimate-note" data-i18n="estimate_note">Indicative estimate</span></div>
  <div class="booking-estimate-grid">
   <div><span data-i18n="estimate_experience">Selected experience</span><strong id="estimate-experience">Choose an experience</strong></div>
-  <div><span>Price per guest after discount</span><strong id="estimate-unit">—</strong></div>
-  <div><span>Total group savings</span><strong id="estimate-discount">—</strong></div>
+  <div><span>Estimated price per guest</span><strong id="estimate-unit">—</strong></div>
+  <div><span>Group pricing</span><strong id="estimate-discount">—</strong></div>
   <div><span>Private transfer</span><strong id="estimate-transfer">None</strong></div>
   <div class="booking-estimate-total"><span data-i18n="estimate_total">Estimated group total</span><strong id="estimate-total">—</strong></div>
  </div>
@@ -96,7 +302,7 @@ const bookingPreview = `${supabaseUrl}/storage/v1/object/public/materuni-images/
 <div class="field"><label for="date" data-i18n="booking_date_label">Preferred date *</label><input id="date" type="date" required><small class="muted" id="date-availability-hint">Online times are shown only for dates with published availability. If your preferred date has no times, contact us and a local host can check the options.</small></div><div class="field"><label for="slot" data-i18n="booking_slot_label">Available time *</label><select id="slot" required disabled><option value="">Choose an experience and date first</option></select><small id="availability-status" class="availability-status" role="status" aria-live="polite">Choose an experience and date to see live spaces.</small><button class="availability-refresh" id="refresh-availability" type="button" disabled data-i18n="booking_refresh">Refresh available times</button></div>
 <div class="field"><label for="count" data-i18n="booking_guests_label">Number of guests *</label><input id="count" type="number" min="1" max="30" value="2" required></div><div class="field"><label for="name" data-i18n="booking_name_label">Full name *</label><input id="name" autocomplete="name" required></div>
 <div class="field"><label for="email" data-i18n="booking_email_label">Email address</label><input id="email" type="email" autocomplete="email"></div><div class="field"><label for="phone" data-i18n="booking_phone_label">WhatsApp / phone</label><input id="phone" type="tel" autocomplete="tel"><small class="muted" data-i18n="booking_contact_hint">Provide at least one contact method: email or phone.</small></div><div class="field"><label for="language" data-i18n="booking_language_label">Preferred language</label><select id="language"><option value="English">English</option><option value="Spanish">Español</option><option value="French">Français</option><option value="German">Deutsch</option></select></div>
-<div class="field"><label for="pickup-origin" data-i18n="booking_transfer_label">Private transfer request (optional)</label><select id="pickup-origin"><option value="" data-i18n="booking_transfer_none">No transfer / self-arranged</option><option value="Moshi" data-i18n="booking_transfer_moshi">Pickup from Moshi town (+$25 / vehicle · 45–60 mins)</option><option value="Kilimanjaro International Airport (KIA)" data-i18n="booking_transfer_kia">Pickup from Kilimanjaro Airport / KIA (+$50 / vehicle · 1.5–2 hours)</option><option value="Arusha" data-i18n="booking_transfer_arusha">Pickup from Arusha city (+$80 / vehicle · 2.5–3 hours)</option><option value="Other">Other location (custom quote confirmed by host)</option></select><small class="muted" data-i18n="booking_transfer_note">Priced per vehicle for up to 6 passengers with luggage. Door-to-door pickup from your hotel, lodge or flight arrival. Your host will confirm the exact driver name and vehicle details with your booking.</small></div><div class="field"><label for="pickup" data-i18n="booking_pickup_label">Hotel, address or flight details</label><input id="pickup" placeholder="Hotel name, flight number or meeting point…" data-i18n-placeholder="booking_pickup_placeholder"></div>
+<div class="field"><label for="pickup-origin" data-i18n="booking_transfer_label">Private transfer request (optional)</label><select id="pickup-origin"><option value="" data-i18n="booking_transfer_none">No transfer / self-arranged</option><option value="Moshi" data-i18n="booking_transfer_moshi">Pickup from Moshi town</option><option value="Kilimanjaro International Airport (KIA)" data-i18n="booking_transfer_kia">Pickup from Kilimanjaro Airport / KIA</option><option value="Arusha" data-i18n="booking_transfer_arusha">Pickup from Arusha city</option><option value="Other">Other location (custom quote confirmed by host)</option></select><small class="muted" data-i18n="booking_transfer_note">Transport is not included in experience prices. Share your pickup point and your host will confirm availability and any separate quote before booking.</small></div><div class="field"><label for="pickup" data-i18n="booking_pickup_label">Hotel, address or flight details</label><input id="pickup" placeholder="Hotel name, flight number or meeting point…" data-i18n-placeholder="booking_pickup_placeholder"></div>
 <div class="field full"><label for="notes" data-i18n="booking_notes_label">Special requests, dietary needs or accessibility notes</label><textarea id="notes" data-i18n-placeholder="booking_notes_placeholder"></textarea></div>
 <div class="field full"><div class="notice booking-terms-note" role="note"><strong data-i18n="booking_notice_title">Send a request — your host will confirm the details.</strong><p data-i18n="booking_notice">Sending this form submits a booking request; it does not confirm a reservation. Your host will contact you to discuss availability, itinerary, any transfer quote and payment instructions.</p><p data-i18n="booking_notice_contact">Cancellation terms, weather arrangements, available payment methods and any deposit requirements will be confirmed by your host before the booking is finalised.</p></div><button class="button" id="submit" type="submit" data-i18n="booking_submit_label">Send booking request</button><p id="feedback" aria-live="polite" class="muted"></p></div>
 </form></div></section>
@@ -112,15 +318,15 @@ function updateBookingEstimate(){
  if(!option||!option.value||!Number.isFinite(Number(option.dataset.price))||Number(option.dataset.price)<=0||!Number.isInteger(count)||count<1||count>30){panel.hidden=true;return}
  const unit=Number(option.dataset.price);
  const guests=count;
- const discount=guests>=10&&guests<=14?0.10:guests>=6&&guests<=9?0.08:guests>=4&&guests<=5?0.05:0;
+ const discount=0;
  const money=value=>new Intl.NumberFormat("en-US",{style:"currency",currency:"USD",minimumFractionDigits:2,maximumFractionDigits:2}).format(value);
  const pickup=$("pickup-origin")?.value;
- const transferPrice = pickup === "Moshi" ? 25 : pickup === "Kilimanjaro International Airport (KIA)" ? 50 : pickup === "Arusha" ? 80 : 0;
+ const transferPrice = 0;
  $("estimate-experience").textContent=option.textContent.split(" · $")[0];
  $("estimate-unit").textContent=money(unit*(1-discount));
- $("estimate-discount").textContent=guests>=15?"Custom group quote":discount?Math.round(discount*100)+"% off ("+money(unit*guests*discount)+" saved)": "No group discount";
+ $("estimate-discount").textContent=guests>=4?"Ask host about group pricing":"No group adjustment";
  if ($("estimate-transfer")) {
-  $("estimate-transfer").textContent = transferPrice > 0 ? (pickup.split(" (")[0] + " (+" + money(transferPrice) + ")") : (pickup === "Other" ? "Custom quote" : "None");
+  $("estimate-transfer").textContent = pickup ? "To be confirmed by host" : "Not requested";
  }
  const expSubtotal = unit * guests * (1 - discount);
  $("estimate-total").textContent = guests >= 15 ? "Custom quotation" : money(expSubtotal + transferPrice);
@@ -408,6 +614,13 @@ $("booking-form").addEventListener("submit",async e=>{
   if(!created?.booking_id)throw new Error("The booking response could not be verified. Please contact our host before submitting again.");
   try{const saved=JSON.parse(sessionStorage.getItem(attemptStorageKey)||"null");if(saved?.key===idempotencyKey)sessionStorage.removeItem(attemptStorageKey);}catch(storageError){}
   const reference=created.booking_reference||created.booking_id;
+  // Count a booking lead only after the database confirms the record and only with analytics consent.
+  try {
+   const consent=JSON.parse(localStorage.getItem("materuni-cookie-consent-v1")||"null");
+   if(consent?.analytics===true&&window.__materuniGtmLoaded===true){
+    if(typeof window.gtag==="function")window.gtag("event","booking_request_success",{conversion_type:"lead",experience_name:experience,guest_count:guestCount,request_status:"pending_confirmation"});
+   }
+  }catch(analyticsError){}
   let notice="";
   try{
    const notificationResponse=await fetch(url+"/functions/v1/booking-notifications",{
@@ -426,9 +639,6 @@ $("booking-form").addEventListener("submit",async e=>{
    notice=" Your request is saved, but automatic notifications could not be confirmed. Our host can verify it using your reference.";
   }
   showFeedback("Booking request received — reference: "+reference+". Your request is awaiting host confirmation; it is not yet a confirmed reservation and no payment has been taken."+notice,notice?"warning":"success");
-  // A booking request is a lead, not a confirmed or paid reservation.
-  window.dataLayer = window.dataLayer || [];
-  window.dataLayer.push({event:"booking_request_submitted",conversion_type:"lead",experience_name:experience,guest_count:guestCount,request_status:"pending_confirmation"});
   $("booking-form").reset();
   updateBookingEstimate();
   $("date").min=tanzaniaToday();

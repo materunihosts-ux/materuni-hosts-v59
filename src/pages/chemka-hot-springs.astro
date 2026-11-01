@@ -1,7 +1,6 @@
 ---
 import SiteLayout from "../layouts/SiteLayout.astro";
 import { Image } from "astro:assets";
-import LocalBusinessSchema from "../components/LocalBusinessSchema.astro";
 import { supabaseUrl } from "../lib/supabase-public";
 
 const base = `${supabaseUrl}/storage/v1/object/public/materuni-images/`;
@@ -17,13 +16,6 @@ const serviceData = {
   "touristType": ["Swimmers", "Eco-tourists", "Day trippers"],
   "description": "Guided day trip to Chemka Hot Springs (Kikuletwa) from Moshi, Tanzania. Crystal-clear turquoise geothermal water, shade under giant fig trees, and relaxing swimming.",
   "provider": { "@type": "TourOperator", "name": "Materuni Hosts", "url": "https://materunihosts.com/" },
-  "offers": {
-    "@type": "Offer",
-    "price": "60.00",
-    "priceCurrency": "USD",
-    "availability": "https://schema.org/InStock",
-    "url": "https://materunihosts.com/booking?experience=chemka"
-  },
   "url": "https://materunihosts.com/chemka-hot-springs"
 };
 
@@ -53,10 +45,9 @@ const faqs = [
 
 <SiteLayout
   title="Chemka Hot Springs Tour from Moshi | Kikuletwa Day Trip"
-  description="Plan a relaxing Chemka Hot Springs day trip from Moshi with local Materuni hosts. Crystal clear turquoise geothermal pools, private transport, and transparent pricing from $60."
+  description="Ask Materuni Hosts about a Chemka Hot Springs day trip from Moshi. Availability, transport and any applicable site fees are confirmed by the host before booking."
   preloadImage={heroImg}
 >
-  <LocalBusinessSchema />
   <script type="application/ld+json" set:html={JSON.stringify(serviceData)} />
   <script type="application/ld+json" set:html={JSON.stringify({"@context":"https://schema.org","@type":"FAQPage","mainEntity":faqs.map(f=>({"@type":"Question","name":f.q,"acceptedAnswer":{"@type":"Answer","text":f.a}}))})} />
 
@@ -67,11 +58,11 @@ const faqs = [
         <h1>Chemka Hot Springs Day Trip from Moshi</h1>
         <p>Immerse yourself in the crystal-clear turquoise waters of Chemka Hot Springs, locally known as Kikuletwa. Surrounded by ancient winding fig trees and lush palm roots, this geothermal oasis hidden in the semi-arid Maasai plains is Tanzania's most scenic natural swimming hole.</p>
         <div class="price-callout">
-          <span class="price-from">From <strong>$60 USD</strong> per person</span>
-          <span class="price-sub">Includes private vehicle transfer, driver, village entry fees & picnic lunch</span>
+          <span class="price-from"><strong>Enquiry only · tailored quote</strong></span>
+          <span class="price-sub">Availability, transport, any applicable site fees and inclusions are confirmed by the host before booking.</span>
         </div>
         <div class="actions">
-          <a class="button gold" href="/booking?experience=chemka">Check availability & book</a>
+          <a class="button gold" href="https://wa.me/255612068540?text=Hello%20Materuni%20Hosts%2C%20I%20would%20like%20a%20quote%20for%20a%20Chemka%20Hot%20Springs%20day%20trip.">Ask for a Chemka quote</a>
           <a class="button outline" href="https://wa.me/255612068540?text=Hello%20Materuni%20Hosts%2C%20I%20would%20like%20to%20ask%20about%20a%20Chemka%20Hot%20Springs%20day%20trip." target="_blank" rel="noopener noreferrer">Ask a host on WhatsApp</a>
         </div>
       </div>
@@ -117,11 +108,11 @@ const faqs = [
           <li><strong>Village council entry permits:</strong> All local government and village conservation fees are handled and fully paid in advance.</li>
           <li><strong>Swimming & rope swing fun:</strong> Spend 3 to 4 hours swimming, sunbathing, swinging from the rope, and lounging in the natural shade.</li>
           <li><strong>Hot Chagga lunch or picnic box:</strong> Enjoy fresh grilled chicken, chips, tropical fruits, and cold bottled water prepared by local cooks.</li>
-          <li><strong>Safe return transfer:</strong> After drying off and relaxing, your driver returns you to your Moshi or Arusha accommodation in the mid-afternoon before peak traffic.</li>
+          <li><strong>Transport arrangements:</strong> Share your pickup point and preferred return time. Your host will confirm transport availability and any separate quote before you decide.</li>
         </ul>
 
         <h2>Chemka tour pricing & group rates</h2>
-        <p>We believe in upfront, transparent pricing with zero surprise charges upon arrival. Our Chemka day tour is priced from <strong>$60 USD per person</strong> based on a group of 4 guests. Direct private bookings include the dedicated vehicle, fuel, driver allowances, village gate fees, swimming permits, drinking water, and lunch. For solo travelers or couples, private vehicle day charters are available for $120–$140 total per car. Contact our team to confirm current date availability and tailor your pickup times.</p>
+        <p>Chemka arrangements are enquiry-only. Share your preferred date, group size and pickup point. Your host will confirm availability, route, transport, any applicable site fees and inclusions in a tailored quote before you decide.</p>
       </div>
     </section>
 
@@ -146,7 +137,7 @@ const faqs = [
       <h2>Combine Chemka with Materuni Village</h2>
       <p>Pair your Kilimanjaro trip with our signature <a href="/materuni-waterfall-tour">Materuni Waterfall Hike</a>, traditional <a href="/materuni-coffee-tour">Chagga Coffee Tour</a>, or an overnight stay in <a href="/camping">Materuni Camping</a>.</p>
       <div class="actions">
-        <a class="button gold" href="/booking?experience=chemka">Book Chemka day trip</a>
+        <a class="button gold" href="https://wa.me/255612068540?text=Hello%20Materuni%20Hosts%2C%20I%20would%20like%20a%20quote%20for%20a%20Chemka%20Hot%20Springs%20day%20trip.">Ask about Chemka</a>
         <a class="button outline" href="/itinerary">Customise multi-day itinerary</a>
       </div>
     </section>
@@ -155,11 +146,11 @@ const faqs = [
   <!-- Sticky Mobile Booking Bar (T6) -->
   <div class="sticky-mobile-booking-bar" role="region" aria-label="Quick booking bar">
     <div class="sticky-price">
-      <strong>From $60 USD</strong>
-      <small>Per person · Full day</small>
+      <strong>Price on request</strong>
+      <small>Tailored quote · Enquiry only</small>
     </div>
     <div class="sticky-actions">
-      <a class="sticky-book-btn" href="/booking?experience=chemka">Book Chemka</a>
+      <a class="sticky-book-btn" href="https://wa.me/255612068540?text=Hello%20Materuni%20Hosts%2C%20I%20would%20like%20a%20quote%20for%20a%20Chemka%20Hot%20Springs%20day%20trip.">Ask about Chemka</a>
       <a class="sticky-wa-btn" href="https://wa.me/255612068540?text=Hello%20Materuni%20Hosts%2C%20I%20am%20interested%20in%20a%20Chemka%20tour." target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp">
         <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 11.6a8.45 8.45 0 0 1-12.4 7.45L3.5 20.5l1.5-4.45a8.45 8.45 0 1 1 15.5-4.45Z"/><path d="M8.8 8.2c.25 2.9 2.1 5.2 5.15 6.15l1.2-1.3 2.05 1.05c-.15 1.5-1.2 2.35-2.65 2.35-3.95-.45-7.05-3.65-7.45-7.5 0-1.35.85-2.35 2.2-2.55l1.05 2.15-.95 1.05"/></svg>
       </a>

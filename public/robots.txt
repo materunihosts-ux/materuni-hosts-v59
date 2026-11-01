@@ -29,7 +29,6 @@ Disallow: /api/
 
 # Prevent crawl waste and infinite parameter / session space
 Disallow: /*?*source=
-Disallow: /*?*lang=
 Disallow: /*?*preview=
 Disallow: /*?*token=
 Disallow: /*?*session=
@@ -40,6 +39,31 @@ Disallow: /*?*fbclid=
 Disallow: /public/assets/aistudio/
 Disallow: /.tempmediaStorage/
 Disallow: /assets/aistudio/
+
+# Limit bulk AI training crawlers while keeping search and user-request fetchers available.
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+User-agent: Meta-ExternalAgent
+Disallow: /
+
+# OAI-SearchBot, ChatGPT-User, Claude-SearchBot, Claude-User and PerplexityBot
+# intentionally inherit the general crawl policy so search/referral discovery remains possible.
 
 # Sitemaps
 Sitemap: https://materunihosts.com/sitemap.xml

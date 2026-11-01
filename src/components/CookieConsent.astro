@@ -7,7 +7,7 @@
   <div class="cookie-actions">
     <button type="button" class="cookie-btn cookie-btn-accept" data-cookie-accept>Accept</button>
     <button type="button" class="cookie-btn cookie-btn-reject" data-cookie-reject>Reject</button>
-    <button type="button" class="cookie-btn-link" data-cookie-settings aria-label="Cookie preferences">Settings</button>
+    <button type="button" class="cookie-btn-link" data-cookie-settings aria-label="Cookie preferences" aria-controls="cookie-settings" aria-expanded="false">Settings</button>
   </div>
   <div class="cookie-settings" id="cookie-settings" hidden>
     <label><input type="checkbox" checked disabled /> Essential (active)</label>
@@ -17,7 +17,7 @@
 </div>
 <button class="cookie-reopen" type="button" data-cookie-reopen aria-label="Open privacy settings">Privacy settings</button>
 <style>
-.cookie-consent{position:fixed;z-index:10000;inset:auto 16px 16px 16px;max-width:880px;margin-inline:auto;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 18px;color:#242421;background:#FAF7F2;border:1px solid #C5A059;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,.2)}
+.cookie-consent[hidden],.cookie-settings[hidden]{display:none!important}\n.cookie-consent{position:fixed;z-index:10000;inset:auto 16px 16px 16px;max-width:880px;margin-inline:auto;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 18px;color:#242421;background:#FAF7F2;border:1px solid #C5A059;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,.2)}
 .cookie-copy p{margin:0;font:500 14px/1.6 var(--sans);color:#1A3322}
 .cookie-copy a{color:#80652F;font-weight:700;text-decoration:underline}
 .cookie-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}
@@ -38,13 +38,23 @@
 <script is:inline>
 (() => {
   const key = "materuni-cookie-consent-v1";
-  // Queue conversion-friendly events for the consent-gated GTM container.
+  // Analytics events are queued only after the visitor has explicitly opted in.
   // No guest names, emails, phone numbers or booking references are sent.
   document.addEventListener("click", (event) => {
-    const link = event.target instanceof Element ? event.target.closest('a[href*="wa.me"]') : null;
+    const link = event.target instanceof Element ? event.target.closest("a[href]") : null;
     if (!link) return;
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({ event: "whatsapp_click", link_url: "https://wa.me/" });
+    const href = link.getAttribute("href") || "";
+    let eventName = "";
+    let safeLink = "";
+    if (/^https?:\/\/wa\.me\//i.test(href)) { eventName = "whatsapp_click"; safeLink = "https://wa.me/"; }
+    else if (/^tel:/i.test(href)) { eventName = "phone_click"; safeLink = "tel:"; }
+    else if (/^mailto:/i.test(href)) { eventName = "email_click"; safeLink = "mailto:"; }
+    if (!eventName) return;
+    let consent = null;
+    try { consent = JSON.parse(localStorage.getItem(key) || "null"); } catch {}
+    if (consent?.analytics !== true || window.__materuniGtmLoaded !== true) return;
+    if (typeof window.gtag !== "function") return;
+    window.gtag("event", eventName, { link_url: safeLink });
   });
   const banner = document.getElementById("cookie-consent");
   if (!banner) return;
@@ -63,18 +73,24 @@
     script.src = "https://www.googletagmanager.com/gtm.js?id=GTM-TLB463PS";
     document.head.appendChild(script);
   };
+  const readSavedConsent = () => {
+    try {
+      const value = JSON.parse(localStorage.getItem(key) || "null");
+      return value && typeof value.analytics === "boolean" ? value : null;
+    } catch { return null; }
+  };
   const apply = (choice) => {
-    localStorage.setItem(key, JSON.stringify({ analytics: !!choice.analytics, savedAt: new Date().toISOString() }));
+    saved = { analytics: !!choice.analytics, savedAt: new Date().toISOString(), version: 2 };
+    try { localStorage.setItem(key, JSON.stringify(saved)); } catch {}
     banner.hidden = true;
     if (choice.analytics) loadAnalytics();
   };
-  let saved = null;
-  try { saved = JSON.parse(localStorage.getItem(key) || "null"); } catch {}
-  if (!saved || typeof saved.analytics !== "boolean") banner.hidden = false;
+  let saved = readSavedConsent();
+  if (!saved) banner.hidden = false;
   else if (saved.analytics) loadAnalytics();
   banner.querySelector("[data-cookie-accept]")?.addEventListener("click", () => apply({ analytics: true }));
   banner.querySelector("[data-cookie-reject]")?.addEventListener("click", () => apply({ analytics: false }));
-  banner.querySelector("[data-cookie-settings]")?.addEventListener("click", () => { settings.hidden = !settings.hidden; });
+  banner.querySelector("[data-cookie-settings]")?.addEventListener("click", (event) => { settings.hidden = !settings.hidden; event.currentTarget?.setAttribute("aria-expanded", String(!settings.hidden)); });
   banner.querySelector("[data-cookie-save]")?.addEventListener("click", () => apply({ analytics: analytics.checked }));
   document.querySelector("[data-cookie-reopen]")?.addEventListener("click", () => {
     analytics.checked = !!saved?.analytics;

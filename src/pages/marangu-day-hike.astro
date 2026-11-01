@@ -1,7 +1,6 @@
 ---
 import SiteLayout from "../layouts/SiteLayout.astro";
 import { Image } from "astro:assets";
-import LocalBusinessSchema from "../components/LocalBusinessSchema.astro";
 import { supabaseUrl } from "../lib/supabase-public";
 
 const base = `${supabaseUrl}/storage/v1/object/public/materuni-images/`;
@@ -15,30 +14,23 @@ const serviceData = {
   "@type": "TouristTrip",
   "name": "Marangu Day Hike to Kilimanjaro National Park from Moshi",
   "touristType": ["Hikers", "Nature lovers", "Kilimanjaro day trekkers"],
-  "description": "Guided day trek through the lower montane rainforest of Mount Kilimanjaro from Marangu Gate to Mandara Hut (2,720 m) or Ndoro Waterfalls with local Chagga mountain guides.",
+  "description": "Enquiry-only day hike interest from Marangu near Mount Kilimanjaro. Route, guide arrangements, access requirements, transport and any applicable fees are confirmed individually before booking.",
   "provider": { "@type": "TourOperator", "name": "Materuni Hosts", "url": "https://materunihosts.com/" },
-  "offers": {
-    "@type": "Offer",
-    "price": "85.00",
-    "priceCurrency": "USD",
-    "availability": "https://schema.org/InStock",
-    "url": "https://materunihosts.com/booking?experience=marangu"
-  },
   "url": "https://materunihosts.com/marangu-day-hike"
 };
 
 const faqs = [
   {
     q: "How difficult is the Marangu Day Hike?",
-    a: "The hike is moderate. The trail climbs from Marangu Gate (1,870 m) through dense temperate rainforest to Mandara Hut (2,720 m), covering roughly 8 km (5 miles) each way with an 850m elevation gain. Anyone with reasonable walking fitness can enjoy this trek comfortably."
+    a: "Difficulty depends on the confirmed route, weather and trail conditions. Share your hiking experience and fitness level with the host so the route and arrangements can be discussed before you decide."
   },
   {
     q: "Do I need Kilimanjaro National Park permits for a day hike?",
-    a: "Yes, official TANAPA (Tanzania National Parks) conservation entry permits and certified mountain guide registrations are required. All park entrance fees, rescue fees, and certified guides are fully included and pre-arranged in our tour package."
+    a: "Access requirements and any applicable permits or fees depend on the route and current park rules. Your host will confirm the requirements, guide arrangements and any costs in the quote before you decide."
   },
   {
     q: "What wildlife can I expect to see along the Marangu trail?",
-    a: "The montane rainforest is home to vibrant troops of black-and-white colobus monkeys and blue monkeys leaping through the canopy. You will also spot exotic birds such as the Hartlaub's turaco, giant tree ferns, wild impatiens kilimanjari flowers, and towering moss-draped camphor trees."
+    a: "The Marangu area is known for its green mountain landscape and forest habitats. Wildlife and plant sightings vary with season, weather and the route taken, so sightings cannot be guaranteed."
   },
   {
     q: "What should I pack and wear for a Marangu day hike?",
@@ -46,17 +38,16 @@ const faqs = [
   },
   {
     q: "How does Marangu compare to a Materuni Waterfall tour?",
-    a: "Materuni is a village-based cultural and waterfall experience (about 40 minutes walking each way plus coffee roasting and local cuisine). Marangu is a longer wilderness trek that enters Mount Kilimanjaro National Park itself, reaching sub-alpine rainforest elevations."
+    a: "Materuni is a village-based waterfall and cultural experience. A Marangu day hike enquiry concerns a different area and route; the exact itinerary, walking conditions and access requirements must be confirmed with the host."
   }
 ];
 ---
 
 <SiteLayout
-  title="Marangu Day Hike from Moshi | Kilimanjaro Rainforest Trek"
-  description="Experience a guided Kilimanjaro day hike from Moshi to Marangu Gate and Mandara Hut. Ancient rainforest, colobus monkeys, and waterfalls with local Chagga hosts from $85."
+  title="Marangu Day Hike | Route & Availability Enquiry"
+  description="Ask about a Marangu day hike near Mount Kilimanjaro. Route, guide arrangements, access requirements and transport are confirmed individually before booking."
   preloadImage={heroImg}
 >
-  <LocalBusinessSchema />
   <script type="application/ld+json" set:html={JSON.stringify(serviceData)} />
   <script type="application/ld+json" set:html={JSON.stringify({"@context":"https://schema.org","@type":"FAQPage","mainEntity":faqs.map(f=>({"@type":"Question","name":f.q,"acceptedAnswer":{"@type":"Answer","text":f.a}}))})} />
 
@@ -65,13 +56,13 @@ const faqs = [
       <div class="hero-text">
         <span class="eyebrow">KILIMANJARO NATIONAL PARK · DAY HIKES FROM MOSHI</span>
         <h1>Marangu Day Hike from Moshi</h1>
-        <p>Trek the legendary lower slopes of Africa's highest mountain without embarking on a week-long summit expedition. Walk through ancient moss-draped montane cloud forest, spot black-and-white colobus monkeys, and explore the historic Chagga heartland of Marangu with experienced local mountain hosts.</p>
+        <p>Ask about a day hike around Marangu near Mount Kilimanjaro. Your local host can discuss the route, current access requirements, guide arrangements and transport options for your preferred date.</p>
         <div class="price-callout">
-          <span class="price-from">From <strong>$85 USD</strong> per person</span>
-          <span class="price-sub">Includes private transfers from Moshi, certified mountain guide, park permits & lunch pack</span>
+          <span class="price-from"><strong>Enquiry only · tailored quote</strong></span>
+          <span class="price-sub">Route, guide arrangements, transport, any applicable site fees and inclusions are confirmed by the host before booking.</span>
         </div>
         <div class="actions">
-          <a class="button gold" href="/booking?experience=marangu">Check availability & book</a>
+          <a class="button gold" href="https://wa.me/255612068540?text=Hello%20Materuni%20Hosts%2C%20I%20would%20like%20a%20quote%20for%20a%20Marangu%20day%20hike.">Ask for a Marangu quote</a>
           <a class="button outline" href="https://wa.me/255612068540?text=Hello%20Materuni%20Hosts%2C%20I%20would%20like%20details%20for%20the%20Marangu%20Day%20Hike." target="_blank" rel="noopener noreferrer">Ask a host on WhatsApp</a>
         </div>
       </div>
@@ -98,7 +89,7 @@ const faqs = [
         </figure>
         <figure class="gallery-item">
           <Image src={photo3} alt="Local Chagga mountain guides and village hospitality in Kilimanjaro Region" width={600} height={420} loading="lazy" decoding="async" format="webp" quality={76} />
-          <figcaption>Certified local guides sharing historical tales, botany, and mountaineering lore.</figcaption>
+          <figcaption>Local hosts can discuss the route and practical arrangements before your visit.</figcaption>
         </figure>
       </div>
     </section>
@@ -106,21 +97,21 @@ const faqs = [
     <section class="content-section">
       <div class="article-body">
         <h2>The perfect Kilimanjaro day adventure</h2>
-        <p>For travelers who want to feel the immense presence of Mount Kilimanjaro beneath their feet but have limited time, our Marangu Day Hike offers an unforgettable glimpse of the mountain’s wild majesty. Situated approximately 45 km east of Moshi town, Marangu is known as the traditional historic route of early explorers and mountaineers.</p>
-        <p>Leaving the cultivated banana groves behind, you enter Kilimanjaro National Park at Marangu Gate (1,870 metres). Within minutes of stepping onto the trail, the canopy closes overhead in a thick, magical shroud of rainforest. Giant eucalyptus, African mahogany, and ancient camphor trees draped in Spanish moss tower above the path. The air is remarkably crisp and fresh, scented with damp volcanic earth and eucalyptus leaves.</p>
+        <p>Marangu lies east of Moshi in the Kilimanjaro Region and is associated with routes on the mountain’s forested lower slopes. The exact walking route and access arrangements for a day visit must be confirmed before booking.</p>
+        <p>Depending on the route selected and current access arrangements, a walk may pass through cultivated foothills or forested areas. Your host will explain the proposed route and any access requirements before you decide.</p>
 
-        <h2>What your Marangu day hike includes</h2>
-        <p>Our comprehensive day package covers all arrangements so you can focus entirely on enjoying the mountain trail:</p>
+        <h2>Details to confirm for a Marangu day hike</h2>
+        <p>Marangu is offered as an enquiry-only experience. The exact route and arrangements depend on your date, current access requirements and group needs. Your host will confirm what can be arranged and what is included in a written quote before you decide.</p>
         <ul>
-          <li><strong>Private door-to-door vehicle transfer:</strong> Morning pickup at 08:00 AM from your Moshi or Arusha hotel in a comfortable private vehicle, with safe drop-off in the late afternoon.</li>
-          <li><strong>Licensed Kilimanjaro mountain guides:</strong> Experienced local guides certified by TANAPA who ensure your safety, set an enjoyable pace, and identify rare flora and fauna.</li>
-          <li><strong>National park entrance permits:</strong> All official TANAPA conservation, rescue, and guide permits are handled and included.</li>
-          <li><strong>Packed trail lunch & drinking water:</strong> Wholesome mountain picnic lunch box featuring sandwiches, roasted chicken or vegetarian bites, boiled eggs, fresh tropical fruit, and mineral water.</li>
-          <li><strong>Optional Maundi Crater extension:</strong> For energetic hikers who reach Mandara Hut with time to spare, an extra 15-minute walk to Maundi Crater reveals panoramic views across Kenya and northern Tanzania.</li>
+          <li><strong>Route and access:</strong> Confirm the proposed trail, entry point and any applicable park requirements.</li>
+          <li><strong>Guide arrangements:</strong> Confirm guide availability and the relevant qualifications for the proposed route.</li>
+          <li><strong>Transport and pickup:</strong> Share your pickup location so the host can check availability and provide a separate quote if needed.</li>
+          <li><strong>Food and drinking water:</strong> Confirm what you should bring and whether any refreshments are included in the agreed arrangements.</li>
+          <li><strong>Walking conditions:</strong> Discuss distance, elevation, expected duration and trail conditions for the route being considered.</li>
         </ul>
 
         <h2>Pricing and booking details</h2>
-        <p>Our Marangu Day Hike is priced from <strong>$85 USD per person</strong> based on a group of 4 guests. For smaller groups or private solo departures, please contact us for custom rates that include your dedicated transport and guide. No deposit is required to submit a booking enquiry; your local host will review your dates, confirm vehicle arrangements, and answer any questions before you confirm.</p>
+        <p>Marangu arrangements are enquiry-only. Share your preferred date, group size and pickup point. Your host will confirm whether the requested route can be arranged and provide any applicable quote, including transport or site fees, before you decide.</p>
       </div>
     </section>
 
@@ -145,7 +136,7 @@ const faqs = [
       <h2>Explore more Kilimanjaro day trips</h2>
       <p>Combine your trek with a cultural visit to <a href="/materuni-waterfall-tour">Materuni Waterfall</a>, our <a href="/materuni-coffee-tour">Chagga Coffee Tour</a>, or a refreshing swim at <a href="/chemka-hot-springs">Chemka Hot Springs</a>.</p>
       <div class="actions">
-        <a class="button gold" href="/booking?experience=marangu">Book Marangu day hike</a>
+        <a class="button gold" href="https://wa.me/255612068540?text=Hello%20Materuni%20Hosts%2C%20I%20would%20like%20a%20quote%20for%20a%20Marangu%20day%20hike.">Ask about Marangu</a>
         <a class="button outline" href="/itinerary">Customise an itinerary</a>
       </div>
     </section>
@@ -154,11 +145,11 @@ const faqs = [
   <!-- Sticky Mobile Booking Bar (T6) -->
   <div class="sticky-mobile-booking-bar" role="region" aria-label="Quick booking bar">
     <div class="sticky-price">
-      <strong>From $85 USD</strong>
+      <strong>Request a quote</strong>
       <small>Per person · Full day</small>
     </div>
     <div class="sticky-actions">
-      <a class="sticky-book-btn" href="/booking?experience=marangu">Book Marangu</a>
+      <a class="sticky-book-btn" href="https://wa.me/255612068540?text=Hello%20Materuni%20Hosts%2C%20I%20would%20like%20a%20quote%20for%20a%20Marangu%20day%20hike.">Ask about Marangu</a>
       <a class="sticky-wa-btn" href="https://wa.me/255612068540?text=Hello%20Materuni%20Hosts%2C%20I%20am%20interested%20in%20the%20Marangu%20hike." target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp">
         <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 11.6a8.45 8.45 0 0 1-12.4 7.45L3.5 20.5l1.5-4.45a8.45 8.45 0 1 1 15.5-4.45Z"/><path d="M8.8 8.2c.25 2.9 2.1 5.2 5.15 6.15l1.2-1.3 2.05 1.05c-.15 1.5-1.2 2.35-2.65 2.35-3.95-.45-7.05-3.65-7.45-7.5 0-1.35.85-2.35 2.2-2.55l1.05 2.15-.95 1.05"/></svg>
       </a>

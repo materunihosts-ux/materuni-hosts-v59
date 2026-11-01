@@ -2285,3 +2285,8 @@ body.admin-shell .admin-main .button{min-height:44px}
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 }
+
+ 
+/* WCAG AA contrast: dark gold on light surfaces, light gold on forest surfaces. */
+.public-shell .eyebrow{color:#76551f}
+.public-shell .hero .eyebrow,.public-shell .band .eyebrow{color:#e7c67c}

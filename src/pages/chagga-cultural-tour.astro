@@ -1,10 +1,9 @@
 ---
 import SiteLayout from "../layouts/SiteLayout.astro";
-import LocalBusinessSchema from "../components/LocalBusinessSchema.astro";
 const serviceData = {"@context":"https://schema.org","@type":"Service","name":"Chagga Cultural Tour in Materuni","serviceType":"Local village and cultural experience","description":"A locally hosted introduction to Chagga culture and village life in Materuni near Moshi, Tanzania.","provider":{"@type":"TourOperator","name":"Materuni Hosts","url":"https://materunihosts.com/"},"areaServed":{"@type":"Place","name":"Materuni Village, Moshi, Kilimanjaro, Tanzania"},"url":"https://materunihosts.com/chagga-cultural-tour"};
 ---
-<SiteLayout title="Chagga Cultural Tour in Materuni | Moshi Tanzania" description="Discover Chagga culture in Materuni Village near Moshi. Meet local hosts, learn about village life, coffee traditions, food and cultural heritage.">
-<LocalBusinessSchema />
+<SiteLayout title="Chagga Cultural Tour in Materuni Village | Moshi" description="Discover Chagga village life, food traditions and coffee culture in Materuni Village near Moshi with a local host.">
+
 <script type="application/ld+json" set:html={JSON.stringify(serviceData)} />
 <main class="landing">
 <section class="hero hero--image"><div class="hero-copy"><p class="eyebrow">LOCAL CULTURE · VILLAGE LIFE · KILIMANJARO, TANZANIA</p><h1>Chagga Cultural Tour in Materuni Village</h1><p>Spend time in Materuni with local Chagga hosts and discover the traditions, food, coffee and everyday village life of the Kilimanjaro foothills.</p><div class="actions"><a class="button" href="https://wa.me/255612068540?text=Hello%20Materuni%20Hosts%2C%20I%20am%20interested%20in%20a%20Chagga%20cultural%20tour%20in%20Materuni." target="_blank" rel="noopener noreferrer">Ask about a cultural tour</a><a class="text-link" href="/experiences">Explore all experiences</a></div></div><img class="hero-photo" src="https://sskmzswoeljxwojcszta.supabase.co/storage/v1/object/public/materuni-images/story_image/1791995912146-materuni-community.jpg" alt="Local community life and Chagga hosts in Materuni Village" width="1200" height="900" loading="eager" fetchpriority="high" decoding="async" /></section>
@@ -12,17 +11,17 @@ const serviceData = {"@context":"https://schema.org","@type":"Service","name":"C
 <section><h2>What can you experience on a Materuni village tour?</h2><ul><li>Walk through the village with a local guide</li><li>Learn about Chagga coffee growing and preparation</li><li>Discover local food and traditional cooking</li><li>Hear stories about village life and cultural heritage</li><li>Ask about local banana beer, known as Mbege, and whether a tasting is available during your visit</li></ul><p>Materuni Hosts can help you choose a suitable combination of village activities, coffee making and the <a href="/materuni-waterfall-tour">Materuni Waterfall hike</a>.</p></section>
 <section><h2>Chagga cultural tour price and booking</h2><p>There is no separate fixed price shown here for every cultural activity. The price depends on the experience you choose and what is included. View the current <a href="/experiences">Materuni experience prices</a> or contact a local host for a tailored quote before confirming.</p><div class="actions"><a class="button" href="/booking">Send a booking request</a><a class="text-link" href="https://wa.me/255612068540?text=Hello%20Materuni%20Hosts%2C%20please%20share%20the%20options%20and%20price%20for%20a%20Chagga%20cultural%20tour." target="_blank" rel="noopener noreferrer">Ask for options on WhatsApp</a></div></section>
 <section><h2>From the Journal</h2><p>Learn more about our local culture and traditions: <a href="/journal/how-traditional-chagga-coffee-is-made" style="color:#1a3322;font-weight:700;text-decoration:underline">How Traditional Chagga Coffee is Made from Bean to Cup</a> and <a href="/journal/staying-overnight-in-materuni" style="color:#1a3322;font-weight:700;text-decoration:underline">Staying Overnight in Materuni: What to Expect</a>.</p></section>
-<section><h2>Plan your visit to Materuni Village</h2><p>Materuni is near Moshi in Tanzania's Kilimanjaro Region. Private return vehicle transfers can be added directly when booking: Moshi ($25 per vehicle, round-trip up to 4 guests), Kilimanjaro Airport / KIA ($50), or Arusha ($80). Share your travel date, group size and pickup point so the team can check availability and explain the arrangements. We confirm all arrangements within 3–6 hours with a 100% weather guarantee and zero upfront fee to enquire.</p><p>You can also explore a <a href="/materuni-coffee-tour">Materuni coffee tour</a>, a <a href="/chemka-hot-springs">Chemka Hot Springs day trip</a> or other <a href="/day-trips">day trips from Moshi</a>.</p></section>
+<section><h2>Plan your visit to Materuni Village</h2><p>Materuni is near Moshi in Tanzania's Kilimanjaro Region. Share your preferred date, group size and pickup point with your host. Transport is arranged separately, and availability and any quote will be confirmed before booking. A booking request is not a confirmed reservation.</p><p>You can also explore a <a href="/materuni-coffee-tour">Materuni coffee tour</a>, a <a href="/chemka-hot-springs">Chemka Hot Springs day trip</a> or other <a href="/day-trips">day trips from Moshi</a>.</p></section>
 </main>
 
 <!-- Sticky Mobile Booking Bar (T6) -->
 <div class="sticky-mobile-booking-bar" role="region" aria-label="Cultural tour booking bar">
   <div class="sticky-price">
-    <strong>From $41 USD</strong>
+    <strong>Explore current experiences</strong>
     <small>Per person · Local guide</small>
   </div>
   <div class="sticky-actions">
-    <a class="sticky-book-btn" href="/booking?experience=cooking">Check availability</a>
+    <a class="sticky-book-btn" href="/experiences">Check availability</a>
     <a class="sticky-wa-btn" href="https://wa.me/255612068540?text=Hello%20Materuni%20Hosts%2C%20I%20want%20to%20book%20a%20Cultural%20Tour." target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp">
       <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 11.6a8.45 8.45 0 0 1-12.4 7.45L3.5 20.5l1.5-4.45a8.45 8.45 0 1 1 15.5-4.45Z"/><path d="M8.8 8.2c.25 2.9 2.1 5.2 5.15 6.15l1.2-1.3 2.05 1.05c-.15 1.5-1.2 2.35-2.65 2.35-3.95-.45-7.05-3.65-7.45-7.5 0-1.35.85-2.35 2.2-2.55l1.05 2.15-.95 1.05"/></svg>
     </a>

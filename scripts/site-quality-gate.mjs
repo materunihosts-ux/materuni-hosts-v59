@@ -50,6 +50,32 @@ else {
   else pass("Private admin route is excluded in robots.txt");
 }
 
+const cookieSourcePath = path.resolve("src/components/CookieConsent.astro");
+if (fs.existsSync(cookieSourcePath)) {
+  const cookieSource = read(cookieSourcePath);
+  if (!/\.cookie-consent\[hidden\][^{]*\{[^}]*display:\s*none\s*!important/i.test(cookieSource) || !/\.cookie-settings\[hidden\][^{]*\{[^}]*display:\s*none\s*!important/i.test(cookieSource)) fail("Cookie notice and preferences must respect the native hidden state");
+  else pass("Cookie notice and preferences correctly remain hidden until requested");
+  if (!cookieSource.includes("consent?.analytics !== true") || !cookieSource.includes("if (choice.analytics) loadAnalytics()")) fail("Optional analytics must only load after explicit consent");
+  else pass("Optional analytics is gated behind explicit visitor consent");
+}
+const robotsSource = fs.existsSync(robotsPath) ? read(robotsPath) : "";
+for (const bot of ["GPTBot", "ClaudeBot", "Google-Extended", "CCBot", "Bytespider"]) {
+  const group = robotsSource.split(/(?=^User-agent: )/m).find((block) => new RegExp("^User-agent:\\s*" + bot + "\\s*$", "mi").test(block));
+  if (!group || !/^Disallow:\s*\/\s*$/mi.test(group)) fail("robots.txt must include an AI-training crawler policy for " + bot);
+}
+if (robotsSource.includes("User-agent: OAI-SearchBot") || robotsSource.includes("User-agent: ChatGPT-User")) fail("Search/user-request AI fetchers must not be accidentally blocked");
+else pass("AI training crawlers are restricted without explicitly blocking search/user-request fetchers");
+const globalCssPath = path.resolve("src/styles/global.css");
+if (fs.existsSync(globalCssPath) && /prefers-reduced-motion\s*:\s*reduce/i.test(read(globalCssPath))) pass("Reduced-motion preference is respected in the public stylesheet");
+else fail("Public stylesheet must respect prefers-reduced-motion");
+if (fs.existsSync(globalCssPath)) {
+  const css = read(globalCssPath);
+  if (css.includes(".public-shell .eyebrow{color:#76551f}") && contrastRatio("#76551f", "#FAF7F2") >= 4.5 && contrastRatio("#76551f", "#E6DFD3") >= 4.5) pass("Small gold labels on light surfaces meet WCAG AA contrast");
+  else fail("Small labels on light surfaces must meet WCAG AA contrast");
+  if (css.includes(".public-shell .hero .eyebrow,.public-shell .band .eyebrow{color:#e7c67c}") && contrastRatio("#e7c67c", "#1A3322") >= 4.5) pass("Gold labels on forest surfaces meet WCAG AA contrast");
+  else fail("Gold labels on forest surfaces must meet WCAG AA contrast");
+}
+
 const expectedRoutes = [
   "/", "/experiences", "/camping", "/day-trips", "/booking", "/itinerary", "/reviews", "/faq",
   "/sustainability", "/travel-guide", "/work-with-us", "/privacy", "/terms", "/admin"
@@ -89,6 +115,12 @@ for (const sourcePath of groupDiscountPages) {
   else pass(sourcePath + ": group discount label contrast passes WCAG AA (" + contrast.toFixed(2) + ":1)");
 }
 
+const homeSourcePath = path.resolve("src/pages/index.astro");
+const layoutPreloadPath = path.resolve("src/layouts/SiteLayout.astro");
+const layoutSourceForPreload = fs.existsSync(layoutPreloadPath) ? read(layoutPreloadPath) : "";
+const homeSourceForPreload = fs.existsSync(homeSourcePath) ? read(homeSourcePath) : "";
+if (!homeSourceForPreload.includes("optimizedHeroMobile") || !homeSourceForPreload.includes("preloadImageMobile={optimizedHeroMobile.src}") || !layoutSourceForPreload.includes('media="(max-width: 768px)"')) fail("Homepage must use a separately optimized and preloaded mobile hero image");
+else pass("Homepage serves and preloads a smaller mobile hero image");
 const homeFile = routeFile("/");
 if (homeFile) {
   const homeHtml = read(homeFile);
@@ -97,13 +129,15 @@ if (homeFile) {
 }
 
 const layoutSourcePath = path.resolve("src/layouts/SiteLayout.astro");
-const businessSchemaPath = path.resolve("src/components/LocalBusinessSchema.astro");
+const waterfallSchemaPath = path.resolve("src/components/MateruniWaterfallSchema.astro");
 if (fs.existsSync(layoutSourcePath) && /15\s+oct(?:\.|obre)?\s+2026|15\.\s+Okt\.\s+2026|2[.,]640\s+TZS/i.test(read(layoutSourcePath))) fail("Multilingual fallback copy must not publish a stale TZS exchange-rate estimate");
 else if (fs.existsSync(layoutSourcePath)) pass("Multilingual fallback copy avoids stale TZS exchange-rate estimates");
 if (fs.existsSync(layoutSourcePath) && read(layoutSourcePath).includes('mailto:hello@materunihosts.com')) pass("Verified public email is present as a clickable footer contact");
 else fail("Public footer must include the verified hello@materunihosts.com contact email");
-if (fs.existsSync(layoutSourcePath) && read(layoutSourcePath).includes('"email": "hello@materunihosts.com"') && fs.existsSync(businessSchemaPath) && read(businessSchemaPath).includes('"email": "hello@materunihosts.com"')) pass("Verified email is present in TourOperator and LocalBusiness structured data");
-else fail("Verified email must be present in both public business structured-data sources");
+const layoutStructuredData = fs.existsSync(layoutSourcePath) ? read(layoutSourcePath) : "";
+const waterfallStructuredData = fs.existsSync(waterfallSchemaPath) ? read(waterfallSchemaPath) : "";
+if (layoutStructuredData.includes('"@type": "TourOperator"') && layoutStructuredData.includes('"email": "hello@materunihosts.com"') && waterfallStructuredData.includes('"@type": "TouristAttraction"') && waterfallStructuredData.includes('https://materunihosts.com/#materuni-waterfall')) pass("One authoritative TourOperator entity and a separate Materuni Waterfall attraction entity are present");
+else fail("Structured data must contain one authoritative TourOperator entity and a separate Materuni Waterfall attraction entity");
 
 const aboutUsFile = routeFile("/about-us");
 if (aboutUsFile) {
@@ -162,8 +196,8 @@ if (fs.existsSync(sitemapPath)) {
   for (const requiredPath of ["/", "/experiences", "/camping", "/day-trips", "/booking"]) {
     if (!sitemapPaths.has(requiredPath)) fail("Sitemap is missing an important public route: " + requiredPath);
   }
-  if (sitemapPaths.has("/camping") && sitemapPaths.has("/day-trips")) {
-    pass("Sitemap includes the flagship camping and day-trip landing pages");
+  if (sitemapPaths.has("/experiences") && sitemapPaths.has("/day-trips")) {
+    pass("Sitemap includes the all-experiences and day-trip landing pages without elevating camping above other experiences");
   }
 }
 
@@ -211,10 +245,25 @@ walk(root);
 for (const file of htmlFiles) {
   const html = read(file);
   const relative = path.relative(root, file);
-  const isRedirectRoute = relative === "about/index.html" || relative === "materuni-camping/index.html";
-  if (isRedirectRoute) {
-    if (!/http-equiv/i.test(html) || !/refresh/i.test(html)) fail(relative + ": legacy About URL must redirect to /about-us");
-    else pass(relative + ": legacy About URL redirects to the canonical About Us page");
+  const redirectTargets = {
+    "about/index.html": "/about-us",
+    "materuni-camping/index.html": "/camping"
+  };
+  if (Object.hasOwn(redirectTargets, relative)) {
+    const vercelConfigPath = path.resolve("vercel.json");
+    let redirectConfigured = false;
+    if (fs.existsSync(vercelConfigPath)) {
+      try {
+        const config = JSON.parse(read(vercelConfigPath));
+        redirectConfigured = (config.redirects || []).some((item) =>
+          item.source === "/" + relative.replace(/\/index\.html$/, "") &&
+          item.destination === redirectTargets[relative] &&
+          item.permanent === true
+        );
+      } catch {}
+    }
+    if (!redirectConfigured) fail(relative + ": legacy route must have a permanent Vercel redirect to " + redirectTargets[relative]);
+    else pass(relative + ": permanent Vercel redirect targets " + redirectTargets[relative]);
     continue;
   }
   if (!/<title>\s*[^<]+<\/title>/i.test(html)) fail(relative + ": missing page title");
