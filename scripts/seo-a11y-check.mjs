@@ -70,6 +70,8 @@ for (const file of pages) {
   const html = fs.readFileSync(file, "utf8");
   const rel = "/" + path.relative(ROOT, file).replace(/index\.html$/, "").replace(/\\/g, "/");
   const isNoIndex = /<meta[^>]+name=["']robots["'][^>]*noindex/i.test(html);
+  // Astro redirect stub (meta refresh) - not a rendered page, skip content checks.
+  if (/http-equiv=["']?refresh/i.test(html)) continue;
   const htmlLang = attr(html.match(/<html\b[^>]*>/i)?.[0] || "", "lang");
 
   // Every page must declare a language.
@@ -102,6 +104,14 @@ for (const file of pages) {
   const labelledFor = new Set();
   const forRe = /<label\b[^>]*\bfor\s*=\s*["']([^"']+)["']/gi;
   while ((m2 = forRe.exec(html))) labelledFor.add(m2[1]);
+  // Implicit labelling: control wrapped inside <label> ... </label>.
+  const labelRanges = [];
+  const labelWrapRe = /<label\b[^>]*>([\s\S]*?)<\/label>/gi;
+  while ((m2 = labelWrapRe.exec(html))) {
+    const text = m2[1].replace(/<[^>]*>/g, " ").replace(/&nbsp;/g, " ").replace(/\s+/g, " ").trim();
+    if (text) labelRanges.push([m2.index, m2.index + m2[0].length]);
+  }
+  const hasImplicitLabel = (pos) => labelRanges.some(([a, b]) => pos > a && pos < b);
   while ((c = controlRe.exec(html))) {
     const tag = `<${c[1]}${c[2]}>`;
     const type = (attr(tag, "type") || "text").toLowerCase();
@@ -110,7 +120,8 @@ for (const file of pages) {
       attr(tag, "aria-label") ||
       attr(tag, "aria-labelledby") ||
       attr(tag, "title") ||
-      (attr(tag, "id") && labelledFor.has(attr(tag, "id")));
+      (attr(tag, "id") && labelledFor.has(attr(tag, "id"))) ||
+      hasImplicitLabel(c.index);
     if (!named) failures.push(`${rel}: ${c[1]}${type !== "text" ? `[type=${type}]` : ""} without accessible name -> ${tag.slice(0, 100)}`);
   }
 
@@ -169,7 +180,11 @@ for (const file of pages) {
         if (!item || !item["@context"] || !String(item["@context"]).includes("schema.org")) {
           failures.push(`${rel}: JSON-LD block without schema.org @context`);
         }
-        if (!item["@type"]) failures.push(`${rel}: JSON-LD block without @type`);
+        if (!item["@type"]) {
+          const graph = Array.isArray(item["@graph"]) ? item["@graph"] : null;
+          const graphTyped = graph && graph.length > 0 && graph.every((n) => n && n["@type"]);
+          if (!graphTyped) failures.push(`${rel}: JSON-LD block without @type`);
+        }
       }
     }
   }
@@ -303,10 +318,12 @@ try {
         h1: [...document.querySelectorAll("h1")].map((h) => (h.textContent || "").trim().slice(0, 120)),
         visibleH1: [...document.querySelectorAll("h1")].filter(visible).length,
         landmarks: {
-          header: document.querySelectorAll("header").length,
+          // Only top-level <header>/<footer> are banner/contentinfo landmarks;
+          // ones nested in main/section/article/aside are sectioning headers.
+          header: [...document.querySelectorAll("header")].filter((el) => !el.closest("main, article, section, aside, nav")).length,
           nav: document.querySelectorAll("nav").length,
           main: document.querySelectorAll("main").length,
-          footer: document.querySelectorAll("footer").length,
+          footer: [...document.querySelectorAll("footer")].filter((el) => !el.closest("main, article, section, aside, nav")).length,
         },
         unnamed: [...new Set(unnamed)],
         dupIds: [...new Set(dupIds)],
