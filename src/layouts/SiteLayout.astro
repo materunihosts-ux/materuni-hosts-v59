@@ -295,7 +295,7 @@ import { supabaseUrl, publishableKey } from "../lib/supabase-public";
 
 })();
 </script>
-{isAdmin && <div class="admin-topbar"><a class="admin-brand" href="/admin/" aria-label="Materuni Hosts admin home">Materuni Hosts <span>ADMIN</span></a><a class="admin-view-site" href="/" target="_blank" rel="noopener noreferrer">View main website ↗</a></div>}<main id="main-content" class={isAdmin ? "admin-main" : "public-main"} tabindex="-1"><slot /></main>
+{isAdmin && <header class="admin-topbar"><a class="admin-brand" href="/admin/" aria-label="Materuni Hosts admin home">Materuni Hosts <span>ADMIN</span></a><nav aria-label="Admin"><a class="admin-view-site" href="/" target="_blank" rel="noopener noreferrer">View main website ↗</a></nav></header>}<main id="main-content" class={isAdmin ? "admin-main" : "public-main"} tabindex="-1"><slot /></main>
 
 {!noindex && !isAdmin && <div class="mh-concierge" id="mh-concierge">
   <button class="mh-concierge-launch" id="mh-chat-open" type="button" aria-expanded="false" aria-controls="mh-chat-panel"><span class="mh-chat-icon">✦</span><span>Ask a local host</span></button>
