@@ -198,8 +198,11 @@ REVOKE TRUNCATE, REFERENCES, TRIGGER
   ON ALL TABLES IN SCHEMA public
   FROM anon, authenticated;
 
--- Keep the same least-privilege baseline for future public tables created by
--- the migration owner. Existing table-specific policies remain unchanged.
-ALTER DEFAULT PRIVILEGES IN SCHEMA public
+-- Both postgres and supabase_admin have public-schema default ACL entries
+-- in the live project, so revoke the unsafe privileges for both creators.
+ALTER DEFAULT PRIVILEGES FOR ROLE postgres IN SCHEMA public
+  REVOKE TRUNCATE, REFERENCES, TRIGGER
+  ON TABLES FROM anon, authenticated;
+ALTER DEFAULT PRIVILEGES FOR ROLE supabase_admin IN SCHEMA public
   REVOKE TRUNCATE, REFERENCES, TRIGGER
   ON TABLES FROM anon, authenticated;
