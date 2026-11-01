@@ -1,5 +1,3 @@
-const businessId = "https://materunihosts.com/#localbusiness";
-const overnightServiceId = "https://materunihosts.com/#overnight-village-experience";
 const waterfallId = "https://materunihosts.com/#materuni-waterfall";
 const graph = {
   "@context": "https://schema.org",
@@ -18,19 +16,6 @@ const graph = {
         "addressCountry": "TZ"
       }
     },
-    {
-      "@type": "Service",
-      "@id": overnightServiceId,
-      "name": "Materuni Overnight Village Experience",
-      "serviceType": "Overnight village experience",
-      "description": "An overnight village experience in Materuni. Accommodation arrangements, meals and activities are confirmed with the local host before booking.",
-      "provider": { "@id": businessId },
-      "areaServed": {
-        "@type": "Place",
-        "name": "Materuni Village, Moshi, Kilimanjaro, Tanzania"
-      },
-      "url": "https://materunihosts.com/camping"
-    }
   ]
 };
 ---
