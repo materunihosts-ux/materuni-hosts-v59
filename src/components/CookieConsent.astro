@@ -43,7 +43,7 @@
   // No guest names, emails, phone numbers or booking references are sent.
   document.addEventListener("click", (event) => {
     const link = event.target instanceof Element ? event.target.closest('a[href*="wa.me"]') : null;
-    if (!link) return;
+    if (!link || !saved?.analytics || !window.__materuniGtmLoaded) return;
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({ event: "whatsapp_click", link_url: "https://wa.me/" });
   });
@@ -69,6 +69,7 @@
     localStorage.setItem(key, JSON.stringify(saved));
     banner.hidden = true;
     if (choice.analytics) loadAnalytics();
+    else if (typeof window.gtag === "function") window.gtag("consent", "update", { analytics_storage: "denied", ad_storage: "denied", ad_user_data: "denied", ad_personalization: "denied" });
   };
   let saved = null;
   try { saved = JSON.parse(localStorage.getItem(key) || "null"); } catch {}
