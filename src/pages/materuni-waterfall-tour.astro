@@ -1,6 +1,5 @@
 ---
 import SiteLayout from "../layouts/SiteLayout.astro";
-import LocalBusinessSchema from "../components/LocalBusinessSchema.astro";
 import { supabaseUrl } from "../lib/supabase-public";
 const waterfallHero = `${supabaseUrl}/storage/v1/object/public/materuni-images/waterfall_image/1791998303073-materuni-waterfall-hike.jpg`;
 const serviceData = {
@@ -21,7 +20,7 @@ const serviceData = {
 };
 ---
 <SiteLayout title="Materuni Waterfall Tours | Guided Hikes & Chagga Culture" description="Join a Materuni Waterfall tour near Moshi, Tanzania. Walk forest trails with local hosts and discover Chagga coffee, village culture and local food." preloadImage={waterfallHero}>
-<LocalBusinessSchema />
+
 <script type="application/ld+json" set:html={JSON.stringify(serviceData)} />
 <main class="landing">
 <section class="hero hero-with-image"><div><p class="eyebrow">GUIDED WATERFALL WALK · LOCAL CHAGGA HOSTS · MATERUNI, TANZANIA</p><h1>Materuni Waterfall Tours with Local Hosts</h1><p>Visit the famous Materuni Waterfall in the green foothills of Mount Kilimanjaro. Walk village and forest paths with a local host, then make more of your day with Chagga coffee traditions, local food and time in Materuni Village.</p><a class="button" href="/booking?source=materuni-waterfall-tour&experience=waterfall">Check Materuni waterfall tour availability</a></div><img src={waterfallHero} alt="Materuni waterfall seen from the forest trail in Kilimanjaro" width="1200" height="900" loading="eager" fetchpriority="high" decoding="async" /></section>
