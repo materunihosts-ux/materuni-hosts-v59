@@ -53,8 +53,8 @@
     let consent = null;
     try { consent = JSON.parse(localStorage.getItem(key) || "null"); } catch {}
     if (consent?.analytics !== true || window.__materuniGtmLoaded !== true) return;
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({ event: eventName, link_url: safeLink });
+    if (typeof window.gtag !== "function") return;
+    window.gtag("event", eventName, { link_url: safeLink });
   });
   const banner = document.getElementById("cookie-consent");
   if (!banner) return;
