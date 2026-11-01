@@ -340,22 +340,27 @@ const faqs = [
             <h3>{exp.name}</h3>
             <p class="card-desc">{exp.desc}</p>
             
-            <div class="card-inclusions-block">
-              <strong>What's included:</strong>
-              <ul>
-                {exp.inclusions.map((item) => (
-                  <li>{item}</li>
-                ))}
-              </ul>
-            </div>
-
-            <div class="card-prep-block">
-              <span class="prep-label">Not included:</span> {exp.exclusions}
-            </div>
-
-            <div class="card-prep-block">
-              <span class="prep-label">Guest preparation:</span> {exp.prep}
-            </div>
+            <details class="card-details-disclosure">
+              <summary>What's included &amp; guest notes</summary>
+              <div class="card-details-content">
+              <div class="card-inclusions-block">
+                <strong>What's included:</strong>
+                <ul>
+                  {exp.inclusions.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              </div>
+  
+              <div class="card-prep-block">
+                <span class="prep-label">Not included:</span> {exp.exclusions}
+              </div>
+  
+              <div class="card-prep-block">
+                <span class="prep-label">Guest preparation:</span> {exp.prep}
+              </div>
+              </div>
+            </details>
 
             <div class="boutique-card-actions">
               <a class="gold-button" href={`/booking?experience=${exp.key}`}>Book this experience</a>
@@ -1682,6 +1687,213 @@ const faqs = [
   .mh-quick-plan-step small { font-size: 8px; white-space: normal; }
   .mh-quick-plan-rule { width: 10px; flex: 0 0 10px; }
   .mh-quick-plan-button { width: 100%; min-height: 48px; }
+}
+
+
+/* 2026 homepage experience-card refinement: editorial hierarchy, compact details, responsive rhythm */
+.public-shell .home-section#experiences {
+  padding: clamp(64px, 7.2vw, 96px) clamp(18px, 4.2vw, 64px);
+}
+.public-shell #experiences .section-header {
+  max-width: 780px;
+  margin-bottom: clamp(30px, 4vw, 48px);
+}
+.public-shell #experiences .section-header h2 {
+  max-width: 720px;
+  margin-inline: auto;
+  font-size: clamp(34px, 4.3vw, 54px);
+  line-height: 1.08;
+  letter-spacing: -.025em;
+  text-wrap: balance;
+}
+.public-shell #experiences .section-header p {
+  max-width: 620px;
+  margin-inline: auto;
+  font-size: clamp(14px, 1.1vw, 16px);
+}
+.public-shell .curated-grid {
+  width: min(1320px, 100%);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(18px, 2vw, 28px);
+  align-items: stretch;
+}
+.public-shell .boutique-card {
+  min-width: 0;
+  border: 1px solid rgba(26, 51, 34, .12);
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 8px 28px rgba(26, 51, 34, .055);
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+.public-shell .boutique-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(197, 160, 89, .65);
+  box-shadow: 0 18px 42px rgba(26, 51, 34, .12);
+}
+.public-shell .boutique-card-media {
+  aspect-ratio: 16 / 10;
+  background: #e6dfd3;
+}
+.public-shell .boutique-photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.public-shell .card-duration-badge {
+  left: 14px;
+  bottom: 14px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 10px;
+  letter-spacing: .06em;
+}
+.public-shell .boutique-card-content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: clamp(19px, 2vw, 26px);
+}
+.public-shell .card-meta-top {
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  margin-bottom: 12px;
+}
+.public-shell .card-tagline {
+  max-width: 65%;
+  color: #8b6b35;
+  font-size: 10px;
+  letter-spacing: .09em;
+  line-height: 1.45;
+}
+.public-shell .card-price-display {
+  flex: 0 0 auto;
+  font-size: 28px;
+  line-height: 1;
+}
+.public-shell .card-price-display small {
+  margin-top: 5px;
+  font-size: 9px;
+  letter-spacing: .09em;
+}
+.public-shell .boutique-card-content h3 {
+  min-height: 2.55em;
+  margin: 0 0 10px;
+  font-size: clamp(21px, 1.65vw, 25px);
+  line-height: 1.22;
+  letter-spacing: -.01em;
+}
+.public-shell .card-desc {
+  margin: 0 0 18px;
+  color: #59645b;
+  font-size: 13px;
+  line-height: 1.72;
+}
+.public-shell .card-details-disclosure {
+  margin: 0 0 16px;
+  border-top: 1px solid #eee8de;
+  border-bottom: 1px solid #eee8de;
+}
+.public-shell .card-details-disclosure summary {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 10px 24px 10px 0;
+  color: #294431;
+  cursor: pointer;
+  list-style: none;
+  font: 700 11px/1.4 "Manrope", sans-serif;
+}
+.public-shell .card-details-disclosure summary::-webkit-details-marker { display: none; }
+.public-shell .card-details-disclosure summary::after {
+  content: "+";
+  position: absolute;
+  right: 2px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9a7842;
+  font: 500 20px/1 "Manrope", sans-serif;
+}
+.public-shell .card-details-disclosure[open] summary::after { content: "−"; }
+.public-shell .card-details-content { padding: 2px 0 10px; }
+.public-shell .card-details-content .card-inclusions-block {
+  padding-top: 10px;
+  margin-bottom: 10px;
+}
+.public-shell .card-details-content .card-prep-block {
+  margin-bottom: 8px;
+  font-size: 11px;
+  line-height: 1.6;
+}
+.public-shell .boutique-card-actions {
+  align-items: center;
+  gap: 12px;
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 0;
+}
+.public-shell .boutique-card-actions .gold-button {
+  min-height: 46px;
+  padding: 12px 16px;
+  border-radius: 3px;
+  font-size: 10px;
+  letter-spacing: .045em;
+}
+.public-shell .card-secondary-link {
+  white-space: nowrap;
+  font-size: 11px;
+}
+.public-shell .section-center-cta {
+  max-width: 860px;
+  margin: 38px auto 0;
+}
+.public-shell .indicative-rate-note {
+  max-width: 760px;
+  font-size: 12px;
+  line-height: 1.8;
+}
+.public-shell .home-section#hosts {
+  padding-block: clamp(64px, 7vw, 92px);
+}
+.public-shell .host-boutique-card {
+  overflow: hidden;
+  border: 1px solid rgba(26, 51, 34, .12);
+  border-radius: 16px;
+  box-shadow: 0 8px 28px rgba(26, 51, 34, .055);
+}
+.public-shell .host-avatar-wrap { overflow: hidden; }
+.public-shell .host-avatar { display: block; width: 100%; height: 100%; object-fit: cover; }
+@media (max-width: 1080px) {
+  .public-shell .curated-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 640px) {
+  .public-shell .home-section#experiences { padding: 56px 16px; }
+  .public-shell #experiences .section-header { margin-bottom: 28px; text-align: left; }
+  .public-shell #experiences .section-header h2 { font-size: clamp(32px, 9vw, 40px); }
+  .public-shell #experiences .section-header p { font-size: 14px; }
+  .public-shell .curated-grid { grid-template-columns: 1fr; gap: 18px; }
+  .public-shell .boutique-card { border-radius: 14px; }
+  .public-shell .boutique-card-media { aspect-ratio: 16 / 9; }
+  .public-shell .boutique-card-content { padding: 19px; }
+  .public-shell .boutique-card-content h3 { min-height: 0; font-size: 23px; }
+  .public-shell .card-desc { font-size: 13px; }
+  .public-shell .boutique-card-actions { align-items: stretch; flex-direction: column; }
+  .public-shell .boutique-card-actions .gold-button,
+  .public-shell .card-secondary-link { width: 100%; justify-content: center; text-align: center; }
+  .public-shell .hero-content { width: min(100%, 620px); }
+  .public-shell .premium-hero { min-height: min(760px, 84svh); padding: 76px 20px 64px; }
+  .public-shell .hero-badge { max-width: 100%; font-size: 9px; letter-spacing: .11em; }
+  .public-shell .premium-hero h1 { max-width: 560px; font-size: clamp(40px, 11vw, 52px); line-height: 1.02; }
+  .public-shell .hero-sub { max-width: 34ch; font-size: 15px; line-height: 1.7; }
+  .public-shell .hero-cta-group { width: 100%; gap: 10px; }
+  .public-shell .hero-cta-group a { min-height: 48px; width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .public-shell .boutique-card,
+  .public-shell .boutique-photo { transition: none !important; }
+  .public-shell .boutique-card:hover { transform: none; }
 }
 
 </style>
