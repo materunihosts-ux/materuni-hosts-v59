@@ -370,6 +370,44 @@ if (fs.existsSync(internalSourceAssets) && fs.readdirSync(internalSourceAssets).
   fail("Source contains files in public/assets/aistudio; internal drafts must stay outside public/");
 } else pass("No internal AI Studio drafts remain in the public source directory");
 
+// Keep all public pricing, estimates and transfer wording aligned with the live catalogue.
+const catalogueSourcePath = path.resolve("src/pages/itinerary.astro");
+const bookingSourcePath = path.resolve("src/pages/booking.astro");
+const waterfallSourcePath = path.resolve("src/pages/materuni-waterfall-tour.astro");
+const accommodationSourcePath = path.resolve("src/pages/accommodation.astro");
+const adminFaqSourcePath = path.resolve("src/pages/admin/content.astro");
+const catalogueSource = fs.existsSync(catalogueSourcePath) ? read(catalogueSourcePath) : "";
+const expectedPublicPrices = [
+  ['"name":"Materuni Waterfall & Chagga Village Experience","price":40', "waterfall $40"],
+  ['"name":"Traditional Chagga Coffee Experience","price":36', "coffee $36"],
+  ['"name":"Traditional Chagga Cooking Class","price":49', "cooking $49"],
+  ['"name":"Materuni & Moshi Town Cultural Experience","price":52', "Moshi $52"],
+  ['"name":"Materuni & Rau Forest Nature Experience","price":58', "Rau Forest $58"],
+  ['"name":"Materuni Overnight Village Experience","price":90', "overnight $90"]
+];
+for (const [snippet, label] of expectedPublicPrices) {
+  if (!catalogueSource.includes(snippet)) fail("Itinerary fallback catalogue is out of sync: " + label);
+}
+if (expectedPublicPrices.every(([snippet]) => catalogueSource.includes(snippet))) pass("Itinerary fallback prices match the six active Supabase catalogue prices");
+for (const [sourcePath, label] of [
+  [bookingSourcePath, "booking"],
+  [waterfallSourcePath, "waterfall landing page"],
+  [accommodationSourcePath, "accommodation"]
+]) {
+  if (!fs.existsSync(sourcePath)) { fail("Missing " + label + " source for pricing checks"); continue; }
+  const source = read(sourcePath);
+  if (/\\$(?:25|50|80)\\s*(?:\\/\\s*vehicle|per vehicle)/i.test(source)) fail(label + " must not publish unverified fixed transfer prices");
+  if (/guaranteed within 12h|100% free with zero upfront deposit/i.test(source)) fail(label + " must not publish unverified response-time or payment promises");
+}
+if (fs.existsSync(bookingSourcePath) && /transferPrice\\s*=|discount\\s*=\\s*guests>=/i.test(read(bookingSourcePath))) fail("Booking estimate must not calculate unverified transfer prices or fixed group-discount percentages");
+else if (fs.existsSync(bookingSourcePath)) pass("Booking estimate requests host-confirmed transfer and group quotes instead of inventing prices");
+if (fs.existsSync(waterfallSourcePath) && read(waterfallSourcePath).includes('"price": "40.00"')) pass("Waterfall structured-data offer matches the current $40 catalogue price");
+else fail("Waterfall structured-data offer must match the current $40 catalogue price");
+if (fs.existsSync(accommodationSourcePath) && read(accommodationSourcePath).includes("is $90 per person")) pass("Overnight accommodation copy matches the current $90 catalogue price");
+else fail("Overnight accommodation copy must match the current $90 catalogue price");
+if (fs.existsSync(adminFaqSourcePath) && /\\(\\$75\\)|\\(\\$65\\)|\\(\\$85\\)|\\(\\$110\\)|\\(\\$135\\)/.test(read(adminFaqSourcePath))) fail("Admin FAQ defaults must not restore retired package prices");
+else if (fs.existsSync(adminFaqSourcePath)) pass("Admin FAQ defaults no longer contain retired package prices");
+
 if (errors.length) {
   console.error("\nQUALITY GATE FAILED");
   for (const error of errors) console.error(" - " + error);
