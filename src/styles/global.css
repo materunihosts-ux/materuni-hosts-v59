@@ -2330,6 +2330,7 @@ body.admin-shell .admin-main .button{min-height:44px}
   border:2px solid var(--gold);border-radius:8px;
   font-family:"Source Sans 3",Arial,sans-serif;font-weight:700;
   text-decoration:none;transform:translateY(calc(-100% - 28px));
+  transition:none;
 }
 .skip-link:focus,.skip-link:focus-visible{
   transform:none;outline:3px solid var(--gold);outline-offset:3px;
