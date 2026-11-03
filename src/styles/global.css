@@ -3309,3 +3309,16 @@ body.public-shell .brand-intro-section .intro-pillar p{color:#242421;font:400 14
  body.public-shell .brand-intro-section .brand-intro-body{font-size:15px;line-height:1.75;margin-bottom:26px}
  body.public-shell .brand-intro-section .intro-pillar p{font-size:14px;line-height:1.7}
 }
+
+
+/* Footer refinement: clear brand lock-up and consistent social icon alignment */
+.site-footer .footer-brand-lockup{display:inline-flex;align-items:center;gap:14px;width:fit-content;max-width:100%;text-decoration:none;margin-bottom:8px}
+.site-footer .brand-logo-footer{display:block;width:76px;height:76px;min-width:76px;object-fit:contain;border-radius:50%;padding:5px;background:#FAF7F2;border:1px solid #C5A059;box-shadow:0 5px 18px rgba(0,0,0,.18)}
+.site-footer .footer-brand-lockup .brand-lockup{display:flex;flex-direction:column;gap:4px}
+.site-footer .footer-brand-lockup .brand-lockup strong{font-family:var(--serif);font-size:clamp(22px,2.4vw,29px);line-height:1.05;margin:0;color:#FAF7F2}
+.site-footer .footer-brand-lockup .brand-lockup small{font-size:9px;letter-spacing:.15em;color:#C5A059;font-weight:700}
+.site-footer .social-links{align-items:center;gap:9px}
+.site-footer .social-links a{min-height:40px;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:8px 12px;border:1px solid rgba(230,223,211,.32);border-radius:999px;color:#FAF7F2;text-decoration:none;transition:background .2s ease,border-color .2s ease,transform .2s ease}
+.site-footer .social-links a svg{display:block;width:17px;height:17px;flex:0 0 17px}
+.site-footer .social-links a:hover,.site-footer .social-links a:focus-visible{background:rgba(197,160,89,.14);border-color:#C5A059;transform:translateY(-1px);outline:none}
+@media(max-width:560px){.site-footer .brand-logo-footer{width:64px;height:64px;min-width:64px}.site-footer .social-links{gap:8px}.site-footer .social-links a{min-height:38px;padding:7px 10px}}
