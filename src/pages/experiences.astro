@@ -101,10 +101,10 @@ function experiencePhoto(key: string, imageUrl?: string | null) {
   const fallback: Record<string,string> = {
     "Waterfall & Chagga Culture": publicMediaBase + "waterfall_image/1791998303073-materuni-waterfall-hike.jpg",
     "Traditional Coffee Experience": publicMediaBase + "coffee_image/1791998412318-materuni-tour.jpg",
-    "Traditional Chagga Cooking Class": publicMediaBase + "coffee_image/1791994933291-materuni-coffe-picking-lesson.jpg",
+    "Traditional Chagga Cooking Class": publicMediaBase + "cooking_image/1792089297987-cooking-class.jpg",
     "Materuni & Moshi Town Tour": publicMediaBase + "story_image/1791995912146-materuni-community.jpg",
     "Materuni & Rau Forest Experience": publicMediaBase + "story_image/1791601761441-q3iog8mni3r.jpg",
-    "Camping & Village Life": publicMediaBase + "story_image/1791994219885-materuni-coffe-plantatio-tour.jpg"
+    "Camping & Village Life": publicMediaBase + "camping_image/1792122487239-camping.jpg"
   };
   return fallback[key] || "";
 }
@@ -132,7 +132,7 @@ function makeCatalogCard(tour) {
   card.className = "experience-card";
   if (tour.experience_key === "Camping & Village Life") card.id = "camping";
   card.dataset.experienceKey = tour.experience_key;
-  const selectedImage = tour.experience_key === "Traditional Chagga Cooking Class" ? (tour.image_url || "") : experiencePhoto(tour.experience_key, tour.image_url);
+  const selectedImage = experiencePhoto(tour.experience_key, tour.image_url);
   if (selectedImage && /^https:\/\//i.test(selectedImage)) {
     const image = document.createElement("img");
     image.src = selectedImage; image.alt = photoAltByKey[tour.experience_key] || (tour.experience_key === "Traditional Coffee Experience" ? "Materuni coffee experience with local hosts" : tour.display_name || "Materuni experience");
@@ -183,7 +183,7 @@ async function syncPublicCatalogue() {
       safeText(card.querySelector("[data-catalog-name]"), item.display_name);
       safeText(card.querySelector("[data-catalog-description]"), item.full_description || item.short_description);
       const image = card.querySelector("img");
-      const selectedImage = item.experience_key === "Traditional Chagga Cooking Class" ? (item.image_url || "") : experiencePhoto(item.experience_key, item.image_url);
+      const selectedImage = experiencePhoto(item.experience_key, item.image_url);
       if (image && selectedImage && /^https:\/\//i.test(selectedImage)) { image.src = selectedImage; image.alt = item.experience_key === "Traditional Chagga Cooking Class" ? "Guests preparing traditional Chagga food during a Materuni cooking class" : photoAltByKey[item.experience_key] || (item.experience_key === "Traditional Coffee Experience" ? "Materuni coffee experience with local hosts" : item.display_name || "Materuni experience"); } else if (!image && selectedImage && /^https:\/\//i.test(selectedImage)) { const restored = document.createElement("img"); restored.src = selectedImage; restored.alt = item.experience_key === "Traditional Chagga Cooking Class" ? "Guests preparing traditional Chagga food during a Materuni cooking class" : item.display_name || "Materuni experience"; restored.className = "experience-photo"; restored.loading = "lazy"; restored.decoding = "async"; restored.width = 640; restored.height = 420; card.prepend(restored); }
       const pill = card.querySelector(".pill");
       if (pill && item.duration_label) pill.textContent = item.duration_label;
