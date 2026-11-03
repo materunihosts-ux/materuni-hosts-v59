@@ -50,6 +50,8 @@
   });
   const banner = document.getElementById("cookie-consent");
   if (!banner) return;
+  const syncBannerPadding = () => document.body.classList.toggle("has-cookie-banner", !banner.hidden);
+  syncBannerPadding();
   const settings = document.getElementById("cookie-settings");
   const analytics = document.getElementById("cookie-analytics");
   const loadAnalytics = () => {
@@ -72,6 +74,7 @@
     settings.hidden = true;
     settingsButton?.setAttribute("aria-expanded", "false");
     banner.hidden = true;
+    syncBannerPadding();
     if (analyticsConsent) loadAnalytics();
   };
   let saved = null;
@@ -91,6 +94,7 @@
     settings.hidden = true;
     settingsButton?.setAttribute("aria-expanded", "false");
     banner.hidden = false;
+    syncBannerPadding();
   });
 })();
 </script>
