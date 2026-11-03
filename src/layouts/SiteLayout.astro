@@ -127,6 +127,52 @@ const structuredData = {
 </style>
 <link rel="preconnect" href={supabaseUrl} crossorigin />
 
+
+<style is:global>
+/* Materuni Hosts admin workspace refresh — shared across admin modules */
+body.admin-shell{background:#f6f3ed;color:#242421}
+body.admin-shell .admin-topbar{min-height:68px;padding:12px clamp(18px,4vw,64px);box-shadow:0 5px 22px rgba(10,25,16,.12)}
+body.admin-shell .admin-brand{display:inline-flex;align-items:center;gap:10px;font-size:16px;letter-spacing:.01em}
+body.admin-shell .admin-brand:before{content:"";width:34px;height:34px;display:inline-block;background:url('/materuni-hosts-logo-round.svg') center/contain no-repeat;flex:0 0 34px}
+body.admin-shell .admin-brand span{font-size:10px;letter-spacing:.18em;border-left:1px solid rgba(250,247,242,.28);padding-left:10px}
+body.admin-shell .admin-main{max-width:1500px;padding:clamp(20px,3vw,48px)}
+body.admin-shell .admin-main>.page-hero{padding:0 0 22px;border-bottom:1px solid #e5ded2;margin-bottom:26px}
+body.admin-shell .admin-main>.page-hero .eyebrow{color:#94723c;font-size:10px;font-weight:800;letter-spacing:.17em}
+body.admin-shell .admin-main>.page-hero h1{font:600 clamp(32px,4vw,48px)/1.08 'Cormorant Garamond',Georgia,serif;color:#1A3322;margin:8px 0 9px}
+body.admin-shell .admin-main>.page-hero p{max-width:760px;color:#68685f;font-size:14px;line-height:1.7;margin:0}
+body.admin-shell .booking-panel{background:#fff;border:1px solid #e7e0d5;border-radius:18px;padding:clamp(18px,2.4vw,30px);box-shadow:0 10px 30px rgba(26,51,34,.045)}
+body.admin-shell .booking-panel h2{font:600 clamp(23px,2.3vw,30px)/1.15 'Cormorant Garamond',Georgia,serif;color:#1A3322;margin:7px 0 9px}
+body.admin-shell .booking-panel .muted{color:#77766d;line-height:1.65}
+body.admin-shell .section-heading{align-items:flex-start;gap:18px}
+body.admin-shell .admin-stats{grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+body.admin-shell .admin-stat{min-height:108px;justify-content:center;border-radius:12px;background:linear-gradient(145deg,#fbfaf7,#f4f0e8);border-color:#e9e2d7;padding:18px}
+body.admin-shell .admin-stat span{font-size:11px;font-weight:700;letter-spacing:.035em;color:#77766d}
+body.admin-shell .admin-stat strong{font:600 clamp(26px,3vw,34px)/1 'Manrope',sans-serif;color:#1A3322;font-variant-numeric:tabular-nums}
+body.admin-shell .admin-home-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+body.admin-shell .admin-home-card{min-height:104px;border:1px solid #e7e0d5;border-radius:13px;background:#fff;padding:18px;gap:14px;transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}
+body.admin-shell .admin-home-card:hover{transform:translateY(-2px);border-color:#c5a059;box-shadow:0 10px 24px rgba(26,51,34,.07)}
+body.admin-shell .admin-home-icon{width:38px;height:38px;flex:0 0 38px;border-radius:11px;background:#f2ede3;color:#94723c;display:grid;place-items:center;font-size:11px;font-weight:800}
+body.admin-shell .admin-home-card strong{font-size:14px;color:#1A3322}
+body.admin-shell .admin-home-card small{font-size:11px;line-height:1.55;color:#77766d;margin-top:5px}
+body.admin-shell .admin-home-arrow{color:#a27d40;font-size:20px}
+body.admin-shell .admin-more-tools{border:1px solid #e7e0d5;border-radius:12px;padding:15px 17px;background:#fbfaf7}
+body.admin-shell .admin-more-tools summary{font-size:13px;font-weight:800;color:#1A3322;cursor:pointer}
+body.admin-shell .admin-more-tools summary span{display:block;font-size:11px;font-weight:400;color:#77766d;margin-top:4px}
+body.admin-shell .field{gap:8px}
+body.admin-shell .field label{font-size:11px;font-weight:800;letter-spacing:.035em;color:#4b574c}
+body.admin-shell .field input,body.admin-shell .field select,body.admin-shell .field textarea,body.admin-shell input,body.admin-shell select,body.admin-shell textarea{min-height:44px;border:1px solid #ded8cd;border-radius:9px;background:#fff;padding:11px 13px;font:13px 'Manrope',sans-serif;color:#242421}
+body.admin-shell .field textarea,body.admin-shell textarea{line-height:1.6}
+body.admin-shell input:focus,body.admin-shell select:focus,body.admin-shell textarea:focus{outline:3px solid rgba(197,160,89,.2);border-color:#9c7a42}
+body.admin-shell .button{min-height:44px;border-radius:999px;padding:12px 19px;font-size:12px;font-weight:800;letter-spacing:.025em;transition:transform .18s ease,box-shadow .18s ease}
+body.admin-shell .button:not(.button-secondary):hover{transform:translateY(-1px);box-shadow:0 7px 18px rgba(26,51,34,.15)}
+body.admin-shell .button-secondary{background:#f7f4ee;border-color:#ded7ca}
+body.admin-shell .admin-booking-card{border-radius:12px;padding:17px 18px;border-color:#e9e2d7}
+body.admin-shell .admin-shortcuts{gap:9px}
+body.admin-shell .admin-view-site{font-weight:800}
+@media(max-width:850px){body.admin-shell .admin-stats{grid-template-columns:repeat(2,minmax(0,1fr))}body.admin-shell .admin-home-grid{grid-template-columns:1fr}}
+@media(max-width:560px){body.admin-shell .admin-main{padding:18px 14px 30px}body.admin-shell .admin-topbar{padding:10px 14px;min-height:60px}body.admin-shell .admin-brand{font-size:14px}body.admin-shell .admin-view-site{font-size:10px;padding:9px 11px}body.admin-shell .admin-main>.page-hero{padding-bottom:17px;margin-bottom:18px}body.admin-shell .booking-panel{border-radius:14px;padding:17px}body.admin-shell .admin-stats{gap:9px}body.admin-shell .admin-stat{min-height:88px;padding:13px}body.admin-shell .admin-stat strong{font-size:24px}body.admin-shell .admin-home-card{padding:14px;min-height:90px}}
+@media(prefers-reduced-motion:reduce){body.admin-shell .admin-home-card,body.admin-shell .button{transition:none}}
+</style>
 <style is:global>
 body.admin-shell .site-header,body.admin-shell .site-footer,body.admin-shell .mh-concierge{display:none!important}
 body.admin-shell{min-height:100vh}body.admin-shell .admin-main{width:100%;max-width:1440px;margin:0 auto;padding:clamp(18px,3vw,42px);min-height:calc(100vh - 58px)}body.admin-shell .admin-main>.page-hero{margin:0 0 22px;padding:0;background:transparent}body.admin-shell .admin-main .booking-wrap{width:100%;max-width:none;margin:0;padding:0}body.admin-shell .admin-main .booking-panel{border:1px solid #e1d9cc;border-radius:16px;box-shadow:0 12px 36px rgba(26,51,34,.07)}body.admin-shell .admin-main .button{min-height:42px}
