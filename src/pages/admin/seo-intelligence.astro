@@ -31,7 +31,7 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
     </section>
     <section class="tab-panel" id="tab-keywords" hidden>
       <article class="seo-panel"><div class="panel-title"><div><span class="seo-kicker">REAL SEARCH PERFORMANCE</span><h2>Import Search Console CSV</h2><p>Export the Queries or Pages report from Google Search Console as CSV. The import is processed in your browser and stored in this private admin database.</p></div></div>
-        <form id="gsc-import-form" class="entry-form"><label class="wide">Search Console CSV<input id="gsc-file" type="file" accept=".csv,text/csv" required /></label><label>Start date<input name="start_date" type="date" /></label><label>End date<input name="end_date" type="date" /></label><div class="form-actions"><button class="seo-btn">Import CSV</button></div></form>
+        <form id="gsc-import-form" class="entry-form"><label class="wide">Search Console CSV<input id="gsc-file" type="file" accept=".csv,text/csv" required /></label><label>Start date<input name="start_date" type="date" required /></label><label>End date<input name="end_date" type="date" required /></label><div class="form-actions"><button class="seo-btn">Import CSV</button></div></form>
         <div class="score-note">Supported columns: Top queries / Queries, Top pages / Pages, Clicks, Impressions, CTR, Position. Google exports may include a title row; the importer detects common header names. Importing the same query/page/date range updates existing rows.</div>
         <div class="metrics gsc-metrics"><article class="metric"><span>Imported clicks</span><strong id="gsc-clicks">—</strong></article><article class="metric"><span>Imported impressions</span><strong id="gsc-impressions">—</strong></article><article class="metric"><span>Average position</span><strong id="gsc-position">—</strong></article><article class="metric"><span>Rows stored</span><strong id="gsc-count">—</strong></article></div>
         <div class="table-wrap"><table><thead><tr><th>Query</th><th>Page</th><th>Clicks</th><th>Impressions</th><th>CTR</th><th>Position</th></tr></thead><tbody id="gsc-rows"></tbody></table></div>
@@ -119,7 +119,7 @@ function parseCsv(text) {
  let headerIndex=rows.findIndex(r=>r.some(v=>["query","topqueries","page","toppages"].includes(normal(v)))&&r.some(v=>normal(v)==="clicks"));
  if(headerIndex<0)throw new Error("Could not detect a Search Console CSV header. Export the Queries or Pages report.");
  const headers=rows[headerIndex].map(normal);const find=(...names)=>headers.findIndex(h=>names.includes(h));
- const dimension=find("query","topqueries","page","toppages","toppages");
+ const dimension=find("query","topqueries","page","toppages");
  const clicks=find("clicks"),impressions=find("impressions"),ctr=find("ctr"),position=find("position");
  if(dimension<0||clicks<0||impressions<0)throw new Error("CSV must contain Query or Page, Clicks and Impressions columns.");
  return rows.slice(headerIndex+1).filter(r=>r[dimension]).map(r=>({query:headers[dimension].includes("page")||headers[dimension].includes("pages")?"[PAGE REPORT]":r[dimension],page:headers[dimension].includes("page")||headers[dimension].includes("pages")?r[dimension]:"",clicks:parseInt(r[clicks]||"0",10)||0,impressions:parseInt(r[impressions]||"0",10)||0,ctr:ctr>=0?Number(String(r[ctr]).replace("%",""))/(String(r[ctr]).includes("%")?100:1):0,position:position>=0?Number(r[position])||null:null}));
