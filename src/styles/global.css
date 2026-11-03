@@ -2945,3 +2945,22 @@ a,button{overflow-wrap:anywhere}
   .section,.page-hero{padding-left:14px;padding-right:14px}
   .admin-booking-details{grid-template-columns:minmax(0,1fr)}
 }
+
+
+/* High-specificity mobile safeguards for pages with component-level styles */
+@media(max-width:600px){
+  .landing .hero{padding:38px 17px!important;min-height:0!important}
+  .landing .hero h1{font-size:clamp(31px,8.5vw,40px)!important;line-height:1.08!important}
+  .landing .hero p:not(.eyebrow){font-size:13px!important;line-height:1.65!important}
+  .landing section:not(.hero){padding:32px 16px!important}
+  .landing h2{font-size:clamp(26px,7.2vw,34px)!important;line-height:1.12!important}
+  .landing h3{font-size:17px!important;line-height:1.3!important}
+  .landing .destination-panel{padding:20px 17px!important;border-radius:12px}
+  .landing .destination-panel strong{font-size:38px!important}
+  .landing .trip-links{grid-template-columns:minmax(0,1fr)!important;gap:12px}
+  .landing .trip-links article{padding:17px!important}
+  .landing .actions .button{width:100%;justify-content:center}
+  .page-hero{padding:40px 16px!important}
+  .page-hero h1{font-size:clamp(30px,8.5vw,40px)!important;line-height:1.08!important}
+  .page-hero p{font-size:13px!important}
+}
