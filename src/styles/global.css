@@ -2640,7 +2640,7 @@ body.public-shell .language-control select {
 }
 body.public-shell .menu-toggle { display: none !important; }
 
-@media (max-width: 1199px) {
+@media (max-width: 1320px) {
   body.public-shell .site-header {
     min-height: 76px !important;
     height: 76px !important;
@@ -2722,4 +2722,151 @@ body.public-shell .menu-toggle { display: none !important; }
   body.public-shell .site-header { padding-inline: 10px !important; }
   body.public-shell .language-control select { min-height: 38px; padding-inline: 8px; }
   body.public-shell .menu-toggle { width: 42px; height: 42px; flex-basis: 42px; }
+}
+
+
+/* V5.2 responsive finishing pass — keep the navigation usable before it becomes crowded. */
+body.public-shell .site-header {
+  position: sticky;
+  isolation: isolate;
+  overflow: visible;
+}
+body.public-shell .site-header > .brand {
+  min-width: 0;
+}
+body.public-shell .brand-lockup {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+body.public-shell .brand-lockup strong {
+  font-family: var(--font-display);
+  font-size: clamp(16px, 1.25vw, 19px);
+  line-height: 1.05;
+  letter-spacing: .01em;
+}
+body.public-shell .brand-lockup small {
+  font-family: var(--font-body);
+  font-size: 8px;
+  line-height: 1.3;
+  letter-spacing: .16em;
+  white-space: nowrap;
+}
+body.public-shell .language-control select {
+  min-width: 52px;
+  min-height: 42px;
+  padding: 8px 9px;
+  border: 1px solid var(--sand);
+  border-radius: 4px;
+  background: var(--cream);
+  color: var(--forest);
+}
+body.public-shell .menu-toggle {
+  border-radius: 4px;
+  cursor: pointer;
+}
+body.public-shell .site-header nav a:focus-visible,
+body.public-shell .menu-toggle:focus-visible,
+body.public-shell .language-control select:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 3px;
+}
+body.public-shell :is(.hero-copy,.section,.page-hero,.booking-wrap,.site-footer,
+  .card-body,.boutique-card-content,.booking-panel) {
+  min-width: 0;
+}
+body.public-shell :is(.cards,.form-grid,.feature-list,.site-footer) > * {
+  min-width: 0;
+}
+body.public-shell :is(p,li,dd,blockquote) {
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+body.public-shell :is(h1,h2,h3,h4) {
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+body.public-shell :is(.button,.nav-cta,button,input[type="submit"]) {
+  min-height: 44px;
+  touch-action: manipulation;
+}
+@media (max-width: 900px) {
+  body.public-shell .hero {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  body.public-shell .cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  body.public-shell .split {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  body.public-shell .site-footer {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 620px) {
+  body.public-shell .cards,
+  body.public-shell .form-grid,
+  body.public-shell .feature-list,
+  body.public-shell .site-footer {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  body.public-shell .field.full {
+    grid-column: auto;
+  }
+  body.public-shell .hero-copy {
+    padding: clamp(42px, 11vw, 68px) 20px;
+  }
+  body.public-shell .section {
+    padding: clamp(44px, 10vw, 62px) 18px;
+  }
+  body.public-shell .page-hero {
+    padding: clamp(48px, 11vw, 68px) 18px;
+  }
+  body.public-shell .site-footer > div:first-child {
+    grid-column: auto;
+  }
+  body.public-shell .copyright {
+    grid-column: auto;
+  }
+}
+@media (max-width: 390px) {
+  body.public-shell .site-header {
+    padding-inline: 9px !important;
+    gap: 7px !important;
+  }
+  body.public-shell .site-header > .brand .brand-logo {
+    width: 48px !important;
+    height: 48px !important;
+    flex-basis: 48px !important;
+  }
+  body.public-shell .brand-lockup strong {
+    font-size: 15px;
+  }
+  body.public-shell .brand-lockup small {
+    font-size: 7px;
+    letter-spacing: .11em;
+  }
+  body.public-shell .language-control select {
+    min-width: 46px;
+    padding-inline: 6px;
+  }
+  body.public-shell .menu-toggle {
+    width: 40px;
+    min-width: 40px;
+    flex-basis: 40px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  body.public-shell *,
+  body.public-shell *::before,
+  body.public-shell *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
 }
