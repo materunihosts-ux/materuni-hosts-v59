@@ -2045,3 +2045,53 @@ body.public-shell .site-footer .copyright {
     flex: 0 0 44px;
   }
 }
+
+
+/* November visual correction: horizontal brand lockup, clear footer socials and legible hero */
+.site-header{min-height:92px;height:auto;display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:24px;padding:12px clamp(18px,4vw,64px)}
+.site-header>.brand{position:static;transform:none;width:auto;height:auto;min-width:0;flex:0 0 auto;display:flex;flex-direction:row;align-items:center;justify-content:flex-start;gap:12px;line-height:1}
+.site-header>.brand .brand-logo{width:58px;height:58px;flex:0 0 58px;object-fit:contain;object-position:center;border-radius:0}
+.site-header>.brand .brand-lockup{display:flex;flex-direction:column;align-items:flex-start;gap:3px}
+.site-header>.brand .brand-lockup strong{font-family:var(--serif);font-size:clamp(22px,2.2vw,29px);font-weight:600;line-height:.98;letter-spacing:-.02em}
+.site-header>.brand .brand-lockup small{font:700 8px/1.3 var(--sans);letter-spacing:.13em;color:var(--gold);white-space:nowrap}
+.site-header nav{flex:1 1 auto;justify-content:flex-end;gap:clamp(10px,1.5vw,22px);flex-wrap:wrap}
+.site-footer .footer-brand-lockup{display:flex;align-items:center;justify-content:flex-start;gap:14px;width:auto;height:auto;line-height:1}
+.site-footer .brand-logo-footer{width:58px;height:58px;flex:0 0 58px;object-fit:contain;object-position:center;border-radius:0}
+.site-footer .footer-brand-lockup .brand-lockup{display:flex;flex-direction:column;gap:4px}
+.site-footer .footer-brand-lockup .brand-lockup strong{font:600 29px/.95 var(--serif);letter-spacing:-.02em}
+.site-footer .footer-brand-lockup .brand-lockup small{font:700 8px/1.3 var(--sans);letter-spacing:.12em;color:#d7b16c}
+.site-footer .social-links{display:flex;flex-wrap:wrap;align-items:center;gap:9px;margin-top:18px}
+.site-footer .social-links a{width:44px;height:44px;min-height:44px;flex:0 0 44px;padding:0;display:inline-flex;align-items:center;justify-content:center;border:1px solid rgba(230,223,211,.42);border-radius:50%;background:rgba(250,247,242,.06);color:#FAF7F2;font-size:0;line-height:0;transition:background .2s,border-color .2s,transform .2s}
+.site-footer .social-links a:hover{background:#C5A059;border-color:#C5A059;color:#1A3322;transform:translateY(-2px)}
+.site-footer .social-links a:focus-visible{outline:3px solid #C5A059;outline-offset:3px}
+.site-footer .social-links svg{display:block;width:21px;height:21px;flex:0 0 21px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.site-footer .social-links a[aria-label="Facebook"] svg{fill:currentColor;stroke:none}
+.site-footer .social-links a[aria-label="Google reviews"] svg{fill:initial;stroke:none}
+.premium-hero{min-height:clamp(560px,76vh,740px);text-align:left;justify-content:flex-start;padding:clamp(64px,8vw,108px) clamp(22px,7vw,100px)}
+.premium-hero .hero-content{width:min(100%,760px);max-width:760px;margin:0;align-items:flex-start;text-align:left}
+.premium-hero .hero-badge{color:#fff;background:rgba(18,45,35,.88);border-color:#C5A059;text-shadow:none}
+.premium-hero h1{max-width:760px;color:#fff;text-shadow:0 2px 18px rgba(0,0,0,.55);font-size:clamp(42px,6vw,72px);line-height:1.02}
+.premium-hero .hero-sub{max-width:610px;color:#fff;font-size:clamp(17px,1.5vw,20px);font-weight:600;line-height:1.65;text-shadow:0 2px 12px rgba(0,0,0,.72)}
+.premium-hero .hero-cta-group{justify-content:flex-start}
+.premium-hero .hero-social-proof{color:#fff;text-shadow:0 1px 8px rgba(0,0,0,.8)}
+@media(max-width:850px){
+ .site-header{min-height:76px;height:76px;flex-direction:row;justify-content:space-between;padding:8px 18px}
+ .site-header>.brand{position:static;transform:none;width:auto;height:auto}
+ .site-header>.brand .brand-logo{width:48px;height:48px;flex-basis:48px}
+ .site-header nav{top:75px;justify-content:flex-start}
+ .premium-hero{min-height:620px;padding:72px 28px}
+ .premium-hero .hero-content{max-width:640px}
+}
+@media(max-width:560px){
+ .site-header{height:70px;min-height:70px;padding:6px 14px}
+ .site-header>.brand .brand-logo{width:42px;height:42px;flex-basis:42px}
+ .site-header>.brand .brand-lockup strong{font-size:21px}
+ .site-header>.brand .brand-lockup small{font-size:7px;letter-spacing:.08em}
+ .site-footer .brand-logo-footer{width:48px;height:48px;flex-basis:48px}
+ .site-footer .footer-brand-lockup .brand-lockup strong{font-size:25px}
+ .site-footer .social-links{gap:8px}
+ .site-footer .social-links a{width:42px;height:42px;flex-basis:42px}
+ .premium-hero{min-height:600px;padding:66px 22px}
+ .premium-hero h1{font-size:clamp(40px,11vw,54px);line-height:1.04}
+ .premium-hero .hero-sub{font-size:16px;line-height:1.6}
+}
