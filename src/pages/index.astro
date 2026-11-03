@@ -61,8 +61,8 @@ const faqs = [
       <h1 id="hero-heading">Materuni Village Tours &amp; Chagga Cultural Experiences</h1>
       <p class="hero-sub">Meaningful cultural encounters, beautiful landscapes and genuine connections with the people who call Materuni home.</p>
       <div class="hero-cta-group">
-        <a class="gold-button" href="#experiences">Explore Experiences</a>
-        <a class="hero-outline-button" href="#hosts">Meet Your Hosts</a>
+        <a class="gold-button" href="#experiences">Join a Village Experience</a>
+        <a class="hero-outline-button" href="/about-us">Discover Materuni</a>
       </div>
       <div class="hero-social-proof">
         <span>Read independent guest feedback on <a href="https://www.tripadvisor.com/34765809" target="_blank" rel="noopener noreferrer" class="proof-link">TripAdvisor</a> &amp; <a href="https://g.page/r/CXy6M_Suiip9EBM/review" target="_blank" rel="noopener noreferrer" class="proof-link">Google</a></span>
@@ -145,7 +145,7 @@ const faqs = [
             <h3 data-home-name>{exp.name}</h3><p class="card-desc" data-home-description>{exp.desc}</p>
             <div class="experience-highlight-block"><strong>Experience highlights</strong><ul>{exp.highlights.map((item) => <li>{item}</li>)}</ul></div>
             <div class="boutique-card-actions">
-              <a class="gold-button" href={`/booking?experience=${exp.key}`}>Book this experience</a>
+              <a class="gold-button" href={`/booking?experience=${exp.key}`}>Request this experience</a>
               <a class="card-secondary-link" href="/experiences">Full experience details →</a>
             </div>
           </div>
@@ -405,7 +405,7 @@ const faqs = [
           Send a booking request online and our local hosting team will contact you to discuss availability, timings and any transport arrangements.
         </p>
         <div class="booking-cta-actions">
-          <a class="gold-button" href="/booking">Check availability &amp; book</a>
+          <a class="gold-button" href="/booking">Send a booking request</a>
           <a class="hero-outline-button dark" href="https://wa.me/255612068540?text=Hello%20Materuni%20Hosts%2C%20I%20would%20like%20to%20plan%20a%20visit." target="_blank" rel="noopener noreferrer">
             Chat on WhatsApp
           </a>
