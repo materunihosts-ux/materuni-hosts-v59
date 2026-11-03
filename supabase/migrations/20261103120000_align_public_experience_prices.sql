@@ -19,4 +19,7 @@ on conflict (experience_key) do update set
 update public.experience_catalog
 set is_active = false,
     updated_at = now()
-where experience_key = 'Materuni Waterfall Hike & Cultural Day Trip';
+where experience_key in (
+  'Materuni Waterfall Hike & Cultural Day Trip',
+  'The Ultimate Kilimanjaro Foothills & Materuni Experience'
+);
