@@ -10,12 +10,12 @@ const optimizedHero = await getImage({ src: heroSource, width: 1600, height: 100
 // Curated 6 experiences with equal visual importance (authoritative pricing aligned with Supabase catalog)
 // Homepage catalogue fallback; prices match the published Materuni Hosts catalogue.
 const curatedExperiences = [
- {key:"waterfall",name:"Materuni Waterfall & Chagga Village Experience",tagline:"Waterfall walk · village heritage",price:40,label:"Day visit",image:"waterfall_image/1791998303073-materuni-waterfall-hike.jpg",alt:"Materuni Waterfall among the green slopes of Mount Kilimanjaro",desc:"Join a local guide for a walk to Materuni Waterfall, then discover Chagga village life, coffee traditions and local food.",highlights:["Walk to Materuni Waterfall","Explore Chagga village life","Learn about local coffee traditions"]},
- {key:"coffee",name:"Traditional Chagga Coffee Experience",tagline:"From coffee growing to a fresh cup",price:36,label:"Day visit",image:"coffee_image/1791998412318-materuni-tour.jpg",alt:"Chagga coffee being prepared by hand in Materuni Village",desc:"Discover the Chagga coffee journey with local hosts, from growing traditions and hands-on roasting, grinding and brewing to a freshly prepared tasting.",highlights:["Discover coffee-growing traditions","Take part in roasting, grinding and brewing","Taste freshly prepared coffee"]},
- {key:"cooking",name:"Traditional Chagga Cooking Class",tagline:"Cook · learn · share local food",price:49,label:"Day visit",image:null,alt:"Traditional Chagga cooking experience in Materuni Village",desc:"Join a hands-on Chagga cooking class with local hosts, learn about ingredients and traditional preparation methods, and enjoy the food you help prepare.",highlights:["Prepare traditional Chagga dishes","Learn about local ingredients","Share the food you help prepare"]},
- {key:"moshi",name:"Materuni & Moshi Town Cultural Experience",tagline:"Village life · town history",price:52,label:"Day visit",image:"story_image/1791995912146-materuni-community.jpg",alt:"Materuni Hosts community scene in Materuni Village",desc:"Pair your Materuni visit with a guided Moshi town walk. Explore the town, learn about local history and everyday life, and discover the market area.",highlights:["Explore Materuni Village","Walk through Moshi with a local town guide","Discover local history and the market area"]},
- {key:"rau",name:"Materuni & Rau Forest Nature Experience",tagline:"Village culture · forest nature",price:58,label:"Day visit",image:"story_image/1791601761441-q3iog8mni3r.jpg",alt:"Forest vegetation in the Kilimanjaro region of Tanzania",desc:"Combine your Materuni visit with a guided nature walk in Rau Forest near Moshi. Discover forest ecology, birdlife, the Mvule tree and nearby rice fields.",highlights:["Guided Rau Forest nature walk","Learn about forest ecology and birdlife","Discover the Mvule tree and nearby rice fields"]},
- {key:"camping",name:"Materuni Overnight Village Experience",tagline:"A slower village stay",price:90,label:"1 night",image:"story_image/1791994219885-materuni-coffe-plantatio-tour.jpg",alt:"Coffee-growing landscape in Materuni Village",desc:"Stay one night in Materuni with tent accommodation, dinner, breakfast and a next-day guided village experience, alongside the waterfall and Chagga coffee activities.",highlights:["One-night village tent accommodation","Dinner and breakfast","Next-day guided village experience"]}
+ {key:"waterfall",catalogKey:"Waterfall & Chagga Culture",name:"Materuni Waterfall & Chagga Village Experience",tagline:"Waterfall walk · village heritage",price:40,label:"Day visit",image:"waterfall_image/1792472007095-optimized.webp",alt:"Materuni Waterfall among the green slopes of Mount Kilimanjaro",desc:"Join a local guide for a walk to Materuni Waterfall, then discover Chagga village life, coffee traditions and local food.",highlights:["Walk to Materuni Waterfall","Explore Chagga village life","Learn about local coffee traditions"]},
+ {key:"coffee",catalogKey:"Traditional Coffee Experience",name:"Traditional Chagga Coffee Experience",tagline:"From coffee growing to a fresh cup",price:36,label:"Day visit",image:"coffee_image/1792472054273-optimized.webp",alt:"Chagga coffee being prepared by hand in Materuni Village",desc:"Discover the Chagga coffee journey with local hosts, from growing traditions and hands-on roasting, grinding and brewing to a freshly prepared tasting.",highlights:["Discover coffee-growing traditions","Take part in roasting, grinding and brewing","Taste freshly prepared coffee"]},
+ {key:"cooking",catalogKey:"Traditional Chagga Cooking Class",name:"Traditional Chagga Cooking Class",tagline:"Cook · learn · share local food",price:49,label:"Day visit",image:"cooking_image/1792089297987-cooking-class.jpg",alt:"Traditional Chagga cooking class in Materuni Village",desc:"Join a hands-on Chagga cooking class with local hosts, learn about ingredients and traditional preparation methods, and enjoy the food you help prepare.",highlights:["Prepare traditional Chagga dishes","Learn about local ingredients","Share the food you help prepare"]},
+ {key:"moshi",catalogKey:"Materuni & Moshi Town Tour",name:"Materuni & Moshi Town Cultural Experience",tagline:"Village life · town history",price:52,label:"Day visit",image:"story_image/1791995912146-materuni-community.jpg",alt:"Materuni Hosts community scene in Materuni Village",desc:"Pair your Materuni visit with a guided Moshi town walk. Explore the town, learn about local history and everyday life, and discover the market area.",highlights:["Explore Materuni Village","Walk through Moshi with a local town guide","Discover local history and the market area"]},
+ {key:"rau",catalogKey:"Materuni & Rau Forest Experience",name:"Materuni & Rau Forest Nature Experience",tagline:"Village culture · forest nature",price:58,label:"Day visit",image:"story_image/1791601761441-q3iog8mni3r.jpg",alt:"Forest vegetation in the Kilimanjaro region of Tanzania",desc:"Combine your Materuni visit with a guided nature walk in Rau Forest near Moshi. Discover forest ecology, birdlife, the Mvule tree and nearby rice fields.",highlights:["Guided Rau Forest nature walk","Learn about forest ecology and birdlife","Discover the Mvule tree and nearby rice fields"]},
+ {key:"camping",catalogKey:"Camping & Village Life",name:"Materuni Overnight Village Experience",tagline:"A slower village stay",price:90,label:"1 night",image:"camping_image/1792122487239-camping.jpg",alt:"Overnight village camping area in Materuni",desc:"Stay one night in Materuni with tent accommodation, dinner, breakfast and a next-day guided village experience, alongside the waterfall and Chagga coffee activities.",highlights:["One-night village tent accommodation","Dinner and breakfast","Next-day guided village experience"]}
 ];
 
 // Host profiles for Meet Your Hosts section
@@ -135,14 +135,14 @@ const faqs = [
     </div>
     <div class="curated-grid">
       {curatedExperiences.map((exp) => (
-        <article class="boutique-card" id={`exp-${exp.key}`}>
+        <article class="boutique-card" id={`exp-${exp.key}`} data-home-experience-key={exp.catalogKey}>
           <div class="boutique-card-media">
-            {exp.image ? <Image src={base + exp.image} alt={exp.alt} width={640} height={420} format="webp" quality={78} loading="lazy" decoding="async" class="boutique-photo" /> : <div class="boutique-photo-placeholder" role="img" aria-label={exp.alt}><span>Chagga Cooking</span><small>Traditional food &amp; village life</small></div>}
+            <Image src={base + exp.image} alt={exp.alt} width={640} height={420} format="webp" quality={78} loading="lazy" decoding="async" class="boutique-photo" data-home-image />
             <span class="card-duration-badge">{exp.label}</span>
           </div>
           <div class="boutique-card-content">
-            <div class="card-meta-top"><span class="card-tagline">{exp.tagline}</span><span class="card-price-display">${exp.price} <small>PER PERSON</small></span></div>
-            <h3>{exp.name}</h3><p class="card-desc">{exp.desc}</p>
+            <div class="card-meta-top"><span class="card-tagline">{exp.tagline}</span><span class="card-price-display" data-home-price>${exp.price} <small>PER PERSON</small></span></div>
+            <h3 data-home-name>{exp.name}</h3><p class="card-desc" data-home-description>{exp.desc}</p>
             <div class="experience-highlight-block"><strong>Experience highlights</strong><ul>{exp.highlights.map((item) => <li>{item}</li>)}</ul></div>
             <div class="boutique-card-actions">
               <a class="gold-button" href={`/booking?experience=${exp.key}`}>Book this experience</a>
@@ -440,6 +440,67 @@ const faqs = [
   </section>
 </SiteLayout>
 
+<script>
+import { supabaseUrl, publishableKey } from "../lib/supabase-public";
+
+const homeCards = [...document.querySelectorAll("[data-home-experience-key]")];
+if (homeCards.length) {
+  const endpoint = new URL(`${supabaseUrl}/rest/v1/experience_catalog`);
+  endpoint.searchParams.set("select", "experience_key,display_name,price_usd,image_url,is_active");
+  endpoint.searchParams.set("order", "sort_order.asc");
+
+  fetch(endpoint, {
+    headers: {
+      apikey: publishableKey,
+      Authorization: `Bearer ${publishableKey}`
+    },
+    cache: "default"
+  })
+    .then((response) => {
+      if (!response.ok) throw new Error(`Catalogue request failed (${response.status})`);
+      return response.json();
+    })
+    .then((items) => {
+      for (const item of items) {
+        const card = homeCards.find((node) => node.dataset.homeExperienceKey === item.experience_key);
+        if (!card) continue;
+        if (item.is_active === false) {
+          card.hidden = true;
+          continue;
+        }
+
+        const price = Number(item.price_usd);
+        const priceNode = card.querySelector("[data-home-price]");
+        if (priceNode && Number.isFinite(price) && price > 0 && priceNode.firstChild) {
+          priceNode.firstChild.textContent = `$${price.toFixed(0)} `;
+        }
+
+        const nameNode = card.querySelector("[data-home-name]");
+        if (nameNode && typeof item.display_name === "string" && item.display_name.trim()) {
+          nameNode.textContent = item.display_name;
+        }
+
+        const imageNode = card.querySelector("[data-home-image]");
+        if (imageNode && typeof item.image_url === "string") {
+          try {
+            const imageUrl = new URL(item.image_url);
+            const allowedHosts = ["sskmzswoeljxwojcszta.supabase.co", "commons.wikimedia.org"];
+            if (imageUrl.protocol === "https:" && allowedHosts.includes(imageUrl.hostname)) {
+              imageNode.src = imageUrl.href;
+              imageNode.removeAttribute("srcset");
+              imageNode.removeAttribute("sizes");
+              imageNode.referrerPolicy = "no-referrer";
+              imageNode.alt = item.display_name || imageNode.alt;
+            }
+          } catch {
+            // Keep the statically rendered, optimized fallback image.
+          }
+        }
+      }
+    })
+    .catch((error) => console.warn("Homepage catalogue fallback remains in use.", error));
+}
+</script>
 <style>
 /* PREMIUM BOUTIQUE EDITORIAL STYLES */
 :root {
@@ -1243,9 +1304,6 @@ const faqs = [
 .materuni-map-caption span { color:#242421; font:400 11px/1.5 "Manrope",sans-serif; }
 .materuni-map-caption a { align-self:flex-start; margin-top:5px; color:#242421; font:800 11px "Manrope",sans-serif; text-decoration:underline; text-underline-offset:3px; }
 .materuni-map-caption a:hover { color:#1A3322; }
-.boutique-photo-placeholder { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; width:100%; height:100%; min-height:220px; padding:24px; background:repeating-linear-gradient(135deg,#E6DFD3 0 10px,#FAF7F2 10px 20px); color:#1A3322; text-align:center; }
-.boutique-photo-placeholder span { font:600 28px/1.1 "Cormorant Garamond",Georgia,serif; }
-.boutique-photo-placeholder small { color:#242421; font:700 10px/1.5 "Manrope",sans-serif; letter-spacing:.1em; text-transform:uppercase; }
 .experience-highlight-block { margin-top:12px; padding-top:12px; border-top:1px solid #E6DFD3; }
 .experience-highlight-block strong { color:#1A3322; font:800 11px/1.4 "Manrope",sans-serif; letter-spacing:.06em; text-transform:uppercase; }
 .experience-highlight-block ul { margin:8px 0 0; padding-left:18px; color:#242421; font:400 12px/1.65 "Manrope",sans-serif; }
@@ -1428,25 +1486,4 @@ const faqs = [
   .mh-quick-plan-rule { width: 10px; flex: 0 0 10px; }
   .mh-quick-plan-button { width: 100%; min-height: 48px; }
 }
-
-.boutique-photo-placeholder {
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:8px;
-  width:100%;
-  height:100%;
-  min-height:220px;
-  padding:24px;
-  background:repeating-linear-gradient(135deg,#E6DFD3 0 10px,#FAF7F2 10px 20px);
-  color:#1A3322;
-  text-align:center;
-}
-.boutique-photo-placeholder span { font:600 28px/1.1 "Cormorant Garamond",Georgia,serif; }
-.boutique-photo-placeholder small { color:#242421; font:700 10px/1.5 "Manrope",sans-serif; letter-spacing:.1em; text-transform:uppercase; }
-.experience-highlight-block { margin-top:12px; padding-top:12px; border-top:1px solid #E6DFD3; }
-.experience-highlight-block strong { color:#1A3322; font:800 11px/1.4 "Manrope",sans-serif; letter-spacing:.06em; text-transform:uppercase; }
-.experience-highlight-block ul { margin:8px 0 0; padding-left:18px; color:#242421; font:400 12px/1.65 "Manrope",sans-serif; }
-.experience-highlight-block li { margin:3px 0; }
 </style>
