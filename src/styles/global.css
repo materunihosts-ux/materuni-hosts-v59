@@ -2095,3 +2095,13 @@ body.public-shell .site-footer .copyright {
  .premium-hero h1{font-size:clamp(40px,11vw,54px);line-height:1.04}
  .premium-hero .hero-sub{font-size:16px;line-height:1.6}
 }
+
+/* Use a clean horizontal wordmark until the approved horizontal logo artwork is supplied */
+.site-header>.brand .brand-logo,
+.site-footer .brand-logo-footer{display:none!important}
+.site-header>.brand .brand-lockup strong{font-size:clamp(26px,2.6vw,34px);letter-spacing:-.035em}
+.site-footer .footer-brand-lockup .brand-lockup strong{font-size:32px}
+@media(max-width:560px){
+ .site-header>.brand .brand-lockup strong{font-size:25px}
+ .site-footer .footer-brand-lockup .brand-lockup strong{font-size:28px}
+}
