@@ -3196,3 +3196,26 @@ a,button{overflow-wrap:anywhere}
   .brand-intro-section .brand-intro-body{font-size:15px;line-height:1.75;margin-bottom:24px}
   .brand-intro-section .intro-pillar p{font-size:14px;line-height:1.7}
 }
+
+
+/* FOOTER QUALITY PASS — clearer hierarchy, breathing room and responsive layout */
+body.public-shell .site-footer{position:relative;isolation:isolate;grid-template-columns:minmax(0,1.45fr) minmax(150px,.8fr) minmax(220px,1fr);gap:clamp(28px,5vw,76px);padding:clamp(48px,6vw,76px) clamp(22px,7vw,100px) 24px;background:#1A3322;color:#E6DFD3;border-top:3px solid #C5A059}
+body.public-shell .site-footer>div{min-width:0;gap:13px;font-size:13px;line-height:1.7}
+body.public-shell .site-footer>div:first-child{gap:17px}
+body.public-shell .site-footer .footer-brand-lockup{display:flex;align-items:center;gap:14px;width:max-content;max-width:100%;color:#FAF7F2}
+body.public-shell .site-footer .brand-logo-footer{width:64px;height:64px;object-fit:contain;flex:0 0 64px}
+body.public-shell .site-footer .brand-lockup strong{display:block;font:600 25px/1.05 "Cormorant Garamond",Georgia,serif;letter-spacing:.015em;color:#FAF7F2}
+body.public-shell .site-footer .brand-lockup small{display:block;margin-top:6px;font:700 8px/1.4 "Manrope",sans-serif;letter-spacing:.13em;color:#C5A059}
+body.public-shell .site-footer p{max-width:360px;margin:0;color:#E6DFD3;font-size:13px;line-height:1.8}
+body.public-shell .site-footer .tagline{font:italic 500 20px/1.3 "Cormorant Garamond",Georgia,serif;color:#C5A059}
+body.public-shell .site-footer>div>strong{font:800 11px/1.4 "Manrope",sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#C5A059;margin:4px 0 5px}
+body.public-shell .site-footer a,body.public-shell .site-footer span{overflow-wrap:anywhere}
+body.public-shell .site-footer>div:not(:first-child)>a{width:fit-content;max-width:100%;color:#E6DFD3;transition:color .18s ease}
+body.public-shell .site-footer>div:not(:first-child)>a:hover{color:#C5A059;text-decoration:underline;text-underline-offset:4px}
+body.public-shell .site-footer .social-links{display:flex;flex-wrap:wrap;gap:9px;margin-top:3px}
+body.public-shell .site-footer .social-links a{display:inline-flex;align-items:center;gap:8px;min-height:38px;padding:7px 12px;border:1px solid rgba(230,223,211,.28);border-radius:2px;color:#FAF7F2;font-size:11px}
+body.public-shell .site-footer .social-links svg{width:16px;height:16px;flex:0 0 16px}
+body.public-shell .site-footer .social-links a:hover{border-color:#C5A059;background:rgba(197,160,89,.08);text-decoration:none}
+body.public-shell .site-footer .copyright{grid-column:1/-1;margin-top:12px;padding-top:20px;border-top:1px solid rgba(230,223,211,.24);color:#E6DFD3;font-size:11px;line-height:1.7}
+@media(max-width:850px){body.public-shell .site-footer{grid-template-columns:1fr 1fr;gap:34px 26px;padding:48px 24px 22px}body.public-shell .site-footer>div:first-child{grid-column:1/-1}}
+@media(max-width:560px){body.public-shell .site-footer{grid-template-columns:1fr;gap:28px;padding:42px 20px 20px}body.public-shell .site-footer>div:first-child{grid-column:auto}body.public-shell .site-footer .brand-logo-footer{width:56px;height:56px;flex-basis:56px}body.public-shell .site-footer .brand-lockup strong{font-size:23px}body.public-shell .site-footer>div:not(:first-child)>a{min-height:30px}body.public-shell .site-footer .copyright{margin-top:4px}}
