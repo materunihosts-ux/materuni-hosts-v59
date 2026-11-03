@@ -2285,3 +2285,192 @@ body.admin-shell .admin-main .button{min-height:44px}
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 }
+
+
+/* ==========================================================================
+   MATERUNI HOSTS V5.0 — CANONICAL TYPOGRAPHY SYSTEM
+   One editorial serif + one highly legible humanist sans-serif.
+   Keep all global type decisions here; avoid page-level font overrides.
+   ========================================================================== */
+:root {
+  --font-display: "Cormorant Garamond", Georgia, serif;
+  --font-body: "Manrope", Arial, sans-serif;
+  --serif: var(--font-display);
+  --sans: var(--font-body);
+  --ink: #2D2215;
+  --muted: #514B42;
+  --body-size: 16px;
+  --body-leading: 1.7;
+  --type-h1: clamp(2.5rem, 5.2vw, 4.25rem);
+  --type-h2: clamp(2rem, 4vw, 3.25rem);
+  --type-h3: clamp(1.375rem, 2vw, 1.75rem);
+  --type-body: 1rem;
+  --type-small: .875rem;
+  --type-caption: .8125rem;
+  --type-label: .8125rem;
+  --type-nav: .875rem;
+  --type-button: .875rem;
+  --type-reading-width: 70ch;
+}
+
+/* Base reading experience */
+html { font-size: 100%; }
+body {
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--type-body);
+  font-weight: 400;
+  line-height: var(--body-leading);
+  font-synthesis: none;
+  text-align: left;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+p, li, dd, blockquote {
+  font-size: 1rem;
+  line-height: 1.7;
+  text-align: left;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+p { text-wrap: pretty; }
+.public-shell :is(.hero p, .page-hero p, .hero-sub, .section-head p, .split p,
+  .body p, .legal-copy p, .legal-content p, .legal-page p, .leg-content p) {
+  max-width: var(--type-reading-width);
+}
+.public-shell :is(.hero-copy, .page-hero, .section-head, .split, .body, .legal-copy,
+  .legal-content, .legal-page, .leg-content) { text-align: left; }
+.public-shell .section-head { text-align: center; }
+.public-shell .page-hero { text-align: center; }
+
+/* Clear, repeatable heading hierarchy */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--forest);
+  font-family: var(--font-display);
+  font-style: normal;
+  font-synthesis: none;
+  font-weight: 600;
+  text-wrap: balance;
+  overflow-wrap: break-word;
+}
+h1 { font-size: var(--type-h1); line-height: 1.08; letter-spacing: -.02em; }
+h2 { font-size: var(--type-h2); line-height: 1.12; letter-spacing: -.015em; }
+h3 { font-size: var(--type-h3); line-height: 1.18; letter-spacing: -.01em; }
+h4 { font-size: 1.25rem; line-height: 1.25; }
+h5, h6 { font-size: 1.0625rem; line-height: 1.3; }
+.hero h1, .page-hero h1, .premium-hero h1 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.04;
+}
+.section h2, .section-head h2, .faq-intro h2 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.12;
+}
+.experience-card h3, .boutique-card-content h3,
+.faq-item summary, .admin-booking-top h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+/* Body copy, cards and long-form reading */
+.public-shell :is(.hero p, .page-hero p, .hero-sub, .section-head p,
+  .experience-card p, .experience-card li, .boutique-card-content p,
+  .boutique-card-content li, .card-desc, .intro-pillar p, .body p,
+  .body li, .shared-standard li, .faq-item p, .feature-list div,
+  .split p, .legal-copy p, .legal-copy li, .legal-content p,
+  .legal-content li, .legal-page p, .legal-page li, .leg-content p,
+  .leg-content li, .itinerary-stop p) {
+  font-size: 1rem;
+  line-height: 1.7;
+}
+.public-shell :is(.experience-card, .boutique-card-content) :is(ul, ol) {
+  font-size: .9375rem;
+  line-height: 1.7;
+}
+.public-shell :is(.experience-card p, .boutique-card-content p, .card-desc,
+  .intro-pillar p, .body p, .faq-item p) { color: var(--muted); }
+
+/* Navigation, controls and short labels */
+.site-header nav { font-size: var(--type-nav); line-height: 1.45; font-weight: 600; }
+.site-header nav a:not(.nav-cta) { font-size: var(--type-nav); }
+.nav-cta, .button, .button-secondary, .button-danger,
+button.button, button[type="submit"], input[type="submit"] {
+  font-family: var(--font-body);
+  font-size: var(--type-button);
+  font-weight: 700;
+  line-height: 1.35;
+}
+.field label, .field > label, #booking-form .field label {
+  color: var(--forest);
+  font-family: var(--font-body);
+  font-size: var(--type-label);
+  font-weight: 700;
+  line-height: 1.45;
+  letter-spacing: .01em;
+}
+.field input, .field select, .field textarea,
+input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+select, textarea {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+.eyebrow, .section-kicker, .overline, .pill, .status-pill,
+.card-tagline, .card-duration-badge {
+  font-family: var(--font-body);
+  font-size: .8125rem;
+  font-weight: 700;
+  line-height: 1.45;
+  letter-spacing: .08em;
+}
+small, .small, .caption, figcaption, .copyright,
+.price small, .card-price-display small {
+  font-size: var(--type-caption);
+  line-height: 1.5;
+}
+.price, .card-price-display { font-family: var(--font-display); font-weight: 700; }
+.site-footer, .site-footer p, .site-footer a { line-height: 1.7; }
+.site-footer p, .site-footer > div { font-size: .9375rem; }
+.site-footer .copyright { font-size: .8125rem; }
+
+/* Admin remains information-dense, but never sacrifices legibility. */
+.admin-shell { font-family: var(--font-body); font-size: 15px; line-height: 1.6; }
+.admin-shell :is(p, li, label, input, select, textarea, button) {
+  font-family: var(--font-body);
+}
+.admin-shell .admin-main :is(p, li) { font-size: .9375rem; line-height: 1.6; }
+.admin-shell .admin-main :is(.field label, .admin-stat span, .admin-detail-label,
+  .admin-booking-top p, .admin-notification-row .muted, .notification-channel) {
+  font-size: .8125rem;
+  line-height: 1.5;
+}
+.admin-shell .admin-main :is(input, select, textarea) { font-size: 1rem; }
+.admin-shell .admin-main :is(button, .button) { font-size: .8125rem; }
+
+/* Strong focus and zoom-friendly text; no justified paragraphs or tiny mobile copy. */
+:where(a, button, input, select, textarea, summary):focus-visible {
+  outline: 3px solid #8A6427;
+  outline-offset: 3px;
+}
+@media (max-width: 600px) {
+  :root { --type-h1: clamp(2.375rem, 10vw, 2.875rem); --type-h2: clamp(1.875rem, 8vw, 2.375rem); --type-h3: 1.375rem; }
+  body { font-size: 1rem; line-height: 1.7; }
+  .public-shell :is(.hero p, .page-hero p, .hero-sub, .section-head p,
+    .experience-card p, .experience-card li, .boutique-card-content p,
+    .boutique-card-content li, .card-desc, .intro-pillar p, .body p,
+    .body li, .shared-standard li, .faq-item p, .feature-list div,
+    .split p, .legal-copy p, .legal-copy li, .legal-content p,
+    .legal-content li, .legal-page p, .legal-page li, .leg-content p,
+    .leg-content li, .itinerary-stop p) {
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+  .site-header nav a:not(.nav-cta) { font-size: .9375rem; }
+  .site-footer p, .site-footer > div { font-size: .9375rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  p { text-wrap: initial; }
+}
