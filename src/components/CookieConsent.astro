@@ -69,6 +69,8 @@
     analyticsConsent = !!choice.analytics;
     try { localStorage.setItem(key, JSON.stringify({ analytics: analyticsConsent, savedAt: new Date().toISOString() })); } catch {}
     if (window.gtag) window.gtag("consent", "update", { analytics_storage: analyticsConsent ? "granted" : "denied", ad_storage: "denied", ad_user_data: "denied", ad_personalization: "denied" });
+    settings.hidden = true;
+    settingsButton?.setAttribute("aria-expanded", "false");
     banner.hidden = true;
     if (analyticsConsent) loadAnalytics();
   };
@@ -81,11 +83,13 @@
   }
   banner.querySelector("[data-cookie-accept]")?.addEventListener("click", () => apply({ analytics: true }));
   banner.querySelector("[data-cookie-reject]")?.addEventListener("click", () => apply({ analytics: false }));
-  banner.querySelector("[data-cookie-settings]")?.addEventListener("click", (event) => { settings.hidden = !settings.hidden; event.currentTarget?.setAttribute("aria-expanded", String(!settings.hidden)); });
+  const settingsButton = banner.querySelector("[data-cookie-settings]");
+  settingsButton?.addEventListener("click", () => { settings.hidden = !settings.hidden; settingsButton.setAttribute("aria-expanded", String(!settings.hidden)); });
   banner.querySelector("[data-cookie-save]")?.addEventListener("click", () => apply({ analytics: analytics.checked }));
   document.querySelector("[data-cookie-reopen]")?.addEventListener("click", () => {
     analytics.checked = analyticsConsent;
     settings.hidden = true;
+    settingsButton?.setAttribute("aria-expanded", "false");
     banner.hidden = false;
   });
 })();
