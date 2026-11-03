@@ -7,7 +7,7 @@
   <div class="cookie-actions">
     <button type="button" class="cookie-btn cookie-btn-accept" data-cookie-accept>Accept</button>
     <button type="button" class="cookie-btn cookie-btn-reject" data-cookie-reject>Reject</button>
-    <button type="button" class="cookie-btn-link" data-cookie-settings aria-label="Cookie preferences">Settings</button>
+    <button type="button" class="cookie-btn-link" data-cookie-settings aria-label="Cookie preferences" aria-controls="cookie-settings" aria-expanded="false">Settings</button>
   </div>
   <div class="cookie-settings" id="cookie-settings" hidden>
     <label><input type="checkbox" checked disabled /> Essential (active)</label>
@@ -17,19 +17,20 @@
 </div>
 <button class="cookie-reopen" type="button" data-cookie-reopen aria-label="Open privacy settings">Privacy settings</button>
 <style>
-.cookie-consent{position:fixed;z-index:10000;inset:auto 16px 16px 16px;max-width:880px;margin-inline:auto;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 18px;color:#242421;background:#FAF7F2;border:1px solid #C5A059;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,.2)}
+.cookie-consent{position:fixed;z-index:10000;inset:auto 16px 16px 16px;max-width:880px;margin-inline:auto;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 18px;color:#242421;background:#FAF7F2;border:1px solid #C5A059;border-radius:4px;box-shadow:0 8px 30px rgba(36,36,33,.2)}
+.cookie-consent[hidden],.cookie-settings[hidden]{display:none!important}
 .cookie-copy p{margin:0;font:500 14px/1.6 var(--sans);color:#1A3322}
-.cookie-copy a{color:#80652F;font-weight:700;text-decoration:underline}
+.cookie-copy a{color:#1A3322;font-weight:700;text-decoration:underline}
 .cookie-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}
-.cookie-btn{min-height:44px;min-width:88px;padding:9px 16px;border-radius:999px;font:800 13px/1.35 var(--sans);cursor:pointer;border:1px solid #1A3322}
+.cookie-btn{min-height:44px;min-width:88px;padding:9px 16px;border-radius:4px;font:800 13px/1.35 var(--sans);cursor:pointer;border:1px solid #1A3322}
 .cookie-btn-accept{background:#1A3322;color:#FAF7F2}
 .cookie-btn-reject{background:transparent;color:#1A3322}
-.cookie-btn-link{background:none;border:none;color:#665f52;font:700 13px/1.4 var(--sans);text-decoration:underline;cursor:pointer;padding:8px}
+.cookie-btn-link{background:none;border:none;color:#242421;font:700 13px/1.4 var(--sans);text-decoration:underline;cursor:pointer;padding:8px}
 .cookie-settings{display:flex;align-items:center;gap:14px;flex-wrap:wrap;font:600 14px/1.5 var(--sans);width:100%;margin-top:10px}
 .cookie-settings label{display:flex;align-items:center;gap:4px}
-.cookie-settings button{min-height:40px;padding:8px 16px;border-radius:999px;border:1px solid #1A3322;background:#1A3322;color:#fff;font-size:13px;font-weight:800;cursor:pointer}
+.cookie-settings button{min-height:40px;padding:8px 16px;border-radius:4px;border:1px solid #1A3322;background:#1A3322;color:#FAF7F2;font-size:13px;font-weight:800;cursor:pointer}
 @media(max-width:600px){
-  .cookie-consent{inset:auto 8px 8px 8px;flex-direction:column;align-items:stretch;padding:10px 14px;gap:8px;border-radius:10px}
+  .cookie-consent{inset:auto 8px 8px 8px;flex-direction:column;align-items:stretch;padding:10px 14px;gap:8px;border-radius:4px}
   .cookie-copy p{font-size:14px;line-height:1.6;text-align:left}
   .cookie-actions{display:grid;grid-template-columns:1fr 1fr auto;gap:8px;width:100%}
   .cookie-btn{min-height:44px;width:100%;padding:8px 10px;text-align:center}
@@ -38,9 +39,10 @@
 <script is:inline>
 (() => {
   const key = "materuni-cookie-consent-v1";
-  // Queue conversion-friendly events for the consent-gated GTM container.
-  // No guest names, emails, phone numbers or booking references are sent.
+  // Queue WhatsApp click events only after the visitor has granted analytics consent.
+  let analyticsConsent = false;
   document.addEventListener("click", (event) => {
+    if (!analyticsConsent) return;
     const link = event.target instanceof Element ? event.target.closest('a[href*="wa.me"]') : null;
     if (!link) return;
     window.dataLayer = window.dataLayer || [];
@@ -64,20 +66,25 @@
     document.head.appendChild(script);
   };
   const apply = (choice) => {
-    localStorage.setItem(key, JSON.stringify({ analytics: !!choice.analytics, savedAt: new Date().toISOString() }));
+    analyticsConsent = !!choice.analytics;
+    try { localStorage.setItem(key, JSON.stringify({ analytics: analyticsConsent, savedAt: new Date().toISOString() })); } catch {}
+    if (window.gtag) window.gtag("consent", "update", { analytics_storage: analyticsConsent ? "granted" : "denied", ad_storage: "denied", ad_user_data: "denied", ad_personalization: "denied" });
     banner.hidden = true;
-    if (choice.analytics) loadAnalytics();
+    if (analyticsConsent) loadAnalytics();
   };
   let saved = null;
   try { saved = JSON.parse(localStorage.getItem(key) || "null"); } catch {}
   if (!saved || typeof saved.analytics !== "boolean") banner.hidden = false;
-  else if (saved.analytics) loadAnalytics();
+  else {
+    analyticsConsent = saved.analytics === true;
+    if (analyticsConsent) loadAnalytics();
+  }
   banner.querySelector("[data-cookie-accept]")?.addEventListener("click", () => apply({ analytics: true }));
   banner.querySelector("[data-cookie-reject]")?.addEventListener("click", () => apply({ analytics: false }));
-  banner.querySelector("[data-cookie-settings]")?.addEventListener("click", () => { settings.hidden = !settings.hidden; });
+  banner.querySelector("[data-cookie-settings]")?.addEventListener("click", (event) => { settings.hidden = !settings.hidden; event.currentTarget?.setAttribute("aria-expanded", String(!settings.hidden)); });
   banner.querySelector("[data-cookie-save]")?.addEventListener("click", () => apply({ analytics: analytics.checked }));
   document.querySelector("[data-cookie-reopen]")?.addEventListener("click", () => {
-    analytics.checked = !!saved?.analytics;
+    analytics.checked = analyticsConsent;
     settings.hidden = true;
     banner.hidden = false;
   });
