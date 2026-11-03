@@ -225,7 +225,7 @@ const faqs = [
       <div class="nature-image-container">
         <Image
           src={base + "waterfall_image/1791998303073-materuni-waterfall-hike.jpg"}
-          alt="The dramatic 95-metre Materuni waterfall pouring into the clear pool"
+          alt="Materuni Waterfall cascading into a natural pool in the green Kilimanjaro foothills"
           width={800}
           height={550}
           format="webp"
@@ -417,7 +417,7 @@ const faqs = [
 
       <div class="materuni-map-card"><div class="materuni-map-paper">
         <div class="materuni-map-heading"><span>AN ILLUSTRATED VILLAGE GUIDE</span><strong>A sketch of Materuni</strong></div>
-        <svg class="materuni-map-svg" viewBox="0 0 760 470" role="img" aria-labelledby="materuni-map-title materuni-map-description">
+        <svg class="materuni-map-svg" viewBox="0 0 760 500" role="img" aria-labelledby="materuni-map-title materuni-map-description">
           <title id="materuni-map-title">Illustrated guide to Materuni Village</title><desc id="materuni-map-description">A not-to-scale illustration showing the Kilimanjaro foothills, coffee farms, banana grove, village homes, river and Materuni Waterfall.</desc>
           <path d="M42 126 Q115 72 180 112 T318 92 T460 112 T715 83" fill="none" stroke="#E6DFD3" stroke-width="34" stroke-linecap="round"/><path d="M48 126 Q120 74 180 112 T318 92 T460 112 T710 83" fill="none" stroke="#1A3322" stroke-width="3" stroke-linecap="round" stroke-dasharray="5 8"/>
           <path d="M278 107 L338 31 L390 98 L429 47 L496 112" fill="#E6DFD3" stroke="#1A3322" stroke-width="3" stroke-linejoin="round"/><path d="M323 52 L338 31 L354 54 L342 48 Z M411 68 L429 47 L447 69 L431 63 Z" fill="#FAF7F2" stroke="#1A3322" stroke-width="2"/>
@@ -430,9 +430,9 @@ const faqs = [
           <text x="155" y="411" text-anchor="middle" class="map-label map-label-strong">HOST HOMES</text>
           <g transform="translate(430 255)"><path d="M0 45 Q18 4 36 45 M34 45 Q54 -2 72 45 M68 45 Q88 8 106 45" fill="none" stroke="#1A3322" stroke-width="4" stroke-linecap="round"/><path d="M15 45 Q28 22 42 45 M51 45 Q65 19 80 45" fill="none" stroke="#C5A059" stroke-width="3" stroke-linecap="round"/></g><text x="482" y="322" text-anchor="middle" class="map-label map-label-strong">COFFEE FARMS</text>
           <g transform="translate(610 284)"><path d="M25 62 Q-8 28 6 0 Q28 20 25 62 M25 62 Q18 16 50 0 Q54 34 25 62 M25 62 Q42 26 75 20 Q68 52 25 62" fill="none" stroke="#1A3322" stroke-width="4" stroke-linecap="round"/><path d="M25 62 L25 83" stroke="#1A3322" stroke-width="4" stroke-linecap="round"/></g><text x="645" y="390" text-anchor="middle" class="map-label map-label-strong">BANANA GROVE</text>
-          <g transform="translate(324 335)"><path d="M0 0 C18 18 18 34 0 52 C-18 34 -18 18 0 0" fill="#E6DFD3" stroke="#1A3322" stroke-width="3"/><path d="M0 52 C-18 68 -18 85 0 101 C18 85 18 68 0 52" fill="#FAF7F2" stroke="#1A3322" stroke-width="3"/><path d="M0 0 V101" stroke="#1A3322" stroke-width="3"/></g>
-          <text x="324" y="455" text-anchor="middle" class="map-label map-label-strong">MATERUNI WATERFALL</text><path d="M322 331 Q350 305 376 318" fill="none" stroke="#1A3322" stroke-width="3" stroke-dasharray="5 7"/><text x="374" y="301" class="map-label">FOREST PATH</text>
-          <text x="55" y="450" class="map-label map-label-note">ILLUSTRATIVE · NOT TO SCALE</text>
+          <g transform="translate(292 342)"><path d="M0 0 L64 0 L58 20 L66 39 L57 58 L64 78 L57 108 L6 108 L0 83 L8 62 L0 42 L8 20 Z" fill="#E6DFD3" stroke="#1A3322" stroke-width="3" stroke-linejoin="round"/><path d="M18 8 C8 28 25 38 16 56 S24 82 16 101 M34 8 C24 28 42 40 33 58 S41 84 34 101 M49 8 C40 27 56 40 48 58 S56 83 49 101" fill="none" stroke="#C5A059" stroke-width="4" stroke-linecap="round"/></g>
+          <text x="324" y="462" text-anchor="middle" class="map-label map-label-strong">MATERUNI WATERFALL</text><path d="M322 331 Q350 305 376 318" fill="none" stroke="#1A3322" stroke-width="3" stroke-dasharray="5 7"/><text x="374" y="301" class="map-label">FOREST PATH</text>
+          <text x="55" y="490" class="map-label map-label-note">ILLUSTRATIVE · NOT TO SCALE</text>
         </svg>
         <div class="materuni-map-caption"><strong>Materuni Village, Materuni Juu</strong><span>Moshi Rural · Kilimanjaro Region · Tanzania</span><a href="https://www.google.com/maps/search/?api=1&amp;query=Materuni+Village%2C+Materuni+Juu%2C+Moshi+Rural+Tanzania" target="_blank" rel="noopener noreferrer">Open directions ↗</a></div>
       </div></div>
@@ -810,7 +810,8 @@ const faqs = [
 /* 4. MEET YOUR HOSTS */
 .hosts-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 520px);
+  justify-content: center;
   gap: 32px;
   max-width: 1180px;
   margin: 0 auto;
@@ -824,18 +825,20 @@ const faqs = [
   box-shadow: 0 4px 18px rgba(26, 51, 34, 0.03);
 }
 .host-avatar-wrap {
-  width: 130px;
-  height: 130px;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 10;
   margin: 0 auto 20px;
-  border-radius: 50%;
+  border-radius: 2px;
   overflow: hidden;
-  border: 3px solid #C5A059;
-  box-shadow: 0 4px 14px rgba(26, 51, 34, 0.1);
+  border: 1px solid #E6DFD3;
 }
 .host-avatar {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
 }
 .host-boutique-card h3 {
   font: 600 22px/1.2 "Cormorant Garamond", Georgia, serif;
@@ -1402,8 +1405,8 @@ const faqs = [
 }
 .mh-quick-plan-button:hover {
   background: #C5A059;
-  border-color: #242421;
-  color: #1A3322;
+  border-color: #C5A059;
+  color: #242421;
 }
 .mh-quick-plan-button span { font-size: 16px; line-height: 1; }
 @media (max-width: 980px) {
@@ -1423,4 +1426,24 @@ const faqs = [
   .mh-quick-plan-button { width: 100%; min-height: 48px; }
 }
 
+.boutique-photo-placeholder {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  width:100%;
+  height:100%;
+  min-height:220px;
+  padding:24px;
+  background:repeating-linear-gradient(135deg,#E6DFD3 0 10px,#FAF7F2 10px 20px);
+  color:#1A3322;
+  text-align:center;
+}
+.boutique-photo-placeholder span { font:600 28px/1.1 "Cormorant Garamond",Georgia,serif; }
+.boutique-photo-placeholder small { color:#242421; font:700 10px/1.5 "Manrope",sans-serif; letter-spacing:.1em; text-transform:uppercase; }
+.experience-highlight-block { margin-top:12px; padding-top:12px; border-top:1px solid #E6DFD3; }
+.experience-highlight-block strong { color:#1A3322; font:800 11px/1.4 "Manrope",sans-serif; letter-spacing:.06em; text-transform:uppercase; }
+.experience-highlight-block ul { margin:8px 0 0; padding-left:18px; color:#48534a; font:400 12px/1.65 "Manrope",sans-serif; }
+.experience-highlight-block li { margin:3px 0; }
 </style>
