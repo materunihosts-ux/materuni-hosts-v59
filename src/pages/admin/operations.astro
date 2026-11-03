@@ -278,6 +278,20 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
  .doc-cards-grid{grid-template-columns:1fr}
  .doc-parties-grid,.doc-checklists,.doc-signatures{grid-template-columns:1fr}
 }
+@page{size:A4 portrait;margin:14mm 13mm 16mm}
+@media print{
+ html,body{background:#fff!important;margin:0!important;padding:0!important}
+ body *{visibility:hidden!important}
+ #document-preview,#document-preview *,.document-preview,.document-preview *{visibility:visible!important}
+ #document-preview,.document-preview{position:absolute!important;inset:0 auto auto 0!important;width:100%!important;max-width:none!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;box-shadow:none!important;background:#fff!important;color:#242421!important;font-size:10pt!important;line-height:1.6!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+ .document-preview .doc-actions{display:none!important}
+ .document-preview .doc-brand,.document-preview h2,.document-preview h3,.document-preview .doc-total{break-inside:avoid;page-break-inside:avoid}
+ .document-preview table{width:100%!important;border-collapse:collapse!important}
+ .document-preview thead{display:table-header-group}
+ .document-preview tr{break-inside:avoid;page-break-inside:avoid}
+ .document-preview img{max-width:16mm!important;max-height:16mm!important;object-fit:contain!important}
+ .document-preview p{orphans:3;widows:3}
+}
 </style>
 
 <script>
@@ -1178,38 +1192,13 @@ el("document-form").addEventListener("submit",ev=>{
   </div>
  `;
 
- // PDF Export via html2pdf.js
+ // Use the browser's native print pipeline for crisp, selectable vector text.
+ // Guests can choose "Save as PDF" in the print dialog; unlike html2canvas,
+ // this does not rasterise the document into a screenshot.
  el("print-document").addEventListener("click",()=>window.print());
- el("download-document-pdf").addEventListener("click",async()=>{
-  const btn=el("download-document-pdf"),orig=btn.textContent;
-  let actions=null;btn.disabled=true;btn.textContent="Generating PDF…";
-  try{
-   if(!window.html2pdf){
-    await new Promise((resolve,reject)=>{
-     const s=document.createElement("script");
-     s.src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.3/html2pdf.bundle.min.js";
-     s.onload=resolve;s.onerror=()=>reject(new Error("PDF library unavailable"));
-     document.head.append(s);
-    });
-   }
-   const safe=(ref+"-"+title).normalize("NFKD").replace(/[^a-zA-Z0-9]+/g,"-").replace(/^-|-$/g,"").toLowerCase();
-   actions=root.querySelector(".doc-actions");if(actions)actions.style.display="none";
-   await window.html2pdf().set({
-    margin:[10,10,12,10],
-    filename:"Materuni-Hosts-"+safe+".pdf",
-    image:{type:"jpeg",quality:0.98},
-    html2canvas:{scale:2,useCORS:true,allowTaint:false,backgroundColor:"#ffffff",scrollY:0},
-    jsPDF:{unit:"mm",format:"a4",orientation:"portrait",compress:true},
-    pagebreak:{mode:["css","legacy"],avoid:[".doc-masthead",".doc-status-banner",".doc-cards-grid",".doc-table",".doc-financial-grid",".doc-signatures",".doc-footer"]}
-   }).from(root).save();
-   el("doc-feedback").textContent="High-quality A4 PDF downloaded successfully.";
-  }catch(err){
-   el("doc-feedback").textContent="Direct PDF download failed, opening browser print dialog: "+err.message;
-   window.print();
-  }finally{
-   if(actions)actions.style.display="flex";
-   btn.disabled=false;btn.textContent=orig;
-  }
+ el("download-document-pdf").addEventListener("click",()=>{
+  el("doc-feedback").textContent="Choose “Save as PDF” in the print dialog for a crisp A4 document.";
+  window.print();
  });
 
  // Share via Web Share API
