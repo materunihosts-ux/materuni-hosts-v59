@@ -9,7 +9,8 @@ const {
   nofollow = false,
   robots = null,
   preloadImage = null,
-  canonicalOverride = null
+  canonicalOverride = null,
+  canonical = null
 } = Astro.props;
 
 const pathname = Astro.url.pathname;
@@ -35,7 +36,8 @@ if (typeof robots === "string" && robots.trim()) {
 
 const cleanPath = pathname === "/" ? "/" : pathname.replace(/\/+$/, "");
 const canonicalUrl = new URL(cleanPath, "https://materunihosts.com");
-const canonical = canonicalOverride ? new URL(canonicalOverride, "https://materunihosts.com").toString() : canonicalUrl.toString();
+const canonicalTarget = canonicalOverride ?? canonical;
+const canonicalHref = canonicalTarget ? new URL(canonicalTarget, "https://materunihosts.com").toString() : canonicalUrl.toString();
 const breadcrumbLabels: Record<string, string> = {
   experiences: "Experiences",
   about: "Our story",
@@ -76,7 +78,7 @@ const webPageData = {
   "@type": "WebPage",
   "name": title,
   "description": description,
-  "url": canonical,
+  "url": canonicalHref,
   "inLanguage": "en",
   "isPartOf": {
     "@type": "WebSite",
@@ -100,50 +102,28 @@ const structuredData = {
   "url": "https://materunihosts.com/",
   "logo": "https://materunihosts.com/materuni-hosts-logo-round.svg",
   "image": socialImage,
-  "description": "Materuni waterfall hikes, Chagga coffee and cooking experiences, Moshi town tours, Rau Forest nature walks and overnight village stays hosted by local Chagga hosts near Moshi, Tanzania.",
+  "description": "Materuni Hosts introduces visitors to Materuni Village through locally hosted waterfall walks, Chagga coffee traditions, cooking and cultural experiences in the Kilimanjaro foothills near Moshi, Tanzania.",
   "telephone": "+255612068540",
   "email": "hello@materunihosts.com",
-  "priceRange": "$$",
   "currenciesAccepted": "USD, TZS",
-  "hasMap": "https://www.google.com/maps/search/?api=1&query=Materuni%20Hosts%2C%20Materuni%20Village%2C%20Moshi%2C%20Tanzania",
-  "founder": {
-    "@type": "Person",
-    "name": "Saidi Materu",
-    "jobTitle": "Lead Mountain Host & Founder",
-    "nationality": "Tanzanian"
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Materuni Juu, Moshi Rural",
+    "addressLocality": "Materuni Village",
+    "addressRegion": "Kilimanjaro",
+    "postalCode": "25210",
+    "addressCountry": "TZ"
   },
-  "knowsAbout": [
-    "Materuni Waterfall Guided Hikes",
-    "Traditional Chagga Arabica Coffee Ceremony",
-    "Mount Kilimanjaro Rainforest Ecology",
-    "Authentic Village Camping Experiences"
-  ],
+  "areaServed": {
+    "@type": "Place",
+    "name": "Materuni Village, Moshi Rural, Kilimanjaro, Tanzania"
+  },
   "contactPoint": {
     "@type": "ContactPoint",
     "telephone": "+255612068540",
     "email": "hello@materunihosts.com",
     "contactType": "customer service",
-    "availableLanguage": ["English", "Swahili", "French", "German", "Spanish"]
-  },
-  "potentialAction": {
-    "@type": "ReserveAction",
-    "target": {
-      "@type": "EntryPoint",
-      "urlTemplate": "https://materunihosts.com/booking",
-      "inLanguage": "en",
-      "actionPlatform": ["https://schema.org/DesktopWebPlatform", "https://schema.org/MobileWebPlatform"]
-    },
-    "name": "Request a Materuni experience booking"
-  },
-  "address": {
-    "@type": "PostalAddress",
-    "addressLocality": "Materuni Village",
-    "addressRegion": "Kilimanjaro",
-    "addressCountry": "TZ"
-  },
-  "areaServed": {
-    "@type": "Place",
-    "name": "Materuni Village, Moshi, Kilimanjaro, Tanzania"
+    "availableLanguage": ["English", "Swahili"]
   }
 };
 ---
@@ -155,7 +135,7 @@ const structuredData = {
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500..700&family=Manrope:wght@400..700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href={globalStyles} />
-<title>{title}</title><meta name="description" content={description} /><meta name="theme-color" content="#1A3322" /><link rel="canonical" href={canonical} />{!shouldNoindex && (<><link rel="alternate" hreflang="en" href={canonical} /><link rel="alternate" hreflang="es" href={`${canonical}${canonical.includes("?") ? "&" : "?"}lang=es`} /><link rel="alternate" hreflang="fr" href={`${canonical}${canonical.includes("?") ? "&" : "?"}lang=fr`} /><link rel="alternate" hreflang="de" href={`${canonical}${canonical.includes("?") ? "&" : "?"}lang=de`} /><link rel="alternate" hreflang="x-default" href={canonical} /></>)}<meta name="robots" content={robotsMeta} /><meta name="googlebot" content={robotsMeta} /><meta property="og:type" content="website" /><meta property="og:site_name" content="Materuni Hosts" /><meta property="og:title" content={title} /><meta property="og:description" content={description} /><meta property="og:url" content={canonical} /><meta property="og:image" content={socialImage.startsWith("http") ? socialImage : `https://materunihosts.com${socialImage.startsWith("/") ? "" : "/"}${socialImage}`} /><meta property="og:locale" content="en_TZ" /><meta property="og:image:alt" content="Materuni Hosts authentic village experiences in Materuni, Tanzania" /><meta name="twitter:card" content="summary_large_image" /><meta name="twitter:title" content={title} /><meta name="twitter:description" content={description} /><meta name="twitter:image" content={socialImage.startsWith("http") ? socialImage : `https://materunihosts.com${socialImage.startsWith("/") ? "" : "/"}${socialImage}`} />{!shouldNoindex && <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />}{!shouldNoindex && <script type="application/ld+json" set:html={JSON.stringify(webPageData)} />}{!shouldNoindex && <script type="application/ld+json" set:html={JSON.stringify(breadcrumbData)} />}{preloadImage && <link rel="preload" as="image" href={preloadImage} fetchpriority="high" />}
+<title>{title}</title><meta name="description" content={description} /><meta name="theme-color" content="#1A3322" /><link rel="canonical" href={canonicalHref} />{!shouldNoindex && (<><link rel="alternate" hreflang="en" href={canonicalHref} /><link rel="alternate" hreflang="es" href={`${canonical}${canonical.includes("?") ? "&" : "?"}lang=es`} /><link rel="alternate" hreflang="fr" href={`${canonical}${canonical.includes("?") ? "&" : "?"}lang=fr`} /><link rel="alternate" hreflang="de" href={`${canonical}${canonical.includes("?") ? "&" : "?"}lang=de`} /><link rel="alternate" hreflang="x-default" href={canonicalHref} /></>)}<meta name="robots" content={robotsMeta} /><meta name="googlebot" content={robotsMeta} /><meta property="og:type" content="website" /><meta property="og:site_name" content="Materuni Hosts" /><meta property="og:title" content={title} /><meta property="og:description" content={description} /><meta property="og:url" content={canonicalHref} /><meta property="og:image" content={socialImage.startsWith("http") ? socialImage : `https://materunihosts.com${socialImage.startsWith("/") ? "" : "/"}${socialImage}`} /><meta property="og:locale" content="en_TZ" /><meta property="og:image:alt" content="Materuni Hosts authentic village experiences in Materuni, Tanzania" /><meta name="twitter:card" content="summary_large_image" /><meta name="twitter:title" content={title} /><meta name="twitter:description" content={description} /><meta name="twitter:image" content={socialImage.startsWith("http") ? socialImage : `https://materunihosts.com${socialImage.startsWith("/") ? "" : "/"}${socialImage}`} />{!shouldNoindex && <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />}{!shouldNoindex && <script type="application/ld+json" set:html={JSON.stringify(webPageData)} />}{!shouldNoindex && <script type="application/ld+json" set:html={JSON.stringify(breadcrumbData)} />}{preloadImage && <link rel="preload" as="image" href={preloadImage} fetchpriority="high" />}
 <link rel="icon" type="image/svg+xml" href="/materuni-hosts-logo-round.svg" /><link rel="apple-touch-icon" href="/materuni-hosts-logo-round.jpg" /><link rel="preconnect" href={supabaseUrl} crossorigin />
 
 <style is:global>
