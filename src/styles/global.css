@@ -2484,3 +2484,242 @@ small, .small, .caption, figcaption, .copyright,
   .legal-content p,.legal-page p,.leg-content p) { color: var(--muted); }
 .public-shell .hero p { color: #F3F0E8; }
 .public-shell .page-hero p { color: #514B42; }
+
+
+/* V5.1 — final responsive typography and navigation contract.
+   This block intentionally comes last to neutralize accumulated legacy overrides. */
+:root {
+  --font-display: "Cormorant Garamond", Georgia, serif;
+  --font-body: "Manrope", Arial, sans-serif;
+  --type-body: 16px;
+  --type-nav: 13px;
+  --type-control: 16px;
+}
+html { font-size: 100%; }
+body.public-shell {
+  font-family: var(--font-body) !important;
+  font-size: 16px !important;
+  line-height: 1.7 !important;
+  font-weight: 400;
+}
+body.public-shell :is(p, li, dd, blockquote) {
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.7;
+  overflow-wrap: break-word;
+}
+body.public-shell :is(h1,h2,h3,h4,h5,h6) {
+  font-family: var(--font-display) !important;
+  font-weight: 600;
+  text-wrap: balance;
+  overflow-wrap: break-word;
+}
+body.public-shell h1 { font-size: clamp(2.375rem, 5.2vw, 4.25rem); line-height: 1.06; }
+body.public-shell h2 { font-size: clamp(1.875rem, 4vw, 3.25rem); line-height: 1.12; }
+body.public-shell h3 { font-size: clamp(1.375rem, 2vw, 1.75rem); line-height: 1.2; }
+body.public-shell :is(.hero h1,.page-hero h1,.premium-hero h1) {
+  font-size: clamp(2.375rem, 5.2vw, 4.25rem) !important;
+  line-height: 1.06 !important;
+}
+body.public-shell :is(.section h2,.section-head h2,.faq-intro h2) {
+  font-size: clamp(1.875rem, 4vw, 3.125rem) !important;
+  line-height: 1.12 !important;
+}
+body.public-shell :is(.hero p,.page-hero p,.hero-sub,.section-head p,
+  .experience-card p,.experience-card li,.boutique-card-content p,
+  .boutique-card-content li,.card-desc,.intro-pillar p,.body p,.body li,
+  .shared-standard li,.faq-item p,.feature-list div,.split p,
+  .legal-copy p,.legal-copy li,.legal-content p,.legal-content li,
+  .legal-page p,.legal-page li,.leg-content p,.leg-content li,.itinerary-stop p) {
+  font-size: 16px !important;
+  line-height: 1.7 !important;
+}
+body.public-shell :is(.eyebrow,.section-kicker,.overline,.pill,
+  .card-tagline,.card-duration-badge) {
+  font-family: var(--font-body);
+  font-size: 12px !important;
+  line-height: 1.45;
+  letter-spacing: .07em;
+}
+body.public-shell :is(.field label,.field>label,#booking-form .field label) {
+  font-family: var(--font-body);
+  font-size: 13px !important;
+  line-height: 1.45;
+}
+body.public-shell :is(input,select,textarea) {
+  font-family: var(--font-body);
+  font-size: 16px !important;
+  line-height: 1.5;
+}
+body.public-shell :is(.button,.nav-cta,button.button,button[type="submit"],input[type="submit"]) {
+  font-family: var(--font-body);
+  font-size: 14px !important;
+  line-height: 1.35;
+  font-weight: 700;
+}
+body.admin-shell { font-family: var(--font-body) !important; }
+body.admin-shell .admin-main { font-size: 15px; line-height: 1.6; }
+body.admin-shell .admin-main :is(input,select,textarea) { font-size: 16px !important; }
+
+/* Single source of truth for header geometry and navigation breakpoints. */
+body.public-shell .site-header {
+  box-sizing: border-box;
+  min-height: 82px !important;
+  height: 82px !important;
+  padding: 8px clamp(14px, 3vw, 42px) !important;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: clamp(10px, 1.5vw, 22px) !important;
+}
+body.public-shell .site-header > .brand {
+  flex: 0 0 auto !important;
+  width: auto !important;
+  min-width: 0 !important;
+  height: auto !important;
+  position: static !important;
+  transform: none !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  line-height: normal !important;
+}
+body.public-shell .site-header > .brand .brand-logo {
+  display: block;
+  width: 62px !important;
+  height: 62px !important;
+  flex: 0 0 62px !important;
+  object-fit: contain;
+}
+body.public-shell .site-header nav {
+  position: static !important;
+  inset: auto !important;
+  display: flex !important;
+  flex: 1 1 auto !important;
+  min-width: 0;
+  max-height: none !important;
+  overflow: visible !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-wrap: nowrap !important;
+  gap: clamp(10px, 1.1vw, 18px) !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  white-space: nowrap !important;
+  font-family: var(--font-body);
+  font-size: 12px !important;
+  line-height: 1.35 !important;
+}
+body.public-shell .site-header nav a:not(.nav-cta) {
+  display: inline-flex !important;
+  align-items: center;
+  min-height: 42px;
+  padding: 8px 0 !important;
+  font-size: 12px !important;
+  font-weight: 650;
+  letter-spacing: 0;
+}
+body.public-shell .site-header nav .nav-cta {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px !important;
+  padding: 10px 14px !important;
+  font-size: 12px !important;
+  white-space: nowrap;
+}
+body.public-shell .language-control { flex: 0 0 auto; }
+body.public-shell .language-control select {
+  min-height: 40px;
+  font-family: var(--font-body);
+  font-size: 12px !important;
+}
+body.public-shell .menu-toggle { display: none !important; }
+
+@media (max-width: 1199px) {
+  body.public-shell .site-header {
+    min-height: 76px !important;
+    height: 76px !important;
+    padding-inline: 16px !important;
+    gap: 10px !important;
+  }
+  body.public-shell .site-header > .brand .brand-logo {
+    width: 58px !important; height: 58px !important; flex-basis: 58px !important;
+  }
+  body.public-shell .site-header nav {
+    display: none !important;
+    position: absolute !important;
+    top: 100% !important;
+    left: 0 !important; right: 0 !important;
+    z-index: 30;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+    gap: 4px !important;
+    max-height: calc(100dvh - 76px) !important;
+    overflow-y: auto !important;
+    padding: 14px 20px 20px !important;
+    background: var(--cream) !important;
+    border-bottom: 1px solid var(--sand) !important;
+    box-shadow: 0 14px 26px rgba(26,51,34,.12) !important;
+    white-space: normal !important;
+  }
+  body.public-shell .site-header nav.open { display: flex !important; }
+  body.public-shell .site-header nav a:not(.nav-cta) {
+    display: flex !important;
+    min-height: 46px;
+    padding: 11px 4px !important;
+    font-size: 15px !important;
+    line-height: 1.4 !important;
+    border-bottom: 1px solid var(--sand);
+  }
+  body.public-shell .site-header nav .nav-cta {
+    width: 100%;
+    min-height: 48px !important;
+    margin-top: 8px;
+    font-size: 14px !important;
+  }
+  body.public-shell .menu-toggle {
+    display: grid !important;
+    place-items: center;
+    flex: 0 0 44px;
+    width: 44px; height: 44px;
+    min-width: 44px; min-height: 44px;
+    padding: 0;
+    font-family: var(--font-body);
+    font-size: 24px !important;
+    line-height: 1;
+  }
+}
+@media (max-width: 600px) {
+  body.public-shell .site-header {
+    min-height: 70px !important;
+    height: 70px !important;
+    padding-inline: 12px !important;
+  }
+  body.public-shell .site-header > .brand .brand-logo {
+    width: 54px !important; height: 54px !important; flex-basis: 54px !important;
+  }
+  body.public-shell .site-header nav { max-height: calc(100dvh - 70px) !important; }
+  body.public-shell h1,
+  body.public-shell :is(.hero h1,.page-hero h1,.premium-hero h1) {
+    font-size: clamp(2.25rem, 10vw, 3rem) !important;
+    line-height: 1.06 !important;
+  }
+  body.public-shell h2,
+  body.public-shell :is(.section h2,.section-head h2,.faq-intro h2) {
+    font-size: clamp(1.875rem, 8vw, 2.375rem) !important;
+    line-height: 1.12 !important;
+  }
+  body.public-shell h3 { font-size: clamp(1.375rem, 6vw, 1.625rem) !important; }
+  body.public-shell :is(p,li,dd,blockquote) { font-size: 16px; line-height: 1.7; }
+}
+@media (max-width: 360px) {
+  body.public-shell .site-header { padding-inline: 10px !important; }
+  body.public-shell .language-control select { min-height: 38px; padding-inline: 8px; }
+  body.public-shell .menu-toggle { width: 42px; height: 42px; flex-basis: 42px; }
+}
