@@ -115,7 +115,7 @@ if (aboutUsFile) {
 const homepageSourcePath = path.resolve("src/pages/index.astro");
 if (fs.existsSync(homepageSourcePath)) {
   const homepageSource = read(homepageSourcePath);
-  const homepageH1Count = [...homepageSource.matchAll(/<h1\\b/g)].length;
+  const homepageH1Count = [...homepageSource.matchAll(/<h1\b/g)].length;
   if (homepageH1Count !== 1) fail("Homepage source must contain exactly one primary H1");
   else pass("Homepage has exactly one primary H1");
   if (!homepageSource.includes('title="Materuni Village Tours & Chagga Experiences | Materuni Hosts"')) fail("Homepage title must target Materuni Village tours and Chagga experiences");
