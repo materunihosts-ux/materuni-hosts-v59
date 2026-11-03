@@ -1124,7 +1124,7 @@ a:not(.button):not(.nav-cta):not(.brand):not(.admin-home-card){text-underline-of
   grid-template-columns:minmax(260px,1.35fr) minmax(150px,.8fr) minmax(230px,1fr);
   gap:clamp(28px,4.5vw,68px);
   padding:clamp(54px,6vw,78px) clamp(22px,7vw,100px) 26px;
-  background:linear-gradient(135deg,#10291f 0%,#183b2b 58%,#10291f 100%);
+  background:#1A3322;
   border-top:1px solid rgba(197,160,89,.34);
 }
 .site-footer>div{gap:12px;line-height:1.75}
@@ -1132,8 +1132,8 @@ a:not(.button):not(.nav-cta):not(.brand):not(.admin-home-card){text-underline-of
 .site-footer a.brand-light{
   display:block;width:76px;height:76px;min-width:76px;flex:0 0 76px;
   aspect-ratio:1/1;overflow:hidden;border-radius:50%;
-  background:#FAF7F2;border:1px solid rgba(229,200,143,.78);
-  box-shadow:0 7px 22px rgba(0,0,0,.18);padding:2px;
+  background:#FAF7F2;border:1px solid rgba(197,160,89,.78);
+  box-shadow:0 7px 22px rgba(36,36,33,.18);padding:2px;
   box-sizing:border-box;line-height:0
 }
 .site-footer .brand-logo-footer{
@@ -1329,17 +1329,17 @@ body.public-shell .site-header nav a:not(.nav-cta):hover:after,
 body.public-shell .site-header nav a[aria-current="page"]:after{right:0}
 body.public-shell .site-header nav a[aria-current="page"]{color:#1A3322}
 body.public-shell .site-header .nav-cta{
- min-height:44px;padding:12px 18px;border-radius:3px;background:#1a3322;
+ min-height:44px;padding:12px 18px;border-radius:4px;background:#1A3322;color:#FAF7F2!important;
  box-shadow:0 5px 14px rgba(26,51,34,.13);font-size:11px;letter-spacing:.06em;text-transform:uppercase
 }
 body.public-shell .site-header .nav-cta:hover{background:#C5A059;color:#242421!important;box-shadow:0 7px 18px rgba(26,51,34,.17)}
 body.public-shell .language-control select{
- min-height:40px;min-width:58px;border-radius:3px;border:1px solid #c5a059;
+ min-height:40px;min-width:58px;border-radius:4px;border:1px solid #E6DFD3;background:#FAF7F2;color:#1A3322;
  box-shadow:0 3px 10px rgba(26,51,34,.08);font-size:11px;letter-spacing:.08em
 }
 body.public-shell .menu-toggle{
  width:44px;height:44px;display:none;place-items:center;border:1px solid #E6DFD3;
- border-radius:3px;background:#FAF7F2;color:#1A3322;font-size:23px;line-height:1;
+ border-radius:4px;background:#FAF7F2;color:#1A3322;font-size:23px;line-height:1;
  box-shadow:0 4px 12px rgba(26,51,34,.07);transition:background .2s ease,border-color .2s ease
 }
 body.public-shell .menu-toggle:hover{background:#E6DFD3;border-color:#c5a059}
