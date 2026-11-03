@@ -443,7 +443,7 @@ const faqs = [
 <script>
 import { supabaseUrl, publishableKey } from "../lib/supabase-public";
 
-const homeCards = [...document.querySelectorAll("[data-home-experience-key]")];
+const homeCards = [...document.querySelectorAll<HTMLElement>("[data-home-experience-key]")];
 if (homeCards.length) {
   const endpoint = new URL(`${supabaseUrl}/rest/v1/experience_catalog`);
   endpoint.searchParams.set("select", "experience_key,display_name,price_usd,short_description,image_url,is_active");
@@ -470,23 +470,23 @@ if (homeCards.length) {
         }
 
         const price = Number(item.price_usd);
-        const priceNode = card.querySelector("[data-home-price]");
+        const priceNode = card.querySelector<HTMLSpanElement>("[data-home-price]");
         if (priceNode && Number.isFinite(price) && price > 0 && priceNode.firstChild) {
           const formattedPrice = Number.isInteger(price) ? price.toFixed(0) : price.toFixed(2);
           priceNode.firstChild.textContent = `$${formattedPrice} `;
         }
 
-        const nameNode = card.querySelector("[data-home-name]");
+        const nameNode = card.querySelector<HTMLHeadingElement>("[data-home-name]");
         if (nameNode && typeof item.display_name === "string" && item.display_name.trim()) {
           nameNode.textContent = item.display_name;
         }
 
-        const descriptionNode = card.querySelector("[data-home-description]");
+        const descriptionNode = card.querySelector<HTMLParagraphElement>("[data-home-description]");
         if (descriptionNode && typeof item.short_description === "string" && item.short_description.trim()) {
           descriptionNode.textContent = item.short_description;
         }
 
-        const imageNode = card.querySelector("[data-home-image]");
+        const imageNode = card.querySelector<HTMLImageElement>("[data-home-image]");
         if (imageNode && typeof item.image_url === "string") {
           try {
             const imageUrl = new URL(item.image_url);
