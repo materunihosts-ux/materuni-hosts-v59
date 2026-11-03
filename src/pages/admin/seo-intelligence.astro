@@ -1,0 +1,154 @@
+---
+import SiteLayout from "../../layouts/SiteLayout.astro";
+---
+<SiteLayout title="SEO Intelligence | Materuni Hosts" description="Private SEO, keyword, backlink and content intelligence workspace." noindex={true}>
+<main class="seo-shell">
+  <header class="seo-head">
+    <div><span class="seo-kicker">MATERUNI HOSTS / GROWTH WORKSPACE</span><h1>SEO Intelligence</h1><p>One place to research search demand, manage backlink opportunities and turn insights into published improvements.</p></div>
+    <a href="/admin" class="back-link">← Operations dashboard</a>
+  </header>
+  <section id="login-panel" class="seo-panel login-panel">
+    <h2>Administrator sign in</h2><p>Use your existing Materuni Hosts admin account. Access is checked against the existing admin_users table.</p>
+    <form id="login-form"><label>Email<input id="email" type="email" autocomplete="username" required /></label><label>Password<input id="password" type="password" autocomplete="current-password" required /></label><button class="seo-btn" id="login-btn">Sign in</button><p id="login-feedback" class="feedback" aria-live="polite"></p></form>
+  </section>
+  <section id="workspace" hidden>
+    <div class="seo-toolbar"><div><span class="live-dot"></span><span id="sync-status">Connected to your SEO workspace</span></div><div><button id="refresh" class="seo-btn secondary">Refresh</button><button id="logout" class="seo-btn secondary">Sign out</button></div></div>
+    <div class="metrics">
+      <article class="metric"><span>Tracked keywords</span><strong id="m-keywords">—</strong><small>Saved search targets</small></article>
+      <article class="metric"><span>Backlink prospects</span><strong id="m-links">—</strong><small>Qualified opportunities</small></article>
+      <article class="metric"><span>Outreach in progress</span><strong id="m-outreach">—</strong><small>Drafts, sent and follow-ups</small></article>
+      <article class="metric"><span>Content actions</span><strong id="m-content">—</strong><small>Ideas through publication</small></article>
+    </div>
+    <nav class="seo-tabs" aria-label="SEO workspace sections">
+      <button class="tab active" data-tab="overview">Overview</button><button class="tab" data-tab="keywords">Keywords</button><button class="tab" data-tab="backlinks">Backlinks</button><button class="tab" data-tab="content">Content plan</button><button class="tab" data-tab="audits">SEO snapshots</button>
+    </nav>
+    <section class="tab-panel" id="tab-overview">
+      <div class="two-col">
+        <article class="seo-panel"><div class="panel-title"><div><span class="seo-kicker">NEXT ACTIONS</span><h2>Priority work</h2></div></div><div id="priority-list" class="rows"></div></article>
+        <article class="seo-panel"><span class="seo-kicker">SYSTEM RULES</span><h2>Quality before quantity</h2><ul class="rules"><li>Never invent search volume, rankings or traffic.</li><li>Backlink scores weigh relevance, editorial quality, audience value and spam risk.</li><li>Only record links that are live and verified as won.</li><li>Use Google Search Console exports for actual performance data.</li><li>No paid links, mass outreach or automated spam.</li></ul></article>
+      </div>
+      <article class="seo-panel"><div class="panel-title"><div><span class="seo-kicker">RECENT OPPORTUNITIES</span><h2>Backlink pipeline</h2></div><button class="text-action" data-go="backlinks">Open pipeline →</button></div><div id="recent-links" class="rows"></div></article>
+    </section>
+    <section class="tab-panel" id="tab-keywords" hidden>
+      <article class="seo-panel"><div class="panel-title"><div><span class="seo-kicker">SEARCH DEMAND</span><h2>Keyword tracker</h2><p>Store targets, map each keyword to one useful page and update metrics from Search Console.</p></div><button class="seo-btn" id="add-keyword-toggle">+ Add keyword</button></div>
+        <form id="keyword-form" class="entry-form" hidden><label>Keyword<input name="keyword" required placeholder="e.g. Materuni waterfall tour" /></label><label>Search intent<select name="intent"><option>commercial</option><option>informational</option><option>transactional</option><option>navigational</option></select></label><label>Cluster<input name="cluster" placeholder="Materuni day experiences" /></label><label>Target URL<input name="target_url" placeholder="/materuni-waterfall-tour" /></label><label>Search volume (optional)<input name="search_volume" type="number" min="0" placeholder="Leave blank if unknown" /></label><label>Current position (optional)<input name="current_position" type="number" min="0" step="0.1" placeholder="From Search Console" /></label><label>Priority<select name="priority"><option>high</option><option selected>medium</option><option>low</option></select></label><label>Status<select name="status"><option>research</option><option>planned</option><option>optimising</option><option>tracking</option><option>done</option></select></label><label class="wide">Notes<textarea name="notes" rows="2"></textarea></label><div class="form-actions"><button class="seo-btn">Save keyword</button><button type="button" class="seo-btn secondary" data-cancel="keyword-form">Cancel</button></div></form>
+        <div class="table-wrap"><table><thead><tr><th>Keyword</th><th>Intent / cluster</th><th>Target page</th><th>Volume</th><th>Position</th><th>Priority</th><th>Status</th></tr></thead><tbody id="keyword-rows"></tbody></table></div>
+      </article>
+    </section>
+    <section class="tab-panel" id="tab-backlinks" hidden>
+      <article class="seo-panel"><div class="panel-title"><div><span class="seo-kicker">AUTHORITY BUILDING</span><h2>Backlink opportunity finder</h2><p>Evaluate real organisations and editorial opportunities before contacting them.</p></div><button class="seo-btn" id="add-link-toggle">+ Add prospect</button></div>
+        <form id="link-form" class="entry-form" hidden><label>Domain<input name="domain" required placeholder="example.org" /></label><label>Organisation<input name="organisation" placeholder="Publication / directory" /></label><label>Opportunity type<select name="opportunity_type"><option>editorial</option><option>directory</option><option>partner</option><option>community</option><option>resource</option></select></label><label>Page URL<input name="page_url" type="url" placeholder="https://" /></label><label>Topical relevance (1–5)<input name="topical_relevance" type="number" min="1" max="5" value="4" required /></label><label>Editorial quality (1–5)<input name="editorial_quality" type="number" min="1" max="5" value="3" required /></label><label>Audience value (1–5)<input name="audience_value" type="number" min="1" max="5" value="3" required /></label><label>Spam risk (1–5)<input name="spam_risk" type="number" min="1" max="5" value="1" required /></label><label>Contact email<input name="contact_email" type="email" placeholder="editor@example.org" /></label><label>Status<select name="status"><option>new</option><option>qualified</option><option>contacted</option><option>replied</option><option>won</option><option>rejected</option></select></label><label class="wide">Notes<textarea name="notes" rows="2"></textarea></label><div class="form-actions"><button class="seo-btn">Save prospect</button><button type="button" class="seo-btn secondary" data-cancel="link-form">Cancel</button></div></form>
+        <div class="score-note">Quality score / 100 = relevance (25%) + editorial quality (25%) + audience value (20%) + inverse spam risk (30%). It is a prioritisation aid, not a domain-authority metric or ranking guarantee.</div>
+        <div class="table-wrap"><table><thead><tr><th>Domain / organisation</th><th>Type</th><th>Quality</th><th>Contact</th><th>Status</th><th>Opportunity</th></tr></thead><tbody id="link-rows"></tbody></table></div>
+      </article>
+    </section>
+    <section class="tab-panel" id="tab-content" hidden>
+      <article class="seo-panel"><div class="panel-title"><div><span class="seo-kicker">CONTENT ENGINE</span><h2>Content action plan</h2><p>Convert keyword and Search Console findings into useful pages, guides and updates.</p></div><button class="seo-btn" id="add-content-toggle">+ Add action</button></div>
+        <form id="content-form" class="entry-form" hidden><label>Task title<input name="title" required /></label><label>Target keyword<input name="target_keyword" /></label><label>Target URL<input name="target_url" /></label><label>Content type<select name="content_type"><option>landing_page</option><option>blog_article</option><option>faq</option><option>existing_page_update</option><option>digital_pr</option></select></label><label>Priority<select name="priority"><option>high</option><option selected>medium</option><option>low</option></select></label><label>Status<select name="status"><option>idea</option><option>brief</option><option>writing</option><option>review</option><option>published</option></select></label><label>Due date<input name="due_date" type="date" /></label><label class="wide">Notes<textarea name="notes" rows="2"></textarea></label><div class="form-actions"><button class="seo-btn">Save action</button><button type="button" class="seo-btn secondary" data-cancel="content-form">Cancel</button></div></form>
+        <div id="content-rows" class="rows"></div>
+      </article>
+    </section>
+    <section class="tab-panel" id="tab-audits" hidden>
+      <article class="seo-panel"><div class="panel-title"><div><span class="seo-kicker">MEASURE WHAT MATTERS</span><h2>SEO performance snapshots</h2><p>Enter verified metrics from Google Search Console and PageSpeed Insights. No fabricated estimates.</p></div><button class="seo-btn" id="add-audit-toggle">+ Add snapshot</button></div>
+        <form id="audit-form" class="entry-form" hidden><label>Snapshot date<input name="audit_date" type="date" required /></label><label>Source<select name="source"><option>Google Search Console</option><option>PageSpeed Insights</option><option>Manual audit</option></select></label><label>Indexed pages<input name="pages_indexed" type="number" min="0" /></label><label>Not indexed pages<input name="pages_not_indexed" type="number" min="0" /></label><label>Clicks<input name="clicks" type="number" min="0" /></label><label>Impressions<input name="impressions" type="number" min="0" /></label><label>Average position<input name="average_position" type="number" min="0" step="0.1" /></label><label>Mobile PageSpeed<input name="page_speed_mobile" type="number" min="0" max="100" /></label><label>Desktop PageSpeed<input name="page_speed_desktop" type="number" min="0" max="100" /></label><label class="wide">Notes<textarea name="notes" rows="2"></textarea></label><div class="form-actions"><button class="seo-btn">Save snapshot</button><button type="button" class="seo-btn secondary" data-cancel="audit-form">Cancel</button></div></form>
+        <div class="table-wrap"><table><thead><tr><th>Date</th><th>Source</th><th>Clicks</th><th>Impressions</th><th>Avg. position</th><th>Indexed / not indexed</th><th>Mobile / desktop</th></tr></thead><tbody id="audit-rows"></tbody></table></div>
+      </article>
+    </section>
+    <p id="app-feedback" class="feedback" aria-live="polite"></p>
+  </section>
+</main>
+<style>
+:root{--seo-green:#1A3322;--seo-ivory:#FAF7F2;--seo-sand:#E6DFD3;--seo-gold:#C5A059;--seo-ink:#242421}
+.seo-shell{max-width:1180px;margin:0 auto;padding:clamp(1rem,3vw,2.5rem);color:var(--seo-ink)}.seo-head{display:flex;justify-content:space-between;align-items:flex-end;gap:1.5rem;margin:1rem 0 2rem}.seo-kicker{font-size:.7rem;letter-spacing:.16em;font-weight:800;color:#7b694c}.seo-head h1{font-size:clamp(2.2rem,5vw,3.8rem);line-height:1.03;margin:.5rem 0;color:var(--seo-green)}.seo-head p,.seo-panel p{color:#6c6b63;max-width:680px}.back-link,.text-action{color:var(--seo-green);font-weight:700;text-decoration:none}.seo-panel,.metric{background:#fff;border:1px solid #e9e3d9;border-radius:16px;padding:clamp(1rem,2.5vw,1.5rem);box-shadow:0 8px 28px #24242108;margin-bottom:1rem}.seo-panel h2{font-size:1.35rem;color:var(--seo-green);margin:.3rem 0 .5rem}.login-panel{max-width:520px}.login-panel form{display:grid;gap:.9rem}.seo-shell label{display:grid;gap:.35rem;font-size:.85rem;font-weight:700}.seo-shell input,.seo-shell select,.seo-shell textarea{width:100%;border:1px solid #d9d2c7;border-radius:9px;padding:.75rem;background:#fff;color:var(--seo-ink);font:inherit;min-width:0}.seo-btn{border:1px solid var(--seo-green);background:var(--seo-green);color:#fff;border-radius:9px;padding:.72rem 1rem;font-weight:700;cursor:pointer}.seo-btn:disabled{opacity:.55}.seo-btn.secondary{background:#fff;color:var(--seo-green);margin-left:.4rem}.seo-toolbar,.panel-title{display:flex;justify-content:space-between;align-items:center;gap:1rem}.seo-toolbar{margin-bottom:1rem;font-size:.85rem;color:#64645c}.live-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#3f8a58;margin-right:.5rem}.metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.8rem}.metric{margin:0}.metric span,.metric small{display:block;color:#6d6b63;font-size:.8rem}.metric strong{display:block;font-size:2rem;color:var(--seo-green);margin:.4rem 0}.seo-tabs{display:flex;gap:.4rem;overflow:auto;padding:.5rem 0 1rem;margin-top:.8rem}.tab{white-space:nowrap;border:1px solid #ded7cb;border-radius:999px;background:#fff;color:#4b4b43;padding:.65rem 1rem;cursor:pointer}.tab.active{background:var(--seo-green);border-color:var(--seo-green);color:#fff}.two-col{display:grid;grid-template-columns:1fr 1fr;gap:1rem}.rules{padding-left:1.2rem;color:#55564e;line-height:1.8}.rows{display:grid;gap:.6rem}.row-card{display:flex;justify-content:space-between;gap:1rem;padding:.8rem 0;border-bottom:1px solid #eee8df}.row-card:last-child{border:0}.row-card strong{color:var(--seo-green)}.row-card small{display:block;color:#777;margin-top:.2rem}.score-note{font-size:.8rem;color:#68665e;background:var(--seo-ivory);padding:.8rem;border-radius:9px;margin:.8rem 0}.entry-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.8rem;background:var(--seo-ivory);padding:1rem;border-radius:12px;margin:.8rem 0 1rem}.entry-form .wide,.entry-form .form-actions{grid-column:1/-1}.form-actions{display:flex;gap:.5rem}.table-wrap{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:.85rem;min-width:720px}th,td{text-align:left;padding:.8rem .65rem;border-bottom:1px solid #eee8df;vertical-align:top}th{color:#71664f;font-size:.72rem;text-transform:uppercase;letter-spacing:.06em}td strong{color:var(--seo-green)}.pill{display:inline-block;border-radius:99px;padding:.22rem .55rem;background:#f0ede7;font-size:.72rem;white-space:nowrap}.priority-high{color:#8a4b20;background:#fff1e4}.priority-medium{color:#6b5a2a;background:#f7f1df}.priority-low{color:#42654b;background:#eaf3eb}.feedback{color:#6a6254;min-height:1.3rem;font-size:.85rem}.text-action{border:0;background:none;cursor:pointer}.tab-panel[hidden],#workspace[hidden],.entry-form[hidden],#login-panel[hidden]{display:none!important}
+@media(max-width:760px){.seo-head{display:block}.back-link{display:inline-block;margin-top:.5rem}.metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.two-col{grid-template-columns:1fr}.panel-title{align-items:flex-start;flex-direction:column}.entry-form{grid-template-columns:1fr}.entry-form .wide,.entry-form .form-actions{grid-column:auto}.seo-toolbar{align-items:flex-start}.seo-toolbar>div:last-child{display:flex}.seo-btn{padding:.65rem .8rem}.seo-btn.secondary{margin-left:.25rem}.row-card{align-items:flex-start}}
+</style>
+<script>
+import { supabaseUrl, publishableKey } from "../../lib/supabase-public";
+const $ = (id) => document.getElementById(id);
+let token = "";
+const headers = () => ({ apikey: publishableKey, Authorization: "Bearer " + token, "Content-Type": "application/json" });
+async function api(table, options = {}) {
+ const response = await fetch(supabaseUrl + "/rest/v1/" + table, { ...options, headers: { ...headers(), ...(options.headers || {}) } });
+ const data = await response.json().catch(() => null);
+ if (!response.ok) throw new Error(data?.message || data?.details || data?.hint || "Database request failed");
+ return data;
+}
+const safe = (value) => value == null || value === "" ? "—" : String(value);
+function cell(row, value, strong = false) { const td = document.createElement("td"); const el = document.createElement(strong ? "strong" : "span"); el.textContent = safe(value); td.append(el); row.append(td); }
+function pillCell(row, value, cls = "") { const td = document.createElement("td"); const el = document.createElement("span"); el.className = "pill " + cls; el.textContent = safe(value); td.append(el); row.append(td); }
+function setFeedback(message) { $("app-feedback").textContent = message; }
+function formData(form) { const result = Object.fromEntries(new FormData(form).entries()); for (const key of Object.keys(result)) if (result[key] === "") result[key] = null; return result; }
+async function insert(table, form) { const payload = formData(form); const response = await api(table, { method: "POST", headers: { Prefer: "return=minimal" }, body: JSON.stringify(payload) }); form.reset(); form.hidden = true; setFeedback("Saved to your permanent SEO workspace."); await loadAll(); }
+async function loadAll() {
+ setFeedback("Loading saved SEO records…");
+ const [keywords, links, outreach, content, audits] = await Promise.all([
+  api("seo_keywords?select=*&order=priority.asc,keyword.asc"),
+  api("seo_backlink_prospects?select=*&order=quality_score.desc,created_at.desc"),
+  api("seo_outreach?select=id,status"),
+  api("seo_content_tasks?select=*&order=created_at.desc"),
+  api("seo_audit_snapshots?select=*&order=audit_date.desc")
+ ]);
+ $("m-keywords").textContent = keywords.length; $("m-links").textContent = links.length;
+ $("m-outreach").textContent = outreach.filter(x => ["draft","ready","sent","follow_up"].includes(x.status)).length;
+ $("m-content").textContent = content.filter(x => x.status !== "published").length;
+ renderKeywords(keywords); renderLinks(links); renderContent(content); renderAudits(audits); renderOverview(keywords,links,content);
+ $("sync-status").textContent = "Saved workspace · " + new Date().toLocaleString();
+ setFeedback("All records loaded. Changes are saved in the Materuni Hosts database.");
+}
+function renderKeywords(items) {
+ const body = $("keyword-rows"); body.replaceChildren();
+ items.forEach(x => { const tr = document.createElement("tr"); cell(tr,x.keyword,true); cell(tr,x.intent + (x.cluster ? " · "+x.cluster : "")); cell(tr,x.target_url); cell(tr,x.search_volume); cell(tr,x.current_position); pillCell(tr,x.priority,"priority-"+x.priority); pillCell(tr,x.status); body.append(tr); });
+ if (!items.length) { const tr=document.createElement("tr");cell(tr,"No keywords saved yet.");body.append(tr); }
+}
+function renderLinks(items) {
+ const body = $("link-rows"); body.replaceChildren();
+ items.forEach(x => { const tr=document.createElement("tr"); const td=document.createElement("td"); const a=document.createElement("a"); a.href=x.page_url || ("https://"+x.domain); a.target="_blank"; a.rel="noopener noreferrer"; a.textContent=x.domain; td.append(a); const small=document.createElement("small");small.style.display="block";small.textContent=safe(x.organisation);td.append(small);tr.append(td);cell(tr,x.opportunity_type);pillCell(tr,(x.quality_score||0)+"/100");cell(tr,x.contact_email);pillCell(tr,x.status);cell(tr,x.notes);body.append(tr); });
+ if (!items.length) { const tr=document.createElement("tr");cell(tr,"No prospects yet.");body.append(tr); }
+ const recent=$("recent-links");recent.replaceChildren();
+ items.slice(0,5).forEach(x=>{const div=document.createElement("div");div.className="row-card";const left=document.createElement("div");const strong=document.createElement("strong");strong.textContent=x.organisation||x.domain;const small=document.createElement("small");small.textContent=x.domain+" · "+x.status;left.append(strong,small);const right=document.createElement("strong");right.textContent=(x.quality_score||0)+"/100";div.append(left,right);recent.append(div);});
+}
+function renderContent(items) {
+ const root=$("content-rows");root.replaceChildren();
+ items.forEach(x=>{const div=document.createElement("div");div.className="row-card";const left=document.createElement("div");const strong=document.createElement("strong");strong.textContent=x.title;const small=document.createElement("small");small.textContent=[x.target_keyword,x.target_url,x.due_date].filter(Boolean).join(" · ");left.append(strong,small);pillCell;const status=document.createElement("span");status.className="pill priority-"+x.priority;status.textContent=x.status+" · "+x.priority;div.append(left,status);root.append(div);});
+ if(!items.length){const p=document.createElement("p");p.textContent="No content actions saved yet.";root.append(p);}
+}
+function renderAudits(items) {
+ const body=$("audit-rows");body.replaceChildren();
+ items.forEach(x=>{const tr=document.createElement("tr");cell(tr,x.audit_date);cell(tr,x.source);cell(tr,x.clicks);cell(tr,x.impressions);cell(tr,x.average_position);cell(tr,(x.pages_indexed??"—")+" / "+(x.pages_not_indexed??"—"));cell(tr,(x.page_speed_mobile??"—")+" / "+(x.page_speed_desktop??"—"));body.append(tr);});
+ if(!items.length){const tr=document.createElement("tr");cell(tr,"No snapshots yet. Add verified figures from GSC or PageSpeed.");body.append(tr);}
+}
+function renderOverview(keywords,links,content) {
+ const root=$("priority-list");root.replaceChildren();
+ const actions=[];
+ const high=keywords.filter(x=>x.priority==="high"&&x.status!=="done");
+ high.slice(0,3).forEach(x=>actions.push({title:"Optimise: "+x.keyword,detail:x.target_url||"Assign a target page"}));
+ links.filter(x=>["new","qualified","replied"].includes(x.status)).slice(0,3).forEach(x=>actions.push({title:"Backlink: "+(x.organisation||x.domain),detail:"Score "+x.quality_score+"/100 · "+x.status}));
+ content.filter(x=>x.priority==="high"&&x.status!=="published").slice(0,3).forEach(x=>actions.push({title:x.title,detail:"Content task · "+x.status}));
+ if(!actions.length)actions.push({title:"Add your first SEO action",detail:"Start with keyword research or a quality backlink prospect."});
+ actions.slice(0,7).forEach(x=>{const d=document.createElement("div");d.className="row-card";const left=document.createElement("div");const s=document.createElement("strong");s.textContent=x.title;const sm=document.createElement("small");sm.textContent=x.detail;left.append(s,sm);d.append(left);root.append(d);});
+}
+function showTab(name){document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.tab===name));document.querySelectorAll(".tab-panel").forEach(p=>p.hidden=p.id!=="tab-"+name);}
+document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>showTab(b.dataset.tab)));
+document.querySelectorAll("[data-go]").forEach(b=>b.addEventListener("click",()=>showTab(b.dataset.go)));
+const toggles=[["add-keyword-toggle","keyword-form"],["add-link-toggle","link-form"],["add-content-toggle","content-form"],["add-audit-toggle","audit-form"]];
+toggles.forEach(([button,form])=>$(button).addEventListener("click",()=>$(form).hidden=!$(form).hidden));
+document.querySelectorAll("[data-cancel]").forEach(b=>b.addEventListener("click",()=>$(b.dataset.cancel).hidden=true));
+$("keyword-form").addEventListener("submit",e=>{e.preventDefault();insert("seo_keywords",e.currentTarget).catch(err=>setFeedback(err.message));});
+$("link-form").addEventListener("submit",e=>{e.preventDefault();insert("seo_backlink_prospects",e.currentTarget).catch(err=>setFeedback(err.message));});
+$("content-form").addEventListener("submit",e=>{e.preventDefault();insert("seo_content_tasks",e.currentTarget).catch(err=>setFeedback(err.message));});
+$("audit-form").addEventListener("submit",e=>{e.preventDefault();insert("seo_audit_snapshots",e.currentTarget).catch(err=>setFeedback(err.message));});
+$("login-form").addEventListener("submit",async e=>{
+ e.preventDefault();const btn=$("login-btn");btn.disabled=true;$("login-feedback").textContent="Checking credentials…";
+ try{
+  const response=await fetch(supabaseUrl+"/auth/v1/token?grant_type=password",{method:"POST",headers:{apikey:publishableKey,"Content-Type":"application/json"},body:JSON.stringify({email:$("email").value.trim(),password:$("password").value})});
+  const session=await response.json();if(!response.ok)throw new Error(session.msg||session.message||"Sign in failed.");
+  token=session.access_token;
+  const admin=await api("admin_users?select=user_id&user_id=eq."+encodeURIComponent(session.user.id));
+  if(!admin.length){token="";throw new Error("This account is not authorised as an administrator.");}
+  $("login-panel").hidden=true;$("workspace").hidden=false;await loadAll();
+ }catch(err){$("login-feedback").textContent=err.message;btn.disabled=false;}
+});
+$("refresh").addEventListener("click",()=>loadAll().catch(err=>setFeedback(err.message)));
+$("logout").addEventListener("click",async()=>{try{await fetch(supabaseUrl+"/auth/v1/logout",{method:"POST",headers:headers()});}catch{}token="";$("workspace").hidden=true;$("login-panel").hidden=false;$("login-form").reset();$("login-btn").disabled=false;});
+</script>
+</SiteLayout>
