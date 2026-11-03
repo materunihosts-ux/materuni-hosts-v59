@@ -451,7 +451,216 @@ if (chatEl("mh-chat-open") && chatEl("mh-chat-panel") && languageSelect && chatE
  .public-shell .mh-quick-plan-step strong,.public-shell .mh-quick-plan-step small{font-size:11px!important}
  .public-shell .gold-button,.public-shell .hero-outline-button{width:100%!important}
 }
-</style>
 
+/* MOBILE-FIRST OVERFLOW AND TYPOGRAPHY FIX — V5 */
+@media (max-width:768px) {
+  html, body { width:100%; max-width:100%; overflow-x:hidden; }
+  body { overflow-wrap:anywhere; word-break:normal; }
+  .public-shell, .public-shell main, .public-shell section,
+  .public-shell header, .public-shell footer, .public-shell article,
+  .public-shell .container, .public-shell .section-inner {
+    max-width:100%; min-width:0;
+  }
+  .public-shell img, .public-shell video, .public-shell iframe, .public-shell svg {
+    max-width:100%;
+  }
+  .public-shell button, .public-shell a.button, .public-shell .gold-button,
+  .public-shell .hero-outline-button, .public-shell .nav-cta {
+    min-height:44px; max-width:100%; white-space:normal;
+  }
+  .public-shell .premium-hero {
+    min-height:0!important;
+    padding:44px 16px 36px!important;
+    overflow:hidden;
+  }
+  .public-shell .premium-hero .hero-content {
+    width:100%!important; max-width:100%!important; min-width:0!important;
+  }
+  .public-shell .premium-hero .hero-badge,
+  .public-shell .premium-hero .eyebrow {
+    font:700 10px/1.4 var(--sans)!important;
+    letter-spacing:.15em!important;
+    margin:0 0 8px!important;
+    color:#C5A059!important;
+    max-width:100%;
+  }
+  .public-shell .premium-hero h1 {
+    max-width:20ch!important;
+    margin:0 auto 12px!important;
+    font:500 28px/1.15 var(--serif)!important;
+    color:#1A3322!important;
+    overflow-wrap:break-word;
+  }
+  .public-shell .premium-hero .hero-sub {
+    max-width:60ch!important;
+    margin:0 auto 18px!important;
+    font:400 14px/1.6 var(--sans)!important;
+    color:#242421!important;
+    overflow-wrap:break-word;
+  }
+  .public-shell .hero-cta-group { width:100%!important; gap:10px!important; }
+  .public-shell .hero-cta-group > * { width:100%!important; }
+  .public-shell .curated-grid,
+  .public-shell .cards,
+  .public-shell .journey-steps-grid,
+  .public-shell .editorial-feature-grid,
+  .public-shell .intro-pillars-grid,
+  .public-shell .reviews-grid,
+  .public-shell .journal-grid,
+  .public-shell .booking-cta-container {
+    grid-template-columns:minmax(0,1fr)!important;
+    min-width:0!important;
+  }
+  .public-shell .curated-grid { gap:24px!important; }
+  .public-shell .boutique-card,
+  .public-shell .experience-card,
+  .public-shell .feature-card,
+  .public-shell .host-boutique-card {
+    position:relative!important;
+    display:flex!important;
+    flex-direction:column!important;
+    width:100%!important;
+    min-width:0!important;
+    min-height:0!important;
+    height:auto!important;
+    overflow:visible!important;
+  }
+  .public-shell .boutique-card-media {
+    position:relative!important;
+    display:block!important;
+    width:100%!important;
+    aspect-ratio:16/9!important;
+    min-height:0!important;
+    overflow:hidden!important;
+  }
+  .public-shell .boutique-card-media img,
+  .public-shell .experience-card img {
+    position:relative!important;
+    display:block!important;
+    width:100%!important;
+    height:100%!important;
+    min-height:0!important;
+    aspect-ratio:16/9!important;
+    object-fit:cover!important;
+  }
+  .public-shell .boutique-card-content,
+  .public-shell .card-body {
+    position:relative!important;
+    display:flex!important;
+    flex-direction:column!important;
+    flex:1 1 auto!important;
+    width:100%!important;
+    min-width:0!important;
+    height:auto!important;
+    padding:16px!important;
+    background:#FAF7F2!important;
+    overflow:visible!important;
+  }
+  .public-shell .card-meta-top {
+    position:relative!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:space-between!important;
+    flex-wrap:wrap!important;
+    gap:8px 12px!important;
+    width:100%!important;
+    min-width:0!important;
+  }
+  .public-shell .card-duration-badge {
+    position:static!important;
+    display:inline-flex!important;
+    align-items:center;
+    max-width:100%;
+    padding:5px 8px!important;
+    color:#242421!important;
+    background:#E6DFD3!important;
+    font:600 10px/1.3 var(--sans)!important;
+    letter-spacing:.1em!important;
+  }
+  .public-shell .card-price-display {
+    position:static!important;
+    display:flex!important;
+    align-items:baseline!important;
+    justify-content:flex-end!important;
+    flex-wrap:wrap!important;
+    gap:5px 8px!important;
+    margin:0!important;
+    color:#1A3322!important;
+    font:700 24px/1.1 var(--serif)!important;
+    white-space:normal!important;
+  }
+  .public-shell .card-price-display small {
+    display:inline!important;
+    color:#242421!important;
+    font:500 11px/1.3 var(--sans)!important;
+    white-space:normal!important;
+  }
+  .public-shell .boutique-card-content h3 {
+    font:600 21px/1.2 var(--serif)!important;
+    overflow-wrap:anywhere;
+  }
+  .public-shell .boutique-card-content p,
+  .public-shell .card-desc,
+  .public-shell .body p {
+    font:400 14px/1.6 var(--sans)!important;
+    overflow-wrap:anywhere;
+  }
+  .public-shell .boutique-card-actions {
+    position:static!important;
+    display:flex!important;
+    flex-direction:column!important;
+    align-items:stretch!important;
+    gap:10px!important;
+    margin-top:auto!important;
+  }
+  .public-shell .boutique-card-actions > * { width:100%!important; }
+  .public-shell .section,
+  .public-shell .home-section,
+  .public-shell .brand-intro-section,
+  .public-shell .page-hero,
+  .public-shell .booking-wrap {
+    padding-left:16px!important;
+    padding-right:16px!important;
+  }
+  .public-shell .site-footer { grid-template-columns:minmax(0,1fr)!important; gap:24px!important; }
+  .public-shell .site-footer > div,
+  .public-shell .site-footer > div:first-child { grid-column:auto!important; min-width:0; }
+  .public-shell .form-grid { grid-template-columns:minmax(0,1fr)!important; }
+  .public-shell .field.full { grid-column:auto!important; }
+  .public-shell .mh-concierge { right:12px!important; bottom:12px!important; }
+  .public-shell .mh-chat-panel { width:calc(100vw - 24px)!important; max-width:calc(100vw - 24px)!important; right:0!important; }
+  .public-shell .cookie-consent {
+    position:fixed!important;
+    inset:auto 0 0 0!important;
+    z-index:50!important;
+    width:100%!important;
+    max-width:none!important;
+    margin:0!important;
+    display:flex!important;
+    flex-direction:column!important;
+    align-items:stretch!important;
+    gap:8px!important;
+    padding:12px 16px max(12px,env(safe-area-inset-bottom))!important;
+    border:0!important;
+    border-top:1px solid #E6DFD3!important;
+    border-radius:0!important;
+    background:#FAF7F2!important;
+    box-shadow:0 -5px 22px rgba(36,36,33,.12)!important;
+  }
+  .public-shell .cookie-consent[hidden] { display:none!important; }
+  .public-shell .cookie-copy p { font:400 12px/1.4 var(--sans)!important; color:#242421!important; }
+  .public-shell .cookie-actions { display:grid!important; grid-template-columns:1fr 1fr!important; gap:8px!important; width:100%!important; }
+  .public-shell .cookie-btn { min-height:44px!important; width:100%!important; font:700 12px/1.3 var(--sans)!important; }
+  .public-shell .cookie-btn-accept { background:#1A3322!important; color:#FAF7F2!important; }
+  .public-shell .cookie-btn-reject { background:transparent!important; color:#1A3322!important; border:1px solid #1A3322!important; }
+  .public-shell .cookie-btn-link { grid-column:1/-1!important; justify-self:center!important; min-height:40px!important; font:600 12px/1.3 var(--sans)!important; }
+  .public-shell .cookie-settings { font-size:12px!important; line-height:1.4!important; }
+}
+body.has-cookie-banner { padding-bottom:120px!important; }
+@media(max-width:768px) {
+  body.has-cookie-banner { padding-bottom:120px!important; }
+}
+
+</style>
 
 </body></html>
