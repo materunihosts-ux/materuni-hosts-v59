@@ -3219,3 +3219,42 @@ body.public-shell .site-footer .social-links a:hover{border-color:#C5A059;backgr
 body.public-shell .site-footer .copyright{grid-column:1/-1;margin-top:12px;padding-top:20px;border-top:1px solid rgba(230,223,211,.24);color:#E6DFD3;font-size:11px;line-height:1.7}
 @media(max-width:850px){body.public-shell .site-footer{grid-template-columns:1fr 1fr;gap:34px 26px;padding:48px 24px 22px}body.public-shell .site-footer>div:first-child{grid-column:1/-1}}
 @media(max-width:560px){body.public-shell .site-footer{grid-template-columns:1fr;gap:28px;padding:42px 20px 20px}body.public-shell .site-footer>div:first-child{grid-column:auto}body.public-shell .site-footer .brand-logo-footer{width:56px;height:56px;flex-basis:56px}body.public-shell .site-footer .brand-lockup strong{font-size:23px}body.public-shell .site-footer>div:not(:first-child)>a{min-height:30px}body.public-shell .site-footer .copyright{margin-top:4px}}
+
+
+/* V5.4 — refined editorial footer */
+.public-shell .site-footer{
+  position:relative;
+  grid-template-columns:minmax(0,1.55fr) minmax(170px,.72fr) minmax(240px,1fr);
+  gap:clamp(28px,5vw,76px);
+  padding:76px clamp(22px,7vw,100px) 26px;
+  background:#1A3322;
+  border-top:4px solid #C5A059;
+  color:#E6DFD3;
+}
+.public-shell .site-footer>div{min-width:0;gap:13px;font-size:13px;line-height:1.65}
+.public-shell .site-footer>div:first-child{gap:16px}
+.public-shell .site-footer .footer-brand-lockup{display:inline-flex;align-items:center;gap:14px;width:max-content;max-width:100%;color:#FAF7F2}
+.public-shell .site-footer .brand-logo-footer{width:62px;height:62px;object-fit:contain;flex:0 0 62px}
+.public-shell .site-footer .brand-lockup strong{display:block;margin:0;color:#FAF7F2;font:600 25px/1.05 var(--serif);letter-spacing:.02em}
+.public-shell .site-footer .brand-lockup small{display:block;margin-top:6px;color:#C5A059;font:700 9px/1.4 var(--sans);letter-spacing:.15em}
+.public-shell .site-footer p{max-width:360px;margin:0;color:#E6DFD3;font-size:13px;line-height:1.8}
+.public-shell .site-footer .tagline{color:#D6B879;font:italic 22px/1.3 var(--serif)}
+.public-shell .site-footer>div>strong{font:600 22px/1.2 var(--serif);color:#FAF7F2;margin:0 0 5px;padding-bottom:12px;border-bottom:1px solid rgba(230,223,211,.22)}
+.public-shell .site-footer>div:nth-child(2) a,
+.public-shell .site-footer>div:nth-child(3) a,
+.public-shell .site-footer>div:nth-child(3) span{color:#E6DFD3;font-size:12px;line-height:1.65;overflow-wrap:anywhere}
+.public-shell .site-footer a:hover{color:#C5A059!important}
+.public-shell .site-footer .social-links{gap:8px;margin-top:2px}
+.public-shell .site-footer .social-links a{min-height:40px;padding:8px 11px;border:1px solid rgba(230,223,211,.28);border-radius:2px;font-size:11px}
+.public-shell .site-footer .social-links svg{width:16px;height:16px;flex:0 0 16px}
+.public-shell .site-footer .copyright{grid-column:1/-1;margin-top:20px;padding-top:20px;border-top:1px solid rgba(230,223,211,.2);color:#D4D0C7;font-size:11px;line-height:1.6}
+@media(max-width:850px){
+ .public-shell .site-footer{grid-template-columns:1fr 1fr;gap:34px 28px;padding-top:58px}
+ .public-shell .site-footer>div:first-child{grid-column:1/-1}
+}
+@media(max-width:600px){
+ .public-shell .site-footer{grid-template-columns:1fr;gap:28px;padding:46px 20px 22px}
+ .public-shell .site-footer>div:first-child{grid-column:auto}
+ .public-shell .site-footer>div>strong{font-size:21px}
+ .public-shell .site-footer .copyright{grid-column:auto;margin-top:8px}
+}
