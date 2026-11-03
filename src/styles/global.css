@@ -2474,3 +2474,13 @@ small, .small, .caption, figcaption, .copyright,
 @media (prefers-reduced-motion: reduce) {
   p { text-wrap: initial; }
 }
+
+/* Accessible brand accents: reserve pale gold for dark surfaces. */
+:root { --gold-ink: #6B4C1F; }
+.public-shell :is(.eyebrow,.section-kicker,.overline) { color: var(--gold-ink); }
+.public-shell .hero :is(.eyebrow,.section-kicker,.overline) { color: #E6C98D; }
+.public-shell :is(.experience-card p,.boutique-card-content p,.card-desc,
+  .intro-pillar p,.body p,.faq-item p,.split p,.legal-copy p,
+  .legal-content p,.legal-page p,.leg-content p) { color: var(--muted); }
+.public-shell .hero p { color: #F3F0E8; }
+.public-shell .page-hero p { color: #514B42; }
