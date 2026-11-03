@@ -112,12 +112,27 @@ if (aboutUsFile) {
   if (!aboutHtml.includes("Saidi Materu")) fail("About Us must retain the verified founder name Saidi Materu");
   if (aboutHtml.includes("https://materunihosts.com/about-us") && aboutHtml.includes("Saidi Materu")) pass("About Us canonical URL and founder story are present");
 }
-for (const route of ["/", "/experiences", "/day-trips"]) {
-  const file = routeFile(route);
-  if (!file) continue;
-  const html = read(file);
-  if (/cooking_image|materuni-cooking|photo-1723643343026/i.test(html)) fail(route + ": cooking-class photography must remain removed");
-  else pass(route + ": cooking-class photography remains removed");
+const homepageSourcePath = path.resolve("src/pages/index.astro");
+if (fs.existsSync(homepageSourcePath)) {
+  const homepageSource = read(homepageSourcePath);
+  const homepageH1Count = [...homepageSource.matchAll(/<h1\\b/g)].length;
+  if (homepageH1Count !== 1) fail("Homepage source must contain exactly one primary H1");
+  else pass("Homepage has exactly one primary H1");
+  if (!homepageSource.includes('title="Materuni Village Tours & Chagga Experiences | Materuni Hosts"')) fail("Homepage title must target Materuni Village tours and Chagga experiences");
+  else pass("Homepage title targets Materuni Village search intent");
+  if (!homepageSource.includes('description="Visit Materuni Village near Moshi, Tanzania.')) fail("Homepage meta description must identify Materuni Village and its cultural experiences");
+  else pass("Homepage meta description identifies Materuni Village and local experiences");
+  if (homepageSource.includes("<iframe") || homepageSource.includes("map-embed-card") || !homepageSource.includes("materuni-map-svg")) fail("Homepage must use the accessible illustrated Materuni map, not an embedded map");
+  else pass("Homepage uses an accessible illustrated Materuni village map");
+  if (!homepageSource.includes("cooking_image/1792089297987-cooking-class.jpg") || homepageSource.includes("1791994933291-materuni-coffe-picking-lesson.jpg")) fail("Homepage cooking card must use the cooking-class asset, not a coffee-picking photograph");
+  else pass("Homepage cooking card uses its catalogue cooking-class image");
+  const catalogueKeys = ["Waterfall & Chagga Culture", "Traditional Coffee Experience", "Traditional Chagga Cooking Class", "Materuni & Moshi Town Tour", "Materuni & Rau Forest Experience", "Camping & Village Life"];
+  if (!catalogueKeys.every((key) => homepageSource.includes('catalogKey:"' + key + '"'))) fail("Homepage must map every published experience to its catalogue key");
+  else pass("Homepage cards map all six published experiences to the live catalogue");
+  if (!homepageSource.includes("experience_catalog") || !homepageSource.includes("item.short_description") || !homepageSource.includes("item.price_usd") || !homepageSource.includes("item.image_url") || !homepageSource.includes("item.is_active")) fail("Homepage cards must sync prices, descriptions, imagery and active status from the experience catalogue");
+  else pass("Homepage cards sync live catalogue prices, descriptions, images and active status");
+  if (/95-metre|95 metre|1,800 metres|No outsourced staff|fees go directly/i.test(homepageSource)) fail("Homepage contains unverified geographic or community-benefit claims");
+  else pass("Homepage avoids unverified geographic and community-benefit claims");
 }
 const itineraryFile = routeFile("/itinerary");
 if (itineraryFile) {
@@ -238,7 +253,16 @@ for (const file of htmlFiles) {
       }
     }
   }
-  const optimizedImageRoutes = ["/", "/experiences", "/camping", "/day-trips", "/sustainability"];
+  const imageTags = [...html.matchAll(/<img\b[^>]*>/gi)].map((match) => match[0]);
+  for (const image of imageTags) {
+    if (!/\balt\s*=\s*["'][^"']*["']/i.test(image)) {
+      fail(relative + ": image is missing an alt attribute");
+      break;
+    }
+  }
+  if (/href\s*=\s*["'][^"']*REPLACE_/i.test(html)) fail(relative + ": contains a placeholder URL in href");
+}
+const optimizedImageRoutes = ["/", "/experiences", "/camping", "/day-trips", "/sustainability"];
 for (const route of optimizedImageRoutes) {
   const optimizedFile = routeFile(route);
   if (optimizedFile) {
@@ -248,15 +272,7 @@ for (const route of optimizedImageRoutes) {
     else if (renderedImages.length) pass(route + ": visible photography is served from optimized build assets");
   }
 }
-const imageTags = [...html.matchAll(/<img\b[^>]*>/gi)].map((match) => match[0]);
-  for (const image of imageTags) {
-    if (!/\balt\s*=\s*["'][^"']*["']/i.test(image)) {
-      fail(relative + ": image is missing an alt attribute");
-      break;
-    }
-  }
-  if (/href\s*=\s*["'][^"']*REPLACE_/i.test(html)) fail(relative + ": contains a placeholder URL in href");
-}
+
 if (htmlFiles.length) pass("Checked SEO metadata and primary headings on " + htmlFiles.length + " HTML pages");
 
 const notFoundPage = path.join(root, "404.html");
