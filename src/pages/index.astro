@@ -8,235 +8,50 @@ const heroSource = base + "hero_image/1791995544192-materuni-waterfall.jpg";
 const optimizedHero = await getImage({ src: heroSource, width: 1600, height: 1000, format: "webp", quality: 80 });
 
 // Curated 6 experiences with equal visual importance (authoritative pricing aligned with Supabase catalog)
+// Homepage catalogue fallback; prices match the published Materuni Hosts catalogue.
 const curatedExperiences = [
-  {
-    key: "waterfall",
-    name: "Materuni Waterfall & Chagga Village Experience",
-    tagline: "Forest hike, waterfall & Chagga coffee",
-    price: 40,
-    duration: "7–8 hours",
-    image: "waterfall_image/1791998303073-materuni-waterfall-hike.jpg",
-    alt: "Materuni waterfall cascading into the lush forest pool in Kilimanjaro",
-    desc: "A guided rainforest hike to the thunderous 95-metre waterfall, followed by traditional coffee roasting with local songs, Chagga dance, and a hot village lunch.",
-    inclusions: [
-      "Professional local Chagga guide",
-      "Village and waterfall entrance fees",
-      "Traditional coffee roasting & tasting",
-      "Hot home-cooked Chagga lunch",
-      "Complimentary Mbege tasting"
-    ],
-    exclusions: "Transport to Materuni (arranged separately on request), tips, personal purchases.",
-    prep: "Sturdy walking shoes with reliable grip, light rain jacket, swimwear if swimming."
-  },
-  {
-    key: "coffee",
-    name: "Traditional Chagga Coffee Experience",
-    tagline: "From coffee harvest to freshly brewed cup",
-    price: 36,
-    duration: "4–5 hours",
-    image: "coffee_image/1791998412318-materuni-tour.jpg",
-    alt: "Traditional Chagga coffee roasting over open woodfire in Materuni",
-    desc: "Discover centuries-old coffee growing traditions. Pick ripe cherries, roast beans over firewood embers, and grind with heavy wooden pestles while singing local harvest songs.",
-    inclusions: [
-      "Local coffee specialist host",
-      "Village entrance permits",
-      "Hands-on roasting, grinding & brewing",
-      "Freshly prepared coffee tasting",
-      "Traditional Chagga village lunch"
-    ],
-    exclusions: "Transport to Materuni, personal purchases of roasted coffee beans, tips.",
-    prep: "Comfortable casual clothes, appetite for fresh coffee and lively singing."
-  },
-  {
-    key: "cooking",
-    name: "Traditional Chagga Cooking Class",
-    tagline: "Hands-on village cooking with local mamas",
-    price: 49,
-    duration: "5–6 hours",
-    image: "coffee_image/1791994933291-materuni-coffe-picking-lesson.jpg",
-    alt: "Fresh harvest and cooking preparation in Materuni Village kitchen",
-    desc: "Join local village mamas over firewood hearths. Prepare authentic Chagga dishes using fresh green bananas, yams, and homegrown vegetables, then share the feast together.",
-    inclusions: [
-      "Hands-on cooking workshop with village hosts",
-      "All fresh farm ingredients & cooking gear",
-      "Shared family feast of dishes prepared",
-      "Traditional coffee tasting",
-      "Bottled drinking water"
-    ],
-    exclusions: "Transport to Materuni, personal beverages, tips.",
-    prep: "Willingness to chop, stir and cook over woodfire; aprons and utensils provided."
-  },
-  {
-    key: "moshi",
-    name: "Materuni & Moshi Town Cultural Experience",
-    tagline: "Mountain waterfall & historic market town",
-    price: 52,
-    duration: "7–8 hours",
-    image: "story_image/1791995912146-materuni-community.jpg",
-    alt: "Saidi Materu and community members welcoming visitors in Materuni",
-    desc: "Combine the morning Materuni waterfall walk and coffee ceremony with an afternoon guided walking tour of Moshi town, historic colonial streets, and bustling local markets.",
-    inclusions: [
-      "Local guides in Materuni and Moshi town",
-      "Village and waterfall entry fees",
-      "Traditional coffee ceremony & lunch",
-      "Guided Moshi historical walking tour",
-      "Local market exploration & orientation"
-    ],
-    exclusions: "Transport between locations (arranged on request), market shopping, tips.",
-    prep: "Comfortable footwear suitable for both forest trail and city walking."
-  },
-  {
-    key: "rau",
-    name: "Materuni & Rau Forest Nature Experience",
-    tagline: "Waterfall, coffee & ancient groundwater forest",
-    price: 58,
-    duration: "7–8 hours",
-    image: "story_image/1791601761441-q3iog8mni3r.jpg",
-    alt: "Lush green trail through the forest canopy in northern Tanzania",
-    desc: "Pair the mountain waterfall and coffee ceremony with an afternoon nature trek through the protected Rau Forest reserve, known for black-and-white colobus monkeys and giant Mvule trees.",
-    inclusions: [
-      "Local guides for Materuni and Rau Forest",
-      "Materuni & Rau Forest entrance permits",
-      "Traditional coffee ceremony & lunch",
-      "Guided Rau Forest ecology walk",
-      "Ancient sacred Mvule tree exploration"
-    ],
-    exclusions: "Private transfer between locations (arranged on request), tips.",
-    prep: "Walking shoes, camera or binoculars for bird and colobus monkey spotting."
-  },
-  {
-    key: "camping",
-    name: "Materuni Overnight Village Experience",
-    tagline: "Camp in the foothills beneath Mount Kilimanjaro",
-    price: 90,
-    duration: "2 days · 1 night",
-    image: "story_image/1791994219885-materuni-coffe-plantatio-tour.jpg",
-    alt: "Sunset over the green coffee landscape in Materuni Village",
-    desc: "Slow down and experience village life after the day visitors leave. Enjoy a spotless tent setup, campfire dinner with local storytelling, stargazing, and morning mountain breakfast.",
-    inclusions: [
-      "Full tent accommodation & campsite setup",
-      "Campfire dinner & hot village breakfast",
-      "Guided 95m waterfall hike & coffee tour",
-      "Authentic lunch on arrival day",
-      "Evening stories with local Chagga hosts"
-    ],
-    exclusions: "Personal sleeping bag and toiletries, transport to camp, tips.",
-    prep: "Warm clothing for cool mountain nights, flashlight or headlamp."
-  }
+ {key:"waterfall",name:"Materuni Waterfall & Chagga Village Experience",tagline:"Waterfall walk · village heritage",price:40,label:"Day visit",image:"waterfall_image/1791998303073-materuni-waterfall-hike.jpg",alt:"Materuni Waterfall among the green slopes of Mount Kilimanjaro",desc:"Join a local guide for a walk to Materuni Waterfall, then discover Chagga village life, coffee traditions and local food.",highlights:["Walk to Materuni Waterfall","Explore Chagga village life","Learn about local coffee traditions"]},
+ {key:"coffee",name:"Traditional Chagga Coffee Experience",tagline:"From coffee growing to a fresh cup",price:36,label:"Day visit",image:"coffee_image/1791998412318-materuni-tour.jpg",alt:"Chagga coffee being prepared by hand in Materuni Village",desc:"Discover the Chagga coffee journey with local hosts, from growing traditions and hands-on roasting, grinding and brewing to a freshly prepared tasting.",highlights:["Discover coffee-growing traditions","Take part in roasting, grinding and brewing","Taste freshly prepared coffee"]},
+ {key:"cooking",name:"Traditional Chagga Cooking Class",tagline:"Cook · learn · share local food",price:49,label:"Day visit",image:null,alt:"Traditional Chagga cooking experience in Materuni Village",desc:"Join a hands-on Chagga cooking class with local hosts, learn about ingredients and traditional preparation methods, and enjoy the food you help prepare.",highlights:["Prepare traditional Chagga dishes","Learn about local ingredients","Share the food you help prepare"]},
+ {key:"moshi",name:"Materuni & Moshi Town Cultural Experience",tagline:"Village life · town history",price:52,label:"Day visit",image:"story_image/1791995912146-materuni-community.jpg",alt:"Materuni Hosts community scene in Materuni Village",desc:"Pair your Materuni visit with a guided Moshi town walk. Explore the town, learn about local history and everyday life, and discover the market area.",highlights:["Explore Materuni Village","Walk through Moshi with a local town guide","Discover local history and the market area"]},
+ {key:"rau",name:"Materuni & Rau Forest Nature Experience",tagline:"Village culture · forest nature",price:58,label:"Day visit",image:"story_image/1791601761441-q3iog8mni3r.jpg",alt:"Forest vegetation in the Kilimanjaro region of Tanzania",desc:"Combine your Materuni visit with a guided nature walk in Rau Forest near Moshi. Discover forest ecology, birdlife, the Mvule tree and nearby rice fields.",highlights:["Guided Rau Forest nature walk","Learn about forest ecology and birdlife","Discover the Mvule tree and nearby rice fields"]},
+ {key:"camping",name:"Materuni Overnight Village Experience",tagline:"A slower village stay",price:90,label:"1 night",image:"story_image/1791994219885-materuni-coffe-plantatio-tour.jpg",alt:"Coffee-growing landscape in Materuni Village",desc:"Stay one night in Materuni with tent accommodation, dinner, breakfast and a next-day guided village experience, alongside the waterfall and Chagga coffee activities.",highlights:["One-night village tent accommodation","Dinner and breakfast","Next-day guided village experience"]}
 ];
 
 // Host profiles for Meet Your Hosts section
-const hosts = [
-  {
-    name: "Saidi Materu",
-    role: "Founder & Lead Mountain Host",
-    bio: "Born and raised in Materuni Village. Saidi has guided travelers along waterfall paths, coffee farms, and Kilimanjaro foothills for over 12 years with deep pride in Chagga culture.",
-    image: "story_image/1791995912146-materuni-community.jpg",
-    alt: "Saidi Materu welcoming guests in Materuni Village"
-  },
-  {
-    name: "Elia",
-    role: "Chagga Coffee Specialist",
-    bio: "A third-generation coffee farmer who preserves ancestral roasting rhythms, wooden pestle grinding techniques, and the joyous songs passed down by village elders.",
-    image: "coffee_image/1791998412318-materuni-tour.jpg",
-    alt: "Elia preparing freshly ground Chagga coffee by the fire"
-  },
-  {
-    name: "Amani",
-    role: "Forest & Trail Guide",
-    bio: "A lifelong naturalist sharing deep knowledge of Kilimanjaro's indigenous plants, waterfall geology, bird species, and chameleon spotting along the rainforest trail.",
-    image: "story_image/1791601761441-q3iog8mni3r.jpg",
-    alt: "Amani guiding a nature walk along the Materuni trail"
-  }
-];
+
 
 // 4-step guest journey
+// A clear outline of the visit; meeting and transport details are agreed with the host.
 const daySteps = [
-  {
-    step: "01",
-    title: "Warm Arrival & Pickup",
-    text: "Meet your driver at your Moshi, KIA or Arusha hotel, or receive a warm welcome directly at our Materuni Village trailhead."
-  },
-  {
-    step: "02",
-    title: "Waterfall Forest Hike",
-    text: "A scenic 40-minute guided walk through banana groves and cloud forest canopy to the thunderous 95-metre Materuni waterfall."
-  },
-  {
-    step: "03",
-    title: "Coffee Songs & Feast",
-    text: "Roast fresh Arabica beans over woodfire with traditional Chagga songs, followed by a hot home-cooked feast with local mamas."
-  },
-  {
-    step: "04",
-    title: "Sunset Return or Camp",
-    text: "Return comfortably to your town lodge before evening, or relax around the evening campfire for an overnight village stay."
-  }
+ {step:"01",title:"Plan your visit",text:"Choose an experience and share your preferred date, group size and any practical needs with your host."},
+ {step:"02",title:"Arrive in Materuni",text:"Agree your meeting point and arrival arrangements with your host before travelling to the village."},
+ {step:"03",title:"Discover village life",text:"Enjoy the experience you selected, from the waterfall and local food to Chagga coffee traditions."},
+ {step:"04",title:"Confirm your return",text:"Before your visit, agree the timing and transport arrangements that suit your plans."}
 ];
 
 // Journal posts
 const journalPosts = [
-  {
-    title: "How to Get to Materuni Village from Moshi, Arusha and KIA",
-    excerpt: "Routes, travel times, road conditions, and confirmed vehicle transfer prices from local Chagga hosts.",
-    slug: "how-to-get-to-materuni",
-    category: "Getting here",
-    readTime: "5 min read",
-    image: "hero_image/1791995544192-materuni-waterfall.jpg",
-    alt: "Materuni waterfall seen from the forest trail"
-  },
-  {
-    title: "How Traditional Chagga Coffee is Made from Bean to Cup",
-    excerpt: "From harvesting ripe red cherries to roasting on firewood, wooden pestle grinding, and Chagga songs.",
-    slug: "how-traditional-chagga-coffee-is-made",
-    category: "Culture & food",
-    readTime: "4 min read",
-    image: "coffee_image/1791998412318-materuni-tour.jpg",
-    alt: "Chagga coffee roasting over woodfire"
-  },
-  {
-    title: "What to Bring on the Materuni Waterfall Hike",
-    excerpt: "Trail footwear, packing tips, wet-season advice, and local currency practicalities before you set off.",
-    slug: "what-to-bring-on-materuni-waterfall-hike",
-    category: "Planning",
-    readTime: "4 min read",
-    image: "story_image/1791601761441-q3iog8mni3r.jpg",
-    alt: "Green lush hiking trail leading to Materuni waterfall"
-  }
+ {title:"How to Get to Materuni Village from Moshi, Arusha and KIA",excerpt:"Route options, road conditions and practical planning tips for reaching Materuni Village.",slug:"how-to-get-to-materuni",category:"Getting here",readTime:"5 min read",image:"hero_image/1791995544192-materuni-waterfall.jpg",alt:"Materuni Waterfall seen from the forest trail"},
+ {title:"How Traditional Chagga Coffee is Made from Bean to Cup",excerpt:"Learn about coffee-growing traditions and the roasting, grinding and brewing steps shared in Materuni.",slug:"how-traditional-chagga-coffee-is-made",category:"Culture & food",readTime:"4 min read",image:"coffee_image/1791998412318-materuni-tour.jpg",alt:"Chagga coffee being prepared in Materuni"},
+ {title:"What to Bring on the Materuni Waterfall Hike",excerpt:"Practical footwear, clothing and packing advice before you visit the Materuni waterfall trail.",slug:"what-to-bring-on-materuni-waterfall-hike",category:"Planning",readTime:"4 min read",image:"story_image/1791601761441-q3iog8mni3r.jpg",alt:"Green forest trail in the Kilimanjaro region"}
 ];
 
 // 6 FAQs
 const faqs = [
-  {
-    q: "How far is Materuni from Moshi, and how do I get there?",
-    a: "Materuni Village is in the Kilimanjaro foothills north of Moshi. Travel time depends on road and weather conditions. Contact us to discuss transport options and receive a current quote."
-  },
-  {
-    q: "Is the waterfall hike difficult for children or seniors?",
-    a: "It is a moderate 40-minute walk each way along a winding forest path with gentle inclines. Sturdy walking shoes or sneakers are recommended. We keep an unhurried pace suited to every guest in your private group."
-  },
-  {
-    q: "What should I wear and pack for the day?",
-    a: "Wear comfortable walking shoes with grip, lightweight breathable clothing, sun protection, and a light rain jacket. If you wish to take a refreshing dip in the waterfall pool, bring swimwear and a towel."
-  },
-  {
-    q: "Are prices transparent with all fees included?",
-    a: "Inclusions differ by experience. Please review the package details and ask your host to clarify any item before sending your booking request."
-  },
-  {
-    q: "How does booking and payment work?",
-    a: "Submitting the form sends a booking request; it does not confirm a reservation. Your local host will contact you to discuss availability, final arrangements and payment details."
-  },
-  {
-    q: "What is your cancellation and weather policy?",
-    a: "Cancellation terms, refund arrangements and any weather-related changes are discussed with your host and confirmed as part of your booking details."
-  }
+ {q:"Where is Materuni Village?",a:"Materuni Village is in Materuni Juu, Moshi Rural, in Tanzania's Kilimanjaro Region. Contact your host before travelling to confirm the meeting point and directions."},
+ {q:"How do I get to Materuni from Moshi?",a:"You can discuss self-arranged transport or a separate transfer with your host. Road and travel conditions vary, so confirm the route and expected journey time for your date."},
+ {q:"Is the Materuni Waterfall walk suitable for everyone?",a:"The route includes natural, uneven trail surfaces and conditions can change with the weather. Tell your host about mobility needs or concerns before booking so you can discuss suitability."},
+ {q:"What should I wear and bring?",a:"Wear comfortable walking shoes with grip and bring weather-appropriate clothing. If you plan to enter the waterfall pool, ask your host about current conditions and bring swimwear and a towel."},
+ {q:"What is included in the experience price?",a:"Inclusions vary by experience. Check the details for your selected activity and ask your host to confirm what is included, what is arranged separately and the final price before payment."},
+ {q:"Does sending a booking request confirm my visit?",a:"No. Sending the form is a request only. Your host will reply to confirm availability, timing, arrangements and payment details before your visit is confirmed."}
+];
 ];
 ---
 
 <SiteLayout
-  title="Materuni Village Tours & Chagga Cultural Experiences | Materuni Hosts"
-  description="Explore Materuni Village near Moshi, Tanzania, with local hosts. Discover the Materuni Waterfall, traditional Chagga coffee, village food and cultural experiences."
+  title="Materuni Village Tours & Chagga Experiences | Materuni Hosts"
+  description="Visit Materuni Village near Moshi, Tanzania. Explore the Materuni Waterfall, Chagga coffee traditions, local food and village experiences with Materuni Hosts."
   preloadImage={optimizedHero.src}
 >
   <!-- 1. PREMIUM CINEMATIC HERO SECTION -->
@@ -244,7 +59,7 @@ const faqs = [
     <div class="hero-bg" style={`background-image: linear-gradient(180deg, rgba(20,45,32,0.70) 0%, rgba(20,45,32,0.85) 100%), url(${optimizedHero.src})`}></div>
     <div class="hero-content">
       <span class="hero-badge">MATERUNI VILLAGE · KILIMANJARO · TANZANIA</span>
-      <h1 id="hero-heading">Discover Materuni Through Local Eyes.</h1>
+      <h1 id="hero-heading">Explore Materuni Village &amp; Chagga Cultural Experiences</h1>
       <p class="hero-sub">Meaningful cultural encounters, beautiful landscapes and genuine connections with the people who call Materuni home.</p>
       <div class="hero-cta-group">
         <a class="gold-button" href="#experiences">Explore Experiences</a>
@@ -278,35 +93,35 @@ const faqs = [
   <!-- 2. SHORT, COMPELLING BRAND INTRODUCTION -->
   <section class="brand-intro-section" aria-labelledby="brand-intro-heading">
     <div class="brand-intro-container">
-      <span class="eyebrow">AUTHENTIC BOUTIQUE HOSPITALITY</span>
+      <span class="eyebrow">MATERUNI VILLAGE · LOCAL CULTURE</span>
       <h2 id="brand-intro-heading">Rooted in Materuni, Hosted with Pride</h2>
       <p class="brand-intro-lead">
-        High on the fertile volcanic slopes of Mount Kilimanjaro, Materuni Village is our ancestral home. We are a collective of village-born Chagga guides, coffee farmers, and local families.
+        Materuni Village sits in the foothills of Mount Kilimanjaro, near Moshi in northern Tanzania. Materuni Hosts invites visitors to discover the village through local hospitality, Chagga heritage and everyday life.
       </p>
       <p class="brand-intro-body">
-        Rather than treating Materuni as a rushed commercial day excursion, we welcome you to unhurried, personal encounters. We open our rainforest waterfall trails, woodfire coffee hearths, and family kitchens with warmth and integrity — so you arrive as a guest, and leave as a friend.
+        Choose a walk to Materuni Waterfall, learn about Chagga coffee traditions, prepare local food, or spend a night in the village. Each experience offers a different way to connect with the place and the people who call it home.
       </p>
       <div class="intro-pillars-grid">
         <div class="intro-pillar">
           <div class="pillar-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
           </div>
-          <h3>Village-Born Hosts</h3>
-          <p>Every walk and ceremony is led by residents who grew up here, sharing genuine Chagga traditions and lived heritage.</p>
+          <h3>Local Perspectives</h3>
+          <p>Hear about Materuni through local perspectives, village stories and the traditions connected with everyday life.</p>
         </div>
         <div class="intro-pillar">
           <div class="pillar-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
           </div>
-          <h3>Unhurried Pacing</h3>
-          <p>Small private groups, uncrowded timings, and ample time to listen, taste, learn, and absorb the peaceful mountain atmosphere.</p>
+          <h3>Time to Explore</h3>
+          <p>Choose a day visit or overnight stay, then discuss the pace and practical details with your host.</p>
         </div>
         <div class="intro-pillar">
           <div class="pillar-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
           </div>
-          <h3>Direct Village Benefit</h3>
-          <p>Meet the local guides, coffee-growing families, and cooking hosts who bring each experience to life.</p>
+          <h3>Living Chagga Heritage</h3>
+          <p>Discover coffee, food, farming and cultural traditions through the experiences available in Materuni.</p>
         </div>
       </div>
     </div>
@@ -316,63 +131,29 @@ const faqs = [
   <section class="home-section" id="experiences" aria-labelledby="experiences-heading">
     <div class="section-header">
       <span class="eyebrow">CURATED EXPERIENCES</span>
-      <h2 id="experiences-heading">Six Meaningful Ways to Experience Materuni</h2>
-      <p>Explore each experience at your own pace. Package details list the inclusions and arrangements for that specific visit.</p>
+      <h2 id="experiences-heading">Explore Materuni Village Experiences</h2>
+      <p>Choose a waterfall walk, Chagga coffee experience, cooking class, town visit, forest outing or overnight stay. Each activity has its own details and price.</p>
     </div>
     <div class="curated-grid">
       {curatedExperiences.map((exp) => (
         <article class="boutique-card" id={`exp-${exp.key}`}>
           <div class="boutique-card-media">
-            <Image
-              src={base + exp.image}
-              alt={exp.alt}
-              width={640}
-              height={420}
-              format="webp"
-              quality={78}
-              loading="lazy"
-              decoding="async"
-              class="boutique-photo"
-            />
-            <span class="card-duration-badge">{exp.duration}</span>
+            {exp.image ? <Image src={base + exp.image} alt={exp.alt} width={640} height={420} format="webp" quality={78} loading="lazy" decoding="async" class="boutique-photo" /> : <div class="boutique-photo-placeholder" role="img" aria-label={exp.alt}><span>Chagga Cooking</span><small>Traditional food &amp; village life</small></div>}
+            <span class="card-duration-badge">{exp.label}</span>
           </div>
           <div class="boutique-card-content">
-            <div class="card-meta-top">
-              <span class="card-tagline">{exp.tagline}</span>
-              <span class="card-price-display">${exp.price} <small>PER PERSON</small></span>
-            </div>
-            <h3>{exp.name}</h3>
-            <p class="card-desc">{exp.desc}</p>
-            
-            <div class="card-inclusions-block">
-              <strong>What's included:</strong>
-              <ul>
-                {exp.inclusions.map((item) => (
-                  <li>{item}</li>
-                ))}
-              </ul>
-            </div>
-
-            <div class="card-prep-block">
-              <span class="prep-label">Not included:</span> {exp.exclusions}
-            </div>
-
-            <div class="card-prep-block">
-              <span class="prep-label">Guest preparation:</span> {exp.prep}
-            </div>
-
+            <div class="card-meta-top"><span class="card-tagline">{exp.tagline}</span><span class="card-price-display">${exp.price} <small>PER PERSON</small></span></div>
+            <h3>{exp.name}</h3><p class="card-desc">{exp.desc}</p>
+            <div class="experience-highlight-block"><strong>Experience highlights</strong><ul>{exp.highlights.map((item) => <li>{item}</li>)}</ul></div>
             <div class="boutique-card-actions">
               <a class="gold-button" href={`/booking?experience=${exp.key}`}>Book this experience</a>
-              <a class="card-secondary-link" href={`/experiences#${exp.key}`}>View details →</a>
+              <a class="card-secondary-link" href="/experiences">Full experience details →</a>
             </div>
           </div>
         </article>
       ))}
     </div>
     <div class="section-center-cta">
-      <p class="indicative-rate-note">
-        Indicative TZS guide: $41 ≈ TZS 108,000 · $45 ≈ TZS 119,000 · $55 ≈ TZS 145,000 · $59 ≈ TZS 156,000 · $65 ≈ TZS 172,000 · $101 ≈ TZS 267,000. Confirmed at prevailing exchange rate before payment.
-      </p>
       <a class="view-all-button" href="/experiences">Explore experience details &amp; group discounts</a>
     </div>
   </section>
@@ -382,33 +163,21 @@ const faqs = [
     <div class="section-header">
       <span class="eyebrow">LOCAL HOSPITALITY</span>
       <h2 id="hosts-heading">Meet Your Local Hosts</h2>
-      <p>Experience Materuni through the people who actually live here. No outsourced staff or generic commercial agents.</p>
+      <p>Discover Materuni through local hospitality, village stories and the traditions connected with everyday life.</p>
     </div>
     <div class="hosts-grid">
-      {hosts.map((host) => (
-        <div class="host-boutique-card">
-          <div class="host-avatar-wrap">
-            <Image
-              src={base + host.image}
-              alt={host.alt}
-              width={340}
-              height={340}
-              format="webp"
-              quality={78}
-              loading="lazy"
-              decoding="async"
-              class="host-avatar"
-            />
-          </div>
-          <h3>{host.name}</h3>
-          <span class="host-boutique-role">{host.role}</span>
-          <p class="host-boutique-bio">{host.bio}</p>
+      <article class="host-boutique-card">
+        <div class="host-avatar-wrap">
+          <Image src={base + "story_image/1791995912146-materuni-community.jpg"} alt="Materuni community scene" width={640} height={420} format="webp" quality={78} loading="lazy" decoding="async" class="host-avatar" />
         </div>
-      ))}
+        <h3>Local hosts in Materuni</h3>
+        <span class="host-boutique-role">Village hospitality &amp; living heritage</span>
+        <p class="host-boutique-bio">Meet local hosts through the traditions, food, coffee and everyday stories of Materuni. The person you meet depends on the experience and arrangements for your visit.</p>
+      </article>
     </div>
     <div class="hosts-editorial-cta">
       <p>
-        We believe that genuine travel begins with authentic personal connections. When you walk our paths, you are guided by neighbours, family, and lifelong stewards of this mountain.
+        We believe a visit is more meaningful when you take time to learn about the place, its people and the traditions that shape village life.
       </p>
       <a class="gold-button" href="/about-us">Read our story</a>
     </div>
@@ -426,21 +195,21 @@ const faqs = [
         <div class="feature-number">01</div>
         <h3>The Kihamba Farming System</h3>
         <p>
-          For generations, the Chagga people developed the ingenious <em>Kihamba</em> agroforestry system — cultivating shade-grown Arabica coffee, indigenous banana varieties, and beans beneath towering forest trees, irrigated by ancient mountain stone furrows.
+          The <em>Kihamba</em> is a Chagga home-garden agroforestry system found on the slopes of Kilimanjaro. Learn how crops and trees are grown together and ask your host about the plants and farming practices you see in Materuni.
         </p>
       </div>
       <div class="feature-card">
         <div class="feature-number">02</div>
         <h3>The Rhythmic Coffee Ceremony</h3>
         <p>
-          Coffee in Materuni is far more than a beverage; it is a community celebration. From peeling and woodfire roasting to pounding in giant wooden pestles, the rhythm is kept alive by joyous ancestral songs welcoming every visitor into the circle.
+          A Chagga coffee experience can introduce you to the steps of preparing coffee, including roasting, grinding and brewing. Your host can explain the methods and traditions connected with coffee in Materuni.
         </p>
       </div>
       <div class="feature-card">
         <div class="feature-number">03</div>
         <h3>Highland Gastronomy &amp; Mbege</h3>
         <p>
-          Taste the wholesome flavours of authentic Chagga cuisine: slow-cooked dishes made from green cooking bananas (*machalari*), mountain yams, fresh vegetables, and an optional tasting of *mbege*, the traditional ceremonial banana-millet brew.
+          Discover Chagga food traditions and ingredients such as cooking bananas and locally grown produce. Ask your host whether a tasting of <em>mbege</em>, a traditional banana-and-millet drink, is available during your visit.
         </p>
       </div>
     </div>
@@ -450,8 +219,8 @@ const faqs = [
   <section class="home-section bg-warm" aria-labelledby="nature-heading">
     <div class="section-header">
       <span class="eyebrow">KILIMANJARO FOOTHILLS</span>
-      <h2 id="nature-heading">Materuni Nature &amp; Landscapes</h2>
-      <p>Pristine mountain streams, lush rainforest canopies, and sweeping views across the valley.</p>
+      <h2 id="nature-heading">Materuni Waterfall &amp; Forest Landscapes</h2>
+      <p>Explore the green foothills of Mount Kilimanjaro, village paths and the forest setting around Materuni Waterfall.</p>
     </div>
     <div class="split-nature-layout">
       <div class="nature-image-container">
@@ -468,19 +237,19 @@ const faqs = [
         />
       </div>
       <div class="nature-copy-container">
-        <h3>Where Glacial Melt Meets Cloud Forest</h3>
+        <h3>A Waterfall in the Kilimanjaro Foothills</h3>
         <p>
-          At an elevation of 1,800 metres on the southern slopes of Mount Kilimanjaro, Materuni sits in a lush microclimate fed by pure mountain springs. The 95-metre Materuni waterfall is one of the highest and most awe-inspiring in the entire Kilimanjaro region.
+          Materuni Village lies in the foothills of Mount Kilimanjaro. A visit can include a walk through the surrounding green landscape to Materuni Waterfall. Trail conditions and visibility can vary with the weather.
         </p>
         <ul class="nature-highlights-list">
           <li>
-            <strong>95-Metre Waterfall:</strong> Clean mountain water cascading down volcanic cliffs into a natural forest pool.
+            <strong>Materuni Waterfall:</strong> Visit the waterfall on a guided walk from the village.
           </li>
           <li>
-            <strong>Montane Rainforest:</strong> Giant ferns, ancient trees, wild chameleons, and colorful native birdlife.
+            <strong>Forest paths:</strong> Explore the green landscape around Materuni and learn about the local environment.
           </li>
           <li>
-            <strong>Kilimanjaro Vistas:</strong> Clear morning panoramas looking up toward the majestic snow-capped summit.
+            <strong>Kilimanjaro setting:</strong> Experience the village in the foothills of the mountain; views depend on weather and cloud cover.
           </li>
         </ul>
         <div class="nature-action-wrap">
@@ -496,7 +265,7 @@ const faqs = [
     <div class="section-header">
       <span class="eyebrow">THE GUEST JOURNEY</span>
       <h2 id="journey-heading">How Your Experience Unfolds</h2>
-      <p>Thoughtful logistics, unhurried pacing, and attentive care from start to finish.</p>
+      <p>Agree the practical details with your host before travelling, then enjoy the experience you selected in Materuni.</p>
     </div>
     <div class="journey-steps-grid">
       {daySteps.map((s) => (
@@ -537,28 +306,28 @@ const faqs = [
     <div class="section-header">
       <span class="eyebrow">COMMUNITY FIRST</span>
       <h2 id="sustainability-heading">Responsible Community Tourism</h2>
-      <p>Travel that respects the land, preserves living culture, and enriches village families directly.</p>
+      <p>Visitors can help make each visit respectful by learning about local customs, caring for the environment and following guidance from their hosts.</p>
     </div>
     <div class="sustainability-pillars-grid">
       <div class="sustainability-card">
         <div class="sustainability-number">01</div>
-        <h3>Direct Economic Livelihoods</h3>
+        <h3>Respect Local Hosts</h3>
         <p>
-          By booking directly with Materuni Hosts, your fees go directly to the village guides, coffee farmers, cooking mamas, and porters without extractive middlemen.
+          Ask questions, listen to local perspectives and follow the arrangements explained by your host. We aim to make each visit welcoming and respectful.
         </p>
       </div>
       <div class="sustainability-card">
         <div class="sustainability-number">02</div>
-        <h3>Preserving Chagga Traditions</h3>
+        <h3>Learn About Chagga Heritage</h3>
         <p>
-          Our tours provide younger generations with meaningful reasons to celebrate and maintain ancestral agricultural, culinary, and musical heritage.
+          Discover coffee, food, farming and cultural traditions through the activities available during your visit.
         </p>
       </div>
       <div class="sustainability-card">
         <div class="sustainability-number">03</div>
-        <h3>Trail &amp; Watershed Stewardship</h3>
+        <h3>Care for the Environment</h3>
         <p>
-          We follow strict leave-no-trace trail practices, protect natural mountain water sources, and educate travelers on preserving this unique forest ecosystem.
+          Stay on agreed paths, avoid leaving litter and follow local guidance around water, farms and forest areas.
         </p>
       </div>
     </div>
@@ -572,7 +341,7 @@ const faqs = [
     <div class="section-header">
       <span class="eyebrow">MATERUNI JOURNAL</span>
       <h2 id="journal-heading">Stories &amp; Practical Guides from the Slopes</h2>
-      <p>Local guides share transport timings, packing tips, and cultural insights before you arrive.</p>
+      <p>Find practical information about reaching Materuni, preparing for the waterfall walk and learning about Chagga coffee traditions.</p>
     </div>
     <div class="journal-grid">
       {journalPosts.map((post) => (
@@ -631,8 +400,8 @@ const faqs = [
   <section class="home-section bg-warm" id="booking-cta" aria-labelledby="booking-cta-heading">
     <div class="booking-cta-container">
       <div class="booking-cta-copy">
-        <span class="eyebrow">PLAN YOUR VISIT</span>
-        <h2 id="booking-cta-heading">Ready to Experience Materuni with Local Hosts?</h2>
+        <span class="eyebrow">FIND MATERUNI</span>
+        <h2 id="booking-cta-heading">Plan Your Visit to Materuni Village</h2>
         <p>
           Send a booking request online and our local hosting team will contact you to discuss availability, timings and any transport arrangements.
         </p>
@@ -643,23 +412,31 @@ const faqs = [
           </a>
         </div>
         <p class="peace-of-mind-note">
-          Local Chagga hosts &nbsp;·&nbsp; Clear details before confirmation &nbsp;·&nbsp; Direct contact
+          Materuni Village, Materuni Juu &nbsp;·&nbsp; Moshi Rural &nbsp;·&nbsp; Kilimanjaro, Tanzania
         </p>
       </div>
 
-      <div class="map-embed-card">
-        <iframe
-          loading="lazy"
-          title="Materuni Hosts location in Materuni Village, Moshi, Tanzania"
-          src="https://www.google.com/maps?q=Materuni%20Hosts%20-%20Waterfall%20Tours%20%26%20Village%20Camping%2C%20Materuni%20Village%2C%20Moshi%2C%20Tanzania&amp;output=embed"
-          referrerpolicy="no-referrer-when-downgrade"
-          allowfullscreen
-        ></iframe>
-        <div class="map-caption-bar">
-          <strong>Materuni Village, Kilimanjaro Foothills</strong>
-          <span>45–60 mins north of Moshi · 1.5–2 hours from KIA · 2.5–3 hours from Arusha</span>
-        </div>
-      </div>
+      <div class="materuni-map-card"><div class="materuni-map-paper">
+        <div class="materuni-map-heading"><span>AN ILLUSTRATED VILLAGE GUIDE</span><strong>A sketch of Materuni</strong></div>
+        <svg class="materuni-map-svg" viewBox="0 0 760 470" role="img" aria-labelledby="materuni-map-title materuni-map-description">
+          <title id="materuni-map-title">Illustrated guide to Materuni Village</title><desc id="materuni-map-description">A not-to-scale illustration showing the Kilimanjaro foothills, coffee farms, banana grove, village homes, river and Materuni Waterfall.</desc>
+          <path d="M42 126 Q115 72 180 112 T318 92 T460 112 T715 83" fill="none" stroke="#E6DFD3" stroke-width="34" stroke-linecap="round"/><path d="M48 126 Q120 74 180 112 T318 92 T460 112 T710 83" fill="none" stroke="#1A3322" stroke-width="3" stroke-linecap="round" stroke-dasharray="5 8"/>
+          <path d="M278 107 L338 31 L390 98 L429 47 L496 112" fill="#E6DFD3" stroke="#1A3322" stroke-width="3" stroke-linejoin="round"/><path d="M323 52 L338 31 L354 54 L342 48 Z M411 68 L429 47 L447 69 L431 63 Z" fill="#FAF7F2" stroke="#1A3322" stroke-width="2"/>
+          <text x="386" y="22" text-anchor="middle" class="map-label map-label-strong">TOWARD MOUNT KILIMANJARO</text>
+          <path d="M95 190 C175 155 215 226 290 194 S405 155 460 205 S575 245 665 187" fill="none" stroke="#C5A059" stroke-width="8" stroke-linecap="round"/><path d="M95 190 C175 155 215 226 290 194 S405 155 460 205 S575 245 665 187" fill="none" stroke="#FAF7F2" stroke-width="2" stroke-linecap="round" stroke-dasharray="2 12"/>
+          <text x="384" y="174" text-anchor="middle" class="map-label">RIVER</text>
+          <path d="M110 288 C145 256 167 260 198 286 C220 305 235 313 255 318 M255 318 C275 332 294 340 320 350" fill="none" stroke="#1A3322" stroke-width="4" stroke-linecap="round" stroke-dasharray="8 9"/>
+          <g transform="translate(82 276)"><path d="M0 34 L24 8 L48 34 V66 H0 Z" fill="#E6DFD3" stroke="#1A3322" stroke-width="3"/><path d="M-5 34 L24 2 L53 34" fill="none" stroke="#1A3322" stroke-width="3" stroke-linecap="round"/><rect x="18" y="43" width="12" height="23" fill="#FAF7F2" stroke="#1A3322" stroke-width="2"/></g>
+          <g transform="translate(174 320)"><path d="M0 34 L24 8 L48 34 V66 H0 Z" fill="#E6DFD3" stroke="#1A3322" stroke-width="3"/><path d="M-5 34 L24 2 L53 34" fill="none" stroke="#1A3322" stroke-width="3" stroke-linecap="round"/><rect x="18" y="43" width="12" height="23" fill="#FAF7F2" stroke="#1A3322" stroke-width="2"/></g>
+          <text x="155" y="411" text-anchor="middle" class="map-label map-label-strong">HOST HOMES</text>
+          <g transform="translate(430 255)"><path d="M0 45 Q18 4 36 45 M34 45 Q54 -2 72 45 M68 45 Q88 8 106 45" fill="none" stroke="#1A3322" stroke-width="4" stroke-linecap="round"/><path d="M15 45 Q28 22 42 45 M51 45 Q65 19 80 45" fill="none" stroke="#C5A059" stroke-width="3" stroke-linecap="round"/></g><text x="482" y="322" text-anchor="middle" class="map-label map-label-strong">COFFEE FARMS</text>
+          <g transform="translate(610 284)"><path d="M25 62 Q-8 28 6 0 Q28 20 25 62 M25 62 Q18 16 50 0 Q54 34 25 62 M25 62 Q42 26 75 20 Q68 52 25 62" fill="none" stroke="#1A3322" stroke-width="4" stroke-linecap="round"/><path d="M25 62 L25 83" stroke="#1A3322" stroke-width="4" stroke-linecap="round"/></g><text x="645" y="390" text-anchor="middle" class="map-label map-label-strong">BANANA GROVE</text>
+          <g transform="translate(324 335)"><path d="M0 0 C18 18 18 34 0 52 C-18 34 -18 18 0 0" fill="#E6DFD3" stroke="#1A3322" stroke-width="3"/><path d="M0 52 C-18 68 -18 85 0 101 C18 85 18 68 0 52" fill="#FAF7F2" stroke="#1A3322" stroke-width="3"/><path d="M0 0 V101" stroke="#1A3322" stroke-width="3"/></g>
+          <text x="324" y="455" text-anchor="middle" class="map-label map-label-strong">MATERUNI WATERFALL</text><path d="M322 331 Q350 305 376 318" fill="none" stroke="#1A3322" stroke-width="3" stroke-dasharray="5 7"/><text x="374" y="301" class="map-label">FOREST PATH</text>
+          <text x="55" y="450" class="map-label map-label-note">ILLUSTRATIVE · NOT TO SCALE</text>
+        </svg>
+        <div class="materuni-map-caption"><strong>Materuni Village, Materuni Juu</strong><span>Moshi Rural · Kilimanjaro Region · Tanzania</span><a href="https://www.google.com/maps/search/?api=1&amp;query=Materuni+Village%2C+Materuni+Juu%2C+Moshi+Rural+Tanzania" target="_blank" rel="noopener noreferrer">Open directions ↗</a></div>
+      </div></div>
     </div>
   </section>
 </SiteLayout>
