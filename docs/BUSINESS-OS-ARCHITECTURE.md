@@ -104,3 +104,8 @@ Each phase must have:
 - Read migration history and storage policies.
 - Confirm current Vercel project linkage and preview environment configuration.
 - Build a route/module map before adding any dashboard navigation.
+
+## Additional source review — pricing consistency
+- The current guest-concierge Edge Function source contains fallback and system-prompt experience names/prices that do not match the current approved Materuni Hosts catalogue documented in project context and the homepage fallback (for example, it still contains legacy $65/$75/$85/$110/$135 prices).
+- Treat this as a high-priority content correctness issue before enabling AI-generated concierge responses or marketing automation. Do not deploy a fix blindly: first inspect the live experience_catalog rows and confirm the approved current price list, then make the concierge read from one server-side source of truth rather than hard-coded duplicate price lists.
+- This is a source-code finding only; no Edge Function was deployed or changed.
