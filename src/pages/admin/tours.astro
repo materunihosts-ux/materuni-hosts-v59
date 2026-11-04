@@ -49,7 +49,7 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
           <div class="field"><label for="tour-name">Guest-facing tour name *</label><input id="tour-name" required maxlength="120" placeholder="e.g. Materuni Birding & Sacred Waterfalls"></div>
           <div class="field"><label for="tour-key">Unique booking key *</label><input id="tour-key" required maxlength="120" placeholder="e.g. Materuni Birding & Sacred Waterfalls"></div>
           
-          <div class="field"><label for="tour-price">Price per person (USD) *</label><input id="tour-price" type="number" min="0" step="1" placeholder="e.g. 55" required></div>
+          <div class="field"><label for="tour-price">Price per person (USD) *</label><input id="tour-price" type="number" min="0" step="1" placeholder="Enter price" required></div>
           <div class="field"><label for="tour-duration">Duration label *</label><input id="tour-duration" maxlength="80" placeholder="e.g. 4–5 hours" value="4–5 hours" required></div>
           
           <div class="field"><label for="tour-tagline">Product identity / Tagline</label><input id="tour-tagline" maxlength="120" placeholder="e.g. Sacred forest walks & Chagga highland birdlife"></div>
@@ -134,7 +134,7 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
             <div class="preview-body">
               <div class="preview-price-row">
                 <span class="preview-tagline" id="preview-tagline">SACRED FOREST & HERITAGE</span>
-                <span class="preview-price"><strong id="preview-price-val">$55</strong> <small>PER PERSON</small></span>
+                <span class="preview-price"><strong id="preview-price-val">PRICE TO BE SET</strong> <small>PER PERSON</small></span>
               </div>
               <h3 id="preview-title" class="preview-title">Materuni Birding & Sacred Waterfalls</h3>
               <p id="preview-desc" class="preview-desc">A concise 2-sentence summary of the experience.</p>
@@ -274,7 +274,7 @@ async function uploadTourImage(blob, folder = "tour_images") {
 // Live preview sync for tour creator
 function syncTourPreview() {
   const name = el("tour-name")?.value.trim() || "Materuni Birding & Sacred Waterfalls";
-  const price = el("tour-price")?.value || "55";
+  const price = el("tour-price")?.value || "";
   const duration = el("tour-duration")?.value.trim() || "4–5 hours";
   const tagline = el("tour-tagline")?.value.trim() || "SACRED FOREST & HERITAGE";
   const desc = el("tour-description")?.value.trim() || "A concise 2-sentence summary of the experience.";
@@ -282,7 +282,7 @@ function syncTourPreview() {
   const rawInc = el("tour-inclusions")?.value.split("\n").map(x => x.trim()).filter(Boolean);
 
   if (el("preview-title")) el("preview-title").textContent = name;
-  if (el("preview-price-val")) el("preview-price-val").textContent = "$" + price;
+  if (el("preview-price-val")) el("preview-price-val").textContent = price ? "$" + price : "PRICE TO BE SET";
   if (el("preview-duration")) el("preview-duration").textContent = duration;
   if (el("preview-tagline")) el("preview-tagline").textContent = tagline.toUpperCase();
   if (el("preview-desc")) el("preview-desc").textContent = desc;
