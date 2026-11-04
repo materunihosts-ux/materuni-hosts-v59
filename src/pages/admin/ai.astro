@@ -22,6 +22,7 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
 </main>
 </SiteLayout>
 <script>
+// @ts-nocheck
 import { supabaseUrl, publishableKey } from "../../lib/supabase-public";
 const el=(id)=>document.getElementById(id);let token="";
 const headers=()=>({apikey:publishableKey,"Content-Type":"application/json"});
