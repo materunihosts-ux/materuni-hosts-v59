@@ -3322,3 +3322,51 @@ body.public-shell .brand-intro-section .intro-pillar p{color:#242421;font:400 14
 .site-footer .social-links a svg{display:block;width:17px;height:17px;flex:0 0 17px}
 .site-footer .social-links a:hover,.site-footer .social-links a:focus-visible{background:rgba(197,160,89,.14);border-color:#C5A059;transform:translateY(-1px);outline:none}
 @media(max-width:560px){.site-footer .brand-logo-footer{width:64px;height:64px;min-width:64px}.site-footer .social-links{gap:8px}.site-footer .social-links a{min-height:38px;padding:7px 10px}}
+
+
+/* Materuni Hosts footer polish — logo clarity, balanced social icons and readable intro */
+body.public-shell footer.site-footer .brand-logo-footer{
+  width:68px;height:68px;min-width:68px;flex:0 0 68px;
+  object-fit:contain;padding:4px;border-radius:50%;
+  background:#FAF7F2;border:1px solid #C5A059;
+  box-shadow:0 4px 14px rgba(0,0,0,.16);
+}
+body.public-shell footer.site-footer .social-links{
+  display:flex;align-items:center;flex-wrap:wrap;gap:10px;
+}
+body.public-shell footer.site-footer .social-links a{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  min-height:42px;padding:9px 13px;border:1px solid rgba(230,223,211,.34);
+  border-radius:3px;background:rgba(250,247,242,.035);
+  color:#FAF7F2;font:700 11px/1.2 "Manrope",sans-serif;
+}
+body.public-shell footer.site-footer .social-links a svg{
+  display:block;width:17px;height:17px;flex:0 0 17px;
+}
+body.public-shell footer.site-footer .social-links a[aria-label="Google reviews"] svg path{
+  fill:currentColor;
+}
+body.public-shell footer.site-footer .social-links a:hover,
+body.public-shell footer.site-footer .social-links a:focus-visible{
+  border-color:#C5A059;background:rgba(197,160,89,.12);
+  color:#C5A059;outline-offset:3px;
+}
+body.public-shell .brand-intro-section .brand-intro-container{
+  max-width:1040px;
+}
+body.public-shell .brand-intro-section .brand-intro-lead{
+  max-width:850px;font-size:clamp(18px,1.65vw,22px);
+  line-height:1.78;color:#242421;
+}
+body.public-shell .brand-intro-section .brand-intro-body{
+  max-width:820px;font-size:16px;line-height:1.85;color:#34342f;
+}
+@media(max-width:600px){
+  body.public-shell footer.site-footer .brand-logo-footer{
+    width:58px;height:58px;min-width:58px;flex-basis:58px;
+  }
+  body.public-shell footer.site-footer .social-links{gap:8px}
+  body.public-shell footer.site-footer .social-links a{min-height:40px;padding:8px 10px}
+  body.public-shell .brand-intro-section .brand-intro-lead{font-size:17px;line-height:1.72}
+  body.public-shell .brand-intro-section .brand-intro-body{font-size:15px;line-height:1.78}
+}
