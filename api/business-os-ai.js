@@ -1,6 +1,6 @@
 const json = (statusCode, body) => ({ statusCode, headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store", "Vary": "Origin" }, body: JSON.stringify(body) });
 
-module.exports = async function handler(req, res) {
+export default async function handler(req, res) {
   const origin = req.headers.origin;
   const host = req.headers.host || "";
   if (origin) {
