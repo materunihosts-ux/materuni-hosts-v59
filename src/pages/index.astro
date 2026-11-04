@@ -56,7 +56,7 @@ const faqs = [
 >
   <!-- 1. PREMIUM CINEMATIC HERO SECTION -->
   <section class="premium-hero" aria-labelledby="hero-heading">
-    <div class="hero-bg" style={`background-image: linear-gradient(180deg, rgba(20,45,32,0.80) 0%, rgba(20,45,32,0.90) 100%), url(${optimizedHero.src})`}></div>
+    <div class="hero-bg" style={`background-image: linear-gradient(180deg, rgba(20,45,32,0.34) 0%, rgba(20,45,32,0.56) 100%), url(${optimizedHero.src})`}></div>
     <div class="hero-content">
       <span class="hero-badge">MATERUNI VILLAGE · KILIMANJARO · TANZANIA</span>
       <h1 id="hero-heading">Materuni Village Tours &amp; Chagga Cultural Experiences</h1>
@@ -1577,14 +1577,7 @@ body.public-shell .pillar-icon{background:#E6DFD3;border-color:#CFC3B0;color:#1A
 
 <style is:global>
 /* HERO LEGIBILITY FIX — global selectors are required in Astro for body-level targeting */
-body.public-shell .premium-hero .hero-bg {
-  background-image: linear-gradient(
-    180deg,
-    rgba(12, 30, 20, .72) 0%,
-    rgba(12, 30, 20, .88) 58%,
-    rgba(12, 30, 20, .94) 100%
-  ) !important;
-}
+/* Keep the original waterfall image visible; the inline gradient provides readable contrast. */
 body.public-shell .premium-hero .hero-content {
   width: min(100%, 960px);
   padding: clamp(18px, 3vw, 34px);
