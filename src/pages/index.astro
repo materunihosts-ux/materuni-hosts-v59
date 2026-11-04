@@ -1573,3 +1573,65 @@ body.public-shell .pillar-icon{background:#E6DFD3;border-color:#CFC3B0;color:#1A
 
 
 
+
+
+<style is:global>
+/* HERO LEGIBILITY FIX — global selectors are required in Astro for body-level targeting */
+body.public-shell .premium-hero .hero-bg {
+  background-image: linear-gradient(
+    180deg,
+    rgba(12, 30, 20, .72) 0%,
+    rgba(12, 30, 20, .88) 58%,
+    rgba(12, 30, 20, .94) 100%
+  ) !important;
+}
+body.public-shell .premium-hero .hero-content {
+  width: min(100%, 960px);
+  padding: clamp(18px, 3vw, 34px);
+  text-align: center;
+  text-shadow: 0 2px 14px rgba(0,0,0,.65);
+}
+body.public-shell .premium-hero .hero-badge {
+  display: inline-block;
+  color: #fffdf7 !important;
+  background: rgba(10, 28, 18, .82) !important;
+  border: 1px solid #C5A059 !important;
+  text-shadow: none;
+}
+body.public-shell .premium-hero h1 {
+  color: #FAF7F2 !important;
+  font-size: clamp(42px, 6.2vw, 72px) !important;
+  line-height: 1.08 !important;
+  font-weight: 700 !important;
+  max-width: 900px;
+  text-shadow: 0 3px 22px rgba(0,0,0,.85) !important;
+}
+body.public-shell .premium-hero .hero-sub {
+  color: #fff !important;
+  font-size: clamp(17px, 1.5vw, 21px) !important;
+  line-height: 1.7 !important;
+  font-weight: 600 !important;
+  max-width: 760px;
+  text-shadow: 0 2px 16px rgba(0,0,0,.95) !important;
+}
+body.public-shell .premium-hero .hero-social-proof,
+body.public-shell .premium-hero .hero-social-proof a {
+  color: #fff !important;
+  text-shadow: 0 2px 12px rgba(0,0,0,.95) !important;
+}
+@media (max-width: 600px) {
+  body.public-shell .premium-hero {
+    min-height: 620px;
+    padding: 74px 18px 58px !important;
+  }
+  body.public-shell .premium-hero .hero-content { padding: 12px 4px; }
+  body.public-shell .premium-hero h1 {
+    font-size: clamp(36px, 10vw, 46px) !important;
+    line-height: 1.08 !important;
+  }
+  body.public-shell .premium-hero .hero-sub {
+    font-size: 16px !important;
+    line-height: 1.65 !important;
+  }
+}
+</style>
