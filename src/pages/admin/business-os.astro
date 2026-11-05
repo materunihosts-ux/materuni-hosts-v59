@@ -42,19 +42,35 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
       <div><p class="eyebrow">PRIVATE PILOT · PHASE 1</p><h2>Good to have you back.</h2><p>We are bringing the existing Materuni Hosts tools into one clear operating workspace. Existing booking and website modules remain available while new capabilities are introduced in stages.</p></div>
       <div class="pilot-mark"><span>MH</span><small>BUSINESS OS</small></div>
     </section>
-    <div class="section-title"><div><p class="eyebrow">WORKSPACES</p><h2>Business modules</h2></div><span class="status">Pilot preview</span></div>
-    <div class="module-grid">
-      <a class="module featured" href="/admin/"><span class="module-icon">01</span><span class="module-tag">EXISTING</span><h3>Business overview</h3><p>Open your current admin dashboard and operational snapshot.</p><b>Open dashboard →</b></a>
-      <a class="module" href="/admin/bookings"><span class="module-icon">02</span><span class="module-tag">EXISTING</span><h3>Bookings & availability</h3><p>Manage requests, confirmations, cancellations and tour capacity.</p><b>Manage bookings →</b></a>
-      <a class="module" href="/admin/tours"><span class="module-icon">03</span><span class="module-tag">EXISTING</span><h3>Experiences & pricing</h3><p>Maintain the official experience catalogue and availability.</p><b>Manage experiences →</b></a>
-      <a class="module" href="/admin/conversations"><span class="module-icon">04</span><span class="module-tag">EXISTING</span><h3>Guest conversations</h3><p>Review enquiries and guest concierge conversations.</p><b>Open inbox →</b></a>
-      <a class="module" href="/admin/marketing"><span class="module-icon">05</span><span class="module-tag">EXISTING</span><h3>Marketing & SEO studio</h3><p>Audit pages, prepare research briefs and draft website content.</p><b>Open marketing →</b></a>
-      <a class="module" href="/admin/analytics"><span class="module-icon">06</span><span class="module-tag">EXISTING</span><h3>Analytics & reporting</h3><p>Review booking and business performance indicators.</p><b>View analytics →</b></a>
-      <a class="module featured" href="/admin/ai"><span class="module-icon">07</span><span class="module-tag">PHASE 1 · PREVIEW</span><h3>AI Command Center</h3><p>Generate operational, SEO and marketing drafts using OpenAI, Claude or Gemini.</p><b>Open AI workspace →</b></a>
-      <a class="module featured" href="/admin/approvals"><span class="module-icon">08</span><span class="module-tag">POLICY PREVIEW</span><h3>Approval Center</h3><p>Review the governance rules for guest messages, publishing, spending, bookings and sensitive changes.</p><b>Review approval policy →</b></a>\n      <article class="module planned"><span class="module-icon">09</span><span class="module-tag">PLANNED</span><h3>Social & creative studio</h3><p>Content calendar, creative drafts and publishing approvals.</p><small>Planned for a later pilot phase</small></article>
-      <article class="module planned"><span class="module-icon">10</span><span class="module-tag">PLANNED</span><h3>CRM & automation</h3><p>Lead pipeline, follow-ups, workflows and customer journeys.</p><small>Planned for a later pilot phase</small></article>
-      <article class="module planned"><span class="module-icon">11</span><span class="module-tag">PLANNED</span><h3>Integrations</h3><p>Connect Google, Meta, WhatsApp and AI providers securely.</p><small>Planned for a later pilot phase</small></article>
-    </div>
+    <section class="quick-start">
+      <div class="section-title"><div><p class="eyebrow">START HERE</p><h2>What would you like to do?</h2></div><span class="status">Simple workspace</span></div>
+      <div class="module-grid primary-grid">
+        <a class="module featured" href="/admin/bookings"><span class="module-icon">01</span><h3>Manage bookings</h3><p>View new requests, confirm guests and manage upcoming tours.</p><b>Open bookings →</b></a>
+        <a class="module" href="/admin/conversations"><span class="module-icon">02</span><h3>Reply to guests</h3><p>Read enquiries and follow up with guests in one inbox.</p><b>Open guest inbox →</b></a>
+        <a class="module" href="/admin/tours"><span class="module-icon">03</span><h3>Experiences & prices</h3><p>Update the tours and prices shown on your website.</p><b>Manage experiences →</b></a>
+        <a class="module" href="/admin/marketing"><span class="module-icon">04</span><h3>Improve my website</h3><p>Work on SEO, website content and marketing research.</p><b>Open marketing →</b></a>
+      </div>
+    </section>
+    <section class="assistant-card">
+      <div><p class="eyebrow">YOUR AI HELPER</p><h2>Need help with a task?</h2><p>Ask AI to prepare ideas, reports, SEO recommendations or message drafts. You stay in control before anything is sent or published.</p></div>
+      <a href="/admin/ai">Open AI helper →</a>
+    </section>
+    <details class="more-tools">
+      <summary>More tools <span>Analytics, approvals and business settings</span></summary>
+      <div class="module-grid secondary-grid">
+        <a class="module" href="/admin/"><span class="module-icon">05</span><h3>Admin dashboard</h3><p>Open the existing operational dashboard.</p><b>Open dashboard →</b></a>
+        <a class="module" href="/admin/analytics"><span class="module-icon">06</span><h3>Reports & analytics</h3><p>Review business performance indicators.</p><b>View reports →</b></a>
+        <a class="module" href="/admin/approvals"><span class="module-icon">07</span><h3>Approvals & safety</h3><p>Review actions that need your permission.</p><b>Open approvals →</b></a>
+      </div>
+    </details>
+    <details class="more-tools future-tools">
+      <summary>Coming later <span>New tools will appear here when ready</span></summary>
+      <div class="module-grid secondary-grid">
+        <article class="module planned"><h3>Social & creative studio</h3><p>Content calendar and creative drafts.</p><small>Not active yet</small></article>
+        <article class="module planned"><h3>CRM & automation</h3><p>Lead follow-ups and customer workflows.</p><small>Not active yet</small></article>
+        <article class="module planned"><h3>Integrations</h3><p>Connect supported business accounts.</p><small>Not active yet</small></article>
+      </div>
+    </details>
     <p class="footnote">This is a preview shell. Planned modules are not active integrations and do not perform automated actions yet.</p>
   </section>
 </main>
@@ -222,7 +238,21 @@ byId("logout").addEventListener("click", async () => {
 .pilot-mark{width:112px;height:112px;flex:0 0 112px;border:1px solid #c5a059;border-radius:50%;display:grid;place-content:center;text-align:center;color:#c5a059}.pilot-mark span{font:2.2rem Georgia,serif}.pilot-mark small{font-size:.55rem;letter-spacing:.15em}
 .section-title{display:flex;align-items:end;justify-content:space-between;margin:38px 0 16px}.section-title h2{font:600 1.8rem Georgia,serif;color:#1a3322;margin:0}.section-title .eyebrow{margin-bottom:8px}
 .status{font-size:.75rem;padding:7px 11px;border-radius:99px;background:#f0ece4;color:#675638}
-.module-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.module-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.primary-grid .module{min-height:190px}
+.assistant-card{display:flex;align-items:center;justify-content:space-between;gap:22px;margin-top:18px;padding:24px;border:1px solid #e6dfd3;border-radius:14px;background:#faf7f2}
+.assistant-card h2{font:600 1.5rem Georgia,serif;color:#1a3322;margin:0 0 8px}
+.assistant-card p:not(.eyebrow){max-width:650px;color:#716f68;line-height:1.6;margin:0}
+.assistant-card a{flex:none;padding:12px 16px;border-radius:9px;background:#1a3322;color:#fff;text-decoration:none;font-weight:700;font-size:.88rem}
+.more-tools{margin-top:18px;border:1px solid #e6dfd3;border-radius:12px;background:#fff}
+.more-tools summary{cursor:pointer;list-style:none;padding:17px 19px;color:#1a3322;font-weight:750}
+.more-tools summary::-webkit-details-marker{display:none}
+.more-tools summary:after{content:"＋";float:right;color:#8a6b35}
+.more-tools[open] summary:after{content:"−"}
+.more-tools summary span{display:block;margin-top:4px;font-size:.78rem;font-weight:400;color:#777166}
+.more-tools .module-grid{padding:0 14px 14px}
+.more-tools .module{min-height:150px}
+.more-tools .module h3{margin-top:12px}
 .module{position:relative;display:block;min-height:210px;padding:22px;border:1px solid #e6dfd3;border-radius:14px;text-decoration:none;color:#242421;background:#fff;transition:border-color .2s,transform .2s}
 .module[href]:hover{border-color:#c5a059;transform:translateY(-2px)}
 .module-icon{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:9px;background:#f5f1e9;color:#1a3322;font-weight:750;font-size:.78rem}
@@ -234,5 +264,5 @@ byId("logout").addEventListener("click", async () => {
 .module.planned small{font-size:.78rem;color:#817b70}
 .footnote{margin-top:20px;color:#777166;font-size:.8rem;line-height:1.6}
 @media(max-width:800px){.module-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:540px){.os-shell{padding:24px 14px 56px}.os-header{align-items:flex-start}.welcome{align-items:flex-start}.pilot-mark{width:68px;height:68px;flex-basis:68px}.pilot-mark span{font-size:1.5rem}.pilot-mark small{font-size:.42rem}.module-grid{grid-template-columns:1fr}.module{min-height:0}.section-title{align-items:center}}
+@media(max-width:540px){.os-shell{padding:24px 14px 56px}.assistant-card{align-items:flex-start;flex-direction:column}.assistant-card a{width:100%;text-align:center}.os-header{align-items:flex-start}.welcome{align-items:flex-start}.pilot-mark{width:68px;height:68px;flex-basis:68px}.pilot-mark span{font-size:1.5rem}.pilot-mark small{font-size:.42rem}.module-grid{grid-template-columns:1fr}.module{min-height:0}.section-title{align-items:center}}
 </style>
