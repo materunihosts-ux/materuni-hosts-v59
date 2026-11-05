@@ -2,8 +2,8 @@
 import SiteLayout from "../../layouts/SiteLayout.astro";
 ---
 <SiteLayout title="Guest Conversations | Materuni Hosts" description="Private guest concierge conversation inbox." noindex={true}>
-<section class="page-hero"><span class="eyebrow">PRIVATE ADMIN</span><h1>Guest inbox</h1><p>Review website concierge conversations, flag enquiries that need a human host and track resolution status.</p></section>
-<style>.conversation-status{display:inline-flex;margin-top:.4rem;padding:.2rem .55rem;border-radius:99px;background:#eee9df;text-transform:capitalize;font-size:.75rem}.conversation-status.status-needs_human{background:#f5ecd7;color:#76551d}.conversation-status.status-resolved{background:#e1eee3;color:#214b2b}.conversation-status-actions{display:flex;gap:.5rem;flex-wrap:wrap;margin:1rem 0}.conversation-item{display:flex;flex-direction:column;align-items:flex-start;gap:.25rem;width:100%;text-align:left}</style>
+<section class="page-hero"><span class="eyebrow">BUSINESS OS · OPERATIONS</span><h1>Guest inbox</h1><p>Review website concierge conversations, flag enquiries that need a human host and track resolution status. This is a conversation inbox, not a full CRM or outbound messaging tool.</p><div class="workspace-links"><a class="button" href="/admin/business-os">← Business OS</a><a class="button button-secondary" href="/admin">Public Website Dashboard ↗</a></div></section>
+<style>.workspace-links{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}.conversation-status{display:inline-flex;margin-top:.4rem;padding:.2rem .55rem;border-radius:99px;background:#eee9df;text-transform:capitalize;font-size:.75rem}.conversation-status.status-needs_human{background:#f5ecd7;color:#76551d}.conversation-status.status-resolved{background:#e1eee3;color:#214b2b}.conversation-status-actions{display:flex;gap:.5rem;flex-wrap:wrap;margin:1rem 0}.conversation-item{display:flex;flex-direction:column;align-items:flex-start;gap:.25rem;width:100%;text-align:left}</style>
 <section class="booking-wrap">
   <div class="booking-panel" id="login-panel">
     <h2>Administrator sign in</h2>
@@ -14,7 +14,7 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
     </form>
   </div>
   <div id="manager" hidden>
-    <div class="section-heading"><div><span class="eyebrow">GUEST COMMUNICATIONS</span><h2>Guest enquiry inbox</h2><p class="muted">Website guest questions and assistant replies.</p></div><div class="admin-shortcuts"><a class="button button-secondary" href="/admin/analytics">Analytics</a><a class="button button-secondary" href="/admin/bookings">Bookings</a><a class="button button-secondary" href="/admin/tours">Tours & availability</a><button class="button button-secondary" id="logout" type="button">Sign out</button></div></div>
+    <div class="section-heading"><div><span class="eyebrow">GUEST COMMUNICATIONS</span><h2>Guest enquiry inbox</h2><p class="muted">Website guest questions and assistant replies.</p></div><div class="admin-shortcuts"><a class="button button-secondary" href="/admin/business-os">Business OS</a><a class="button button-secondary" href="/admin">Website dashboard</a><a class="button button-secondary" href="/admin/analytics">Analytics</a><a class="button button-secondary" href="/admin/bookings">Bookings</a><a class="button button-secondary" href="/admin/tours">Tours & availability</a><button class="button button-secondary" id="logout" type="button">Sign out</button></div></div>
     <div class="conversation-layout">
       <div class="booking-panel"><div id="conversation-list" class="conversation-list"><p class="muted">Loading conversations…</p></div></div>
       <div class="booking-panel"><div id="conversation-detail"><p class="muted">Choose a conversation to read the messages.</p></div></div>
