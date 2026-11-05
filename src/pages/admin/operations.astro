@@ -2,14 +2,14 @@
 import SiteLayout from "../../layouts/SiteLayout.astro";
 ---
 <SiteLayout title="Tour Operations & Documents | Materuni Hosts" description="Private rate management and branded tour document workspace." noindex={true}>
-<section class="page-hero"><span class="eyebrow">MATERUNI HOSTS · PRIVATE OPERATIONS</span><h1>Tour Operations & Documents</h1><p>Manage commercial rates and prepare international-standard vouchers, invoices, itineraries and quotations from one protected workspace.</p></section>
+<section class="page-hero"><span class="eyebrow">MATERUNI HOSTS · PRIVATE OPERATIONS</span><h1>Tour Operations & Documents</h1><p>Manage private commercial rates and prepare editable guest vouchers, invoices, itineraries and quotations. Verify every business and payment detail before issuing a document.</p></section>
 <section class="booking-wrap">
  <div class="booking-panel" id="login-panel"><h2>Administrator sign in</h2><form id="login-form" class="form-grid"><div class="field full"><label for="admin-email">Admin email</label><input id="admin-email" type="email" autocomplete="username" required></div><div class="field full"><label for="admin-password">Password</label><input id="admin-password" type="password" autocomplete="current-password" required></div><div class="field full"><button class="button" id="login-button">Sign in securely</button><p id="login-feedback" class="muted" aria-live="polite"></p></div></form></div>
  <div id="manager" hidden>
   <div class="booking-panel"><div class="section-heading"><div><span class="eyebrow">COMMERCIAL WORKSPACE</span><h2>Tour Operations</h2><p class="muted">Retail, STO, Net and partner contract rates are private and only available to authorised admins.</p></div><div class="admin-shortcuts"><a class="button button-secondary" href="/admin/business-os">Business OS</a><a class="button button-secondary" href="/admin">Website dashboard</a><a class="button button-secondary" href="/admin/tours">Public experience catalogue</a><button class="button button-secondary" id="logout" type="button">Sign out</button></div></div>
    <div class="admin-home-grid">
     <a class="admin-home-card admin-home-primary" href="#rates"><span class="admin-home-icon">01</span><span><strong>Rate management</strong><small>Retail, STO, Net, contract and seasonal rates</small></span><span class="admin-home-arrow">→</span></a>
-    <a class="admin-home-card admin-home-primary" href="#documents"><span class="admin-home-icon">02</span><span><strong>Document studio</strong><small>Booking.com vouchers, Travelogic itineraries, tax invoices</small></span><span class="admin-home-arrow">→</span></a>
+    <a class="admin-home-card admin-home-primary" href="#documents"><span class="admin-home-icon">02</span><span><strong>Document studio</strong><small>Partner-ready vouchers, guest itineraries and commercial invoices</small></span><span class="admin-home-arrow">→</span></a>
     <a class="admin-home-card admin-home-primary" href="#records"><span class="admin-home-icon">03</span><span><strong>Saved commercial records</strong><small>Review current rate plans and package rates</small></span><span class="admin-home-arrow">→</span></a>
    </div>
   </div>
@@ -44,11 +44,11 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
     <div>
      <span class="eyebrow">05 · INTERNATIONAL DOCUMENT STUDIO</span>
      <h2>Prepare professional travel documents</h2>
-     <p class="muted">Produce Booking.com standard tour vouchers, Travelogic luxury itineraries, commercial tax invoices, and payment receipts with customizable issuer, banking, and signatory details.</p>
+     <p class="muted">Prepare editable vouchers, itineraries, invoices and receipts. Tax, registration and banking details are optional and must be entered only when verified. Templates never issue automatically.</p>
     </div>
    </div>
-   <div class="preset-strip" role="region" aria-label="Professional document templates">
-    <span class="preset-title">⚡ Instant Standards:</span>
+   <div class="preset-strip" role="region" aria-label="Document templates">
+    <span class="preset-title">DOCUMENT TEMPLATES:</span>
     <button type="button" class="preset-btn" id="preset-quotation">01 · Customer Quotation</button>
     <button type="button" class="preset-btn" id="preset-invoice">02 · Professional Invoice</button>
     <button type="button" class="preset-btn" id="preset-receipt">03 · Official Receipt</button>
@@ -72,10 +72,10 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
         <option value="receipt">03 · Official Tour Payment Receipt</option>
         <option value="confirmation">04 · Official Booking Confirmation</option>
         <option value="itinerary">05 · Detailed Guest Itinerary & Briefing</option>
-        <option value="voucher">06 · Booking.com Standard Tour Voucher</option>
+        <option value="voucher">06 · Partner Tour Voucher</option>
         <option value="cancellation">07 · Cancellation & Refund Statement</option>
         <option value="statement">08 · Customer Booking Account Statement</option>
-        <option value="registration">13 · Guest Registration & Safety Form</option>
+        <option value="registration">13 · Guest Information & Safety Briefing</option>
       </optgroup>
       <optgroup label="Operations & Hospitality Management">
         <option value="supplier_record">09 · Supplier & Transport Payment Record</option>
@@ -97,17 +97,17 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
     <div class="field"><label for="doc-phone">Guest WhatsApp / phone</label><input id="doc-phone" maxlength="50" placeholder="e.g. +44 7700 900123"></div>
     <div class="field"><label for="doc-country">Guest country / residence</label><input id="doc-country" maxlength="80" placeholder="e.g. United Kingdom"></div>
 
-    <div class="field full"><label for="doc-title">Document title *</label><input id="doc-title" maxlength="180" placeholder="e.g. Materuni Waterfall Hike & Traditional Chagga Coffee Masterclass" required></div>
+    <div class="field full"><label for="doc-title">Document title *</label><input id="doc-title" maxlength="180" placeholder="Enter the confirmed service or document subject" required></div>
 
     <div class="field"><label for="doc-date">Travel / service date *</label><input id="doc-date" type="date" required></div>
     <div class="field"><label for="doc-timing">Service time & duration</label><input id="doc-timing" maxlength="100" placeholder="e.g. 09:00 AM – 03:30 PM (Approx. 6.5 hrs)"></div>
     <div class="field"><label for="doc-pax">Party size / guests</label><input id="doc-pax" maxlength="60" placeholder="e.g. 2 Adults"></div>
     <div class="field"><label for="doc-host">Lead host / guide</label><input id="doc-host" maxlength="100" placeholder="e.g. Saidi Materu (Lead Cultural Guide)"></div>
 
-    <div class="field full"><label for="doc-meeting-point">Meeting point & GPS coordinates</label><input id="doc-meeting-point" maxlength="220" placeholder="e.g. Materuni Cultural Tourism Centre, Materuni Village (GPS: -3.2505° S, 37.3912° E)"></div>
+    <div class="field full"><label for="doc-meeting-point">Meeting point / pickup details</label><input id="doc-meeting-point" maxlength="220" placeholder="Materuni Village, Materuni Juu, Moshi Rural, Tanzania — confirm the exact meeting point"></div>
 
-    <div class="field"><label for="doc-payment-status">Payment status</label><select id="doc-payment-status"><option value="paid">Paid in Full (Guaranteed)</option><option value="partially_paid">Partially Paid (Balance on Arrival)</option><option value="unpaid">Unpaid / Pay on Arrival</option></select></div>
-    <div class="field"><label for="doc-payment-method">Payment method</label><select id="doc-payment-method"><option value="credit_card">Online Credit / Debit Card</option><option value="mpesa">Vodacom M-Pesa Lipa Namba</option><option value="bank_wire">Bank Wire Transfer (CRDB / NMB)</option><option value="cash">Cash on Arrival (USD / TZS)</option></select></div>
+    <div class="field"><label for="doc-payment-status">Payment status</label><select id="doc-payment-status"><option value="">Select payment status</option><option value="paid">Paid in Full (Guaranteed)</option><option value="partially_paid">Partially Paid (Balance on Arrival)</option><option value="unpaid">Unpaid / Pay on Arrival</option></select></div>
+    <div class="field"><label for="doc-payment-method">Payment method</label><select id="doc-payment-method"><option value="">Select payment method (if applicable)</option><option value="credit_card">Online Credit / Debit Card</option><option value="mpesa">Vodacom M-Pesa Lipa Namba</option><option value="bank_wire">Bank Wire Transfer (CRDB / NMB)</option><option value="cash">Cash on Arrival (USD / TZS)</option></select></div>
 
     <div class="field"><label for="doc-price-plan">Price list to use (optional)</label><select id="doc-price-plan"><option value="">Select saved price list</option></select></div>
     <div class="field"><label for="doc-price-scope">Price list contents</label><select id="doc-price-scope"><option value="all">All packages</option><option value="single">One package only</option></select></div>
@@ -140,8 +140,8 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
     </div>
 
     <div class="field full">
-     <label for="doc-terms">Terms, cancellation policy & payment remittance</label>
-     <textarea id="doc-terms" rows="4" placeholder="Free cancellation up to 48 hours prior to start time. Rescheduling is flexible.&#10;Remittance: Vodacom M-Pesa Lipa Namba (+255 612 068 540) or CRDB Bank Moshi Branch.&#10;Cash settlement accepted on arrival in clean USD banknotes (series 2013+) or TZS at current daily exchange rate."></textarea>
+     <label for="doc-terms">Confirmed terms, cancellation policy & payment instructions</label>
+     <textarea id="doc-terms" rows="4" placeholder="Enter only the cancellation, rescheduling and payment terms confirmed for this booking."></textarea>
     </div>
 
     <!-- Collapsible Full Business, Remittance & Signatory Customizer (Makes every single part of invoice editable) -->
@@ -151,24 +151,24 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
      <div class="form-grid" style="margin-top:10px">
       <div class="field"><label for="doc-co-name">Business / Issuer Name</label><input id="doc-co-name" maxlength="120" value="MATERUNI HOSTS"></div>
       <div class="field"><label for="doc-co-subtitle">Category / Tagline</label><input id="doc-co-subtitle" maxlength="160" value="LOCAL CULTURAL EXPERIENCES · MATERUNI VILLAGE, MOSHI, TANZANIA"></div>
-      <div class="field full"><label for="doc-co-address">Registered Physical Address</label><input id="doc-co-address" maxlength="220" value="Materuni Village, Uru Rural, P.O. Box 1888 Moshi, Kilimanjaro, Tanzania"></div>
-      <div class="field"><label for="doc-co-tax-id">Official Tax / Registration No.</label><input id="doc-co-tax-id" maxlength="100" value="Registered Community Cultural Tourism Enterprise"></div>
-      <div class="field"><label for="doc-co-email">Official Business Email</label><input id="doc-co-email" type="email" maxlength="254" value="materunihosts@gmail.com"></div>
+      <div class="field full"><label for="doc-co-address">Business address</label><input id="doc-co-address" maxlength="220" value="Materuni Village, Materuni Juu, Moshi Rural, Tanzania"></div>
+      <div class="field"><label for="doc-co-tax-id">TIN / registration number (optional)</label><input id="doc-co-tax-id" maxlength="100" value="" placeholder="Enter only a verified number, or leave blank"></div>
+      <div class="field"><label for="doc-co-email">Business email</label><input id="doc-co-email" type="email" maxlength="254" value="hello@materunihosts.com"></div>
       <div class="field"><label for="doc-co-phone">Official Phone / WhatsApp</label><input id="doc-co-phone" maxlength="50" value="+255 612 068 540"></div>
       <div class="field"><label for="doc-co-website">Official Website</label><input id="doc-co-website" maxlength="100" value="https://materunihosts.com"></div>
 
-      <div class="field"><label for="doc-bank-name">Remittance Bank & Branch</label><input id="doc-bank-name" maxlength="120" value="CRDB Bank Plc, Moshi Main Branch"></div>
-      <div class="field"><label for="doc-bank-account">Account Name & Number</label><input id="doc-bank-account" maxlength="120" value="Materuni Hosts · A/C: 0150... (USD / TZS)"></div>
-      <div class="field"><label for="doc-bank-swift">SWIFT / BIC Code</label><input id="doc-bank-swift" maxlength="30" value="CORUTZTZ"></div>
-      <div class="field"><label for="doc-bank-mpesa">Mobile Money Lipa Namba</label><input id="doc-bank-mpesa" maxlength="80" value="Vodacom M-Pesa Lipa Namba (+255 612 068 540)"></div>
-      <div class="field full"><label for="doc-bank-cash">Cash Settlement Policy</label><input id="doc-bank-cash" maxlength="220" value="Accepted on arrival in clean USD banknotes (series 2013 or newer) or TZS at Bank of Tanzania daily rate"></div>
+      <div class="field"><label for="doc-bank-name">Remittance Bank & Branch</label><input id="doc-bank-name" maxlength="120" value="" placeholder="Enter verified bank and branch details"></div>
+      <div class="field"><label for="doc-bank-account">Account Name & Number</label><input id="doc-bank-account" maxlength="120" value="" placeholder="Enter verified account name and number"></div>
+      <div class="field"><label for="doc-bank-swift">SWIFT / BIC Code</label><input id="doc-bank-swift" maxlength="30" value="" placeholder="Optional verified SWIFT / BIC"></div>
+      <div class="field"><label for="doc-bank-mpesa">Mobile Money Lipa Namba</label><input id="doc-bank-mpesa" maxlength="80" value="" placeholder="Enter a verified merchant / Lipa number"></div>
+      <div class="field full"><label for="doc-bank-cash">Cash Settlement Policy</label><input id="doc-bank-cash" maxlength="220" value="" placeholder="Enter the actual agreed cash and exchange-rate policy"></div>
 
-      <div class="field"><label for="doc-tax-label">Tax / Levy Line Label</label><input id="doc-tax-label" maxlength="100" value="Community Tourism Levy (0% Inclusive)"></div>
+      <div class="field"><label for="doc-tax-label">Tax / levy label (only if applicable)</label><input id="doc-tax-label" maxlength="100" value="" placeholder="Leave blank unless a verified tax or levy applies"></div>
       <div class="field"><label for="doc-tax-amount">Tax / Levy Amount</label><input id="doc-tax-amount" type="number" min="0" step="0.01" value="0.00"></div>
 
       <div class="field"><label for="doc-signatory-name">Authorized Signatory Name</label><input id="doc-signatory-name" maxlength="100" value="Saidi Materu"></div>
-      <div class="field"><label for="doc-signatory-title">Signatory Position / Title</label><input id="doc-signatory-title" maxlength="100" value="Founder & Lead Cultural Guide"></div>
-      <div class="field full"><label for="doc-brand-tagline">Official Brand Slogan / Tagline</label><input id="doc-brand-tagline" maxlength="140" value="Come as a guest. Leave as a friend."></div>
+      <div class="field"><label for="doc-signatory-title">Signatory Position / Title</label><input id="doc-signatory-title" maxlength="100" value="Founder"></div>
+      <div class="field full"><label for="doc-brand-tagline">Official Brand Slogan / Tagline</label><input id="doc-brand-tagline" maxlength="140" value="Experience Materuni through the people who call it home."></div>
 
       <div class="field full">
        <button type="button" class="button button-secondary" id="save-invoice-defaults">Save Company & Bank Details as Defaults</button>
@@ -177,6 +177,7 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
      </div>
     </details>
 
+    <div class="field full document-verification"><label for="doc-verified"><input id="doc-verified" type="checkbox" required> I have verified the guest identity, travel date, experience, prices, tax/levy (if applicable), payment status, meeting point and terms before issuing this document.</label><small class="muted">Templates contain no live booking data. Review all fields; this tool does not certify legal or tax compliance.</small></div>
     <div class="field full">
      <div class="actions">
       <button class="button" type="submit">Generate branded document</button>
@@ -487,6 +488,16 @@ el("save-invoice-defaults").addEventListener("click",()=>{
  setTimeout(()=>{el("save-defaults-feedback").textContent="";},4000);
 });
 
+function prepareDocumentTemplate(){
+  ["doc-recipient","doc-email","doc-phone","doc-country","doc-title","doc-date","doc-timing","doc-pax","doc-host","doc-meeting-point","doc-lines","doc-inclusions","doc-exclusions","doc-advice","doc-terms","doc-reference","doc-pin"].forEach(id=>{const field=el(id);if(field)field.value="";});
+  el("doc-amount").value="0.00";el("doc-deposit").value="0.00";el("doc-tax-label").value="";el("doc-tax-amount").value="0.00";
+  el("doc-payment-status").value="";el("doc-payment-method").value="";el("doc-verified").checked=false;
+  el("document-preview").hidden=true;
+  el("doc-feedback").textContent="Template selected. Enter real guest and service details, then verify every field before generating. No document has been issued.";
+  el("doc-recipient").focus();
+  el("document-form").scrollIntoView({behavior:"smooth",block:"start"});
+}
+
 // Preset Handlers for all 13 standard operational and guest documents
 el("preset-quotation")?.addEventListener("click",()=>{
  el("doc-type").value="quotation";
@@ -514,7 +525,7 @@ el("preset-quotation")?.addEventListener("click",()=>{
  el("doc-exclusions").value="Discretionary gratuities for local host and village cooks\nPersonal travel and medical insurance";
  el("doc-advice").value="Footwear: Sturdy walking shoes or hiking sneakers with grip (forest trails may be moist)\nClothing: Comfortable lightweight layers, light rain jacket, modest village attire\nSwimwear: Bring swimsuit and small towel if you wish to swim in the waterfall pool\nCash: Small TZS cash for handcrafted local souvenirs or extra roasted coffee beans";
  el("doc-terms").value="Quotation valid for 14 days from issue date. 20% deposit required upon confirmation to secure preferred calendar slot.\nBalance payable on arrival in clean USD banknotes (series 2013+) or TZS at current Bank of Tanzania exchange rate.\nFree cancellation or rescheduling up to 48 hours prior to start time.";
- el("document-form").requestSubmit();
+ prepareDocumentTemplate();
 });
 
 el("preset-invoice")?.addEventListener("click",()=>{
@@ -543,7 +554,7 @@ el("preset-invoice")?.addEventListener("click",()=>{
  el("doc-exclusions").value="Discretionary driver & guide gratuities.";
  el("doc-advice").value="Payment received with thanks. Please ensure guests bring sturdy walking shoes and rain gear.";
  el("doc-terms").value="Bank Remittance: CRDB Bank Plc, Moshi Branch · Account Name: Materuni Hosts · SWIFT: CORUTZTZ.\nVodacom M-Pesa Lipa Namba: +255 612 068 540.\nCommercial Invoice: Zero-rated community cultural eco-tourism services as per local fiscal regulations.";
- el("document-form").requestSubmit();
+ prepareDocumentTemplate();
 });
 
 el("preset-receipt")?.addEventListener("click",()=>{
@@ -572,7 +583,7 @@ el("preset-receipt")?.addEventListener("click",()=>{
  el("doc-exclusions").value="None.";
  el("doc-advice").value="Thank you for visiting Materuni and supporting our local community hosts.";
  el("doc-terms").value="Payment received in full. Verified by Saidi Materu, Materuni Hosts.";
- el("document-form").requestSubmit();
+ prepareDocumentTemplate();
 });
 
 el("preset-confirmation")?.addEventListener("click",()=>{
@@ -601,7 +612,7 @@ el("preset-confirmation")?.addEventListener("click",()=>{
  el("doc-exclusions").value="Discretionary gratuities for local hosts.";
  el("doc-advice").value="Your guide Saidi Materu will meet you at the village center. Wear sturdy trail shoes and bring a camera!";
  el("doc-terms").value="Your booking is confirmed and guaranteed. For any same-day timing adjustments, message your host on WhatsApp +255 612 068 540.";
- el("document-form").requestSubmit();
+ prepareDocumentTemplate();
 });
 
 el("preset-itinerary")?.addEventListener("click",()=>{
@@ -630,7 +641,7 @@ el("preset-itinerary")?.addEventListener("click",()=>{
  el("doc-exclusions").value="Personal tips, extra souvenir roasted coffee packages.";
  el("doc-advice").value="Bring sturdy sneakers, swimwear/towel if dipping in the waterfall pool, sunglasses, sun hat and lightweight raincoat.";
  el("doc-terms").value="Flexible day schedule tailored to your pace. Remaining balance of USD 178.00 payable upon arrival in cash or via M-Pesa.";
- el("document-form").requestSubmit();
+ prepareDocumentTemplate();
 });
 
 el("preset-voucher")?.addEventListener("click",()=>{
@@ -659,7 +670,7 @@ el("preset-voucher")?.addEventListener("click",()=>{
  el("doc-exclusions").value="Discretionary gratuities for local host and village cooks\nPersonal travel and medical insurance";
  el("doc-advice").value="Footwear: Sturdy walking shoes or hiking sneakers with grip (forest trails may be moist)\nClothing: Comfortable lightweight layers, light rain jacket, modest village attire\nSwimwear: Bring swimsuit and small towel if you wish to swim in the waterfall pool\nCash: Small TZS cash for handcrafted local souvenirs or extra roasted coffee beans";
  el("doc-terms").value="Free cancellation up to 48 hours prior to start time. Instant support on WhatsApp +255 612 068 540.\nPresent this voucher on your smartphone or as a printout upon arrival.";
- el("document-form").requestSubmit();
+ prepareDocumentTemplate();
 });
 
 el("preset-cancellation")?.addEventListener("click",()=>{
@@ -688,7 +699,7 @@ el("preset-cancellation")?.addEventListener("click",()=>{
  el("doc-exclusions").value="None. No cancellation penalty levied.";
  el("doc-advice").value="Refund transaction ref: RFND-MHC-2026-034. Funds typically reflect within 3 to 5 business days depending on guest bank.";
  el("doc-terms").value="Cancellation completed. This statement confirms that your booking has been released and all funds are refunded in full. We hope to welcome you to Materuni in the future!";
- el("document-form").requestSubmit();
+ prepareDocumentTemplate();
 });
 
 el("preset-statement")?.addEventListener("click",()=>{
@@ -717,7 +728,7 @@ el("preset-statement")?.addEventListener("click",()=>{
  el("doc-exclusions").value="Future unconfirmed tour reservations.";
  el("doc-advice").value="All tours completed with 100% positive guest satisfaction. No outstanding incident disputes.";
  el("doc-terms").value="Current balance of USD 264.00 due on tour completion date. Remittance to CRDB Bank Moshi Branch · SWIFT: CORUTZTZ.";
- el("document-form").requestSubmit();
+ prepareDocumentTemplate();
 });
 
 el("preset-supplier")?.addEventListener("click",()=>{
@@ -746,7 +757,7 @@ el("preset-supplier")?.addEventListener("click",()=>{
  el("doc-exclusions").value="Personal expenses.";
  el("doc-advice").value="Service performed in full compliance with Materuni Hosts guest care and mountain safety protocols.";
  el("doc-terms").value="Disbursed via Vodacom M-Pesa. Receipt acknowledged by service provider. Document archived for internal financial accounting.";
- el("document-form").requestSubmit();
+ prepareDocumentTemplate();
 });
 
 el("preset-guide")?.addEventListener("click",()=>{
@@ -774,7 +785,7 @@ el("preset-guide")?.addEventListener("click",()=>{
  el("doc-exclusions").value="None.";
  el("doc-advice").value="Guest briefing notes: 1 guest is vegetarian (plantain & vegetable stew prepared). Slower walking pace requested on uphill return.";
  el("doc-terms").value="Debrief with lead host Saidi Materu upon tour completion. Return equipment and confirm guest departure.";
- el("document-form").requestSubmit();
+ prepareDocumentTemplate();
 });
 
 el("preset-daily")?.addEventListener("click",()=>{
@@ -802,7 +813,7 @@ el("preset-daily")?.addEventListener("click",()=>{
  el("doc-exclusions").value="None.";
  el("doc-advice").value="Forest conditions pleasant. No weather warnings or high-water trail closures.";
  el("doc-terms").value="Safety incident log: Zero incidents reported. All 11 guests checked in safely and returned on schedule.";
- el("document-form").requestSubmit();
+ prepareDocumentTemplate();
 });
 
 el("preset-monthly")?.addEventListener("click",()=>{
@@ -830,7 +841,7 @@ el("preset-monthly")?.addEventListener("click",()=>{
  el("doc-exclusions").value="Personal capital investments.";
  el("doc-advice").value="All local guide and cook payments settled on time. Village school fund allocation ready for handover.";
  el("doc-terms").value="Net Operating Margin: USD 860.00 retained in enterprise operational reserves for seasonal equipment renewals.";
- el("document-form").requestSubmit();
+ prepareDocumentTemplate();
 });
 
 el("preset-registration")?.addEventListener("click",()=>{
@@ -859,7 +870,7 @@ el("preset-registration")?.addEventListener("click",()=>{
  el("doc-exclusions").value="None.";
  el("doc-advice").value="Safety instruction: Guests agree to follow the guidance and pace set by the certified Chagga guide at all times.";
  el("doc-terms").value="Declaration & Signature: I confirm that I am participating voluntarily in this cultural and nature walk, have disclosed relevant health conditions, and release Materuni Hosts and its village hosts from liability for ordinary mountain outdoor hazards.";
- el("document-form").requestSubmit();
+ prepareDocumentTemplate();
 });
 
 function parseLines(raw, defaultCurrency){
@@ -869,7 +880,7 @@ function parseLines(raw, defaultCurrency){
   if(parts.length>=3){
    const desc=parts[0];
    const qty=Number(parts[1])||1;
-   const rateStr=parts[2].replace(/[^0-9.]/g,"");
+   const rateStr=parts[2].replace(/[^0-9.-]/g,"");
    const rate=Number(rateStr)||0;
    const total=qty*rate;
    return {idx:idx+1,desc,qty,rate,total,raw:l,isStructured:true};
@@ -895,7 +906,7 @@ el("document-form").addEventListener("submit",ev=>{
  const timing=el("doc-timing").value.trim()||"09:00 AM – 03:30 PM";
  const pax=el("doc-pax").value.trim()||"2 Guests";
  const host=el("doc-host").value.trim()||"Saidi Materu & Local Hosts Team";
- const meetingPoint=el("doc-meeting-point").value.trim()||"Materuni Cultural Tourism Centre, Materuni Village (GPS: -3.2505° S, 37.3912° E)";
+ const meetingPoint=el("doc-meeting-point").value.trim()||"Materuni Village, Materuni Juu, Moshi Rural, Tanzania (confirm exact meeting point)";
  const paymentStatus=el("doc-payment-status").value;
  const paymentMethod=el("doc-payment-method").value;
  const total=Number(el("doc-amount").value||0);
