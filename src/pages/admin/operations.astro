@@ -171,7 +171,7 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
       <div class="field full"><label for="doc-brand-tagline">Official Brand Slogan / Tagline</label><input id="doc-brand-tagline" maxlength="140" value="Come as a guest. Leave as a friend."></div>
 
       <div class="field full">
-       <button type="button" class="button button-secondary" id="save-invoice-defaults">💾 Save Company & Bank Details as Defaults</button>
+       <button type="button" class="button button-secondary" id="save-invoice-defaults">Save Company & Bank Details as Defaults</button>
        <span id="save-defaults-feedback" class="muted" style="margin-left:10px" aria-live="polite"></span>
       </div>
      </div>
@@ -442,7 +442,7 @@ function downloadCsv(){
 el("doc-price-scope").addEventListener("change",()=>{el("doc-single-package-wrap").hidden=el("doc-price-scope").value!=="single"});
 el("export-rates-csv").addEventListener("click",downloadCsv);
 
-function getTodayString(){return new Intl.DateTimeFormat("en-CA",{timeZone:"Africa/Dar_es_Salaam",year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date())}
+function getTodayString(){const parts=new Intl.DateTimeFormat("en-GB",{timeZone:"Africa/Dar_es_Salaam",year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(new Date());const values=Object.fromEntries(parts.map(part=>[part.type,part.value]));return values.year+"-"+values.month+"-"+values.day}
 
 function checkUrlPrefill(){
  try{
