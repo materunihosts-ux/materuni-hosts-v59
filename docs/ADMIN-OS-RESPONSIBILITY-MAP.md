@@ -64,7 +64,8 @@ Public Website Dashboard navigation is task-led:
 | SEO research brief | Guided research template | Verified keyword intelligence |
 | Blog draft | Local browser autosave, restore and Markdown export | Cloud-saved CMS content or auto-publishing |
 | SEO metadata editor | Existing route and Supabase site_settings save path | Guaranteed immediate search ranking improvements |
-| Availability manager | Dedicated Business OS route for published booking slots, capacity and open/close controls | Public experience content or price editor |\n| Guest inbox | Existing concierge conversation tools and status updates | Full CRM pipeline, contact deduplication, outbound messaging or automated follow-ups |
+| Availability manager | Dedicated Business OS route for published booking slots, capacity and open/close controls | Public experience content or price editor |
+| Guest inbox | Existing concierge conversation tools and status updates | Full CRM pipeline, contact deduplication, outbound messaging or automated follow-ups |
 | AI command center | Draft interface and server-side provider abstraction | Connected AI until provider keys are configured and tested |
 | Approval Center | Approval policy preview | A live approval queue or execution authorization |
 | External campaign publishing | Not connected | Automated social publishing |
