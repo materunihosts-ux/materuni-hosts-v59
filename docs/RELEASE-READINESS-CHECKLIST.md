@@ -22,6 +22,7 @@
 - [ ] Confirm password reset works from the Business OS.
 - [ ] Confirm navigation between the two workspaces is clear and does not send users to duplicate tools.
 - [ ] Confirm sign-out is reachable on desktop and mobile.
+- [ ] Confirm no-result search feedback appears when a search matches no task cards.
 - [ ] Confirm Business OS task search filters both Operations and Growth cards and gives a useful empty state.
 
 ### Public website dashboard
@@ -34,6 +35,7 @@
 ### Business operations
 - [ ] Publish one future availability date and a short date range.
 - [ ] Confirm a range is limited to 90 dates inclusive.
+- [ ] Change an existing slot capacity and confirm the new limit cannot be lower than already reserved guests.
 - [ ] Confirm an existing matching slot is skipped rather than duplicated.
 - [ ] Confirm the list shows the correct experience name, Tanzania-local date, time and remaining capacity.
 - [ ] Close and reopen a slot; verify the saved state after refreshing.
