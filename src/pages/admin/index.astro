@@ -1,9 +1,9 @@
 ---
 import SiteLayout from "../../layouts/SiteLayout.astro";
 ---
-<SiteLayout title="Admin Dashboard | Materuni Hosts" description="Private Materuni Hosts operations dashboard." noindex={true}>
-<section class="page-hero"><span class="eyebrow">MATERUNI HOSTS · PRIVATE</span><h1>Operations dashboard</h1><p>One place to manage reservations, availability, guests and website settings.</p></section>
-<section class="booking-wrap" style="margin-top:1rem"><div class="booking-panel"><span class="eyebrow">NEW UNIFIED WORKSPACE</span><h2>Materuni Hosts Business OS</h2><p class="muted">Preview the unified business workspace bringing existing tools and future AI capabilities together.</p><a class="button" href="/admin/business-os">Open Business OS preview →</a></div></section>
+<SiteLayout title="Public Website Dashboard | Materuni Hosts" description="Manage the Materuni Hosts public website, content, media and search presentation." noindex={true}>
+<section class="page-hero site-dashboard-hero"><span class="eyebrow">MATERUNI HOSTS · WEBSITE CONTROL</span><h1>Public Website Dashboard</h1><p>Keep the public Materuni Hosts website accurate, engaging and technically healthy. Manage pages, stories, experiences, photography and search appearance here.</p><div class="site-hero-actions"><a class="button" href="/" target="_blank" rel="noopener">View public website ↗</a><a class="button button-secondary" href="/admin/business-os">Open Business OS →</a></div></section>
+<section class="booking-wrap" style="margin-top:1rem"><div class="site-os-note"><div><span class="eyebrow">SEPARATE WORKSPACE</span><h2>Business operations & marketing live in the OS</h2><p class="muted">Use the Business OS for bookings, guest CRM, SEO opportunities, marketing campaigns, AI assistance, workflows and performance insights. This dashboard stays focused on the public website.</p></div><a class="button" href="/admin/business-os">Go to Business OS ↗</a></div></section>
 <section class="booking-wrap">
  <div class="booking-panel" id="login-panel">
   <h2>Administrator sign in</h2><p class="muted">Access is limited to approved Materuni Hosts administrators.</p>
@@ -14,8 +14,8 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
   </form>
  </div>
  <div id="manager" hidden>
-  <div class="booking-panel">
-   <div class="section-heading"><div><span class="eyebrow">LIVE BUSINESS SNAPSHOT</span><h2>Welcome to your dashboard</h2><p class="muted" id="snapshot-date">Loading your latest activity…</p></div><button class="button button-secondary" id="refresh" type="button">Refresh overview</button></div>
+  <div class="booking-panel" id="ops-snapshot">
+   <div class="section-heading"><div><span class="eyebrow">LEGACY OPERATIONS SNAPSHOT</span><h2>Welcome to your dashboard</h2><p class="muted" id="snapshot-date">Loading your latest activity…</p></div><button class="button button-secondary" id="refresh" type="button">Refresh overview</button></div>
    <div class="admin-stats">
     <div class="admin-stat"><span>Booking requests</span><strong id="stat-total">—</strong></div>
     <div class="admin-stat"><span>Awaiting action</span><strong id="stat-new">—</strong></div>
@@ -35,34 +35,26 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
    <p id="snapshot-feedback" class="muted" aria-live="polite"></p>
   </div>
   <div class="booking-panel" style="margin-top:1.25rem">
-   <span class="eyebrow">OPERATIONS DIRECTORY</span><h2>Hospitality Business Modules</h2><p class="muted">18 management modules. Search by task to get straight to the right workspace.</p>
-   <div class="admin-module-tools"><label class="visually-hidden" for="module-search">Search dashboard modules</label><input id="module-search" type="search" placeholder="Search modules — bookings, documents, SEO…" autocomplete="off"><span id="module-count" class="muted" aria-live="polite">18 modules</span></div>\n   <p id="module-empty" class="muted" hidden>No modules match that search. Try another word.</p>\n   <div class="admin-home-grid" id="admin-module-grid">
-    <a class="admin-home-card admin-home-primary" href="/admin/bookings"><span class="admin-home-icon">01</span><span><strong>Booking & Reservation Management</strong><small>Review requests, confirm dates, reschedule and prevent double bookings</small></span><span class="admin-home-arrow">→</span></a>
-    <a class="admin-home-card admin-home-primary" href="/admin/tours"><span class="admin-home-icon">02</span><span><strong>Tour Catalog & Experiences</strong><small>Manage experiences, descriptions, pricing, inclusions and duration</small></span><span class="admin-home-arrow">→</span></a>
-    <a class="admin-home-card admin-home-primary" href="/admin/tours#availability"><span class="admin-home-icon">03</span><span><strong>Availability Calendar & Capacities</strong><small>365-day slot availability, capacity limits and cutoff controls</small></span><span class="admin-home-arrow">→</span></a>
-    <a class="admin-home-card admin-home-primary" href="/admin/operations#rates"><span class="admin-home-icon">04</span><span><strong>Pricing & Private Tariff Management</strong><small>Retail, STO, Net, seasonal rates and B2B agent contract lists</small></span><span class="admin-home-arrow">→</span></a>
-    <a class="admin-home-card admin-home-primary" href="/admin/operations#documents"><span class="admin-home-icon">05</span><span><strong>Operations Document Studio</strong><small>Issue vouchers, commercial invoices, itineraries, receipts & 13 templates</small></span><span class="admin-home-arrow">→</span></a>
-    <a class="admin-home-card admin-home-primary" href="/admin/operations#saved-documents"><span class="admin-home-icon">06</span><span><strong>Payment & Commercial Ledger</strong><small>Track received deposits, bank wires, M-Pesa settlements & balances</small></span><span class="admin-home-arrow">→</span></a>
-    <a class="admin-home-card admin-home-primary" href="/admin/conversations"><span class="admin-home-icon">07</span><span><strong>Guest CRM & Enquiry Management</strong><small>Live concierge chats, WhatsApp enquiries, status triage and history</small></span><span class="admin-home-arrow">→</span></a>
-    <a class="admin-home-card admin-home-primary" href="/admin/itinerary"><span class="admin-home-icon">08</span><span><strong>Itinerary Studio & Trip Builder</strong><small>Custom day-by-day travel proposals with PDF generation & sharing</small></span><span class="admin-home-arrow">→</span></a>
-    <a class="admin-home-card admin-home-primary" href="/admin/content"><span class="admin-home-icon">09</span><span><strong>Website Content & Story Manager</strong><small>About Us story, Saidi Materu founder bio, guide profiles & FAQs</small></span><span class="admin-home-arrow">→</span></a>
-    <a class="admin-home-card admin-home-primary" href="/admin/marketing"><span class="admin-home-icon">10</span><span><strong>Marketing & SEO Studio</strong><small>Live SEO audits, research briefs, blog drafting and content growth workflows</small></span><span class="admin-home-arrow">→</span></a>
-    <a class="admin-home-card admin-home-primary" href="/admin/seo"><span class="admin-home-icon">11</span><span><strong>Technical SEO & Metadata Manager</strong><small>SERP titles, meta descriptions, OpenGraph social cards, canonicals & audit</small></span><span class="admin-home-arrow">→</span></a>
-    <a class="admin-home-card admin-home-primary" href="/admin/landing-pages"><span class="admin-home-icon">12</span><span><strong>Flagship Landing Pages Editor</strong><small>Dedicated copy for Materuni Camping and Day Trips landing pages</small></span><span class="admin-home-arrow">→</span></a>
-    <a class="admin-home-card admin-home-primary" href="/admin/media"><span class="admin-home-icon">13</span><span><strong>Authentic Photography & Media Library</strong><small>Upload and manage genuine Materuni cultural & waterfall photos</small></span><span class="admin-home-arrow">→</span></a>
-    <a class="admin-home-card admin-home-primary" href="/admin/partners"><span class="admin-home-icon">14</span><span><strong>B2B Partners & Agency Accounts</strong><small>Tour operators, safari partners, contract terms & WhatsApp opt-in</small></span><span class="admin-home-arrow">→</span></a>
-    <a class="admin-home-card admin-home-primary" href="/admin/analytics"><span class="admin-home-icon">15</span><span><strong>Analytics & Conversion Reports</strong><small>Landing attribution, booking channels, value and customer metrics</small></span><span class="admin-home-arrow">→</span></a>
-    <a class="admin-home-card admin-home-primary" href="/admin/email"><span class="admin-home-icon">16</span><span><strong>Email & Notification Templates</strong><small>Booking acknowledgements, guest updates and partner invitation copy</small></span><span class="admin-home-arrow">→</span></a>
-    <a class="admin-home-card admin-home-primary" href="/admin/business-details"><span class="admin-home-icon">17</span><span><strong>Business Details & Guest Policies</strong><small>Verified host facts, transport pricing, camping specs & safety rules</small></span><span class="admin-home-arrow">→</span></a>
-    <a class="admin-home-card admin-home-primary" href="/admin/settings"><span class="admin-home-icon">18</span><span><strong>Settings, Governance & Audit Logs</strong><small>Social links, review channels, delivery logs and security controls</small></span><span class="admin-home-arrow">→</span></a>
+   <span class="eyebrow">PUBLIC WEBSITE MANAGEMENT</span><h2>Website content & presentation</h2><p class="muted">Choose the part of the public website you want to improve. Business operations and marketing workflows are managed in the Business OS.</p>
+   <div class="admin-module-tools"><label class="visually-hidden" for="module-search">Search dashboard modules</label><input id="module-search" type="search" placeholder="Search website tools — pages, images, SEO, settings…" autocomplete="off"><span id="module-count" class="muted" aria-live="polite">6 website tools</span></div>\n   <p id="module-empty" class="muted" hidden>No modules match that search. Try another word.</p>\n   <div class="admin-home-grid site-tools-grid" id="admin-module-grid">
+    <a class="admin-home-card admin-home-primary" href="/admin/content"><span class="admin-home-icon">01</span><span><strong>Website Content & Stories</strong><small>Edit brand story, host profiles, cultural pages and FAQs</small></span><span class="admin-home-arrow">→</span></a>
+    <a class="admin-home-card admin-home-primary" href="/admin/landing-pages"><span class="admin-home-icon">02</span><span><strong>Landing Pages</strong><small>Manage public page messaging, structure and calls to action</small></span><span class="admin-home-arrow">→</span></a>
+    <a class="admin-home-card admin-home-primary" href="/admin/tours"><span class="admin-home-icon">03</span><span><strong>Experiences & Published Prices</strong><small>Keep experience descriptions, inclusions and public prices accurate</small></span><span class="admin-home-arrow">→</span></a>
+    <a class="admin-home-card admin-home-primary" href="/admin/media"><span class="admin-home-icon">04</span><span><strong>Photography & Media Library</strong><small>Manage authentic Materuni photos and website media assets</small></span><span class="admin-home-arrow">→</span></a>
+    <a class="admin-home-card admin-home-primary" href="/admin/seo"><span class="admin-home-icon">05</span><span><strong>SEO Metadata & Social Preview</strong><small>Manage page titles, descriptions, canonical URLs and social cards</small></span><span class="admin-home-arrow">→</span></a>
+    <a class="admin-home-card admin-home-primary" href="/admin/settings"><span class="admin-home-icon">06</span><span><strong>Website Settings & Governance</strong><small>Manage website-wide details, links and administrative settings</small></span><span class="admin-home-arrow">→</span></a>
    </div>
    <div class="admin-home-footer"><span>Need to leave the dashboard?</span><button class="button button-secondary" id="logout" type="button">Sign out</button></div>
   </div>
-  <div class="booking-panel" style="margin-top:1.25rem">
-   <span class="eyebrow">RECENT BOOKINGS</span><h2>Latest guest requests</h2><div id="recent-bookings" class="admin-booking-list"><p class="muted">Loading bookings…</p></div>
+  <div class="booking-panel" id="legacy-bookings" style="margin-top:1.25rem">
+   <span class="eyebrow">LEGACY BOOKING PREVIEW</span><h2>Latest guest requests</h2><div id="recent-bookings" class="admin-booking-list"><p class="muted">Loading bookings…</p></div>
   </div>
  </div>
 </section>
+
+<style>
+.site-dashboard-hero{padding:clamp(26px,5vw,54px);border-radius:22px;background:linear-gradient(120deg,#1a3322 0%,#294936 64%,#52684b 100%);color:#faf7f2;position:relative;overflow:hidden}.site-dashboard-hero:after{content:"";position:absolute;width:340px;height:340px;border:1px solid #c5a05955;border-radius:50%;right:-80px;top:-140px;box-shadow:0 0 0 35px #c5a05912,0 0 0 75px #c5a0590b}.site-dashboard-hero .eyebrow{color:#dfc17e}.site-dashboard-hero h1{font:500 clamp(32px,5vw,52px)/1.05 Georgia,serif;max-width:700px;color:#faf7f2}.site-dashboard-hero p{max-width:700px;color:#e5e8df;line-height:1.75}.site-hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}.site-dashboard-hero .button{background:#c5a059;color:#1a3322;border:1px solid #c5a059}.site-dashboard-hero .button-secondary{background:transparent;color:#faf7f2;border-color:#faf7f266}.site-os-note{display:flex;justify-content:space-between;align-items:center;gap:18px;padding:22px 24px;border:1px solid #e6dfd3;border-radius:16px;background:#faf7f2}.site-os-note h2{font:500 23px Georgia,serif;color:#1a3322;margin:0 0 7px}.site-os-note p{max-width:740px;margin:0}.site-os-note .button{flex:none}.site-tools-grid{grid-template-columns:repeat(2,minmax(0,1fr))}#ops-snapshot,#legacy-bookings{display:none!important}.site-tools-grid .admin-home-card{min-height:110px;border-radius:14px;padding:18px}.site-tools-grid .admin-home-card:hover{transform:translateY(-2px);box-shadow:0 12px 26px #24242110;border-color:#c5a059}@media(max-width:650px){.site-os-note{align-items:flex-start;flex-direction:column}.site-tools-grid{grid-template-columns:1fr}.site-dashboard-hero{padding:27px 22px}}
+</style>
 <script>
 // @ts-nocheck
 import { supabaseUrl, publishableKey } from "../../lib/supabase-public";
