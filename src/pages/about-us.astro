@@ -91,8 +91,7 @@ const communityNote = dynamic?.communityNote || "Based in Materuni Village, Mate
   </aside>
 </section>
 
-{team.length > 0 && (
-<section class="about-intro" aria-label="Local hosts">
+<section id="about-team-section" class="about-intro" aria-label="Local hosts" hidden={team.length === 0}>
   <div class="section-heading" style="text-align:center;margin:0 auto 32px">
     <p class="eyebrow">WHO WE ARE</p>
     <h2>A local team, a personal welcome.</h2>
@@ -114,8 +113,6 @@ const communityNote = dynamic?.communityNote || "Based in Materuni Village, Mate
     <p id="about-community-note-el">{communityNote}</p>
   </div>
 </section>
-
-)}
 
 <!-- Values Section -->
 <section class="values-section">
@@ -239,6 +236,8 @@ try {
 
     // If dynamic team members are present
     if (Array.isArray(data.team) && data.team.length && document.getElementById("about-team-grid")) {
+      const section = document.getElementById("about-team-section");
+      if (section) section.hidden = false;
       const grid = document.getElementById("about-team-grid");
       grid.replaceChildren();
       data.team.forEach(host => {
