@@ -121,7 +121,7 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
      <textarea id="doc-lines" rows="6" placeholder="Materuni Waterfall & Chagga Village Hike | 2 | 40.00&#10;Traditional Coffee Roasting & Tasting Masterclass | 2 | 36.00&#10;Authentic Chagga Hot Lunch & Tropical Fruits | 2 | 0.00&#10;Roundtrip Moshi Town Private 4x4 Transfer | 1 | 35.00"></textarea>
     </div>
 
-    <div class="field"><label for="doc-amount">Total amount</label><input id="doc-amount" type="number" min="0" step="0.01" value="0"></div>
+    <div class="field"><label for="doc-amount">Subtotal before tax / levy</label><input id="doc-amount" type="number" min="0" step="0.01" value="0"></div>
     <div class="field"><label for="doc-deposit">Amount paid / deposit</label><input id="doc-deposit" type="number" min="0" step="0.01" value="0"></div>
 
     <div class="field full">
@@ -164,7 +164,7 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
       <div class="field full"><label for="doc-bank-cash">Cash Settlement Policy</label><input id="doc-bank-cash" maxlength="220" value="" placeholder="Enter the actual agreed cash and exchange-rate policy"></div>
 
       <div class="field"><label for="doc-tax-label">Tax / levy label (only if applicable)</label><input id="doc-tax-label" maxlength="100" value="" placeholder="Leave blank unless a verified tax or levy applies"></div>
-      <div class="field"><label for="doc-tax-amount">Tax / Levy Amount</label><input id="doc-tax-amount" type="number" min="0" step="0.01" value="0.00"></div>
+      <div class="field"><label for="doc-tax-amount">Tax / levy amount (if applicable)</label><input id="doc-tax-amount" type="number" min="0" step="0.01" value="0.00"></div>
 
       <div class="field"><label for="doc-signatory-name">Authorized Signatory Name</label><input id="doc-signatory-name" maxlength="100" value="Saidi Materu"></div>
       <div class="field"><label for="doc-signatory-title">Signatory Position / Title</label><input id="doc-signatory-title" maxlength="100" value="Founder"></div>
@@ -177,7 +177,7 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
      </div>
     </details>
 
-    <div class="field full document-verification"><label for="doc-verified"><input id="doc-verified" type="checkbox" required> I have verified the guest identity, travel date, experience, prices, tax/levy (if applicable), payment status, meeting point and terms before issuing this document.</label><small class="muted">Templates contain no live booking data. Review all fields; this tool does not certify legal or tax compliance.</small></div>
+    <div class="field full document-verification"><label for="doc-verified"><input id="doc-verified" type="checkbox" required> I have verified the guest identity, travel date, experience, prices, tax/levy (if applicable), payment status, meeting point and terms before issuing this document.</label><small class="muted">Templates contain no live booking data. Payment status is entered manually; this tool does not verify payments or certify legal or tax compliance.</small></div>
     <div class="field full">
      <div class="actions">
       <button class="button" type="submit">Generate branded document</button>
@@ -956,7 +956,7 @@ el("document-form").addEventListener("submit",ev=>{
  if(!Number.isFinite(total)||!Number.isFinite(paid)||!Number.isFinite(taxAmount)||total<0||paid<0||taxAmount<0){el("doc-feedback").textContent="Enter valid non-negative amounts for subtotal, tax and amount paid.";return;}
  if(taxAmount>0&&!taxLabel){el("doc-feedback").textContent="Add the verified tax or levy label, or set the amount to zero.";return;}
  if(["invoice","quotation","receipt"].includes(type)&&!parsedItems.length){el("doc-feedback").textContent="Add at least one item or service line before generating this financial document.";return;}
- if(paid>grandTotal&&grandTotal>0){
+ if(paid>grandTotal){
   el("doc-feedback").textContent="Amount paid cannot exceed the total including tax or levy.";
   return;
  }
@@ -1128,13 +1128,13 @@ el("document-form").addEventListener("submit",ev=>{
     ${paymentStatus==="paid"?`
     <div class="doc-stamp paid">
      <div class="doc-stamp-title">★ PAID IN FULL ★</div>
-     <div class="doc-stamp-sub">${escapeHtml(coName)} · VERIFIED OFFICIAL RECEIPT</div>
+     <div class="doc-stamp-sub">${escapeHtml(coName)} · PAYMENT RECEIPT</div>
      <div style="font-size:9px;margin-top:2px;color:#1A3322">${escapeHtml(ref)} · ${escapeHtml(date)}</div>
     </div>
     `:`
     <div class="doc-stamp due">
-     <div class="doc-stamp-title">★ BALANCE DUE ON ARRIVAL ★</div>
-     <div class="doc-stamp-sub">RESERVATION SECURED WITH ADVANCE DEPOSIT</div>
+     <div class="doc-stamp-title">BALANCE DUE</div>
+     <div class="doc-stamp-sub">PAYMENT STATUS SHOWN BELOW</div>
      <div style="font-size:9px;margin-top:2px">${escapeHtml(currency)} ${balance.toFixed(2)} DUE ON TOUR DATE</div>
     </div>
     `}
@@ -1288,7 +1288,7 @@ el("document-form").addEventListener("submit",ev=>{
    });
 
    children.push(new Paragraph({text:"FINANCIAL SUMMARY",heading:HeadingLevel.HEADING_3}));
-   children.push(new Paragraph({children:[new TextRun({text:"Total: "+currency+" "+total.toFixed(2)+"  |  Paid: "+currency+" "+paid.toFixed(2)+"  |  Balance Due: "+currency+" "+balance.toFixed(2),bold:true})]}));
+   children.push(new Paragraph({children:[new TextRun({text:"Subtotal: "+currency+" "+total.toFixed(2)+(taxAmount>0?"  |  Tax / levy: "+currency+" "+taxAmount.toFixed(2):"")+"  |  Total: "+currency+" "+grandTotal.toFixed(2)+"  |  Paid: "+currency+" "+paid.toFixed(2)+"  |  Balance Due: "+currency+" "+balance.toFixed(2),bold:true})]}));
    children.push(new Paragraph({children:[new TextRun({text:"Status: "+(statusLabels[paymentStatus]||paymentStatus),bold:true})]}));
 
    if((isInvoice || isVoucher) && (bankName||bankAccount||bankSwift||bankMpesa||bankCash)){
@@ -1356,7 +1356,9 @@ el("document-form").addEventListener("submit",ev=>{
    parsedItems.forEach(item=>rows.push([item.idx,item.desc,item.qty,item.rate,item.total]));
 
    rows.push([]);
-   rows.push(["","","","Published Subtotal",total]);
+   rows.push(["","","","Subtotal",total]);
+   if(taxAmount>0)rows.push(["","","",taxLabel||"Tax / levy",taxAmount]);
+   rows.push(["","","","Total including tax / levy",grandTotal]);
    rows.push(["","","","Amount Paid",paid]);
    rows.push(["","","","Balance Due",balance]);
    rows.push([]);
