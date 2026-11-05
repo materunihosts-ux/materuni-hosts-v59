@@ -11,13 +11,13 @@ Purpose: maintain what a visitor can see and read on materunihosts.com.
 Owns:
 - Website content and brand stories.
 - Landing-page copy and page presentation.
-- Public experience descriptions, inclusions and displayed prices.
+- Public experience descriptions, inclusions, photography and displayed prices.
 - Authentic photography and media assets.
 - Public-facing host facts, visitor information and guest policies.
 - Website-wide contact details, links and presentation settings.
 
 Does not own:
-- Booking operations and reservation follow-up.
+- Booking operations, availability slots and reservation follow-up.
 - A full guest CRM and sales pipeline.
 - Marketing campaigns and content calendars.
 - SEO issue triage, keyword research and growth reporting.
@@ -28,7 +28,8 @@ Does not own:
 Purpose: run the business, manage growth issues and coordinate guest journeys.
 
 Owns:
-- Booking and experience operations.
+- Booking operations and availability-slot management.
+- Private partner/commercial rate plans, quotations and invoices.
 - Guest concierge inbox, enquiry triage and status tracking only; a full CRM pipeline is future work.
 - Growth engine: on-page SEO audits, guided research briefs, SEO metadata tasks and local content drafts. External keyword intelligence and campaign publishing are not connected.
 - AI-assisted analysis and draft preparation.
@@ -48,7 +49,7 @@ Business OS navigation is grouped into:
 Public Website Dashboard navigation is task-led:
 1. Website content and stories.
 2. Landing pages.
-3. Experiences and published prices.
+3. Experiences and published prices (not departure availability).
 4. Photography and media.
 5. Host details and guest policies.
 6. Website settings.
@@ -58,12 +59,12 @@ Public Website Dashboard navigation is task-led:
 | Capability | Current state | Must not be represented as |
 |---|---|---|
 | Admin authentication | Existing Supabase password login and allowlist checks | A unified SSO session across every legacy admin page |
-| Public website content tools | Existing admin routes | A complete visual page builder |
+| Public website content tools | Existing admin routes, including public experience catalogue and published prices | A complete visual page builder |
 | On-page SEO crawler | Browser-side live public-page checks in Marketing & SEO Studio | Google rankings, keyword volume or backlink monitoring |
 | SEO research brief | Guided research template | Verified keyword intelligence |
 | Blog draft | Local browser autosave, restore and Markdown export | Cloud-saved CMS content or auto-publishing |
 | SEO metadata editor | Existing route and Supabase site_settings save path | Guaranteed immediate search ranking improvements |
-| Guest inbox | Existing concierge conversation tools and status updates | Full CRM pipeline, contact deduplication, outbound messaging or automated follow-ups |
+| Availability manager | Dedicated Business OS route for published booking slots, capacity and open/close controls | Public experience content or price editor |\n| Guest inbox | Existing concierge conversation tools and status updates | Full CRM pipeline, contact deduplication, outbound messaging or automated follow-ups |
 | AI command center | Draft interface and server-side provider abstraction | Connected AI until provider keys are configured and tested |
 | Approval Center | Approval policy preview | A live approval queue or execution authorization |
 | External campaign publishing | Not connected | Automated social publishing |
