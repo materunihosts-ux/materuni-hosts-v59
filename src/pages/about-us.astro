@@ -91,10 +91,8 @@ const communityNote = dynamic?.communityNote || "Based in Materuni Village, Mate
   </aside>
 </section>
 
-<!-- Host profiles are shown only when verified profile details are available. -->
-{#if team.length > 0}
-<!-- Team & Local Guides Section -->
-<section class="about-intro">
+{team.length > 0 && (
+<section class="about-intro" aria-label="Local hosts">
   <div class="section-heading" style="text-align:center;margin:0 auto 32px">
     <p class="eyebrow">WHO WE ARE</p>
     <h2>A local team, a personal welcome.</h2>
@@ -117,7 +115,7 @@ const communityNote = dynamic?.communityNote || "Based in Materuni Village, Mate
   </div>
 </section>
 
-{/if}
+)}
 
 <!-- Values Section -->
 <section class="values-section">
