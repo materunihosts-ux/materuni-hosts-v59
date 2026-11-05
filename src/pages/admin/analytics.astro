@@ -14,7 +14,7 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
   </div>
   <div id="manager" hidden>
     <div class="booking-panel analytics-controls">
-      <div class="section-heading"><div><span class="eyebrow">REPORTING CONTROLS</span><h2>Booking analytics</h2><p class="muted">The value shown is an estimate for confirmed bookings, not money collected.</p></div><div class="admin-shortcuts"><a class="button button-secondary" href="/admin/bookings">Bookings</a><a class="button button-secondary" href="/admin/conversations">Guest CRM</a><a class="button button-secondary" href="/admin/marketing">Growth studio</a><button class="button button-secondary" id="logout" type="button">Sign out</button></div></div>
+      <div class="section-heading"><div><span class="eyebrow">REPORTING CONTROLS</span><h2>Booking analytics</h2><p class="muted">The value shown is an estimate for confirmed bookings, not money collected.</p></div><div class="admin-shortcuts"><a class="button button-secondary" href="/admin/bookings">Bookings</a><a class="button button-secondary" href="/admin/conversations">Guest inbox</a><a class="button button-secondary" href="/admin/marketing">Growth studio</a><button class="button button-secondary" id="logout" type="button">Sign out</button></div></div>
       <form id="filter-form" class="form-grid">
         <div class="field"><label for="from-date">From</label><input id="from-date" type="date" required></div>
         <div class="field"><label for="to-date">To</label><input id="to-date" type="date" required></div>
@@ -32,7 +32,7 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
       <div class="admin-stat analytics-value"><span>Estimated confirmed value</span><strong id="confirmed-value">—</strong><small>USD · not cash received</small></div>
     </div>
     <div class="booking-panel" style="margin-top:1.5rem"><span class="eyebrow">DEMAND</span><h2>Most requested experiences</h2><div id="popular-experiences" class="popular-experiences"><p class="muted">Choose a date range to view demand.</p></div></div>
-    <div class="booking-panel" style="margin-top:1.5rem"><span class="eyebrow">ACQUISITION</span><h2>Where enquiries come from</h2><p class="muted">Tracks tagged website enquiries from the new Camping and Day Trips landing pages. Older and untagged requests appear as Other / untracked.</p><div id="enquiry-sources" class="popular-experiences"><p class="muted">Choose a date range to view enquiry sources.</p></div></div>
+    <div class="booking-panel" style="margin-top:1.5rem"><span class="eyebrow">ACQUISITION</span><h2>Where enquiries come from</h2><p class="muted">Shows source tags recorded with booking enquiries. Only tagged sources can be attributed; older or untagged requests appear as Other / untracked.</p><div id="enquiry-sources" class="popular-experiences"><p class="muted">Choose a date range to view enquiry sources.</p></div></div>
   </div>
 </section>
 
