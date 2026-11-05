@@ -446,7 +446,7 @@ el("refresh-documents").addEventListener("click",()=>loadDocuments().catch(e=>el
 function csv(){
  const rows=[["Package","Price list","Rate type","Currency","Amount","Pricing unit","Minimum guests","Maximum guests","Valid from","Valid until"]];
  rates.forEach(r=>{const p=plans.find(x=>x.id===r.rate_plan_id),e=experiences.find(x=>x.id===r.experience_id);rows.push([e?.display_name,p?.name,p?.rate_type,p?.currency,r.amount,r.pricing_unit,r.guest_min,r.guest_max||"",p?.valid_from||"",p?.valid_until||""])});
- return rows.map(row=>row.map(v=>'"'+String(v??"").replaceAll('"','""')+'"').join(",")).join("\r\n");
+ return rows.map(row=>row.map(v=>{const raw=String(v??"");const safe=typeof v==="string"&&/^[\s]*[=+\-@]/.test(raw)?"'"+raw:raw;return '"'+safe.replaceAll('"','""')+'"'}).join(",")).join("\r\n");
 }
 function downloadCsv(){
  const blob=new Blob(["\uFEFF"+csv()],{type:"text/csv;charset=utf-8"}),url=URL.createObjectURL(blob),a=document.createElement("a");
@@ -891,10 +891,11 @@ function parseLines(raw, defaultCurrency){
   const parts=l.split("|").map(p=>p.trim());
   if(parts.length>=3){
    const desc=parts[0];
-   const qty=Number(parts[1])||1;
+   const qty=Number(parts[1]);
    const rateStr=parts[2].replace(/[^0-9.-]/g,"");
-   const rate=Number(rateStr)||0;
-   const total=qty*rate;
+   const rate=Number(rateStr);
+   if(!desc||!Number.isFinite(qty)||qty<=0||!Number.isFinite(rate)||rate<0)return {idx:idx+1,desc,qty,rate,total:0,raw:l,isStructured:true,error:"Use a description, a positive quantity and a non-negative unit price."};
+   const total=Math.round(qty*rate*100)/100;
    return {idx:idx+1,desc,qty,rate,total,raw:l,isStructured:true};
   }
   return {idx:idx+1,desc:l,qty:1,rate:0,total:0,raw:l,isStructured:false};
@@ -928,6 +929,8 @@ el("document-form").addEventListener("submit",ev=>{
  const balance=Math.max(0,grandTotal-paid);
  const rawLines=el("doc-lines").value;
  const parsedItems=parseLines(rawLines,currency);
+ const invalidLine=parsedItems.find(item=>item.error);
+ if(invalidLine){el("doc-feedback").textContent="Line "+invalidLine.idx+": "+invalidLine.error;return;}
  const inclusions=el("doc-inclusions").value.split(/\r?\n/).map(l=>l.trim()).filter(Boolean);
  const exclusions=el("doc-exclusions").value.split(/\r?\n/).map(l=>l.trim()).filter(Boolean);
  const advice=el("doc-advice").value.trim();
