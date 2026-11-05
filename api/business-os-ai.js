@@ -45,22 +45,22 @@ export default async function handler(req, res) {
     if (provider === "openai") {
       const r = await fetch("https://api.openai.com/v1/responses", { method: "POST", headers: { Authorization: "Bearer " + config.key, "Content-Type": "application/json" }, body: JSON.stringify({ model: config.model, instructions: system, input: prompt, max_output_tokens: 1400 }) });
       const d = await r.json();
-      if (!r.ok) return res.status(502).json({ error: d.error?.message || "OpenAI request failed." });
+      if (!r.ok) return res.status(502).json({ error: "OpenAI could not complete this request. Check provider status and API billing, then retry." });
       answer = (d.output || []).flatMap(x => x.content || []).filter(x => x.type === "output_text").map(x => x.text).join("\n");
     } else if (provider === "anthropic") {
       const r = await fetch("https://api.anthropic.com/v1/messages", { method: "POST", headers: { "x-api-key": config.key, "anthropic-version": "2023-06-01", "Content-Type": "application/json" }, body: JSON.stringify({ model: config.model, max_tokens: 1400, system, messages: [{ role: "user", content: prompt }] }) });
       const d = await r.json();
-      if (!r.ok) return res.status(502).json({ error: d.error?.message || "Anthropic request failed." });
+      if (!r.ok) return res.status(502).json({ error: "Claude could not complete this request. Check provider status and API billing, then retry." });
       answer = (d.content || []).filter(x => x.type === "text").map(x => x.text).join("\n");
     } else {
       const r = await fetch("https://generativelanguage.googleapis.com/v1beta/models/" + encodeURIComponent(config.model) + ":generateContent?key=" + encodeURIComponent(config.key), { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ systemInstruction: { parts: [{ text: system }] }, contents: [{ role: "user", parts: [{ text: prompt }] }], generationConfig: { maxOutputTokens: 1400 } }) });
       const d = await r.json();
-      if (!r.ok) return res.status(502).json({ error: d.error?.message || "Gemini request failed." });
+      if (!r.ok) return res.status(502).json({ error: "Gemini could not complete this request. Check provider status and API billing, then retry." });
       answer = (d.candidates || []).flatMap(x => x.content?.parts || []).map(x => x.text || "").join("\n");
     }
     if (!answer.trim()) return res.status(502).json({ error: "The provider returned an empty response." });
     return res.status(200).json({ answer, provider, model: config.model, generatedAt: new Date().toISOString(), mode: "draft_only" });
   } catch (error) {
-    return res.status(500).json({ error: "AI request failed safely. " + (error instanceof Error ? error.message : "Unexpected server error.") });
+    return res.status(500).json({ error: "AI request failed safely. Check the deployment runtime logs and try again." });
   }
 };
