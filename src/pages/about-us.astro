@@ -225,9 +225,8 @@ try {
 
     setTxt("about-hero-eyebrow-el", data.heroEyebrow);
     setTxt("about-hero-title-el", data.heroTitle);
-    if (data.heroP1 && document.getElementById("about-hero-p1-el")) {
-      document.getElementById("about-hero-p1-el").innerHTML = data.heroP1.replace("Saidi Materu", "<strong>Saidi Materu</strong>");
-    }
+    // Treat editable CMS copy as text, never executable HTML.
+    setTxt("about-hero-p1-el", data.heroP1);
     setTxt("about-hero-p2-el", data.heroP2);
     if (data.heroImage && document.getElementById("about-hero-img-el")) {
       document.getElementById("about-hero-img-el").src = data.heroImage;
