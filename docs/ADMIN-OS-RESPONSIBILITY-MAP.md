@@ -41,7 +41,7 @@ The SEO metadata editor at `/admin/seo` belongs to the Business OS because it is
 ## Navigation model
 
 Business OS navigation is grouped into:
-1. Operations — overview, bookings, guest inbox, experiences and pricing.
+1. Operations — overview, bookings, guest inbox, availability slots and private commercial rates/documents.
 2. Growth Engine — Marketing & SEO Studio and SEO Metadata Studio.
 3. AI & Control — AI assistant, performance insights and approvals.
 4. Website — shortcut to the Public Website Dashboard.
