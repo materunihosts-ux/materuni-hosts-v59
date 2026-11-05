@@ -3,7 +3,7 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
 ---
 <SiteLayout title="Public Website Dashboard | Materuni Hosts" description="Manage the Materuni Hosts public website, content, media and search presentation." noindex={true}>
 <section class="page-hero site-dashboard-hero"><span class="eyebrow">MATERUNI HOSTS · WEBSITE CONTROL</span><h1>Public Website Dashboard</h1><p>Keep the public Materuni Hosts website accurate, engaging and technically healthy. Manage pages, stories, experiences, photography and search appearance here.</p><div class="site-hero-actions"><a class="button" href="/" target="_blank" rel="noopener">View public website ↗</a><a class="button button-secondary" href="/admin/business-os">Open Business OS →</a></div></section>
-<section class="booking-wrap" style="margin-top:1rem"><div class="site-os-note"><div><span class="eyebrow">SEPARATE WORKSPACE</span><h2>Business operations & marketing live in the OS</h2><p class="muted">Use the Business OS for bookings, guest CRM, SEO opportunities, marketing campaigns, AI assistance, workflows and performance insights. This dashboard stays focused on the public website.</p></div><a class="button" href="/admin/business-os">Go to Business OS ↗</a></div></section>
+<section class="booking-wrap" style="margin-top:1rem"><div class="site-os-note"><div><span class="eyebrow">SEPARATE WORKSPACE</span><h2>Business operations & marketing live in the OS</h2><p class="muted">Use the Business OS for bookings, guest CRM, SEO opportunities, marketing campaigns, AI assistance, workflows and performance insights. This dashboard is only for the public-facing website. It does not manage bookings, guest follow-ups or marketing campaigns.</p></div><a class="button" href="/admin/business-os">Go to Business OS ↗</a></div></section>
 <section class="booking-wrap">
  <div class="booking-panel" id="login-panel">
   <h2>Administrator sign in</h2><p class="muted">Access is limited to approved Materuni Hosts administrators.</p>
@@ -14,29 +14,9 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
   </form>
  </div>
  <div id="manager" hidden>
-  <div class="booking-panel" id="ops-snapshot">
-   <div class="section-heading"><div><span class="eyebrow">LEGACY OPERATIONS SNAPSHOT</span><h2>Welcome to your dashboard</h2><p class="muted" id="snapshot-date">Loading your latest activity…</p></div><button class="button button-secondary" id="refresh" type="button">Refresh overview</button></div>
-   <div class="admin-stats">
-    <div class="admin-stat"><span>Booking requests</span><strong id="stat-total">—</strong></div>
-    <div class="admin-stat"><span>Awaiting action</span><strong id="stat-new">—</strong></div>
-    <div class="admin-stat"><span>Confirmed</span><strong id="stat-confirmed">—</strong></div>
-    <div class="admin-stat"><span>Confirmed value*</span><strong id="stat-value">—</strong></div>
-   </div>
-   <p class="muted">*Estimated value of confirmed reservations in the selected period, not payments received.</p>
-   <details class="admin-more-tools" style="margin-top:1rem">
-    <summary>Operational metrics <span>Experiences, calendar, messages and notifications</span></summary>
-    <div class="admin-stats" style="margin-top:1rem">
-     <div class="admin-stat"><span>Active experiences</span><strong id="stat-tours">—</strong></div>
-     <div class="admin-stat"><span>Upcoming slots</span><strong id="stat-slots">—</strong></div>
-     <div class="admin-stat"><span>Guest conversations</span><strong id="stat-chats">—</strong></div>
-     <div class="admin-stat"><span>Notification attempts</span><strong id="stat-notifications">—</strong></div>
-    </div>
-   </details>
-   <p id="snapshot-feedback" class="muted" aria-live="polite"></p>
-  </div>
   <div class="booking-panel" style="margin-top:1.25rem">
-   <span class="eyebrow">PUBLIC WEBSITE MANAGEMENT</span><h2>Website content & presentation</h2><p class="muted">Choose the part of the public website you want to improve. Business operations and marketing workflows are managed in the Business OS.</p>
-   <div class="admin-module-tools"><label class="visually-hidden" for="module-search">Search dashboard modules</label><input id="module-search" type="search" placeholder="Search website tools — pages, images, SEO, settings…" autocomplete="off"><span id="module-count" class="muted" aria-live="polite">6 website tools</span></div>\n   <p id="module-empty" class="muted" hidden>No modules match that search. Try another word.</p>\n   <div class="admin-home-grid site-tools-grid" id="admin-module-grid">
+   <span class="eyebrow">YOUR WEBSITE TOOLKIT</span><h2>What would you like to update?</h2><p class="muted">Choose the part of the public website you want to improve. Business operations and marketing workflows are managed in the Business OS.</p>
+   <div class="admin-module-tools"><label class="visually-hidden" for="module-search">Search dashboard modules</label><input id="module-search" type="search" placeholder="Find a website task — pages, images, SEO, settings…" autocomplete="off"><span id="module-count" class="muted" aria-live="polite">6 website tools</span></div>\n   <p id="module-empty" class="muted" hidden>No modules match that search. Try another word.</p>\n   <div class="admin-home-grid site-tools-grid" id="admin-module-grid">
     <a class="admin-home-card admin-home-primary" href="/admin/content"><span class="admin-home-icon">01</span><span><strong>Website Content & Stories</strong><small>Edit brand story, host profiles, cultural pages and FAQs</small></span><span class="admin-home-arrow">→</span></a>
     <a class="admin-home-card admin-home-primary" href="/admin/landing-pages"><span class="admin-home-icon">02</span><span><strong>Landing Pages</strong><small>Manage public page messaging, structure and calls to action</small></span><span class="admin-home-arrow">→</span></a>
     <a class="admin-home-card admin-home-primary" href="/admin/tours"><span class="admin-home-icon">03</span><span><strong>Experiences & Published Prices</strong><small>Keep experience descriptions, inclusions and public prices accurate</small></span><span class="admin-home-arrow">→</span></a>
@@ -46,87 +26,34 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
    </div>
    <div class="admin-home-footer"><span>Need to leave the dashboard?</span><button class="button button-secondary" id="logout" type="button">Sign out</button></div>
   </div>
-  <div class="booking-panel" id="legacy-bookings" style="margin-top:1.25rem">
-   <span class="eyebrow">LEGACY BOOKING PREVIEW</span><h2>Latest guest requests</h2><div id="recent-bookings" class="admin-booking-list"><p class="muted">Loading bookings…</p></div>
-  </div>
+
  </div>
 </section>
 
 <style>
-.site-dashboard-hero{padding:clamp(26px,5vw,54px);border-radius:22px;background:linear-gradient(120deg,#1a3322 0%,#294936 64%,#52684b 100%);color:#faf7f2;position:relative;overflow:hidden}.site-dashboard-hero:after{content:"";position:absolute;width:340px;height:340px;border:1px solid #c5a05955;border-radius:50%;right:-80px;top:-140px;box-shadow:0 0 0 35px #c5a05912,0 0 0 75px #c5a0590b}.site-dashboard-hero .eyebrow{color:#dfc17e}.site-dashboard-hero h1{font:500 clamp(32px,5vw,52px)/1.05 Georgia,serif;max-width:700px;color:#faf7f2}.site-dashboard-hero p{max-width:700px;color:#e5e8df;line-height:1.75}.site-hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}.site-dashboard-hero .button{background:#c5a059;color:#1a3322;border:1px solid #c5a059}.site-dashboard-hero .button-secondary{background:transparent;color:#faf7f2;border-color:#faf7f266}.site-os-note{display:flex;justify-content:space-between;align-items:center;gap:18px;padding:22px 24px;border:1px solid #e6dfd3;border-radius:16px;background:#faf7f2}.site-os-note h2{font:500 23px Georgia,serif;color:#1a3322;margin:0 0 7px}.site-os-note p{max-width:740px;margin:0}.site-os-note .button{flex:none}.site-tools-grid{grid-template-columns:repeat(2,minmax(0,1fr))}#ops-snapshot,#legacy-bookings{display:none!important}.site-tools-grid .admin-home-card{min-height:110px;border-radius:14px;padding:18px}.site-tools-grid .admin-home-card:hover{transform:translateY(-2px);box-shadow:0 12px 26px #24242110;border-color:#c5a059}@media(max-width:650px){.site-os-note{align-items:flex-start;flex-direction:column}.site-tools-grid{grid-template-columns:1fr}.site-dashboard-hero{padding:27px 22px}}
+.site-dashboard-hero{padding:clamp(26px,5vw,54px);border-radius:22px;background:linear-gradient(120deg,#1a3322 0%,#294936 64%,#52684b 100%);color:#faf7f2;position:relative;overflow:hidden}.site-dashboard-hero:after{content:"";position:absolute;width:340px;height:340px;border:1px solid #c5a05955;border-radius:50%;right:-80px;top:-140px;box-shadow:0 0 0 35px #c5a05912,0 0 0 75px #c5a0590b}.site-dashboard-hero .eyebrow{color:#dfc17e}.site-dashboard-hero h1{font:500 clamp(32px,5vw,52px)/1.05 Georgia,serif;max-width:700px;color:#faf7f2}.site-dashboard-hero p{max-width:700px;color:#e5e8df;line-height:1.75}.site-hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}.site-dashboard-hero .button{background:#c5a059;color:#1a3322;border:1px solid #c5a059}.site-dashboard-hero .button-secondary{background:transparent;color:#faf7f2;border-color:#faf7f266}.site-os-note{display:flex;justify-content:space-between;align-items:center;gap:18px;padding:22px 24px;border:1px solid #e6dfd3;border-radius:16px;background:#faf7f2}.site-os-note h2{font:500 23px Georgia,serif;color:#1a3322;margin:0 0 7px}.site-os-note p{max-width:740px;margin:0}.site-os-note .button{flex:none}.site-tools-grid{grid-template-columns:repeat(2,minmax(0,1fr))}#ops-snapshot,#legacy-bookings{display:none!important}.site-tools-grid .admin-home-card{min-height:110px;border-radius:14px;padding:18px}.site-tools-grid .admin-home-card[hidden]{display:none!important}.site-tools-grid .admin-home-card strong{font-size:15px}.site-tools-grid .admin-home-card small{line-height:1.55}.admin-module-tools{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.admin-module-tools input{flex:1;min-width:220px}.site-tools-grid .admin-home-card:hover{transform:translateY(-2px);box-shadow:0 12px 26px #24242110;border-color:#c5a059}@media(max-width:650px){.site-os-note{align-items:flex-start;flex-direction:column}.site-tools-grid{grid-template-columns:1fr}.site-dashboard-hero{padding:27px 22px}}
 </style>
 <script>
-// @ts-nocheck
 import { supabaseUrl, publishableKey } from "../../lib/supabase-public";
 let accessToken="";
 const el=id=>document.getElementById(id);
 const headers=()=>({apikey:publishableKey,Authorization:"Bearer "+accessToken,"Content-Type":"application/json"});
-async function api(path,options={}){const r=await fetch(supabaseUrl+path,{...options,headers:{...headers(),...(options.headers||{})}});const d=await r.json().catch(()=>null);if(!r.ok)throw new Error(d?.message||d?.details||d?.error_description||"Request failed.");return d}
-function node(tag,cls,value){const n=document.createElement(tag);if(cls)n.className=cls;n.textContent=value==null?"—":String(value);return n}
-function localDate(d){return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10)}
-async function loadOverview(){
- const feedback=el("snapshot-feedback");feedback.textContent="Refreshing live business data…";el("refresh").disabled=true;
- const today=localDate(new Date()),from=localDate(new Date(Date.now()-30*86400000)),to=localDate(new Date(Date.now()+335*86400000));
- const results=await Promise.allSettled([
-  api("/rest/v1/rpc/admin_get_bookings",{method:"POST",body:JSON.stringify({p_start_date:from,p_end_date:to})}),
-  api("/rest/v1/experience_catalog?select=id,experience_key,price_usd,is_active"),
-  api("/rest/v1/availability_slots?select=id&slot_date=gte."+today+"&is_active=eq.true"),
-  api("/rest/v1/rpc/admin_get_ai_conversations",{method:"POST",body:"{}"}),
-  api("/rest/v1/rpc/admin_get_notification_logs",{method:"POST",body:"{}"})
- ]);
- const [bookings,tours,slots,chats,notifications]=results;
- if(bookings.status==="fulfilled"){
-  const rows=Array.isArray(bookings.value)?bookings.value:[];
-  const pending=rows.filter(x=>["New","Pending"].includes(x.booking_status));
-  const confirmed=rows.filter(x=>x.booking_status==="Confirmed");
-  const priceByExperience=new Map((tours.status==="fulfilled"?tours.value:[]).map(t=>[t.experience_key,Number(t.price_usd)||0]));
-  const amount=confirmed.reduce((sum,x)=>sum+(priceByExperience.get(x.experience)||0)*Number(x.guest_count||1),0);
-  el("stat-total").textContent=rows.length;el("stat-new").textContent=pending.length;el("stat-confirmed").textContent=confirmed.length;el("stat-value").textContent="$"+amount.toLocaleString("en-US",{maximumFractionDigits:0});
-  const recent=el("recent-bookings");recent.replaceChildren();
-  rows.slice().sort((a,b)=>String(b.created_at||b.booking_date||"").localeCompare(String(a.created_at||a.booking_date||""))).slice(0,6).forEach(b=>{
-   const card=document.createElement("article");card.className="admin-booking-card";
-   const top=document.createElement("div");top.className="admin-booking-top";
-   top.append(node("strong","",b.guest_name||"Guest"),node("span","status-pill status-"+String(b.booking_status||"new").toLowerCase(),b.booking_status||"New"));
-   const meta=node("p","muted",(b.experience||"Experience")+" · "+(b.booking_date||"Date pending")+" · "+(b.guest_count||1)+" guest(s)");
-   card.append(top,meta);recent.append(card);
-  });
-  if(!rows.length)recent.append(node("p","muted","No bookings in this reporting period."));
- }else{el("stat-total").textContent="—";feedback.textContent="Bookings: "+bookings.reason.message}
- const put=(id,result,fn)=>{if(result.status==="fulfilled")fn(result.value);else{el(id).textContent="—";feedback.textContent+=(feedback.textContent? " · ":"")+result.reason.message}};
- put("stat-tours",tours,v=>el("stat-tours").textContent=v.filter(x=>x.is_active).length);
- put("stat-slots",slots,v=>el("stat-slots").textContent=v.length);
- put("stat-chats",chats,v=>el("stat-chats").textContent=v.length);
- put("stat-notifications",notifications,v=>el("stat-notifications").textContent=v.length);
- el("snapshot-date").textContent="Reporting window: last 30 days to next 365 days · Updated "+new Date().toLocaleString();
- if(feedback.textContent==="Refreshing live business data…")feedback.textContent="Overview refreshed. Check individual sections for full records.";else feedback.textContent="Some dashboard data could not be loaded: "+feedback.textContent;
- el("refresh").disabled=false;
-}
 el("login-form").addEventListener("submit",async e=>{
- e.preventDefault();const button=el("login-button");button.disabled=true;el("login-feedback").textContent="Verifying administrator…";
+ e.preventDefault();const button=el("login-button");button.disabled=true;el("login-feedback").textContent="Verifying administrator access…";
  try{
-  const r=await fetch(supabaseUrl+"/auth/v1/token?grant_type=password",{method:"POST",headers:{apikey:publishableKey,"Content-Type":"application/json"},body:JSON.stringify({email:el("admin-email").value.trim(),password:el("admin-password").value})});
-  const session=await r.json();if(!r.ok)throw new Error(session.msg||session.message||"Sign in failed.");
+  const response=await fetch(supabaseUrl+"/auth/v1/token?grant_type=password",{method:"POST",headers:{apikey:publishableKey,"Content-Type":"application/json"},body:JSON.stringify({email:el("admin-email").value.trim(),password:el("admin-password").value})});
+  const session=await response.json();if(!response.ok||!session.access_token||!session.user?.id)throw new Error(session.msg||session.message||"Sign in failed.");
   accessToken=session.access_token;
-  const admins=await api("/rest/v1/admin_users?select=user_id&user_id=eq."+encodeURIComponent(session.user.id));
-  if(!admins.length){accessToken="";throw new Error("This account is not authorised as an administrator.");}
-  el("login-panel").hidden=true;el("manager").hidden=false;await loadOverview();
- }catch(error){el("login-feedback").textContent=error.message}finally{button.disabled=false}
+  const check=await fetch(supabaseUrl+"/rest/v1/admin_users?select=user_id&user_id=eq."+encodeURIComponent(session.user.id),{headers:{apikey:publishableKey,Authorization:"Bearer "+accessToken,Accept:"application/json"}});
+  const admins=await check.json();if(!check.ok||!Array.isArray(admins)||!admins.length)throw new Error("This account is not authorised as an administrator.");
+  el("login-panel").hidden=true;el("manager").hidden=false;
+ }catch(error){accessToken="";el("login-feedback").textContent=error instanceof Error?error.message:"Unable to sign in.";}finally{button.disabled=false;}
 });
 const moduleSearch=el("module-search");
 const moduleCards=[...document.querySelectorAll("#admin-module-grid .admin-home-card")];
-function filterModules(){
- const q=moduleSearch.value.trim().toLocaleLowerCase();
- let visible=0;
- moduleCards.forEach(card=>{
-  const match=card.textContent.toLocaleLowerCase().includes(q);
-  card.hidden=!match;
-  if(match)visible++;
- });
- el("module-count").textContent=visible+" of "+moduleCards.length+" modules";
- el("module-empty").hidden=visible!==0;
-}
+function filterModules(){const q=moduleSearch.value.trim().toLocaleLowerCase();let visible=0;moduleCards.forEach(card=>{const match=card.textContent.toLocaleLowerCase().includes(q);card.hidden=!match;if(match)visible++;});el("module-count").textContent=visible+" of "+moduleCards.length+" website tools";el("module-empty").hidden=visible!==0;}
 moduleSearch.addEventListener("input",filterModules);
-el("refresh").addEventListener("click",loadOverview);
-el("logout").addEventListener("click",async()=>{try{await fetch(supabaseUrl+"/auth/v1/logout",{method:"POST",headers:headers()})}catch{}accessToken="";el("manager").hidden=true;el("login-panel").hidden=false;el("login-form").reset()});
+el("logout").addEventListener("click",async()=>{try{if(accessToken)await fetch(supabaseUrl+"/auth/v1/logout",{method:"POST",headers:headers()});}catch{}accessToken="";el("manager").hidden=true;el("login-panel").hidden=false;el("login-form").reset();el("login-feedback").textContent="You have signed out.";});
 </script>
+
 </SiteLayout>
