@@ -36,7 +36,7 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
 <script>
 import { supabaseUrl, publishableKey } from "../../lib/supabase-public";
 let accessToken="";
-const el=id=>document.getElementById(id);
+const el=(id:string)=>document.getElementById(id)!;
 const headers=()=>({apikey:publishableKey,Authorization:"Bearer "+accessToken,"Content-Type":"application/json"});
 el("login-form").addEventListener("submit",async e=>{
  e.preventDefault();const button=el("login-button");button.disabled=true;el("login-feedback").textContent="Verifying administrator access…";
@@ -53,7 +53,7 @@ const moduleSearch=el("module-search");
 const moduleCards=[...document.querySelectorAll("#admin-module-grid .admin-home-card")];
 function filterModules(){const q=moduleSearch.value.trim().toLocaleLowerCase();let visible=0;moduleCards.forEach(card=>{const match=card.textContent.toLocaleLowerCase().includes(q);card.hidden=!match;if(match)visible++;});el("module-count").textContent=visible+" of "+moduleCards.length+" website tools";el("module-empty").hidden=visible!==0;}
 moduleSearch.addEventListener("input",filterModules);
-el("logout").addEventListener("click",async()=>{try{if(accessToken)await fetch(supabaseUrl+"/auth/v1/logout",{method:"POST",headers:headers()});}catch{}accessToken="";el("manager").hidden=true;el("login-panel").hidden=false;el("login-form").reset();el("login-feedback").textContent="You have signed out.";});
+el("logout").addEventListener("click",async()=>{try{if(accessToken)await fetch(supabaseUrl+"/auth/v1/logout",{method:"POST",headers:headers()});}catch{}accessToken="";el("manager").hidden=true;el("login-panel").hidden=false;(el("login-form") as HTMLFormElement).reset();el("login-feedback").textContent="You have signed out.";});
 </script>
 
 </SiteLayout>
