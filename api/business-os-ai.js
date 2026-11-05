@@ -1,4 +1,20 @@
-const json = (statusCode, body) => ({ statusCode, headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store", "Vary": "Origin" }, body: JSON.stringify(body) });
+// Best-effort per-instance guard. This is not a durable or cross-instance quota.
+const requestWindows = new Map();
+const WINDOW_MS = 10 * 60 * 1000;
+const MAX_REQUESTS_PER_WINDOW = 8;
+const consumeRequest = (userId) => {
+  const now = Date.now();
+  const recent = (requestWindows.get(userId) || []).filter((stamp) => now - stamp < WINDOW_MS);
+  if (recent.length >= MAX_REQUESTS_PER_WINDOW) return false;
+  recent.push(now);
+  requestWindows.set(userId, recent);
+  if (requestWindows.size > 1000) {
+    for (const [key, stamps] of requestWindows) {
+      if (!stamps.some((stamp) => now - stamp < WINDOW_MS)) requestWindows.delete(key);
+    }
+  }
+  return true;
+};
 
 export default async function handler(req, res) {
   const origin = req.headers.origin;
@@ -27,7 +43,10 @@ export default async function handler(req, res) {
     const admins = await adminResponse.json();
     if (!Array.isArray(admins) || admins.length === 0) return res.status(403).json({ error: "Administrator access is required." });
 
+    if (!user?.id) return res.status(401).json({ error: "A valid administrator session is required." });
+    if (!consumeRequest(user.id)) return res.status(429).json({ error: "You have reached the preview limit of 8 AI requests per 10 minutes on this server instance. Please wait and retry." });
     const body = typeof req.body === "string" ? JSON.parse(req.body) : (req.body || {});
+    if (!body || typeof body !== "object" || Array.isArray(body)) return res.status(400).json({ error: "Invalid request body." });
     const prompt = typeof body.prompt === "string" ? body.prompt.trim() : "";
     const provider = body.provider;
     if (prompt.length < 10 || prompt.length > 6000) return res.status(400).json({ error: "Enter a task between 10 and 6,000 characters." });
@@ -43,17 +62,17 @@ export default async function handler(req, res) {
     const system = "You are the Materuni Hosts Business OS assistant. Help operate a community-led cultural tourism business in Materuni Village, Tanzania. Be accurate, practical and concise. Do not invent prices, availability, reviews, cultural facts, bookings, analytics or integrations. Treat all external actions as proposals only: you cannot publish, send messages, change budgets, alter bookings, or modify production systems. Mark assumptions and request verification when facts are missing. Use the approved brand voice: authentic Chagga heritage, warm human storytelling, simple premium presentation; not generic safari marketplace copy.";
     let answer = "";
     if (provider === "openai") {
-      const r = await fetch("https://api.openai.com/v1/responses", { method: "POST", headers: { Authorization: "Bearer " + config.key, "Content-Type": "application/json" }, body: JSON.stringify({ model: config.model, instructions: system, input: prompt, max_output_tokens: 1400 }) });
+      const r = await fetch("https://api.openai.com/v1/responses", { method: "POST", headers: { Authorization: "Bearer " + config.key, "Content-Type": "application/json" }, body: JSON.stringify({ model: config.model, instructions: system, input: prompt, max_output_tokens: 1400 }), signal: AbortSignal.timeout(45000) });
       const d = await r.json();
       if (!r.ok) return res.status(502).json({ error: "OpenAI could not complete this request. Check provider status and API billing, then retry." });
       answer = (d.output || []).flatMap(x => x.content || []).filter(x => x.type === "output_text").map(x => x.text).join("\n");
     } else if (provider === "anthropic") {
-      const r = await fetch("https://api.anthropic.com/v1/messages", { method: "POST", headers: { "x-api-key": config.key, "anthropic-version": "2023-06-01", "Content-Type": "application/json" }, body: JSON.stringify({ model: config.model, max_tokens: 1400, system, messages: [{ role: "user", content: prompt }] }) });
+      const r = await fetch("https://api.anthropic.com/v1/messages", { method: "POST", headers: { "x-api-key": config.key, "anthropic-version": "2023-06-01", "Content-Type": "application/json" }, body: JSON.stringify({ model: config.model, max_tokens: 1400, system, messages: [{ role: "user", content: prompt }] }), signal: AbortSignal.timeout(45000) });
       const d = await r.json();
       if (!r.ok) return res.status(502).json({ error: "Claude could not complete this request. Check provider status and API billing, then retry." });
       answer = (d.content || []).filter(x => x.type === "text").map(x => x.text).join("\n");
     } else {
-      const r = await fetch("https://generativelanguage.googleapis.com/v1beta/models/" + encodeURIComponent(config.model) + ":generateContent?key=" + encodeURIComponent(config.key), { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ systemInstruction: { parts: [{ text: system }] }, contents: [{ role: "user", parts: [{ text: prompt }] }], generationConfig: { maxOutputTokens: 1400 } }) });
+      const r = await fetch("https://generativelanguage.googleapis.com/v1beta/models/" + encodeURIComponent(config.model) + ":generateContent?key=" + encodeURIComponent(config.key), { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ systemInstruction: { parts: [{ text: system }] }, contents: [{ role: "user", parts: [{ text: prompt }] }], generationConfig: { maxOutputTokens: 1400 } }), signal: AbortSignal.timeout(45000) });
       const d = await r.json();
       if (!r.ok) return res.status(502).json({ error: "Gemini could not complete this request. Check provider status and API billing, then retry." });
       answer = (d.candidates || []).flatMap(x => x.content?.parts || []).map(x => x.text || "").join("\n");
@@ -61,6 +80,8 @@ export default async function handler(req, res) {
     if (!answer.trim()) return res.status(502).json({ error: "The provider returned an empty response." });
     return res.status(200).json({ answer, provider, model: config.model, generatedAt: new Date().toISOString(), mode: "draft_only" });
   } catch (error) {
+    if (error?.name === "TimeoutError" || error?.name === "AbortError") return res.status(504).json({ error: "The AI provider took too long to respond. Try again with a shorter task." });
+    if (error instanceof SyntaxError) return res.status(400).json({ error: "The request body must be valid JSON." });
     return res.status(500).json({ error: "AI request failed safely. Check the deployment runtime logs and try again." });
   }
 };
