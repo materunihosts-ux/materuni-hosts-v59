@@ -38,7 +38,7 @@ import { supabaseUrl, publishableKey } from "../../lib/supabase-public";
 let accessToken="";
 const el=(id:string): any=>document.getElementById(id);
 const headers=()=>({apikey:publishableKey,Authorization:"Bearer "+accessToken,"Content-Type":"application/json"});
-el("login-form").addEventListener("submit",async e=>{
+el("login-form").addEventListener("submit",async (e:SubmitEvent)=>{
  e.preventDefault();const button=el("login-button");button.disabled=true;el("login-feedback").textContent="Verifying administrator access…";
  try{
   const response=await fetch(supabaseUrl+"/auth/v1/token?grant_type=password",{method:"POST",headers:{apikey:publishableKey,"Content-Type":"application/json"},body:JSON.stringify({email:el("admin-email").value.trim(),password:el("admin-password").value})});
