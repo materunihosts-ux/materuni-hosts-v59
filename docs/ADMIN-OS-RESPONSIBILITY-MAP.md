@@ -29,7 +29,7 @@ Purpose: run the business, manage growth issues and coordinate guest journeys.
 
 Owns:
 - Booking and experience operations.
-- Guest inbox, enquiries and CRM workflows.
+- Guest inbox, enquiry triage and follow-up status tracking.
 - Growth engine: technical SEO audits, keyword/content research, SEO metadata tasks and campaign planning.
 - AI-assisted analysis and draft preparation.
 - Performance reporting.
@@ -63,7 +63,7 @@ Public Website Dashboard navigation is task-led:
 | SEO research brief | Guided research template | Verified keyword intelligence |
 | Blog draft | Local browser draft and Markdown export | Cloud-saved CMS content or auto-publishing |
 | SEO metadata editor | Existing route and Supabase site_settings save path | Guaranteed immediate search ranking improvements |
-| Guest inbox | Existing concierge conversation tools | Full HubSpot-grade CRM pipeline |
+| Guest inbox | Existing concierge conversation tools and status updates | Full HubSpot-grade CRM pipeline, contact deduplication or automated follow-ups |
 | AI command center | Draft interface and server-side provider abstraction | Connected AI until provider keys are configured and tested |
 | Approval Center | Approval policy preview | A live approval queue or execution authorization |
 | External campaign publishing | Not connected | Automated social publishing |
