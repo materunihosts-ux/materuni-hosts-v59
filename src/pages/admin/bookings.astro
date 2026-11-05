@@ -45,6 +45,7 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
 // @ts-nocheck
 
 import { supabaseUrl, publishableKey } from "../../lib/supabase-public";
+import { saveAdminSession, restoreAdminSession, signOutAdmin } from "../../lib/admin-session.js";
 let accessToken = "";
 const el = id => document.getElementById(id);
 const headers = () => ({ apikey: publishableKey, Authorization: "Bearer " + accessToken, "Content-Type": "application/json" });
@@ -291,11 +292,13 @@ el("login-form").addEventListener("submit", async event => {
     accessToken = session.access_token;
     const admins = await api("/rest/v1/admin_users?select=user_id&user_id=eq." + encodeURIComponent(session.user.id));
     if (!admins.length) { accessToken = ""; throw new Error("This account is not authorised as an administrator."); }
+    saveAdminSession(session);
     el("login-panel").hidden = true; el("manager").hidden = false;
     await Promise.all([loadBookings(),loadNotificationLogs()]);
   } catch (error) { el("login-feedback").textContent = error.message; }
   finally { button.disabled = false; }
 });
+restoreAdminSession(supabaseUrl,publishableKey).then(async session=>{if(!session)return;accessToken=session.accessToken;el("login-panel").hidden=true;el("manager").hidden=false;await Promise.all([loadBookings(),loadNotificationLogs()]).catch(error=>{el("booking-feedback").textContent=error.message})});
 el("filter-form").addEventListener("submit", event => { event.preventDefault(); loadBookings(); });
 el("status-filter").addEventListener("change", loadBookings);
 let bookingSearchTimer;
