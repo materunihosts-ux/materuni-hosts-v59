@@ -1059,23 +1059,22 @@ el("document-form").addEventListener("submit",ev=>{
    <div class="doc-card">
     <span class="doc-card-kicker">01 · Date & Timing</span>
     <strong>${escapeHtml(date)}</strong>
-    <small>${escapeHtml(timing)}</small>
+    ${timing?`<small>${escapeHtml(timing)}</small>`:""}
    </div>
-   <div class="doc-card">
-    <span class="doc-card-kicker">02 · Meeting Point & GPS</span>
+   ${meetingPoint?`<div class="doc-card">
+    <span class="doc-card-kicker">02 · Meeting point / pickup</span>
     <strong>${escapeHtml(meetingPoint)}</strong>
-    <small>Direct access via Moshi 4x4 / Taxi</small>
-   </div>
+   </div>`:""}
    <div class="doc-card">
     <span class="doc-card-kicker">03 · Guest & Party</span>
     <strong>${escapeHtml(recipient)}</strong>
-    <small>${escapeHtml(pax)} ${country?"· "+escapeHtml(country):""}</small>
+    <small>${[pax,country].filter(Boolean).map(escapeHtml).join(" · ")}</small>
    </div>
-   <div class="doc-card">
-    <span class="doc-card-kicker">04 · Lead Host & Contact</span>
+   ${host?`<div class="doc-card">
+    <span class="doc-card-kicker">04 · Lead host & contact</span>
     <strong>${escapeHtml(host)}</strong>
     <small>WhatsApp: ${escapeHtml(coPhone)}</small>
-   </div>
+   </div>`:""}
   </div>
 
   <div class="doc-title-block">
