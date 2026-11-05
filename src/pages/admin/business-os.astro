@@ -31,52 +31,56 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
   <div id="workspace" class="workspace" hidden>
     <aside class="sidebar">
       <a class="brand" href="/admin/business-os"><span class="brand-mark">MH</span><span><b>Materuni Hosts</b><small>BUSINESS OS</small></span></a>
-      <div class="nav-label">BUSINESS OPERATIONS</div>
+      <div class="nav-label">OPERATIONS</div>
       <a class="nav-item active" href="/admin/business-os"><span>⌂</span> Overview</a>
       <a class="nav-item" href="/admin/bookings"><span>▦</span> Bookings</a>
-      <a class="nav-item" href="/admin/conversations"><span>◌</span> Guest inbox</a>
+      <a class="nav-item" href="/admin/conversations"><span>◌</span> Guest CRM & inbox</a>
       <a class="nav-item" href="/admin/tours"><span>◇</span> Experiences & pricing</a>
-      <a class="nav-item" href="/admin/marketing"><span>↗</span> Growth & marketing</a>
-      <div class="nav-label nav-label-spaced">AI & INTELLIGENCE</div>
+      <div class="nav-label nav-label-spaced">GROWTH ENGINE</div>
+      <a class="nav-item" href="/admin/marketing"><span>↗</span> Marketing & SEO studio</a>
+      <a class="nav-item" href="/admin/seo"><span>⌕</span> SEO metadata</a>
+      <div class="nav-label nav-label-spaced">AI & CONTROL</div>
       <a class="nav-item" href="/admin/ai"><span>✳</span> AI assistant</a>
-      <a class="nav-item" href="/admin/analytics"><span>▤</span> Analytics</a>
+      <a class="nav-item" href="/admin/analytics"><span>▤</span> Performance insights</a>
       <a class="nav-item" href="/admin/approvals"><span>✓</span> Approvals & safety</a>
+      <div class="nav-label nav-label-spaced">WEBSITE</div>
+      <a class="nav-item" href="/admin"><span>↗</span> Public website dashboard</a>
       <div class="sidebar-bottom"><div class="pilot-state"><i></i><span><b>Private pilot</b><small>Workspace preview</small></span></div><button id="logout" class="logout-button" type="button">Sign out ↗</button></div>
     </aside>
 
     <section class="main-area">
-      <header class="topbar"><div class="mobile-brand"><span class="brand-mark">MH</span><b>Materuni Hosts</b></div><div class="breadcrumb">Workspace <span>/</span> Overview</div><div class="top-actions"><span class="secure-label">● Private workspace</span><button class="avatar" type="button" aria-label="Administrator account">MH</button></div></header>
+      <header class="topbar"><div class="mobile-brand"><span class="brand-mark">MH</span><b>Materuni Hosts</b></div><div class="breadcrumb">Business OS <span>/</span> Overview <span class="today-label" id="today-label"></span></div><div class="top-actions"><span class="secure-label">● Private workspace</span><button class="avatar" type="button" aria-label="Administrator account">MH</button></div></header>
       <main class="content">
-        <div class="page-heading"><div><p class="eyebrow">BUSINESS COMMAND CENTER</p><h1>Good to have you back.</h1><p class="muted">Here’s your workspace for running Materuni Hosts.</p></div><a class="outline-button" href="/admin">Public website dashboard ↗</a></div>
+        <div class="page-heading"><div><p class="eyebrow">BUSINESS COMMAND CENTER</p><h1>Good to have you back.</h1><p class="muted">Your daily operations, growth work and business intelligence in one calm workspace.</p></div><a class="outline-button" href="/admin">Manage public website ↗</a></div>
 
         <section class="hero-panel">
-          <div class="hero-copy"><span class="hero-kicker">YOUR BUSINESS, CONNECTED</span><h2>More clarity.<br/><em>Less busywork.</em></h2><p>Run guest operations, manage growth and resolve marketing issues from one connected workspace. Your public website has its own dedicated control dashboard.</p><a href="/admin/ai" class="hero-link">Talk to your AI assistant <span>→</span></a></div>
+          <div class="hero-copy"><span class="hero-kicker">YOUR BUSINESS, CONNECTED</span><h2>More clarity.<br/><em>Less busywork.</em></h2><p>Manage guest operations and marketing issues here. The public website dashboard remains a separate space for editing pages, images and website settings.</p><a href="/admin/ai" class="hero-link">Talk to your AI assistant <span>→</span></a></div>
           <div class="hero-art" aria-hidden="true"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="sun-disc"></div><div class="hill hill-back"></div><div class="hill hill-front"></div><div class="art-caption">MATERUNI<br/><small>AT THE FOOT OF KILIMANJARO</small></div></div>
         </section>
 
-        <div class="section-heading"><div><p class="eyebrow">DAILY OPERATIONS</p><h2>Run the business</h2></div><span class="section-note">Bookings, guests and experiences</span></div>
-        <section class="task-grid">
+        <div class="section-heading"><div><p class="eyebrow">DAILY OPERATIONS</p><h2>What needs your attention?</h2></div><span class="section-note">Start with a task</span></div>
+        <div class="quick-search"><span>⌕</span><input id="workspace-search" type="search" placeholder="Find a task: bookings, guest, SEO, campaign…" aria-label="Search Business OS tasks"><kbd>Search</kbd></div>
+        <section class="task-grid searchable-workspace">
           <a class="task-card task-main" href="/admin/bookings"><span class="task-icon">▦</span><span class="task-arrow">↗</span><h3>Manage bookings</h3><p>Review guest requests, confirm dates and manage upcoming experiences.</p><b>Open bookings <span>→</span></b></a>
           <a class="task-card" href="/admin/conversations"><span class="task-icon">◌</span><span class="task-arrow">↗</span><h3>Guest conversations</h3><p>Keep enquiries and guest follow-ups moving.</p><b>Open inbox <span>→</span></b></a>
           <a class="task-card" href="/admin/tours"><span class="task-icon">◇</span><span class="task-arrow">↗</span><h3>Experiences & prices</h3><p>Update tour information, prices and inclusions.</p><b>Manage catalogue <span>→</span></b></a>
-          <a class="task-card" href="/admin/marketing"><span class="task-icon">↗</span><span class="task-arrow">↗</span><h3>Growth & marketing</h3><p>Manage SEO issues, content opportunities and campaigns in the growth workspace.</p><b>Open growth engine <span>→</span></b></a>
         </section>
 
 
         <section class="growth-section" aria-labelledby="growth-heading">
           <div class="section-heading"><div><p class="eyebrow">GROWTH & MARKETING COMMAND CENTER</p><h2 id="growth-heading">Find opportunities. Fix issues. Grow steadily.</h2></div><span class="section-note">Visibly-inspired SEO · HubSpot-inspired CRM</span></div>
-          <div class="growth-grid">
+          <div class="growth-grid searchable-workspace">
             <a class="growth-card growth-feature" href="/admin/marketing"><span class="growth-tag">SEO INTELLIGENCE</span><strong>Website visibility & SEO</strong><p>Run on-page audits, identify technical issues and prepare keyword-led content briefs.</p><span class="growth-action">Open SEO studio ↗</span></a>
             <a class="growth-card" href="/admin/conversations"><span class="growth-icon">◎</span><strong>CRM & lead pipeline</strong><p>Keep enquiries, guest conversations and follow-ups moving in one place.</p><span class="growth-action">Open guest CRM ↗</span></a>
             <a class="growth-card" href="/admin/marketing"><span class="growth-icon">✳</span><strong>Campaign & content studio</strong><p>Plan useful stories, social content and email campaign drafts for approval.</p><span class="growth-action">Open marketing ↗</span></a>
             <a class="growth-card" href="/admin/approvals"><span class="growth-icon">✓</span><strong>Workflow approvals</strong><p>Keep publishing, customer messages and sensitive business actions controlled.</p><span class="growth-action">Review approvals ↗</span></a>
             <a class="growth-card" href="/admin/analytics"><span class="growth-icon">⌁</span><strong>Growth performance</strong><p>Review available business and channel reporting without inventing missing metrics.</p><span class="growth-action">View insights ↗</span></a>
           </div>
-          <p class="growth-disclaimer">Connection status: the SEO crawler and existing admin tools are available; Google Search Console, external campaign publishing, durable CRM automation and AI provider integrations still require setup.</p>
+          <p class="growth-disclaimer"><strong>Current connection status:</strong> the website crawler and admin tools are available. Search Console data sync, social publishing, automated CRM follow-ups and live AI providers still need connection and testing.</p>
         </section>
         <section class="lower-grid">
-          <div class="panel assistant-panel"><div class="panel-top"><div><p class="eyebrow">AI BUSINESS ASSISTANT</p><h2>Your thinking partner</h2></div><span class="spark">✳</span></div><p>Analyse business performance, identify SEO and marketing issues, prepare campaigns and guest replies. Keep publishing and sensitive actions behind your approval.</p><a class="dark-button" href="/admin/ai">Open AI assistant <span>→</span></a><div class="provider-note"><i></i> AI provider keys and live generation still need configuration.</div></div>
-          <div class="panel readiness-panel"><p class="eyebrow">AUTOMATION ROADMAP</p><h2>Building your connected business</h2><div class="roadmap-item"><span class="roadmap-dot done">✓</span><div><b>Core admin workspace</b><small>Navigation and existing admin tools connected</small></div><span class="state-pill state-ready">Available</span></div><div class="roadmap-item"><span class="roadmap-dot progress">2</span><div><b>AI assistant</b><small>Interface prepared; provider setup pending</small></div><span class="state-pill state-progress">Setup</span></div><div class="roadmap-item"><span class="roadmap-dot">3</span><div><b>Marketing intelligence</b><small>SEO audits, content planning, campaign workflows and growth tasks</small></div><span class="state-pill">Planned</span></div><div class="roadmap-item"><span class="roadmap-dot">4</span><div><b>CRM & customer journeys</b><small>Lead pipeline, guest history, follow-ups and performance insights</small></div><span class="state-pill">Planned</span></div></div>
+          <div class="panel assistant-panel"><div class="panel-top"><div><p class="eyebrow">AI BUSINESS ASSISTANT</p><h2>Your thinking partner</h2></div><span class="spark">✳</span></div><p>Analyse business performance, identify SEO and marketing issues, prepare campaigns and guest replies. Keep publishing and sensitive actions behind your approval.</p><a class="dark-button" href="/admin/ai">Open AI assistant <span>→</span></a><div class="provider-note"><i></i> AI setup required · live generation is not yet confirmed.</div></div>
+          <div class="panel readiness-panel"><p class="eyebrow">AUTOMATION ROADMAP</p><h2>Building your connected business</h2><div class="roadmap-item"><span class="roadmap-dot done">✓</span><div><b>Core admin workspace</b><small>Dashboard, login and existing tools</small></div><span class="state-pill state-ready">Available</span></div><div class="roadmap-item"><span class="roadmap-dot progress">2</span><div><b>AI assistant</b><small>Interface prepared; provider setup pending</small></div><span class="state-pill state-progress">Setup</span></div><div class="roadmap-item"><span class="roadmap-dot">3</span><div><b>Marketing intelligence</b><small>SEO audits, content planning, campaign workflows and growth tasks</small></div><span class="state-pill">Planned</span></div><div class="roadmap-item"><span class="roadmap-dot">4</span><div><b>CRM & customer journeys</b><small>Lead pipeline, guest history, follow-ups and performance insights</small></div><span class="state-pill">Planned</span></div></div>
         </section>
         <footer class="app-footer"><span>Materuni Hosts · Business OS</span><span>Built around people, place and meaningful experiences.</span></footer>
       </main>
@@ -122,6 +126,9 @@ recoveryForm.addEventListener("submit",async(event)=>{event.preventDefault();con
 const hashParams=new URLSearchParams(window.location.hash.replace(/^#/,""));
 if(hashParams.get("type")==="recovery"&&hashParams.get("access_token")){recoveryToken=hashParams.get("access_token")||"";login.hidden=true;recoveryForm.hidden=true;newPasswordForm.hidden=false;window.history.replaceState(null,"",window.location.pathname+window.location.search);byId("password-feedback").textContent="Choose a new password for your administrator account.";}
 newPasswordForm.addEventListener("submit",async(event)=>{event.preventDefault();const password=(byId("new-password") as HTMLInputElement).value;const confirmation=(byId("confirm-password") as HTMLInputElement).value;const f=byId("password-feedback");const b=byId("save-password") as HTMLButtonElement;if(password.length<8){f.textContent="Use at least 8 characters.";return;}if(password!==confirmation){f.textContent="The passwords do not match.";return;}b.disabled=true;f.textContent="Updating your password securely…";try{const response=await fetch(supabaseUrl+"/auth/v1/user",{method:"PUT",headers:{apikey:publishableKey,Authorization:"Bearer "+recoveryToken,"Content-Type":"application/json"},body:JSON.stringify({password})});const result=await response.json().catch(()=>({}));if(!response.ok)throw new Error(result.msg||result.message||"Password update failed. Request a fresh reset link.");recoveryToken="";newPasswordForm.hidden=true;login.hidden=false;panel.querySelector("h1")!.textContent="Password updated.";feedback.textContent="Your password has been changed. Sign in with your new password.";(byId("password")).focus();}catch(error){f.textContent=error instanceof Error?error.message:"Password update failed.";}finally{b.disabled=false;}});
+const workspaceSearch=byId("workspace-search") as HTMLInputElement;
+workspaceSearch.addEventListener("input",()=>{const query=workspaceSearch.value.trim().toLocaleLowerCase();document.querySelectorAll(".searchable-workspace > a").forEach(card=>{const item=card as HTMLElement;item.hidden=!!query&&!item.textContent!.toLocaleLowerCase().includes(query);});});
+const todayLabel=byId("today-label");todayLabel.textContent=new Intl.DateTimeFormat(undefined,{weekday:"short",day:"numeric",month:"short"}).format(new Date());
 byId("logout").addEventListener("click",async()=>{try{if(accessToken)await fetch(supabaseUrl+"/auth/v1/logout",{method:"POST",headers:headers()});}catch{}accessToken="";workspace.hidden=true;panel.hidden=false;login.reset();feedback.textContent="You have signed out.";});
 </script>
 <style>
@@ -141,4 +148,10 @@ byId("logout").addEventListener("click",async()=>{try{if(accessToken)await fetch
 @media(max-width:1100px){.growth-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:700px){.sidebar{position:sticky;top:0;inset:auto;width:100%;height:auto;min-height:54px;padding:7px 9px;display:flex;flex-direction:row;gap:5px;overflow-x:auto;white-space:nowrap;background:#fff;border-right:0;border-bottom:1px solid var(--line)}.brand{display:none}.nav-label,.nav-label-spaced{display:none!important}.nav-item,.nav-item:not(.active){display:flex;flex:0 0 auto;justify-content:center;padding:9px 11px;margin:0;font-size:10px;gap:7px;background:#f7f6f2}.nav-item span{font-size:14px}.sidebar-bottom{display:none}.main-area{margin-left:0}.topbar{height:54px}.growth-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.growth-card{min-height:165px}.page-heading{gap:12px;flex-wrap:wrap}}
 @media(max-width:390px){.growth-grid{grid-template-columns:1fr}.growth-card{min-height:140px}}
+
+/* Business OS usability refinement */
+.today-label{margin-left:12px;color:#9a927f;font-size:10px}.quick-search{height:48px;display:flex;align-items:center;gap:11px;padding:0 14px;margin:-4px 0 18px;border:1px solid var(--line);border-radius:11px;background:#fff;color:#8b806c}.quick-search>span{font-size:19px}.quick-search input{flex:1;min-width:0;border:0;outline:0;background:transparent;color:var(--ink);font:12px Manrope,Arial,sans-serif}.quick-search input::placeholder{color:#aaa398}.quick-search kbd{padding:4px 7px;border:1px solid #ece7de;border-radius:5px;background:#faf8f4;color:#928a7c;font:9px Manrope,Arial,sans-serif}.searchable-workspace>a[hidden]{display:none!important}.growth-disclaimer{padding:11px 13px;border-radius:9px;background:#f5f2eb;border:1px solid #e9e2d4}.nav-item{line-height:1.35}.nav-item span{width:20px;display:inline-flex;justify-content:center;flex:none}.sidebar{overflow-y:auto}.sidebar-bottom{margin-top:auto}.task-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.growth-grid{grid-template-columns:repeat(5,minmax(0,1fr))}
+@media(max-width:1100px){.task-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.growth-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:700px){.sidebar{position:sticky;top:0;inset:auto;width:100%;height:auto;min-height:56px;padding:7px 10px;display:flex;flex-direction:row;gap:6px;overflow-x:auto;overflow-y:hidden;white-space:nowrap;background:#fff;border-right:0;border-bottom:1px solid var(--line);scrollbar-width:thin}.brand{display:none}.nav-label,.nav-label-spaced{display:none!important}.nav-item,.nav-item:not(.active){display:flex;flex:0 0 auto;justify-content:center;padding:10px 12px;margin:0;font-size:10px;border-radius:9px;background:#f7f6f2}.nav-item span{font-size:14px}.sidebar-bottom{display:none}.main-area{margin-left:0}.topbar{height:54px}.today-label{display:none}.quick-search{height:44px}.quick-search kbd{display:none}.task-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.growth-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.growth-card{min-height:150px}}
+@media(max-width:390px){.task-grid,.growth-grid{grid-template-columns:1fr}.task-card{min-height:145px}.growth-card{min-height:130px}}
 </style>
