@@ -18,7 +18,7 @@ Owns:
 
 Does not own:
 - Booking operations and reservation follow-up.
-- Guest CRM and sales pipeline.
+- A full guest CRM and sales pipeline.
 - Marketing campaigns and content calendars.
 - SEO issue triage, keyword research and growth reporting.
 - AI business analysis and automation workflows.
@@ -29,8 +29,8 @@ Purpose: run the business, manage growth issues and coordinate guest journeys.
 
 Owns:
 - Booking and experience operations.
-- Guest inbox, enquiry triage and follow-up status tracking.
-- Growth engine: technical SEO audits, keyword/content research, SEO metadata tasks and campaign planning.
+- Guest concierge inbox, enquiry triage and status tracking only; a full CRM pipeline is future work.
+- Growth engine: on-page SEO audits, guided research briefs, SEO metadata tasks and local content drafts. External keyword intelligence and campaign publishing are not connected.
 - AI-assisted analysis and draft preparation.
 - Performance reporting.
 - Approval policy and, in a later phase, a durable approval queue and controlled action execution.
@@ -40,7 +40,7 @@ The SEO metadata editor at `/admin/seo` belongs to the Business OS because it is
 ## Navigation model
 
 Business OS navigation is grouped into:
-1. Operations — overview, bookings, guest CRM/inbox, experiences and pricing.
+1. Operations — overview, bookings, guest inbox, experiences and pricing.
 2. Growth Engine — Marketing & SEO Studio and SEO Metadata Studio.
 3. AI & Control — AI assistant, performance insights and approvals.
 4. Website — shortcut to the Public Website Dashboard.
@@ -61,9 +61,9 @@ Public Website Dashboard navigation is task-led:
 | Public website content tools | Existing admin routes | A complete visual page builder |
 | On-page SEO crawler | Browser-side live public-page checks in Marketing & SEO Studio | Google rankings, keyword volume or backlink monitoring |
 | SEO research brief | Guided research template | Verified keyword intelligence |
-| Blog draft | Local browser draft and Markdown export | Cloud-saved CMS content or auto-publishing |
+| Blog draft | Local browser autosave, restore and Markdown export | Cloud-saved CMS content or auto-publishing |
 | SEO metadata editor | Existing route and Supabase site_settings save path | Guaranteed immediate search ranking improvements |
-| Guest inbox | Existing concierge conversation tools and status updates | Full HubSpot-grade CRM pipeline, contact deduplication or automated follow-ups |
+| Guest inbox | Existing concierge conversation tools and status updates | Full CRM pipeline, contact deduplication, outbound messaging or automated follow-ups |
 | AI command center | Draft interface and server-side provider abstraction | Connected AI until provider keys are configured and tested |
 | Approval Center | Approval policy preview | A live approval queue or execution authorization |
 | External campaign publishing | Not connected | Automated social publishing |
