@@ -30,7 +30,11 @@ const faqs = [
       .then(response=>response.ok?response.json():[])
       .then(rows=>{
         if(!Array.isArray(rows)||!rows[0]?.setting_value)return;
-        let entries;try{entries=JSON.parse(rows[0].setting_value)}catch{return}
+        let entries;
+        try {
+          const raw = rows[0].setting_value;
+          entries = typeof raw === "string" ? JSON.parse(raw) : raw;
+        } catch { return }
         if(!Array.isArray(entries)||!entries.length||entries.length>30||!entries.every(x=>x&&typeof x.question==="string"&&typeof x.answer==="string"))return;
         entries=entries.map(item=>/which experiences can i book/i.test(item.question)?{...item,answer:"Current prices per person are: Waterfall & Chagga Village Experience — $40 (TZS 106,000); Traditional Chagga Coffee Experience — $36 (TZS 95,000); Traditional Chagga Cooking Class — $49 (TZS 130,000); Materuni & Moshi Town Cultural Experience — $52 (TZS 138,000); Materuni & Rau Forest Nature Experience — $58 (TZS 153,000); and Materuni Overnight Village Experience — $90. The overnight price is published in USD only; ask your host to confirm the local-currency amount and the inclusions before booking. Transfers, where needed, are discussed separately."}:item);
         const list=document.querySelector(".faq-list");if(!list)return;
