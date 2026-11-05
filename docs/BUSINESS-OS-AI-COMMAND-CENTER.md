@@ -30,9 +30,9 @@ Only add the key for a provider that is intended to be tested. Redeploy the Prev
 - Do not submit guest names, email addresses, phone numbers, payment information, passwords, access tokens, or other sensitive personal data in prompts.
 - The selected AI provider receives the prompt. Review that provider's retention and data-processing terms before using it with business-sensitive material.
 - This first pilot does not persist prompts or generated drafts in Supabase. The current page keeps the latest output in browser memory and can export a text draft.
-- There is no durable usage ledger, approval queue, or server-side per-user rate limit in this first slice. Keep access restricted to trusted admins and monitor provider usage/billing.
+- The API applies a best-effort in-memory limit of 8 requests per 10 minutes per admin per server instance, plus a 45-second provider timeout. Serverless instances can scale/restart, so this is not a durable or cross-instance quota. A database-backed usage ledger and shared rate limiter are still required before broader access.
 - The API checks the Supabase user session and the existing `admin_users` allowlist on every request.
-- It rejects cross-origin browser requests and limits prompts to 6,000 characters.
+- It rejects cross-origin browser requests, limits prompts to 6,000 characters, validates the request body, and applies the best-effort per-instance request guard.
 - Provider errors are returned as safe error messages; secrets are never included in API responses.
 
 ## Preview test plan
