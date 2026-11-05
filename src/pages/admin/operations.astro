@@ -955,7 +955,9 @@ el("document-form").addEventListener("submit",ev=>{
 
  if(!Number.isFinite(total)||!Number.isFinite(paid)||!Number.isFinite(taxAmount)||total<0||paid<0||taxAmount<0){el("doc-feedback").textContent="Enter valid non-negative amounts for subtotal, tax and amount paid.";return;}
  if(taxAmount>0&&!taxLabel){el("doc-feedback").textContent="Add the verified tax or levy label, or set the amount to zero.";return;}
- if(["invoice","quotation","receipt"].includes(type)&&!parsedItems.length){el("doc-feedback").textContent="Add at least one item or service line before generating this financial document.";return;}
+ const financialDocument=["invoice","quotation","receipt","voucher","itinerary"].includes(type);
+ if(financialDocument&&!parsedItems.length){el("doc-feedback").textContent="Add at least one service or schedule line before generating this document.";return;}
+ if(financialDocument){const itemSubtotal=Math.round(parsedItems.reduce((sum,item)=>sum+Number(item.total||0),0)*100)/100;if(Math.abs(itemSubtotal-Math.round(total*100)/100)>0.01){el("doc-feedback").textContent="The line-item total ("+currency+" "+itemSubtotal.toFixed(2)+") does not match the entered subtotal ("+currency+" "+total.toFixed(2)+"). Correct the items or subtotal before generating.";return;}}
  if(paid>grandTotal){
   el("doc-feedback").textContent="Amount paid cannot exceed the total including tax or levy.";
   return;
@@ -1391,7 +1393,7 @@ el("document-form").addEventListener("submit",ev=>{
      created_by:currentUserId,
      subtotal:total,
      discount:0,
-     total,
+     total:grandTotal,
      notes:advice||null,
      terms:terms||null,
      rate_snapshot:{
@@ -1401,6 +1403,11 @@ el("document-form").addEventListener("submit",ev=>{
       timing,
       pax,
       company_name:coName,
+      tax_label:taxLabel||null,
+      tax_amount:taxAmount,
+      grand_total:grandTotal,
+      payment_status:paymentStatus,
+      payment_method:paymentMethod||null,
       created_at:new Date().toISOString()
      }
     };
@@ -1440,7 +1447,7 @@ el("document-form").addEventListener("submit",ev=>{
        ...common,
        invoice_number:ref,
        issue_date:date,
-       status:paid>=total&&total>0?"paid":paid>0?"partially_paid":"unpaid",
+       status:paid>=grandTotal&&grandTotal>0?"paid":paid>0?"partially_paid":"unpaid",
        amount_paid:paid,
        balance
       })
