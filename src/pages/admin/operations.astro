@@ -106,8 +106,8 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
 
     <div class="field full"><label for="doc-meeting-point">Meeting point / pickup details</label><input id="doc-meeting-point" maxlength="220" placeholder="Materuni Village, Materuni Juu, Moshi Rural, Tanzania — confirm the exact meeting point"></div>
 
-    <div class="field"><label for="doc-payment-status">Payment status</label><select id="doc-payment-status"><option value="">Select payment status</option><option value="paid">Paid in Full (Guaranteed)</option><option value="partially_paid">Partially Paid (Balance on Arrival)</option><option value="unpaid">Unpaid / Pay on Arrival</option></select></div>
-    <div class="field"><label for="doc-payment-method">Payment method</label><select id="doc-payment-method"><option value="">Select payment method (if applicable)</option><option value="credit_card">Online Credit / Debit Card</option><option value="mpesa">Vodacom M-Pesa Lipa Namba</option><option value="bank_wire">Bank Wire Transfer (CRDB / NMB)</option><option value="cash">Cash on Arrival (USD / TZS)</option></select></div>
+    <div class="field"><label for="doc-payment-status">Payment status</label><select id="doc-payment-status" required><option value="">Select payment status</option><option value="paid">Paid in Full (Guaranteed)</option><option value="partially_paid">Partially Paid (Balance on Arrival)</option><option value="unpaid">Unpaid / Pay on Arrival</option></select></div>
+    <div class="field"><label for="doc-payment-method">Payment method</label><select id="doc-payment-method"><option value="">Select payment method (if applicable)</option><option value="credit_card">Card payment (only if processed)</option><option value="mpesa">Mobile money (enter verified details)</option><option value="bank_wire">Bank transfer (enter verified details)</option><option value="cash">Cash (confirm currency and terms)</option></select></div>
 
     <div class="field"><label for="doc-price-plan">Price list to use (optional)</label><select id="doc-price-plan"><option value="">Select saved price list</option></select></div>
     <div class="field"><label for="doc-price-scope">Price list contents</label><select id="doc-price-scope"><option value="all">All packages</option><option value="single">One package only</option></select></div>
@@ -903,10 +903,10 @@ el("document-form").addEventListener("submit",ev=>{
  const country=el("doc-country").value.trim();
  const title=el("doc-title").value.trim();
  const date=el("doc-date").value||getTodayString();
- const timing=el("doc-timing").value.trim()||"09:00 AM – 03:30 PM";
- const pax=el("doc-pax").value.trim()||"2 Guests";
- const host=el("doc-host").value.trim()||"Saidi Materu & Local Hosts Team";
- const meetingPoint=el("doc-meeting-point").value.trim()||"Materuni Village, Materuni Juu, Moshi Rural, Tanzania (confirm exact meeting point)";
+ const timing=el("doc-timing").value.trim();
+ const pax=el("doc-pax").value.trim();
+ const host=el("doc-host").value.trim();
+ const meetingPoint=el("doc-meeting-point").value.trim();
  const paymentStatus=el("doc-payment-status").value;
  const paymentMethod=el("doc-payment-method").value;
  const total=Number(el("doc-amount").value||0);
@@ -922,24 +922,24 @@ el("document-form").addEventListener("submit",ev=>{
  // Customizer fields for complete editability
  const coName=el("doc-co-name")?.value.trim()||"MATERUNI HOSTS";
  const coSubtitle=el("doc-co-subtitle")?.value.trim()||"LOCAL CULTURAL EXPERIENCES · MATERUNI VILLAGE, MOSHI, TANZANIA";
- const coAddress=el("doc-co-address")?.value.trim()||"Materuni Village, Uru Rural, P.O. Box 1888 Moshi, Kilimanjaro, Tanzania";
- const coTaxId=el("doc-co-tax-id")?.value.trim()||"Registered Community Cultural Tourism Enterprise";
- const coEmail=el("doc-co-email")?.value.trim()||"materunihosts@gmail.com";
+ const coAddress=el("doc-co-address")?.value.trim()||"Materuni Village, Materuni Juu, Moshi Rural, Tanzania";
+ const coTaxId=el("doc-co-tax-id")?.value.trim()||"";
+ const coEmail=el("doc-co-email")?.value.trim()||"hello@materunihosts.com";
  const coPhone=el("doc-co-phone")?.value.trim()||"+255 612 068 540";
  const coWebsite=el("doc-co-website")?.value.trim()||"https://materunihosts.com";
 
- const bankName=el("doc-bank-name")?.value.trim()||"CRDB Bank Plc, Moshi Main Branch";
- const bankAccount=el("doc-bank-account")?.value.trim()||"Materuni Hosts · A/C: 0150... (USD / TZS)";
- const bankSwift=el("doc-bank-swift")?.value.trim()||"CORUTZTZ";
- const bankMpesa=el("doc-bank-mpesa")?.value.trim()||"Vodacom M-Pesa Lipa Namba (+255 612 068 540)";
- const bankCash=el("doc-bank-cash")?.value.trim()||"Accepted on arrival in clean USD banknotes (series 2013+) or TZS at Bank of Tanzania rate";
+ const bankName=el("doc-bank-name")?.value.trim()||"";
+ const bankAccount=el("doc-bank-account")?.value.trim()||"";
+ const bankSwift=el("doc-bank-swift")?.value.trim()||"";
+ const bankMpesa=el("doc-bank-mpesa")?.value.trim()||"";
+ const bankCash=el("doc-bank-cash")?.value.trim()||"";
 
- const taxLabel=el("doc-tax-label")?.value.trim()||"Community Tourism Levy (0% Inclusive)";
+ const taxLabel=el("doc-tax-label")?.value.trim()||"";
  const taxAmount=Number(el("doc-tax-amount")?.value||0);
 
  const signatoryName=el("doc-signatory-name")?.value.trim()||"Saidi Materu";
- const signatoryTitle=el("doc-signatory-title")?.value.trim()||"Founder & Lead Cultural Guide";
- const brandTagline=el("doc-brand-tagline")?.value.trim()||"Come as a guest. Leave as a friend.";
+ const signatoryTitle=el("doc-signatory-title")?.value.trim()||"Founder";
+ const brandTagline=el("doc-brand-tagline")?.value.trim()||"Experience Materuni through the people who call it home.";
 
  if(paid>total&&total>0){
   el("doc-feedback").textContent="Amount paid cannot exceed the document total.";
@@ -948,7 +948,7 @@ el("document-form").addEventListener("submit",ev=>{
 
  const docTypeLabels={
   voucher:{en:"BOOKING CONFIRMATION & TOUR VOUCHER",sw:"UTHIBITISHO WA ZIARA NA VOCHA",es:"CONFIRMACIÓN DE RESERVA Y VOUCHER",fr:"CONFIRMATION DE RÉSERVATION ET BON",de:"BUCHUNGSBESTÄTIGUNG & VOUCHER"},
-  invoice:{en:"COMMERCIAL TAX INVOICE",sw:"INVOISI RASMI YA KODI",es:"FACTURA FISCAL COMERCIAL",fr:"FACTURE COMMERCIALE",de:"KOMMERZIELLE RECHNUNG"},
+  invoice:{en:"COMMERCIAL INVOICE",sw:"INVOISI YA BIASHARA",es:"FACTURA COMERCIAL",fr:"FACTURE COMMERCIALE",de:"GESCHÄFTSRECHNUNG"},
   quotation:{en:"TOUR QUOTATION & PROPOSAL",sw:"MAKADIRIO YA ZIARA NA PENDEKEZO",es:"COTIZACIÓN Y PROPUESTA DE TOUR",fr:"DEVIS ET PROPOSITION DE VOYAGE",de:"REISEANGEBOT & KOSTENVORANSCHLAG"},
   itinerary:{en:"DETAILED TOUR ITINERARY",sw:"RATIBA KAMILI YA ZIARA",es:"ITINERARIO DETALLADO DEL TOUR",fr:"ITINÉRAIRE DÉTAILLÉ DU TOUR",de:"DETAILLIERTER REISEABLAUF"},
   receipt:{en:"OFFICIAL PAYMENT RECEIPT",sw:"RISITI RASMI YA MALIPO",es:"RECIBO OFICIAL DE PAGO",fr:"REÇU DE PAIEMENT OFFICIEL",de:"OFFIZIELLE ZAHLUNGSQUITTUNG"},
@@ -1072,7 +1072,7 @@ el("document-form").addEventListener("submit",ev=>{
     <h4>ISSUED BY (SUPPLIER)</h4>
     <p><strong>${escapeHtml(coName)}</strong></p>
     <p>${escapeHtml(coAddress)}</p>
-    <p>${escapeHtml(coTaxId)}</p>
+    ${coTaxId?`<p>TIN / Registration: ${escapeHtml(coTaxId)}</p>`:""}
     <p>Email: ${escapeHtml(coEmail)}</p>
     <p>WhatsApp / Mobile: ${escapeHtml(coPhone)}</p>
     <p>Website: ${escapeHtml(coWebsite)}</p>
@@ -1131,13 +1131,13 @@ el("document-form").addEventListener("submit",ev=>{
    </div>
   </div>
 
-  <!-- Remittance Banking Details for Invoices & Vouchers -->
-  ${(isInvoice || isVoucher)?`
+  <!-- Optional verified remittance details -->
+  ${(isInvoice || isVoucher) && (bankName||bankAccount||bankSwift||bankMpesa||bankCash)?`
   <div class="doc-info-section" style="border-left-color:#1A3322">
-   <h4>🏦 Official Payment Remittance & Banking Details</h4>
-   <p><strong>Bank Wire:</strong> ${escapeHtml(bankName)} · <strong>Account:</strong> ${escapeHtml(bankAccount)} · <strong>SWIFT:</strong> ${escapeHtml(bankSwift)}</p>
-   <p><strong>Mobile Money:</strong> ${escapeHtml(bankMpesa)}</p>
-   <p><strong>Cash Settlement:</strong> ${escapeHtml(bankCash)}</p>
+   <h4>Payment instructions</h4>
+   ${bankName||bankAccount||bankSwift?`<p><strong>Bank transfer:</strong> ${escapeHtml([bankName,bankAccount,bankSwift].filter(Boolean).join(" · "))}</p>`:""}
+   ${bankMpesa?`<p><strong>Mobile money:</strong> ${escapeHtml(bankMpesa)}</p>`:""}
+   ${bankCash?`<p><strong>Cash:</strong> ${escapeHtml(bankCash)}</p>`:""}
   </div>
   `:""}
 
@@ -1273,10 +1273,11 @@ el("document-form").addEventListener("submit",ev=>{
    children.push(new Paragraph({children:[new TextRun({text:"Total: "+currency+" "+total.toFixed(2)+"  |  Paid: "+currency+" "+paid.toFixed(2)+"  |  Balance Due: "+currency+" "+balance.toFixed(2),bold:true})]}));
    children.push(new Paragraph({children:[new TextRun({text:"Status: "+(statusLabels[paymentStatus]||paymentStatus),bold:true})]}));
 
-   if(isInvoice || isVoucher){
-    children.push(new Paragraph({text:"REMITTANCE & BANKING DETAILS",heading:HeadingLevel.HEADING_3}));
-    children.push(new Paragraph({text:"Bank: "+bankName+" | Account: "+bankAccount+" | SWIFT: "+bankSwift}));
-    children.push(new Paragraph({text:"M-Pesa: "+bankMpesa}));
+   if((isInvoice || isVoucher) && (bankName||bankAccount||bankSwift||bankMpesa||bankCash)){
+    children.push(new Paragraph({text:"PAYMENT INSTRUCTIONS",heading:HeadingLevel.HEADING_3}));
+    if(bankName||bankAccount||bankSwift)children.push(new Paragraph({text:"Bank: "+[bankName,bankAccount,bankSwift].filter(Boolean).join(" | ")}));
+    if(bankMpesa)children.push(new Paragraph({text:"Mobile money: "+bankMpesa}));
+    if(bankCash)children.push(new Paragraph({text:"Cash: "+bankCash}));
    }
 
    if(inclusions.length){
@@ -1341,9 +1342,9 @@ el("document-form").addEventListener("submit",ev=>{
    rows.push(["","","","Amount Paid",paid]);
    rows.push(["","","","Balance Due",balance]);
    rows.push([]);
-   rows.push(["Bank Wire",bankName+" - "+bankAccount+" - SWIFT: "+bankSwift]);
-   rows.push(["Mobile Money",bankMpesa]);
-   rows.push(["Terms",terms]);
+   if(bankName||bankAccount||bankSwift)rows.push(["Bank Wire",[bankName,bankAccount,bankSwift].filter(Boolean).join(" - ")]);
+   if(bankMpesa)rows.push(["Mobile Money",bankMpesa]);
+   if(terms)rows.push(["Terms",terms]);
 
    const wb=XLSX.utils.book_new(),ws=XLSX.utils.aoa_to_sheet(rows);
    ws["!cols"]=[{wch:6},{wch:45},{wch:10},{wch:16},{wch:20}];
