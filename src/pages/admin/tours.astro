@@ -3,9 +3,9 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
 ---
 <SiteLayout title="Tour Management | Materuni Hosts" description="Private Materuni Hosts tour and availability management." noindex={true}>
 <section class="page-hero">
-  <span class="eyebrow">PRIVATE ADMIN · TOUR STUDIO</span>
+  <span class="eyebrow">PUBLIC WEBSITE DASHBOARD · EXPERIENCE CATALOGUE</span>
   <h1>Tour & Experience Management</h1>
-  <p>Create new cultural experiences, upload authentic photography, set inclusions and publish live availability slots for guests.</p>
+  <p>Create and edit public cultural experiences, authentic photography, published prices and guest-facing inclusions. Manage booking dates separately in the Business OS.</p>
 </section>
 
 <section class="booking-wrap">
@@ -26,7 +26,7 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
         <a class="button button-secondary" href="/admin/">← Dashboard</a>
         <a class="button button-secondary" href="/admin/content">Content & About Us</a>
         <a class="button button-secondary" href="/admin/media">Media Library</a>
-        <a class="button button-secondary" href="/admin/bookings">Bookings</a>
+        <a class="button button-secondary" href="/admin/business-os">Business OS</a><a class="button button-secondary" href="/admin">Website dashboard</a>
         <a class="button button-secondary" href="/admin/itinerary">Itinerary Studio</a>
         <a class="button button-secondary" href="/experiences" target="_blank" rel="noopener">Preview Public Experiences ↗</a>
       </div>
@@ -162,8 +162,8 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
       <div class="section-heading">
         <div>
           <span class="eyebrow">TOUR CATALOGUE</span>
-          <h2>Edit Existing Tours & Photos</h2>
-          <p class="muted">Update prices, replace photographs, change what's included/excluded, or toggle visibility for any published tour.</p>
+          <h2>Edit Published Experiences & Photos</h2>
+          <p class="muted">Update public prices, descriptions, photographs, inclusions or visibility for each published experience.</p>
         </div>
       </div>
       <div id="tour-list" class="muted">Loading tours…</div>
@@ -184,29 +184,7 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
       </div>
     </div>
 
-    <!-- Publish Availability Slots -->
-    <div class="booking-panel" style="margin-top:1.5rem">
-      <span class="eyebrow">PUBLISH AVAILABILITY</span>
-      <h2>Create Available Dates & Time Slots</h2>
-      <p class="muted">Make departure dates and times available for direct online guest booking requests.</p>
-      <form id="slot-form" class="form-grid">
-        <div class="field full"><label for="slot-experience">Select Tour *</label><select id="slot-experience" required><option value="">Select a tour</option></select></div>
-        <div class="field"><label for="slot-date">Start date *</label><input id="slot-date" type="date" required></div>
-        <div class="field"><label for="slot-end-date">End date (optional – publish range up to 90 days)</label><input id="slot-end-date" type="date"></div>
-        <div class="field"><label for="slot-capacity">Guest capacity per slot *</label><input id="slot-capacity" type="number" min="1" max="100" value="10" required></div>
-        <div class="field"><label for="slot-start">Start time *</label><input id="slot-start" type="time" value="08:00" required></div>
-        <div class="field"><label for="slot-end">End time *</label><input id="slot-end" type="time" value="14:00" required></div>
-        <div class="field full"><button class="button" type="submit">Publish Available Dates</button><p id="slot-feedback" class="muted" aria-live="polite"></p></div>
-      </form>
-    </div>
 
-    <!-- Availability Calendar -->
-    <div class="booking-panel" style="margin-top:1.5rem">
-      <span class="eyebrow">AVAILABILITY CALENDAR</span>
-      <h2>Upcoming Published Spaces</h2>
-      <p class="muted">Review published dates, remaining capacity, and open or close slots with one click.</p>
-      <div id="availability-list" class="admin-booking-list" aria-live="polite">Loading availability…</div>
-    </div>
   </div>
 </section>
 
@@ -359,82 +337,8 @@ el("tour-file-input")?.addEventListener("change", async (e) => {
   }
 });
 
-async function refreshAvailability() {
-  const list = el("availability-list");
-  list.textContent = "Loading availability…";
-  try {
-    const today = new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 10);
-    const query = new URLSearchParams({
-      select: "id,experience,slot_date,start_time,end_time,capacity,booked_count,is_active",
-      slot_date: "gte." + today,
-      order: "slot_date.asc,start_time.asc",
-      limit: "150"
-    });
-    const rows = await api("/rest/v1/availability_slots?" + query.toString());
-    list.replaceChildren();
-    if (!rows.length) {
-      const empty = document.createElement("p");
-      empty.className = "muted";
-      empty.textContent = "No upcoming availability has been published yet.";
-      list.append(empty);
-      return;
-    }
-    rows.forEach(slot => {
-      const line = document.createElement("div");
-      line.className = "notice";
-      line.style.marginTop = "0.65rem";
-      line.style.display = "flex";
-      line.style.justifyContent = "space-between";
-      line.style.alignItems = "center";
-      line.style.flexWrap = "wrap";
-      line.style.gap = "10px";
-
-      const info = document.createElement("div");
-      const title = document.createElement("strong");
-      title.textContent = slot.experience;
-      const meta = document.createElement("p");
-      meta.className = "muted";
-      meta.style.margin = "4px 0 0";
-      meta.textContent = `${slot.slot_date} · ${String(slot.start_time).slice(0, 5)}–${String(slot.end_time).slice(0, 5)} · ${Math.max(0, Number(slot.capacity) - Number(slot.booked_count))} spaces left of ${slot.capacity} · ${slot.is_active ? "Open" : "Closed"}`;
-      info.append(title, meta);
-
-      const action = document.createElement("button");
-      action.type = "button";
-      action.className = "button button-secondary";
-      action.textContent = slot.is_active ? "Close availability" : "Reopen availability";
-      action.disabled = slot.slot_date < today;
-      action.addEventListener("click", async () => {
-        action.disabled = true;
-        try {
-          await api("/rest/v1/availability_slots?id=eq." + encodeURIComponent(slot.id), {
-            method: "PATCH",
-            body: JSON.stringify({ is_active: !slot.is_active })
-          });
-          await refreshAvailability();
-        } catch (error) {
-          el("slot-feedback").textContent = error.message;
-          action.disabled = false;
-        }
-      });
-      line.append(info, action);
-      list.append(line);
-    });
-  } catch (error) {
-    list.textContent = "Availability could not be loaded: " + error.message;
-  }
-}
-
 async function refreshTours() {
   const rows = await api("/rest/v1/experience_catalog?select=id,experience_key,display_name,price_usd,is_active,sort_order,short_description,full_description,image_url,duration_label,inclusions,exclusions,product_tagline,best_for,signature_moments,unique_amenities&order=sort_order.asc");
-  const select = el("slot-experience");
-  select.innerHTML = '<option value="">Select a tour</option>';
-  rows.filter(t => t.is_active).forEach(t => {
-    const o = document.createElement("option");
-    o.value = t.experience_key;
-    o.textContent = `${t.display_name} · $${Number(t.price_usd).toFixed(0)}`;
-    select.append(o);
-  });
-
   const tourList = el("tour-list");
   tourList.innerHTML = "";
   
@@ -703,7 +607,7 @@ el("login-form")?.addEventListener("submit", async e => {
     }
     el("login-panel").hidden = true;
     el("manager").hidden = false;
-    await Promise.all([refreshTours(), refreshAvailability(), loadSharedInclusions()]);
+    await Promise.all([refreshTours(), loadSharedInclusions()]);
     syncTourPreview();
   } catch (error) {
     el("login-feedback").textContent = error.message;
@@ -762,59 +666,6 @@ el("tour-form")?.addEventListener("submit", async e => {
   }
 });
 
-// Availability slot publishing
-el("slot-form")?.addEventListener("submit", async e => {
-  e.preventDefault();
-  const feedback = el("slot-feedback");
-  feedback.textContent = "Publishing…";
-  try {
-    const start = el("slot-start").value, end = el("slot-end").value;
-    if (end <= start) throw new Error("End time must be later than start time.");
-    const startDate = el("slot-date").value;
-    if (!startDate || startDate < minDate) throw new Error("Choose today or a future date.");
-    const cap = Number(el("slot-capacity").value);
-    if (cap < 1 || cap > 100) throw new Error("Capacity must be between 1 and 100 guests.");
-    const exp = el("slot-experience").value;
-    const endDate = el("slot-end-date")?.value;
-    if (endDate && endDate < startDate) throw new Error("End date cannot be earlier than start date.");
-
-    const dates = [];
-    if (!endDate || endDate === startDate) {
-      dates.push(startDate);
-    } else {
-      let curr = new Date(startDate + "T12:00:00Z");
-      const stop = new Date(endDate + "T12:00:00Z");
-      const maxDays = 90;
-      let count = 0;
-      while (curr <= stop && count < maxDays) {
-        dates.push(curr.toISOString().slice(0, 10));
-        curr.setDate(curr.getDate() + 1);
-        count++;
-      }
-    }
-
-    const payload = dates.map(d => ({
-      experience: exp,
-      slot_date: d,
-      start_time: start,
-      end_time: end,
-      capacity: cap,
-      booked_count: 0,
-      is_active: true
-    }));
-
-    await api("/rest/v1/availability_slots", {
-      method: "POST",
-      headers: { "Prefer": "return=minimal" },
-      body: JSON.stringify(payload)
-    });
-    feedback.textContent = `✓ Availability published for ${dates.length} date${dates.length === 1 ? '' : 's'}. Guests can now select these times.`;
-    await refreshAvailability();
-  } catch (error) {
-    feedback.textContent = error.message;
-  }
-});
-
 el("logout")?.addEventListener("click", async () => {
   try {
     await fetch(supabaseUrl + "/auth/v1/logout", { method: "POST", headers: apiHeaders() });
@@ -826,9 +677,6 @@ el("logout")?.addEventListener("click", async () => {
   el("login-form").reset();
 });
 
-const minDate = new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 10);
-if (el("slot-date")) el("slot-date").min = minDate;
-if (el("slot-end-date")) el("slot-end-date").min = minDate;
 </script>
 
 <style>
