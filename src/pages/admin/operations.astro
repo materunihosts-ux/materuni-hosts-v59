@@ -923,7 +923,9 @@ el("document-form").addEventListener("submit",ev=>{
  const paymentMethod=el("doc-payment-method").value;
  const total=Number(el("doc-amount").value||0);
  const paid=Number(el("doc-deposit").value||0);
- const balance=Math.max(0,total-paid);
+ const taxAmount=Number(el("doc-tax-amount")?.value||0);
+ const grandTotal=total+taxAmount;
+ const balance=Math.max(0,grandTotal-paid);
  const rawLines=el("doc-lines").value;
  const parsedItems=parseLines(rawLines,currency);
  const inclusions=el("doc-inclusions").value.split(/\r?\n/).map(l=>l.trim()).filter(Boolean);
@@ -947,18 +949,20 @@ el("document-form").addEventListener("submit",ev=>{
  const bankCash=el("doc-bank-cash")?.value.trim()||"";
 
  const taxLabel=el("doc-tax-label")?.value.trim()||"";
- const taxAmount=Number(el("doc-tax-amount")?.value||0);
-
  const signatoryName=el("doc-signatory-name")?.value.trim()||"Saidi Materu";
  const signatoryTitle=el("doc-signatory-title")?.value.trim()||"Founder";
  const brandTagline=el("doc-brand-tagline")?.value.trim()||"Experience Materuni through the people who call it home.";
 
+ if(!Number.isFinite(total)||!Number.isFinite(paid)||!Number.isFinite(taxAmount)||total<0||paid<0||taxAmount<0){el("doc-feedback").textContent="Enter valid non-negative amounts for subtotal, tax and amount paid.";return;}
  if(taxAmount>0&&!taxLabel){el("doc-feedback").textContent="Add the verified tax or levy label, or set the amount to zero.";return;}
  if(["invoice","quotation","receipt"].includes(type)&&!parsedItems.length){el("doc-feedback").textContent="Add at least one item or service line before generating this financial document.";return;}
- if(paid>total&&total>0){
-  el("doc-feedback").textContent="Amount paid cannot exceed the document total.";
+ if(paid>grandTotal&&grandTotal>0){
+  el("doc-feedback").textContent="Amount paid cannot exceed the total including tax or levy.";
   return;
  }
+ if(paymentStatus==="paid"&&grandTotal>0&&paid<grandTotal){el("doc-feedback").textContent="Payment status is Paid in Full, but the amount paid is below the full total.";return;}
+ if(paymentStatus==="partially_paid"&&(paid<=0||paid>=grandTotal)){el("doc-feedback").textContent="For Partially Paid, the amount paid must be greater than zero and less than the full total.";return;}
+ if(paymentStatus==="unpaid"&&paid>0){el("doc-feedback").textContent="Payment status is Unpaid, but an amount paid has been entered.";return;}
 
  const docTypeLabels={
   voucher:{en:"BOOKING CONFIRMATION & TOUR VOUCHER",sw:"UTHIBITISHO WA ZIARA NA VOCHA",es:"CONFIRMACIÓN DE RESERVA Y VOUCHER",fr:"CONFIRMATION DE RÉSERVATION ET BON",de:"BUCHUNGSBESTÄTIGUNG & VOUCHER"},
