@@ -913,11 +913,14 @@ el("document-form").addEventListener("submit",ev=>{
  const recipient=el("doc-recipient").value.trim()||"Valued Guest";
  const email=el("doc-email").value.trim();
  const phone=el("doc-phone").value.trim();
+ if(phone&&!/^\\+?[0-9\\s()-]{7,20}$/.test(phone)){el("doc-feedback").textContent="Enter a valid guest phone number, or leave the field blank.";return;}
  const country=el("doc-country").value.trim();
  const title=el("doc-title").value.trim();
  const date=el("doc-date").value||getTodayString();
  const timing=el("doc-timing").value.trim();
  const pax=el("doc-pax").value.trim();
+ const paxCount=Number((pax.match(/\\d+/)||[])[0]||1);
+ if(!Number.isInteger(paxCount)||paxCount<1||paxCount>100){el("doc-feedback").textContent="Enter a valid guest count between 1 and 100.";return;}
  const host=el("doc-host").value.trim();
  const meetingPoint=el("doc-meeting-point").value.trim();
  const paymentStatus=el("doc-payment-status").value;
@@ -965,6 +968,7 @@ el("document-form").addEventListener("submit",ev=>{
   el("doc-feedback").textContent="Amount paid cannot exceed the total including tax or levy.";
   return;
  }
+ if(paymentStatus==="paid"&&grandTotal<=0){el("doc-feedback").textContent="A zero-value document cannot be marked as paid. Use an unpaid status and explain any complimentary arrangement in the terms.";return;}
  if(paymentStatus==="paid"&&grandTotal>0&&paid<grandTotal){el("doc-feedback").textContent="Payment status is Paid in Full, but the amount paid is below the full total.";return;}
  if(paymentStatus==="partially_paid"&&(paid<=0||paid>=grandTotal)){el("doc-feedback").textContent="For Partially Paid, the amount paid must be greater than zero and less than the full total.";return;}
  if(paymentStatus==="unpaid"&&paid>0){el("doc-feedback").textContent="Payment status is Unpaid, but an amount paid has been entered.";return;}
@@ -1406,6 +1410,7 @@ el("document-form").addEventListener("submit",ev=>{
       meeting_point:meetingPoint,
       timing,
       pax,
+      guest_count:paxCount,
       company_name:coName,
       tax_label:taxLabel||null,
       tax_amount:taxAmount,
@@ -1424,7 +1429,7 @@ el("document-form").addEventListener("submit",ev=>{
       body:JSON.stringify({
        ...common,
        quotation_number:ref,
-       guest_count:1,
+       guest_count:paxCount,
        travel_start:date||null,
        status:"draft"
       })
