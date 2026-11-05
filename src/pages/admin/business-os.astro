@@ -35,7 +35,7 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
       <a class="nav-item active" href="/admin/business-os"><span>⌂</span> Overview</a>
       <a class="nav-item" href="/admin/bookings"><span>▦</span> Bookings</a>
       <a class="nav-item" href="/admin/conversations"><span>◌</span> Guest inbox</a>
-      <a class="nav-item" href="/admin/tours"><span>◇</span> Experiences & pricing</a>
+      <a class="nav-item" href="/admin/availability"><span>◷</span> Tour availability</a><a class="nav-item" href="/admin/operations"><span>▧</span> Commercial rates & docs</a>
       <div class="nav-label nav-label-spaced">GROWTH ENGINE</div>
       <a class="nav-item" href="/admin/marketing"><span>↗</span> Marketing & SEO studio</a>
       <a class="nav-item" href="/admin/seo"><span>⌕</span> SEO metadata</a>
@@ -59,11 +59,11 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
         </section>
 
         <div class="section-heading"><div><p class="eyebrow">DAILY OPERATIONS</p><h2>What needs your attention?</h2></div><span class="section-note">Start with a task</span></div>
-        <div class="quick-search"><span>⌕</span><input id="workspace-search" type="search" placeholder="Find a task: bookings, guest, SEO, campaign…" aria-label="Search Business OS tasks"><kbd>Search</kbd></div>
+        <div class="quick-search"><span>⌕</span><input id="workspace-search" type="search" placeholder="Find a task: bookings, availability, rates, guest, SEO…" aria-label="Search Business OS tasks"><kbd>Search</kbd></div>
         <section class="task-grid searchable-workspace">
           <a class="task-card task-main" href="/admin/bookings"><span class="task-icon">▦</span><span class="task-arrow">↗</span><h3>Manage bookings</h3><p>Review guest requests, confirm dates and manage upcoming experiences.</p><b>Open bookings <span>→</span></b></a>
           <a class="task-card" href="/admin/conversations"><span class="task-icon">◌</span><span class="task-arrow">↗</span><h3>Guest conversations</h3><p>Review website concierge conversations and mark enquiries that need a human follow-up. This is an inbox, not a full CRM pipeline.</p><b>Open inbox <span>→</span></b></a>
-          <a class="task-card" href="/admin/tours"><span class="task-icon">◇</span><span class="task-arrow">↗</span><h3>Experiences & prices</h3><p>Update tour information, prices and inclusions.</p><b>Manage catalogue <span>→</span></b></a>
+          <a class="task-card" href="/admin/availability"><span class="task-icon">◷</span><span class="task-arrow">↗</span><h3>Tour availability</h3><p>Publish departure dates, manage guest capacity and open or close booking slots.</p><b>Manage availability <span>→</span></b></a><a class="task-card" href="/admin/operations"><span class="task-icon">▧</span><span class="task-arrow">↗</span><h3>Commercial rates & documents</h3><p>Manage private partner rate plans, quotations and invoices. Public experience prices stay in the website dashboard.</p><b>Open commercial tools <span>→</span></b></a>
         </section>
 
 
@@ -77,7 +77,7 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
             <a class="growth-card" href="/admin/approvals"><span class="growth-icon">✓</span><strong>Approval safeguards</strong><p>Review the approval policy and safety rules. A live approval queue is not connected yet.</p><span class="growth-action">Review approvals ↗</span></a>
             <a class="growth-card" href="/admin/analytics"><span class="growth-icon">⌁</span><strong>Booking performance</strong><p>Review booking demand, guest counts and tagged enquiry sources from connected records.</p><span class="growth-action">View insights ↗</span></a>
           </div>
-          <p class="growth-disclaimer"><strong>Current connection status:</strong> the on-page crawler, booking reports and local content drafts are available. Search Console sync, a full guest CRM, social publishing, durable approvals and live AI providers still need implementation and testing.</p>
+          <p class="growth-disclaimer"><strong>Current connection status:</strong> the on-page crawler, booking reports, availability controls and local content drafts are available. Search Console sync, a full guest CRM, social publishing, durable approvals and live AI providers still need implementation and testing.</p>
         </section>
         <section class="lower-grid">
           <div class="panel assistant-panel"><div class="panel-top"><div><p class="eyebrow">AI BUSINESS ASSISTANT</p><h2>Your thinking partner</h2></div><span class="spark">✳</span></div><p>Prepare analysis, SEO recommendations, article outlines and guest-reply drafts. External AI generation requires provider setup; nothing is sent or published from this assistant.</p><a class="dark-button" href="/admin/ai">Open AI assistant <span>→</span></a><div class="provider-note"><i></i> AI setup required · live generation is not yet confirmed.</div></div>
