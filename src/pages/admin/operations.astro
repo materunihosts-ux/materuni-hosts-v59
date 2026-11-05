@@ -314,6 +314,18 @@ function loadCompanyDefaults(){
   const saved=localStorage.getItem("materuni_invoice_company_defaults");
   if(!saved)return;
   const d=JSON.parse(saved);
+  // Remove legacy placeholder claims previously shipped with the document editor.
+  if(d.coAddress==="Materuni Village, Uru Rural, P.O. Box 1888 Moshi, Kilimanjaro, Tanzania")d.coAddress="Materuni Village, Materuni Juu, Moshi Rural, Tanzania";
+  if(d.coTaxId==="Registered Community Cultural Tourism Enterprise")d.coTaxId="";
+  if(d.coEmail==="materunihosts@gmail.com")d.coEmail="hello@materunihosts.com";
+  if(d.bankName==="CRDB Bank Plc, Moshi Main Branch")d.bankName="";
+  if(String(d.bankAccount||"").includes("0150..."))d.bankAccount="";
+  if(d.bankSwift==="CORUTZTZ")d.bankSwift="";
+  if(d.bankMpesa==="Vodacom M-Pesa Lipa Namba (+255 612 068 540)")d.bankMpesa="";
+  if(String(d.bankCash||"").startsWith("Accepted on arrival in clean USD banknotes"))d.bankCash="";
+  if(d.taxLabel==="Community Tourism Levy (0% Inclusive)")d.taxLabel="";
+  if(d.signatoryTitle==="Founder & Lead Cultural Guide")d.signatoryTitle="Founder";
+  if(d.brandTagline==="Come as a guest. Leave as a friend.")d.brandTagline="Experience Materuni through the people who call it home.";
   if(d.coName)el("doc-co-name").value=d.coName;
   if(d.coSubtitle)el("doc-co-subtitle").value=d.coSubtitle;
   if(d.coAddress)el("doc-co-address").value=d.coAddress;
@@ -515,7 +527,7 @@ el("preset-quotation")?.addEventListener("click",()=>{
  el("doc-timing").value="08:45 AM – 04:30 PM (Approx. 7.5 hours)";
  el("doc-pax").value="3 Guests";
  el("doc-host").value="Saidi Materu & Local Hosts Team (+255 612 068 540)";
- el("doc-meeting-point").value="Materuni Village Cultural Centre (GPS: -3.2505° S, 37.3912° E)";
+ el("doc-meeting-point").value="";
  el("doc-payment-status").value="unpaid";
  el("doc-payment-method").value="bank_wire";
  el("doc-lines").value="Materuni Waterfall & Chagga Village Full Day Experience | 3 | 45.00\nTraditional Tree-to-Cup Coffee Roasting Masterclass | 3 | 36.00\nAuthentic Hot Chagga Feast Lunch & Seasonal Tropical Fruits | 3 | 0.00\nRoundtrip Moshi Town Hotel Private 4x4 Transfer | 1 | 40.00";
@@ -602,7 +614,7 @@ el("preset-confirmation")?.addEventListener("click",()=>{
  el("doc-timing").value="09:00 AM – 03:30 PM (Approx. 6.5 hours)";
  el("doc-pax").value="2 Adults";
  el("doc-host").value="Saidi Materu (+255 612 068 540)";
- el("doc-meeting-point").value="Materuni Cultural Tourism Centre, Materuni Village (GPS: -3.2505° S, 37.3912° E)";
+ el("doc-meeting-point").value="";
  el("doc-payment-status").value="paid";
  el("doc-payment-method").value="credit_card";
  el("doc-lines").value="Materuni Waterfall Rainforest Hike | 2 | 45.00\nTraditional Tree-to-Cup Chagga Coffee Roasting | 2 | 36.00\nAuthentic Chagga Hot Lunch with Seasonal Fruits | 2 | 0.00";
@@ -655,12 +667,12 @@ el("preset-voucher")?.addEventListener("click",()=>{
  el("doc-email").value="s.jenkins@example.com";
  el("doc-phone").value="+44 7700 900123";
  el("doc-country").value="United Kingdom";
- el("doc-title").value="Booking.com Standard Tour Voucher & Boarding Pass";
+ el("doc-title").value="Partner Tour Voucher";
  el("doc-date").value=getTodayString();
  el("doc-timing").value="09:00 AM – 03:30 PM (Approx. 6.5 hours)";
  el("doc-pax").value="2 Adults";
  el("doc-host").value="Saidi Materu & Local Hosts Team (+255 612 068 540)";
- el("doc-meeting-point").value="Materuni Cultural Tourism Centre, Materuni Village (GPS: -3.2505° S, 37.3912° E)";
+ el("doc-meeting-point").value="";
  el("doc-payment-status").value="paid";
  el("doc-payment-method").value="credit_card";
  el("doc-lines").value="Materuni Waterfall & Chagga Village Hike | 2 | 45.00\nTraditional Tree-to-Cup Coffee Roasting Class | 2 | 36.00\nAuthentic Chagga Hot Lunch & Seasonal Fruits | 2 | 0.00\nRoundtrip Moshi Town Private 4x4 Transfer | 1 | 35.00";
@@ -727,7 +739,7 @@ el("preset-statement")?.addEventListener("click",()=>{
  el("doc-inclusions").value="Comprehensive ledger of all completed tours, disbursements, and payments received during the current billing period.";
  el("doc-exclusions").value="Future unconfirmed tour reservations.";
  el("doc-advice").value="All tours completed with 100% positive guest satisfaction. No outstanding incident disputes.";
- el("doc-terms").value="Current balance of USD 264.00 due on tour completion date. Remittance to CRDB Bank Moshi Branch · SWIFT: CORUTZTZ.";
+ el("doc-terms").value="";
  prepareDocumentTemplate();
 });
 
@@ -941,6 +953,8 @@ el("document-form").addEventListener("submit",ev=>{
  const signatoryTitle=el("doc-signatory-title")?.value.trim()||"Founder";
  const brandTagline=el("doc-brand-tagline")?.value.trim()||"Experience Materuni through the people who call it home.";
 
+ if(taxAmount>0&&!taxLabel){el("doc-feedback").textContent="Add the verified tax or levy label, or set the amount to zero.";return;}
+ if(["invoice","quotation","receipt"].includes(type)&&!parsedItems.length){el("doc-feedback").textContent="Add at least one item or service line before generating this financial document.";return;}
  if(paid>total&&total>0){
   el("doc-feedback").textContent="Amount paid cannot exceed the document total.";
   return;
@@ -1033,10 +1047,10 @@ el("document-form").addEventListener("submit",ev=>{
 
   <div class="doc-status-banner">
    <div class="doc-status-badge">${bannerText}</div>
-   <div class="doc-status-note">Issued: ${escapeHtml(date)} · Verified Host Check-in</div>
+   <div class="doc-status-note">Prepared by Materuni Hosts · ${escapeHtml(date)}</div>
   </div>
 
-  <!-- 4-Card Summary Grid (Booking.com & Travelogic standard) -->
+  <!-- Guest document summary -->
   <div class="doc-cards-grid">
    <div class="doc-card">
     <span class="doc-card-kicker">01 · Date & Timing</span>
@@ -1124,7 +1138,7 @@ el("document-form").addEventListener("submit",ev=>{
 
    <div class="doc-totals-box">
     <div class="doc-total-row"><span>Published Subtotal:</span><strong>${escapeHtml(currency)} ${total.toFixed(2)}</strong></div>
-    <div class="doc-total-row"><span>${escapeHtml(taxLabel)}:</span><strong>${escapeHtml(currency)} ${taxAmount.toFixed(2)}</strong></div>
+    ${taxLabel||taxAmount>0?`<div class="doc-total-row"><span>${escapeHtml(taxLabel||"Tax / levy")}:</span><strong>${escapeHtml(currency)} ${taxAmount.toFixed(2)}</strong></div>`:""}
     <div class="doc-total-row grand"><span>Total Document Value:</span><strong>${escapeHtml(currency)} ${(total + taxAmount).toFixed(2)}</strong></div>
     <div class="doc-total-row" style="color:#1A3322"><span>Amount Paid / Received:</span><strong>${escapeHtml(currency)} ${paid.toFixed(2)}</strong></div>
     <div class="doc-total-row balance"><span>Balance Due:</span><strong>${escapeHtml(currency)} ${balance.toFixed(2)}</strong></div>
