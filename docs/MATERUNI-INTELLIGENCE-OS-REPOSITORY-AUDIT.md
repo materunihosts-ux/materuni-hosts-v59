@@ -184,3 +184,16 @@ The Marketing & SEO Studio's browser-side on-page crawler was strengthened on th
 - Reports the crawl source and explicitly states that this is not Google ranking, traffic or backlink data.
 
 This remains a live crawl performed in the administrator's browser. It is **not yet a persisted, repeatable database snapshot**. No database schema, public route, booking flow, price, production deployment or secret was changed. Runtime/build tests have not yet been run in this environment; the change has been verified by re-fetching the committed source and checking that all intended code paths are present.
+
+
+## 2026-11-06 — SEO crawler safety and regression coverage
+
+A second code-only batch extracted the crawler's URL and CSV handling into the dependency-free module `src/lib/seo-audit-utils.js` and added a focused Node test suite:
+
+- Sitemap entries must be absolute HTTP(S) URLs on the current site; malformed, relative and off-site entries are ignored.
+- Sitemap crawling is bounded to 150 URLs by default (hard cap 1,000), de-duplicates paths and safely falls back to the core-page list if the sitemap has no valid same-origin URLs.
+- The crawler checks the final response URL after redirects, so a same-origin URL that redirects off-site is rejected.
+- CSV fields are quoted and escaped; formula-like values beginning with spreadsheet control characters are prefixed to prevent formula execution when opened in spreadsheet software.
+- Added `npm run test:seo` and four regression tests for same-origin validation, sitemap filtering/deduplication, URL limits and CSV formula injection.
+
+Validation: the four utility test cases were executed with Node's built-in test runner in an isolated temporary test fixture and passed (4/4). The repository's full `npm run check`, `npm run build` and `npm run qa` have **not** been executed because the repository has not been checked out in a local build environment in this session. No database migration or production deployment was performed.
