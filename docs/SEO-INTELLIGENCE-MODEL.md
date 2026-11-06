@@ -1,33 +1,43 @@
 # Materuni SEO Intelligence Model v1
 
-Status: implemented as a read-only application-layer adapter; no database migration or writes.
+Status: read-only application-layer analysis. No database migrations, writes, Storage uploads, scheduled jobs or external API calls.
 
-## Purpose
-Combine the existing keyword library and exported browser crawl snapshots into one normalized model for dashboard analysis. The model is deliberately read-only and can run without adding Supabase tables, storage objects, cron jobs, or background requests.
+## Workflow
+1. Run a live same-origin crawl in **Admin → Marketing & SEO Studio**.
+2. Export the JSON snapshot.
+3. Open **Admin → SEO Keyword Studio**, sign in, and upload that snapshot.
+4. Run combined analysis against the existing keyword library.
 
-## Inputs
+## Inputs and evidence
 - Existing `seo_keywords` rows: keyword, intent, target URL, volume, difficulty, position, clicks, impressions, status and source.
-- Browser crawl JSON snapshots, schema v1, source `browser_live_crawl`, matching configured site origin.
+- Browser crawl snapshot schema v1: HTTP status, title, meta description, H1 count, canonical, robots, viewport, Open Graph title, image-alt counts, main-content word count and internal-link count.
+- Snapshot scope and capture time are preserved. The model chooses the newest observation for each same-origin path when multiple snapshots are supplied.
 
-## Provenance
-- `csv_import`: user-supplied CSV, not API-verified.
-- `manual`: manually entered keyword.
-- `gsc_export`: provider export; not API-verified unless a future authenticated integration records verification.
-- Browser crawl: page metadata observed by the browser; not Google ranking, traffic, backlinks or indexing data.
+## Analysis
+- Missing and unusually long/short title and description checks.
+- Duplicate titles and meta descriptions across the supplied crawl scope.
+- Missing canonical, mobile viewport, H1 and Open Graph title checks.
+- HTTP errors, noindex directives, image alt gaps and canonical mismatches.
+- Main-content depth triage and absence of contextual internal links.
+- Keyword-to-page coverage, targets not present in the crawl, and multiple keywords mapped to one page.
+- Recommendations carry severity, action, affected URL and observed evidence.
 
-## Output
-- Normalized, de-duplicated keyword records.
-- Latest crawl observation per same-origin page path.
-- Evidence-backed technical recommendations from observed crawl fields.
-- Aggregated click/impression totals and CTR only where imported rows contain those values.
-- Explicit data-source warnings and provenance on each record.
+## Methodology guardrails
+- A word count below 300 is only a manual-review heuristic, never a Google ranking rule or universal content-length target.
+- Title/description character ranges are editorial checks, not guaranteed display lengths or ranking factors.
+- Multiple H1s are a hierarchy review, not automatically a penalty.
+- A keyword target absent from the current crawl may simply be outside the crawl scope; it is not proof of a 404.
+- A page without a keyword mapping is not necessarily underperforming.
+- Internal-link counts are observed links to a different same-origin path; the crawler does not verify every destination's HTTP status.
+- Imported CSV metrics are user-supplied and not independently API-verified. CTR is calculated only from supplied clicks and impressions and must not be represented as authenticated Search Console data.
+- Browser crawls do not measure Google rankings, organic traffic, backlinks or indexing.
 
-## Safety and limitations
-- No data is written to Supabase.
-- No schema changes, storage uploads, Edge Functions, scheduled jobs or extra network calls.
-- External target URLs and snapshots from other origins are excluded.
-- Recommendations cite the observation that triggered them; they are not ranking guarantees.
-- CTR is calculated only from supplied click and impression counts. It must not be presented as verified GSC data for CSV imports.
+## Data minimisation and safety
+- Snapshot processing happens in the browser; no snapshot upload to Supabase.
+- Crawler stores only counts and metadata in the exported JSON, not page body text.
+- External URLs, unsafe target URLs and malformed page paths are excluded from mapping.
+- Analysis is read-only; no website content or SEO keyword rows are automatically modified.
+- Results are advisory. A human should verify cultural accuracy, search intent, page purpose and business priorities before changing public content.
 
-## Tests
-Run `npm run test:seo`. The full repository test and Astro build must still be run in a complete checkout before preview or deployment.
+## Tests and release status
+Run `npm run test:seo`, then `npm run check` and `npm run build` in a complete repository checkout. These commands have not yet been executed in this remote file-editing session; do not deploy until they pass and the preview is reviewed.
