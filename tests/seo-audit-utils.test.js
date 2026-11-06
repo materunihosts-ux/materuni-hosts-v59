@@ -32,7 +32,7 @@ test("CSV escapes quotes and neutralises spreadsheet formulas", () => {
   assert.match(csv, /"'\+cmd"/);
   assert.match(csv, /"'@SUM\(1,1\)"/);
   assert.match(csv, /"'-1 issue"/);
-  assert.match(csv, /""https://evil.example""/);
+  assert.ok(csv.includes('""https://evil.example""'));
 });
 
 
