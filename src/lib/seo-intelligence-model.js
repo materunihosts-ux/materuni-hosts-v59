@@ -46,7 +46,7 @@ export function buildSeoIntelligenceModel({ keywords = [], snapshots = [], siteO
         const parsed = new URL(row.target_url, origin);
         if (parsed.origin === origin && ["http:", "https:"].includes(parsed.protocol) && !parsed.username && !parsed.password) {
           targetUrl = parsed.origin + parsed.pathname + parsed.search;
-          targetPath = parsed.pathname === "/" ? "/" : parsed.pathname.replace(/\\/$/, "");
+          targetPath = parsed.pathname === "/" ? "/" : (parsed.pathname.endsWith("/") && parsed.pathname.length > 1 ? parsed.pathname.slice(0, -1) : parsed.pathname);
         }
       } catch { /* Unsafe target URLs are deliberately omitted. */ }
     }
