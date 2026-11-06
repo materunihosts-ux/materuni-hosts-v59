@@ -3372,7 +3372,7 @@ body.public-shell .brand-intro-section .brand-intro-body{
 }
 
 
-/* Materuni Hosts — refined public-site visual system */
+/* Materuni Hosts — public visual system, scoped away from the admin OS */
 :root{
   --mh-radius-sm:12px;
   --mh-radius-lg:22px;
@@ -3380,81 +3380,91 @@ body.public-shell .brand-intro-section .brand-intro-body{
   --mh-shadow-hover:0 22px 48px rgba(26,51,34,.13);
 }
 html{scroll-padding-top:100px}
-body{line-height:1.72}
-:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
-.site-header{
-  height:84px;
-  padding-inline:clamp(18px,5vw,76px);
-  box-shadow:0 4px 22px rgba(26,51,34,.035);
+body.public-shell{line-height:1.72;overflow-x:clip}
+body.public-shell :focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+body.public-shell .site-header{
+  min-height:82px;height:auto;padding:14px clamp(18px,5vw,76px);
+  box-shadow:0 4px 22px rgba(26,51,34,.045);
 }
-.site-header nav{gap:clamp(16px,2.1vw,30px)}
-.site-header nav a{transition:color .18s ease}
-.nav-cta,.button{
-  min-height:48px;
-  padding:13px 23px;
-  border-radius:999px;
+body.public-shell .site-header nav{gap:clamp(12px,1.8vw,28px)}
+body.public-shell .site-header nav a{transition:color .18s ease}
+body.public-shell .nav-cta,
+body.public-shell .button{
+  min-height:48px;padding:13px 23px;border-radius:999px;
   box-shadow:0 5px 14px rgba(26,51,34,.08);
   transition:transform .2s ease,background .2s ease,box-shadow .2s ease;
 }
-.nav-cta:hover,.button:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(26,51,34,.15)}
-.section{padding-block:clamp(58px,7vw,94px)}
-.section-head{margin-bottom:clamp(28px,4vw,46px)}
-.section-head p{font-size:15px;line-height:1.8}
-.cards{gap:clamp(16px,2vw,26px)}
-.experience-card{
-  border-radius:var(--mh-radius-lg);
-  border-color:rgba(26,51,34,.1);
-  box-shadow:var(--mh-shadow-soft);
+body.public-shell .nav-cta:hover,
+body.public-shell .button:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(26,51,34,.15)}
+body.public-shell .section{padding-block:clamp(54px,7vw,92px)}
+body.public-shell .section-head{margin-bottom:clamp(26px,4vw,44px)}
+body.public-shell .section-head p{font-size:15px;line-height:1.8}
+body.public-shell .cards{gap:clamp(16px,2vw,26px)}
+body.public-shell .experience-card{
+  min-width:0;border-radius:var(--mh-radius-lg);
+  border:1px solid rgba(26,51,34,.1);box-shadow:var(--mh-shadow-soft);
+  overflow:hidden;transition:transform .25s ease,box-shadow .25s ease;
 }
-.experience-card img{transition:transform .55s cubic-bezier(.2,.7,.2,1)}
-.experience-card:hover img{transform:scale(1.035)}
-.experience-card:hover{transform:translateY(-4px);box-shadow:var(--mh-shadow-hover)}
-.card-body{padding:clamp(19px,2.2vw,27px)}
-.experience-card h3{font-size:clamp(21px,2vw,25px);line-height:1.2}
-.experience-card p{font-size:13px;line-height:1.75}
-.experience-card ul{line-height:1.75}
-.page-hero{padding:clamp(66px,8vw,108px) 22px;background:linear-gradient(135deg,#eee8dc 0%,#FAF7F2 72%)}
-.page-hero h1{letter-spacing:-.025em}
-.page-hero p{font-size:clamp(14px,1.4vw,17px);line-height:1.85}
-.trust-strip{gap:clamp(16px,3vw,44px);padding:19px 22px}
-.split{gap:clamp(28px,5vw,68px)}
-.split img{border-radius:var(--mh-radius-lg);box-shadow:var(--mh-shadow-soft)}
-.band{padding:clamp(56px,7vw,86px) 22px}
-.site-footer{padding-top:clamp(48px,6vw,72px);gap:clamp(22px,4vw,48px)}
-.site-footer a{width:fit-content;transition:color .18s ease}
-.landing .hero{border-radius:0 0 28px 28px}
-.landing .hero-photo{border-radius:var(--mh-radius-lg)}
-.landing section:not(.hero){padding-block:clamp(34px,5vw,58px)}
-.landing section:not(.hero)>h2{letter-spacing:-.02em}
-.landing section:not(.hero) p{font-size:15px;line-height:1.9}
-.landing section:not(.hero) ul{padding-left:1.2rem}
-.faq-item{padding:22px 0}
-.faq-item summary{font-size:clamp(18px,2vw,21px)}
-.booking-panel{border-radius:var(--mh-radius-lg);box-shadow:var(--mh-shadow-soft)}
-.field input,.field select,.field textarea{border-radius:10px;min-height:48px}
-.field textarea{min-height:110px}
+body.public-shell .experience-card img{transition:transform .55s cubic-bezier(.2,.7,.2,1)}
+body.public-shell .experience-card:hover img{transform:scale(1.035)}
+body.public-shell .experience-card:hover{transform:translateY(-4px);box-shadow:var(--mh-shadow-hover)}
+body.public-shell .card-body{padding:clamp(18px,2.2vw,27px)}
+body.public-shell .experience-card h3{font-size:clamp(21px,2vw,25px);line-height:1.2}
+body.public-shell .experience-card p,
+body.public-shell .experience-card li{font-size:13px;line-height:1.75}
+body.public-shell .page-hero{
+  padding:clamp(60px,8vw,104px) clamp(20px,4vw,42px);
+  background:linear-gradient(135deg,#eee8dc 0%,#FAF7F2 72%);
+}
+body.public-shell .page-hero h1{letter-spacing:-.025em}
+body.public-shell .page-hero p{font-size:clamp(14px,1.4vw,17px);line-height:1.85}
+body.public-shell .trust-strip{gap:clamp(14px,3vw,40px);padding:18px 22px}
+body.public-shell .split{gap:clamp(26px,5vw,64px)}
+body.public-shell .split img{max-width:100%;border-radius:var(--mh-radius-lg);box-shadow:var(--mh-shadow-soft)}
+body.public-shell .band{padding:clamp(52px,7vw,84px) 22px}
+body.public-shell .site-footer{padding:clamp(46px,6vw,70px) clamp(20px,5vw,54px) 24px;gap:clamp(20px,4vw,44px)}
+body.public-shell .site-footer a{width:fit-content;transition:color .18s ease}
+body.public-shell .landing .hero{border-radius:0 0 28px 28px}
+body.public-shell .landing .hero-photo{border-radius:var(--mh-radius-lg)}
+body.public-shell .landing section:not(.hero){padding-block:clamp(32px,5vw,58px)}
+body.public-shell .landing section:not(.hero)>h2{letter-spacing:-.02em}
+body.public-shell .landing section:not(.hero) p{font-size:15px;line-height:1.9}
+body.public-shell .landing section:not(.hero) ul{padding-left:1.2rem}
+body.public-shell .faq-item{padding:20px 0}
+body.public-shell .faq-item summary{font-size:clamp(18px,2vw,21px)}
+body.public-shell .booking-panel{border-radius:var(--mh-radius-lg);box-shadow:var(--mh-shadow-soft)}
+body.public-shell .field input,
+body.public-shell .field select,
+body.public-shell .field textarea{width:100%;max-width:100%;border-radius:10px;min-height:48px}
+body.public-shell .field textarea{min-height:110px}
+body.public-shell img{max-width:100%}
 @media(max-width:850px){
-  .site-header{height:76px}
-  .site-header nav{top:75px;padding:22px clamp(20px,5vw,38px);box-shadow:0 18px 28px rgba(26,51,34,.08)}
-  .section{padding-block:58px}
+  body.public-shell .site-header{min-height:74px;padding:12px 20px}
+  body.public-shell .site-header nav{top:100%;padding:20px clamp(20px,5vw,38px);box-shadow:0 18px 28px rgba(26,51,34,.08)}
+  body.public-shell .section{padding-block:54px}
+  body.public-shell .cards{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 @media(max-width:560px){
-  html{scroll-padding-top:78px}
-  .site-header{height:70px}
-  .site-header nav{top:69px}
-  .hero-copy{padding:clamp(48px,13vw,70px) 22px}
-  .hero h1{font-size:clamp(39px,11vw,48px);line-height:1.04}
-  .experience-card{border-radius:18px}
-  .experience-card img{height:225px}
-  .card-body{padding:21px}
-  .page-hero{padding:62px 20px}
-  .site-footer{padding:48px 22px 22px}
+  html{scroll-padding-top:76px}
+  body.public-shell .site-header{min-height:68px;padding:10px 16px}
+  body.public-shell .site-header nav{top:100%}
+  body.public-shell .hero-copy{padding:clamp(44px,12vw,66px) 20px}
+  body.public-shell .hero h1{font-size:clamp(36px,10vw,46px);line-height:1.06}
+  body.public-shell .cards{grid-template-columns:minmax(0,1fr);gap:18px}
+  body.public-shell .experience-card{border-radius:18px}
+  body.public-shell .experience-card img{height:clamp(210px,62vw,270px);object-fit:cover}
+  body.public-shell .card-body{padding:20px}
+  body.public-shell .page-hero{padding:56px 20px}
+  body.public-shell .site-footer{padding:44px 20px 22px}
+  body.public-shell .button,
+  body.public-shell .nav-cta{max-width:100%;white-space:normal}
 }
 @media(prefers-reduced-motion:reduce){
-  html{scroll-behavior:auto}
-  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+  body.public-shell *,body.public-shell *::before,body.public-shell *::after{
+    animation-duration:.01ms!important;animation-iteration-count:1!important;
+    transition-duration:.01ms!important;scroll-behavior:auto!important
+  }
 }
-
 
 /* Article page styles moved here to keep Astro component parsing clean. */
 .article-wrap {
