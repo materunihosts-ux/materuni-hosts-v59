@@ -100,11 +100,11 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
     <div class="field full"><label for="doc-title">Document title *</label><input id="doc-title" maxlength="180" placeholder="Enter the confirmed service or document subject" required></div>
 
     <div class="field"><label for="doc-date">Travel / service date *</label><input id="doc-date" type="date" required></div>
-    <div class="field"><label for="doc-timing">Service time & duration</label><input id="doc-timing" maxlength="100" placeholder="e.g. 09:00 AM – 03:30 PM (Approx. 6.5 hrs)"></div>
-    <div class="field"><label for="doc-pax">Party size / guests</label><input id="doc-pax" maxlength="60" placeholder="e.g. 2 Adults"></div>
-    <div class="field"><label for="doc-host">Lead host / guide</label><input id="doc-host" maxlength="100" placeholder="e.g. Saidi Materu (Lead Cultural Guide)"></div>
+    <div class="field"><label for="doc-timing">Service time & duration</label><input id="doc-timing" maxlength="100" placeholder="Enter only the time and duration confirmed with the host"></div>
+    <div class="field"><label for="doc-pax">Party size / guests</label><input id="doc-pax" maxlength="60" placeholder="Enter the confirmed number and type of guests"></div>
+    <div class="field"><label for="doc-host">Lead host / guide</label><input id="doc-host" maxlength="100" placeholder="Enter the host or guide assigned to this booking"></div>
 
-    <div class="field full"><label for="doc-meeting-point">Meeting point / pickup details</label><input id="doc-meeting-point" maxlength="220" placeholder="Materuni Village, Materuni Juu, Moshi Rural, Tanzania — confirm the exact meeting point"></div>
+    <div class="field full"><label for="doc-meeting-point">Meeting point / pickup details</label><input id="doc-meeting-point" maxlength="220" placeholder="Enter the agreed meeting point or confirmed pickup details"></div>
 
     <div class="field"><label for="doc-payment-status">Payment status</label><select id="doc-payment-status" required><option value="">Select payment status</option><option value="paid">Paid in full</option><option value="partially_paid">Partially paid</option><option value="unpaid">Unpaid</option></select></div>
     <div class="field"><label for="doc-payment-method">Payment method</label><select id="doc-payment-method"><option value="">Select payment method (if applicable)</option><option value="credit_card">Card payment (only if processed)</option><option value="mpesa">Mobile money (enter verified details)</option><option value="bank_wire">Bank transfer (enter verified details)</option><option value="cash">Cash (confirm currency and terms)</option></select></div>
@@ -126,7 +126,7 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
 
     <div class="field full">
      <label for="doc-inclusions">What's included (one item per line)</label>
-     <textarea id="doc-inclusions" rows="4" placeholder="Certified local Chagga guide (English & Swahili)&#10;All village cultural permits and conservation entrance fees&#10;Hands-on coffee roasting, grinding, singing & tasting&#10;Traditional Chagga hot lunch with fresh tropical fruits&#10;Mountain spring water refills and wooden walking stick"></textarea>
+     <textarea id="doc-inclusions" rows="4" placeholder="List only inclusions confirmed for this specific booking, one per line."></textarea>
     </div>
 
     <div class="field full">
@@ -136,7 +136,7 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
 
     <div class="field full">
      <label for="doc-advice">Traveller advice & what to bring</label>
-     <textarea id="doc-advice" rows="3" placeholder="Footwear: Sturdy walking shoes or hiking sneakers with good traction (trails may be moist or rocky)&#10;Attire: Comfortable lightweight clothing, light rain jacket, modest village attire&#10;Waterfall swim: Swimwear and towel if you wish to swim in the cool waterfall pool&#10;Cash: Small Tanzanian Shillings cash for handcrafted souvenirs or coffee beans"></textarea>
+     <textarea id="doc-advice" rows="3" placeholder="Enter practical advice verified for this route, season and guest booking."></textarea>
     </div>
 
     <div class="field full">
@@ -510,379 +510,25 @@ function prepareDocumentTemplate(){
   el("document-form").scrollIntoView({behavior:"smooth",block:"start"});
 }
 
-// Preset Handlers for all 13 standard operational and guest documents
-el("preset-quotation")?.addEventListener("click",()=>{
- el("doc-type").value="quotation";
- el("doc-audience").value="guest";
+// Blank document starters only. No fictional guests, staff, bookings, prices, payments,
+// weather, safety outcomes or supplier details are prefilled.
+function startBlankDocument(type, audience){
+ el("doc-type").value=type;
+ el("doc-audience").value=audience;
  el("doc-language").value="en";
  el("doc-currency").value="USD";
- el("doc-reference").value="MHQ-"+new Date().getFullYear()+"-"+Math.floor(1000+Math.random()*9000);
- el("doc-pin").value=String(Math.floor(1000+Math.random()*9000));
- el("doc-recipient").value="Elena Rostova & Family";
- el("doc-email").value="elena.rostova@example.com";
- el("doc-phone").value="+49 170 9876543";
- el("doc-country").value="Germany";
- el("doc-title").value="Private Chagga Cultural Immersion & 90m Materuni Waterfall Proposal";
- el("doc-date").value=getTodayString();
- el("doc-timing").value="08:45 AM – 04:30 PM (Approx. 7.5 hours)";
- el("doc-pax").value="3 Guests";
- el("doc-host").value="Saidi Materu & Local Hosts Team (+255 612 068 540)";
- el("doc-meeting-point").value="";
- el("doc-payment-status").value="unpaid";
- el("doc-payment-method").value="bank_wire";
- el("doc-lines").value="Materuni Waterfall & Chagga Village Full Day Experience | 3 | 45.00\nTraditional Tree-to-Cup Coffee Roasting Masterclass | 3 | 36.00\nAuthentic Hot Chagga Feast Lunch & Seasonal Tropical Fruits | 3 | 0.00\nRoundtrip Moshi Town Hotel Private 4x4 Transfer | 1 | 40.00";
- el("doc-amount").value="283.00";
- el("doc-deposit").value="0.00";
- el("doc-inclusions").value="Local Chagga guide (confirm assigned host and languages)\nAll village cultural permits and waterfall conservation entrance fees\nHands-on coffee roasting, grinding, singing & tasting\nAuthentic Chagga hot lunch with fresh tropical fruits\nChilled mountain spring water refills and walking sticks\nPrivate return transport from Moshi town hotel";
- el("doc-exclusions").value="Discretionary gratuities for local host and village cooks\nPersonal travel and medical insurance";
- el("doc-advice").value="Footwear: Sturdy walking shoes or hiking sneakers with grip (forest trails may be moist)\nClothing: Comfortable lightweight layers, light rain jacket, modest village attire\nSwimwear: Bring swimsuit and small towel if you wish to swim in the waterfall pool\nCash: Small TZS cash for handcrafted local souvenirs or extra roasted coffee beans";
- el("doc-terms").value="Quotation valid for 14 days from issue date. 20% deposit required upon confirmation to secure preferred calendar slot.\nBalance payable on arrival in clean USD banknotes (series 2013+) or TZS at current Bank of Tanzania exchange rate.\nFree cancellation or rescheduling up to 48 hours prior to start time.";
  prepareDocumentTemplate();
-});
-
-el("preset-invoice")?.addEventListener("click",()=>{
- el("doc-type").value="invoice";
- el("doc-audience").value="guest";
- el("doc-language").value="en";
- el("doc-currency").value="USD";
- el("doc-reference").value="MHI-"+new Date().getFullYear()+"-"+Math.floor(100+Math.random()*900);
- el("doc-pin").value=String(Math.floor(1000+Math.random()*9000));
- el("doc-recipient").value="Kibo Summit Safaris Ltd (Attn: Travel Operations)";
- el("doc-email").value="bookings@kibosafaris.example";
- el("doc-phone").value="+255 784 123 456";
- el("doc-country").value="Tanzania / Germany";
- el("doc-title").value="Professional Tour Service Invoice · Private Materuni Cultural & Nature Tour";
- el("doc-date").value=getTodayString();
- el("doc-timing").value="08:30 AM – 04:00 PM";
- el("doc-pax").value="4 Adults (Private Group)";
- el("doc-host").value="Saidi Materu (Managing Host)";
- el("doc-meeting-point").value="Direct Hotel Pickup in Moshi / Materuni Village Centre";
- el("doc-payment-status").value="paid";
- el("doc-payment-method").value="bank_wire";
- el("doc-lines").value="Materuni Waterfall & Chagga Village Full Day Experience | 4 | 45.00\nTraditional Chagga Coffee Experience | 4 | 36.00\nAuthentic Hot Chagga Feast Lunch & Fresh Fruit | 4 | 0.00\nPrivate Toyota Land Cruiser Return Moshi Transfer | 1 | 40.00";
- el("doc-amount").value="364.00";
- el("doc-deposit").value="364.00";
- el("doc-inclusions").value="All village conservation permits, licensed cultural guide, hot village lunch, coffee experience and private return transport.";
- el("doc-exclusions").value="Discretionary driver & guide gratuities.";
- el("doc-advice").value="Payment received with thanks. Please ensure guests bring sturdy walking shoes and rain gear.";
- el("doc-terms").value="";
- prepareDocumentTemplate();
-});
-
-el("preset-receipt")?.addEventListener("click",()=>{
- el("doc-type").value="receipt";
- el("doc-audience").value="guest";
- el("doc-language").value="en";
- el("doc-currency").value="USD";
- el("doc-reference").value="MHR-"+new Date().getFullYear()+"-"+Math.floor(100+Math.random()*900);
- el("doc-pin").value=String(Math.floor(1000+Math.random()*9000));
- el("doc-recipient").value="Markus Lindner";
- el("doc-email").value="markus.l@example.com";
- el("doc-phone").value="+41 79 123 4567";
- el("doc-country").value="Switzerland";
- el("doc-title").value="Official Tour Payment Receipt · Materuni Waterfall & Coffee Experience";
- el("doc-date").value=getTodayString();
- el("doc-timing").value="09:00 AM Start";
- el("doc-pax").value="2 Guests";
- el("doc-host").value="Saidi Materu";
- el("doc-meeting-point").value="Materuni Village";
- el("doc-payment-status").value="paid";
- el("doc-payment-method").value="cash";
- el("doc-lines").value="Materuni Waterfall & Chagga Village Hike | 2 | 45.00\nTraditional Coffee Roasting & Tasting Masterclass | 2 | 36.00";
- el("doc-amount").value="162.00";
- el("doc-deposit").value="162.00";
- el("doc-inclusions").value="All included services paid in full on arrival.";
- el("doc-exclusions").value="None.";
- el("doc-advice").value="Thank you for visiting Materuni and supporting our local community hosts.";
- el("doc-terms").value="Payment received in full. Verified by Saidi Materu, Materuni Hosts.";
- prepareDocumentTemplate();
-});
-
-el("preset-confirmation")?.addEventListener("click",()=>{
- el("doc-type").value="confirmation";
- el("doc-audience").value="guest";
- el("doc-language").value="en";
- el("doc-currency").value="USD";
- el("doc-reference").value="MHB-CONF-"+new Date().getFullYear()+"-"+Math.floor(1000+Math.random()*9000);
- el("doc-pin").value=String(Math.floor(1000+Math.random()*9000));
- el("doc-recipient").value="David & Sarah Jenkins";
- el("doc-email").value="s.jenkins@example.com";
- el("doc-phone").value="+44 7700 900123";
- el("doc-country").value="United Kingdom";
- el("doc-title").value="Official Booking Confirmation & Welcome Notice";
- el("doc-date").value=getTodayString();
- el("doc-timing").value="09:00 AM – 03:30 PM (Approx. 6.5 hours)";
- el("doc-pax").value="2 Adults";
- el("doc-host").value="Saidi Materu (+255 612 068 540)";
- el("doc-meeting-point").value="";
- el("doc-payment-status").value="paid";
- el("doc-payment-method").value="credit_card";
- el("doc-lines").value="Materuni Waterfall Rainforest Hike | 2 | 45.00\nTraditional Tree-to-Cup Chagga Coffee Roasting | 2 | 36.00\nAuthentic Chagga Hot Lunch with Seasonal Fruits | 2 | 0.00";
- el("doc-amount").value="162.00";
- el("doc-deposit").value="162.00";
- el("doc-inclusions").value="Guaranteed reservation slot, licensed guide, conservation permits, coffee workshop and hot lunch.";
- el("doc-exclusions").value="Discretionary gratuities for local hosts.";
- el("doc-advice").value="Your guide Saidi Materu will meet you at the village center. Wear sturdy trail shoes and bring a camera!";
- el("doc-terms").value="Your booking is confirmed and guaranteed. For any same-day timing adjustments, message your host on WhatsApp +255 612 068 540.";
- prepareDocumentTemplate();
-});
-
-el("preset-itinerary")?.addEventListener("click",()=>{
- el("doc-type").value="itinerary";
- el("doc-audience").value="guest";
- el("doc-language").value="en";
- el("doc-currency").value="USD";
- el("doc-reference").value="MH-ITN-"+new Date().getFullYear()+"-"+Math.floor(100+Math.random()*900);
- el("doc-pin").value=String(Math.floor(1000+Math.random()*9000));
- el("doc-recipient").value="Elena Rostova & Family";
- el("doc-email").value="elena.rostova@example.com";
- el("doc-phone").value="+49 170 9876543";
- el("doc-country").value="Germany";
- el("doc-title").value="Detailed Guest Itinerary · Materuni Waterfall, Coffee & Chagga Village Immersion";
- el("doc-date").value=getTodayString();
- el("doc-timing").value="08:30 AM – 04:30 PM";
- el("doc-pax").value="3 Guests";
- el("doc-host").value="Saidi Materu & Local Hosts";
- el("doc-meeting-point").value="";
- el("doc-payment-status").value="partially_paid";
- el("doc-payment-method").value="mpesa";
- el("doc-lines").value="08:30 AM — Scenic drive from Moshi through lush Chagga coffee and banana groves | 1 | 0.00\n09:15 AM — Warm welcome at Materuni Village & Chagga history introduction | 3 | 0.00\n09:45 AM — Guided 45-min rainforest hike to 90m Materuni Waterfall | 3 | 45.00\n11:15 AM — Swimming in the waterfall plunge pool & photo session | 3 | 0.00\n12:45 PM — Traditional hot Chagga lunch prepared by village mamas | 3 | 0.00\n01:45 PM — Tree-to-cup coffee masterclass: roasting, pestle grinding & songs | 3 | 36.00\n03:15 PM — Mbege (traditional banana brew) tasting & village stroll | 3 | 0.00\n04:15 PM — Farewell and return transfer to Moshi hotel | 1 | 35.00";
- el("doc-amount").value="278.00";
- el("doc-deposit").value="100.00";
- el("doc-inclusions").value="Professional local guide, waterfall entry fees, coffee class, hot lunch, spring water refills, private return transport.";
- el("doc-exclusions").value="Personal tips, extra souvenir roasted coffee packages.";
- el("doc-advice").value="Bring sturdy sneakers, swimwear/towel if dipping in the waterfall pool, sunglasses, sun hat and lightweight raincoat.";
- el("doc-terms").value="Flexible day schedule tailored to your pace. Remaining balance of USD 178.00 payable upon arrival in cash or via M-Pesa.";
- prepareDocumentTemplate();
-});
-
-el("preset-voucher")?.addEventListener("click",()=>{
- el("doc-type").value="voucher";
- el("doc-audience").value="guest";
- el("doc-language").value="en";
- el("doc-currency").value="USD";
- el("doc-reference").value="MH-VCHR-"+new Date().getFullYear()+"-"+Math.floor(1000+Math.random()*9000);
- el("doc-pin").value=String(Math.floor(1000+Math.random()*9000));
- el("doc-recipient").value="Sarah & David Jenkins";
- el("doc-email").value="s.jenkins@example.com";
- el("doc-phone").value="+44 7700 900123";
- el("doc-country").value="United Kingdom";
- el("doc-title").value="Partner Tour Voucher";
- el("doc-date").value=getTodayString();
- el("doc-timing").value="09:00 AM – 03:30 PM (Approx. 6.5 hours)";
- el("doc-pax").value="2 Adults";
- el("doc-host").value="Saidi Materu & Local Hosts Team (+255 612 068 540)";
- el("doc-meeting-point").value="";
- el("doc-payment-status").value="paid";
- el("doc-payment-method").value="credit_card";
- el("doc-lines").value="Materuni Waterfall & Chagga Village Hike | 2 | 45.00\nTraditional Tree-to-Cup Coffee Roasting Class | 2 | 36.00\nAuthentic Chagga Hot Lunch & Seasonal Fruits | 2 | 0.00\nRoundtrip Moshi Town Private 4x4 Transfer | 1 | 35.00";
- el("doc-amount").value="197.00";
- el("doc-deposit").value="197.00";
- el("doc-inclusions").value="Certified English & Swahili speaking Chagga guide\nAll village cultural entry permits & waterfall conservation fees\nHands-on coffee roasting, grinding, singing & tasting\nAuthentic Chagga hot lunch with fresh tropical fruits\nChilled mountain spring water refills and walking sticks\nPrivate return transport from Moshi town hotel";
- el("doc-exclusions").value="Discretionary gratuities for local host and village cooks\nPersonal travel and medical insurance";
- el("doc-advice").value="Footwear: Sturdy walking shoes or hiking sneakers with grip (forest trails may be moist)\nClothing: Comfortable lightweight layers, light rain jacket, modest village attire\nSwimwear: Bring swimsuit and small towel if you wish to swim in the waterfall pool\nCash: Small TZS cash for handcrafted local souvenirs or extra roasted coffee beans";
- el("doc-terms").value="";
- prepareDocumentTemplate();
-});
-
-el("preset-cancellation")?.addEventListener("click",()=>{
- el("doc-type").value="cancellation";
- el("doc-audience").value="guest";
- el("doc-language").value="en";
- el("doc-currency").value="USD";
- el("doc-reference").value="MHC-REF-"+new Date().getFullYear()+"-"+Math.floor(100+Math.random()*900);
- el("doc-pin").value=String(Math.floor(1000+Math.random()*9000));
- el("doc-recipient").value="Jonathan Miller";
- el("doc-email").value="j.miller@example.com";
- el("doc-phone").value="+1 415 555 2671";
- el("doc-country").value="United States";
- el("doc-title").value="Cancellation & Refund Statement · Reservation MH-CONF-2026-7102";
- el("doc-date").value=getTodayString();
- el("doc-timing").value="Cancellation Date: "+getTodayString();
- el("doc-pax").value="2 Guests";
- el("doc-host").value="Saidi Materu (Managing Host)";
- el("doc-meeting-point").value="Materuni Village Cultural Tourism Centre";
- el("doc-payment-status").value="paid";
- el("doc-payment-method").value="credit_card";
- el("doc-lines").value="Original Confirmed Reservation Value (2 Guests) | 1 | 180.00\nCancellation Policy Applied (Timely notice >48 hrs) | 1 | 0.00\nProcessing & Administrative Surcharge (0% Community Policy) | 1 | 0.00\nNet Refund Amount Approved for Immediate Payout | 1 | -180.00";
- el("doc-amount").value="180.00";
- el("doc-deposit").value="180.00";
- el("doc-inclusions").value="Full cancellation processed in accordance with Materuni Hosts flexible 48-hour cancellation policy.";
- el("doc-exclusions").value="None. No cancellation penalty levied.";
- el("doc-advice").value="Refund transaction ref: RFND-MHC-2026-034. Funds typically reflect within 3 to 5 business days depending on guest bank.";
- el("doc-terms").value="Cancellation completed. This statement confirms that your booking has been released and all funds are refunded in full. We hope to welcome you to Materuni in the future!";
- prepareDocumentTemplate();
-});
-
-el("preset-statement")?.addEventListener("click",()=>{
- el("doc-type").value="statement";
- el("doc-audience").value="agent";
- el("doc-language").value="en";
- el("doc-currency").value="USD";
- el("doc-reference").value="MH-STMT-"+new Date().getFullYear()+"-Q4";
- el("doc-pin").value=String(Math.floor(1000+Math.random()*9000));
- el("doc-recipient").value="Kibo Summit Safaris Ltd (Partner Account)";
- el("doc-email").value="finance@kibosafaris.example";
- el("doc-phone").value="+255 784 123 456";
- el("doc-country").value="Tanzania / Germany";
- el("doc-title").value="Customer Booking & Financial Account Statement";
- el("doc-date").value=getTodayString();
- el("doc-timing").value="Statement Period: Q4 "+new Date().getFullYear();
- el("doc-pax").value="14 Guests Total";
- el("doc-host").value="Saidi Materu (Finance & Operations)";
- el("doc-meeting-point").value="Materuni Village & Moshi Pickups";
- el("doc-payment-status").value="partially_paid";
- el("doc-payment-method").value="bank_wire";
- el("doc-lines").value="Invoice MHI-2026-812 (Tour date Oct 12 · 4 Pax) | 1 | 360.00\nPayment Received CRDB Bank Wire (Ref: TX98214) | 1 | -360.00\nInvoice MHI-2026-844 (Tour date Oct 22 · 6 Pax) | 1 | 540.00\nPayment Received CRDB Bank Wire (Ref: TX98840) | 1 | -540.00\nInvoice MHI-2026-892 (Tour date Nov 02 · 4 Pax) | 1 | 364.00\nAdvance Deposit Received (M-Pesa) | 1 | -100.00";
- el("doc-amount").value="264.00";
- el("doc-deposit").value="0.00";
- el("doc-inclusions").value="Comprehensive ledger of all completed tours, disbursements, and payments received during the current billing period.";
- el("doc-exclusions").value="Future unconfirmed tour reservations.";
- el("doc-advice").value="All tours completed with 100% positive guest satisfaction. No outstanding incident disputes.";
- el("doc-terms").value="";
- prepareDocumentTemplate();
-});
-
-el("preset-supplier")?.addEventListener("click",()=>{
- el("doc-type").value="supplier_record";
- el("doc-audience").value="internal";
- el("doc-language").value="en";
- el("doc-currency").value="TZS";
- el("doc-reference").value="MH-SUP-"+new Date().getFullYear()+"-"+Math.floor(100+Math.random()*900);
- el("doc-pin").value=String(Math.floor(1000+Math.random()*9000));
- el("doc-recipient").value="Rashidi Mwamba (Private 4x4 Transport Partner)";
- el("doc-email").value="rashidi.transfers@example.tz";
- el("doc-phone").value="+255 754 889 012";
- el("doc-country").value="Moshi, Tanzania";
- el("doc-title").value="Supplier & Local Service Payment Record · Transport & Catering";
- el("doc-date").value=getTodayString();
- el("doc-timing").value="Tour Date: "+getTodayString()+" (Full Day)";
- el("doc-pax").value="Vehicle Reg: T 418 DLR (Toyota Prado 4x4)";
- el("doc-host").value="Saidi Materu (Operations Lead)";
- el("doc-meeting-point").value="Moshi Hotel Pickup -> Materuni Village";
- el("doc-payment-status").value="paid";
- el("doc-payment-method").value="mpesa";
- el("doc-lines").value="Return 4x4 Hotel Transfer (Moshi Town to Materuni) | 1 | 95000.00\nLuggage Assistance & Waiting Time Allowance | 1 | 40000.00\nVillage Cook Mamas Catering Allowance (Hot Feast Lunch) | 1 | 110000.00";
- el("doc-amount").value="245000.00";
- el("doc-deposit").value="245000.00";
- el("doc-inclusions").value="Vehicle fuel, driver allowance, village kitchen ingredients and cook mama remuneration.";
- el("doc-exclusions").value="Personal expenses.";
- el("doc-advice").value="Service performed in full compliance with Materuni Hosts guest care and mountain safety protocols.";
- el("doc-terms").value="Disbursed via Vodacom M-Pesa. Receipt acknowledged by service provider. Document archived for internal financial accounting.";
- prepareDocumentTemplate();
-});
-
-el("preset-guide")?.addEventListener("click",()=>{
- el("doc-type").value="guide_assignment";
- el("doc-audience").value="internal";
- el("doc-language").value="en";
- el("doc-currency").value="USD";
- el("doc-reference").value="MH-GUIDE-"+new Date().getFullYear()+"-"+Math.floor(100+Math.random()*900);
- el("doc-pin").value=String(Math.floor(1000+Math.random()*9000));
- el("doc-recipient").value="Elia & Amani (Assigned Local Chagga Guides)";
- el("doc-phone").value="+255 612 068 540";
- el("doc-country").value="Materuni Village";
- el("doc-title").value="Lead Guide & Mountain Host Assignment Sheet";
- el("doc-date").value=getTodayString();
- el("doc-timing").value="Guide Reporting: 08:30 AM · Tour Departure: 09:00 AM";
- el("doc-pax").value="4 Guests (Dr. Thomas Weber Party · Germany)";
- el("doc-host").value="Saidi Materu (Supervising Host)";
- el("doc-meeting-point").value="Materuni Village Tourism Centre";
- el("doc-payment-status").value="paid";
- el("doc-payment-method").value="cash";
- el("doc-lines").value="Lead Cultural Guide: Elia (Chagga coffee demonstration, songs, history) | 1 | 0.00\nTrail & Safety Guide: Amani (Rainforest hike pace, pool safety, first aid) | 1 | 0.00\nVillage Cooks Assignment: Mama Agnes & Mama Joyce (Chagga hot feast) | 2 | 0.00\nEquipment Issued: First Aid Kit #2, 4 Wooden Walking Poles, Rain Ponchos | 1 | 0.00";
- el("doc-amount").value="0.00";
- el("doc-deposit").value="0.00";
- el("doc-inclusions").value="All permits checked; first aid kit inspected; fresh spring water bottles packed.";
- el("doc-exclusions").value="None.";
- el("doc-advice").value="Guest briefing notes: 1 guest is vegetarian (plantain & vegetable stew prepared). Slower walking pace requested on uphill return.";
- el("doc-terms").value="Debrief with lead host Saidi Materu upon tour completion. Return equipment and confirm guest departure.";
- prepareDocumentTemplate();
-});
-
-el("preset-daily")?.addEventListener("click",()=>{
- el("doc-type").value="daily_report";
- el("doc-audience").value="internal";
- el("doc-language").value="en";
- el("doc-currency").value="USD";
- el("doc-reference").value="MH-OPS-"+getTodayString();
- el("doc-pin").value="OPS-"+Math.floor(100+Math.random()*900);
- el("doc-recipient").value="Materuni Hosts Operations & Safety Desk";
- el("doc-phone").value="+255 612 068 540";
- el("doc-country").value="Materuni Village";
- el("doc-title").value="Daily Tour Operations Manifest & Mountain Safety Log";
- el("doc-date").value=getTodayString();
- el("doc-timing").value="Operations Window: 07:30 AM – 06:00 PM";
- el("doc-pax").value="11 Guests Total (3 Tour Groups)";
- el("doc-host").value="Saidi Materu (Lead Host on Duty)";
- el("doc-meeting-point").value="Materuni Village Tourism Hub";
- el("doc-payment-status").value="paid";
- el("doc-payment-method").value="mpesa";
- el("doc-lines").value="Group 1: Waterfall & Chagga Coffee (Lead Guide: Elia · 4 Guests) | 1 | 0.00\nGroup 2: Traditional Cooking Class (Lead Guide: Saidi · 3 Guests) | 1 | 0.00\nGroup 3: Overnight Village Camping Stay (Lead Guide: Amani · 4 Guests) | 1 | 0.00\nTrail & Weather Status: Clear trails, moderate waterfall plunge flow, 24°C | 1 | 0.00";
- el("doc-amount").value="0.00";
- el("doc-deposit").value="0.00";
- el("doc-inclusions").value="All 3 groups successfully dispatched with registered guides and safety gear.";
- el("doc-exclusions").value="None.";
- el("doc-advice").value="Forest conditions pleasant. No weather warnings or high-water trail closures.";
- el("doc-terms").value="Safety incident log: Zero incidents reported. All 11 guests checked in safely and returned on schedule.";
- prepareDocumentTemplate();
-});
-
-el("preset-monthly")?.addEventListener("click",()=>{
- el("doc-type").value="monthly_report";
- el("doc-audience").value="internal";
- el("doc-language").value="en";
- el("doc-currency").value="USD";
- el("doc-reference").value="MH-FIN-"+new Date().getFullYear()+"-"+(new Date().getMonth()+1).toString().padStart(2,"0");
- el("doc-pin").value="FIN-"+Math.floor(100+Math.random()*900);
- el("doc-recipient").value="Materuni Hosts Leadership & Village Community Committee";
- el("doc-phone").value="+255 612 068 540";
- el("doc-country").value="Materuni Village";
- el("doc-title").value="Monthly Financial Operations & Community Impact Summary";
- el("doc-date").value=getTodayString();
- el("doc-timing").value="Reporting Period: Month "+(new Date().getMonth()+1)+", "+new Date().getFullYear();
- el("doc-pax").value="68 Total Hosted Guests";
- el("doc-host").value="Saidi Materu (Managing Director)";
- el("doc-meeting-point").value="Materuni Village";
- el("doc-payment-status").value="paid";
- el("doc-payment-method").value="bank_wire";
- el("doc-lines").value="Gross Tour Booking Receipts (68 Guests Hosted) | 68 | 58.50\nDirect Remuneration: Certified Local Chagga Mountain Guides | 1 | -1120.00\nDirect Remuneration: Village Mamas Catering & Kitchen Team | 1 | -780.00\nDirect Remuneration: Local 4x4 Private Transport Drivers | 1 | -640.00\nMateruni Village Community Conservation & School Fund (10%) | 1 | -398.00\nTrail Maintenance & Camping Equipment Depreciation | 1 | -180.00";
- el("doc-amount").value="3978.00";
- el("doc-deposit").value="3978.00";
- el("doc-inclusions").value="Detailed revenue, direct expenditure, local wage disbursements, and village fund allocations.";
- el("doc-exclusions").value="Personal capital investments.";
- el("doc-advice").value="All local guide and cook payments settled on time. Village school fund allocation ready for handover.";
- el("doc-terms").value="Net Operating Margin: USD 860.00 retained in enterprise operational reserves for seasonal equipment renewals.";
- prepareDocumentTemplate();
-});
-
-el("preset-registration")?.addEventListener("click",()=>{
- el("doc-type").value="registration";
- el("doc-audience").value="guest";
- el("doc-language").value="en";
- el("doc-currency").value="USD";
- el("doc-reference").value="MH-REG-"+new Date().getFullYear()+"-"+Math.floor(100+Math.random()*900);
- el("doc-pin").value=String(Math.floor(1000+Math.random()*9000));
- el("doc-recipient").value="Guest Legal Name: Sarah Jenkins & David Jenkins";
- el("doc-email").value="s.jenkins@example.com";
- el("doc-phone").value="+44 7700 900123";
- el("doc-country").value="United Kingdom (Passport Holder)";
- el("doc-title").value="Guest Registration, Health Declaration & Mountain Safety Indemnity Form";
- el("doc-date").value=getTodayString();
- el("doc-timing").value="Tour Departure: 09:00 AM";
- el("doc-pax").value="2 Guests Registered";
- el("doc-host").value="Saidi Materu (Lead Host)";
- el("doc-meeting-point").value="Materuni Cultural Centre / Moshi Hotel Pickup";
- el("doc-payment-status").value="paid";
- el("doc-payment-method").value="credit_card";
- el("doc-lines").value="Materuni Waterfall & Chagga Village Guided Immersion Tour | 2 | 0.00\nEmergency Contact: Mark Jenkins (+44 7800 123456 / Brother) | 1 | 0.00\nMedical / Dietary Declaration: None reported (No allergies, fit for hike) | 1 | 0.00\nLocal Accommodation in Tanzania: Kilimanjaro Wonders Hotel, Moshi | 1 | 0.00";
- el("doc-amount").value="0.00";
- el("doc-deposit").value="0.00";
- el("doc-inclusions").value="I understand that guided hiking on Mount Kilimanjaro foothills involves walking on natural unpaved paths, rocky steps and rainforest terrain with moisture.";
- el("doc-exclusions").value="None.";
- el("doc-advice").value="Safety instruction: Guests agree to follow the guidance and pace set by the certified Chagga guide at all times.";
- el("doc-terms").value="Declaration & Signature: I confirm that I am participating voluntarily in this cultural and nature walk, have disclosed relevant health conditions, and release Materuni Hosts and its village hosts from liability for ordinary mountain outdoor hazards.";
- prepareDocumentTemplate();
+}
+[
+ ["quotation","quotation","guest"],["invoice","invoice","guest"],
+ ["receipt","receipt","guest"],["confirmation","confirmation","guest"],
+ ["itinerary","itinerary","guest"],["voucher","voucher","agent"],
+ ["cancellation","cancellation","guest"],["statement","statement","guest"],
+ ["supplier","supplier_record","internal"],["guide","guide_assignment","internal"],
+ ["daily","daily_report","internal"],["monthly","monthly_report","internal"],
+ ["registration","registration","guest"]
+].forEach(([buttonId,type,audience])=>{
+ el("preset-"+buttonId)?.addEventListener("click",()=>startBlankDocument(type,audience));
 });
 
 function parseLines(raw, defaultCurrency){
