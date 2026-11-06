@@ -90,3 +90,35 @@ test("normalizes hostile paths and does not let older snapshots overwrite newer 
   assert.equal(model.pages[0].title, "Latest");
   assert.equal(model.pages[0].path, "/page");
 });
+
+
+test("flags the same keyword assigned to competing target pages without discarding either mapping", () => {
+  const model = buildSeoIntelligenceModel({
+    siteOrigin: "https://materunihosts.com",
+    keywords: [
+      { keyword: "Materuni waterfall tour", source: "manual", target_url: "https://materunihosts.com/waterfall" },
+      { keyword: "materuni waterfall tour", source: "csv_import", target_url: "https://materunihosts.com/day-trips" },
+      { keyword: "Materuni waterfall tour", source: "manual", target_url: "https://materunihosts.com/waterfall/" }
+    ],
+    snapshots: []
+  });
+  const conflicts = model.recommendations.filter((item) => item.code === "keyword_multiple_targets");
+  assert.equal(conflicts.length, 2);
+  assert.deepEqual(conflicts.map((item) => item.page).sort(), [
+    "https://materunihosts.com/day-trips",
+    "https://materunihosts.com/waterfall"
+  ]);
+  assert.ok(conflicts.every((item) => item.severity === "medium"));
+  assert.ok(conflicts.every((item) => item.evidence.includes("Materuni waterfall tour")));
+});
+
+test("does not flag a keyword mapped repeatedly to the same normalised path", () => {
+  const model = buildSeoIntelligenceModel({
+    siteOrigin: "https://materunihosts.com",
+    keywords: [
+      { keyword: "Materuni coffee tour", target_url: "https://materunihosts.com/coffee" },
+      { keyword: "materuni coffee tour", target_url: "https://materunihosts.com/coffee/" }
+    ]
+  });
+  assert.equal(model.recommendations.filter((item) => item.code === "keyword_multiple_targets").length, 0);
+});
