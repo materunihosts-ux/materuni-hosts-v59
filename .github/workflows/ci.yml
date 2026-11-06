@@ -23,5 +23,7 @@ jobs:
           node-version: 22
       - name: Install dependencies
         run: npm install --no-audit --no-fund
+      - name: Run SEO regression tests
+        run: npm run test:seo
       - name: Build and run quality gate
         run: npm run build
