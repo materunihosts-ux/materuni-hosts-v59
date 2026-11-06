@@ -222,3 +222,14 @@ A scope mismatch is rejected so a sitemap crawl is not misleadingly compared wit
 A small UI state issue was also corrected: the crawl scope is now retained outside the audit event handler so JSON export and comparison can access the actual scope, and the compare action becomes available when both a baseline and a new crawl exist.
 
 Limitations remain explicit: snapshots are still files kept by the administrator, not shared database history. No Supabase schema or data was changed. No production deployment or Vercel preview has been created, and the complete Astro check/build/quality gate remains unverified.
+
+
+## 2026-11-06 — Keyword import provenance and validation
+
+The SEO Keyword Studio now classifies CSV files by header shape as a keyword list, keyword-metrics export, or Search Console-shaped performance export. It does not claim the file is authentic or that a Search Console API connection exists.
+
+The import utility validates keyword length, numeric ranges, supported intent values and same-origin target URLs; rejects credential-bearing/off-site target URLs; skips blank and duplicate keywords; and records a controlled user-supplied/unverified provenance note in the existing notes field. The UI now shows the broad record source and explains that imported data is not independently verified. The existing schema and authenticated Data API write path are retained; no table, policy, grant, or production record was changed.
+
+The import now reports partial completion accurately if a later batch fails, and distinguishes a successful insert from a subsequent list-refresh failure. The test script includes five keyword-import cases alongside the existing crawler/snapshot suite.
+
+Validation performed: the five keyword-import cases passed (5/5) in an isolated temporary Node fixture containing a copy of the helper and tests. GitHub checkout is still unavailable from the local container due DNS/network resolution, so this is not a test run against the exact repository checkout. The complete npm run test:seo, Astro check, production build and quality gate remain unverified.
