@@ -7,11 +7,9 @@ function send(res, status, body) {
   return res.status(status).setHeader("Cache-Control", "no-store").json(body);
 }
 function validDate(value) {
-  if (typeof value !== "string" || !/^\\d{4}-\\d{2}-\\d{2}$/.test(value)) return false;
+  if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
   const parsed = new Date(value + "T00:00:00Z");
   return !Number.isNaN(parsed.getTime()) && parsed.toISOString().slice(0, 10) === value;
-}
-}
 function sameOrigin(req) {
   const origin = req.headers.origin;
   if (!origin) return true;
@@ -34,7 +32,7 @@ export default async function handler(req, res) {
   const accessToken = authorization.startsWith("Bearer ") ? authorization.slice(7) : "";
   if (!accessToken) return send(res, 401, { error: "Administrator sign-in is required." });
 
-  const supabaseUrl = (process.env.SUPABASE_URL || process.env.PUBLIC_SUPABASE_URL || "").replace(/\\/+$/, "");
+  const supabaseUrl = (process.env.SUPABASE_URL || process.env.PUBLIC_SUPABASE_URL || "").replace(/\/+$/, "");
   const supabaseKey = process.env.SUPABASE_PUBLISHABLE_KEY || process.env.PUBLIC_SUPABASE_PUBLISHABLE_KEY;
   if (!supabaseUrl || !supabaseKey) return send(res, 503, { error: "Server-side Supabase authentication is not configured." });
 
@@ -75,7 +73,7 @@ export default async function handler(req, res) {
         error: "Google Search Console is not configured yet. Add GOOGLE_SEARCH_CONSOLE_CLIENT_ID, GOOGLE_SEARCH_CONSOLE_CLIENT_SECRET, GOOGLE_SEARCH_CONSOLE_REFRESH_TOKEN and GOOGLE_SEARCH_CONSOLE_SITE_URL to the Vercel Preview environment, then redeploy the preview."
       });
     }
-    if (!/^https:\\/\\//.test(siteUrl) && !/^sc-domain:[a-z0-9.-]+$/i.test(siteUrl)) {
+    if (!/^https:\/\//.test(siteUrl) && !/^sc-domain:[a-z0-9.-]+$/i.test(siteUrl)) {
       return send(res, 503, { error: "GOOGLE_SEARCH_CONSOLE_SITE_URL must be an https property URL or sc-domain:example.com." });
     }
 
