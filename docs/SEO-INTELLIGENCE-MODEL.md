@@ -20,6 +20,7 @@ Status: read-only application-layer analysis. No database migrations, writes, St
 - HTTP errors, noindex directives, image alt gaps and canonical mismatches.
 - Main-content depth triage and absence of contextual internal links.
 - Keyword-to-page coverage, targets not present in the crawl, and multiple keywords mapped to one page.
+- The same normalized keyword assigned to multiple distinct target paths is flagged as a possible competing-page/cannibalization risk for human review; trailing-slash variants are normalized to one path.
 - Recommendations carry severity, action, affected URL and observed evidence.
 
 ## Methodology guardrails
@@ -28,6 +29,7 @@ Status: read-only application-layer analysis. No database migrations, writes, St
 - Multiple H1s are a hierarchy review, not automatically a penalty.
 - A keyword target absent from the current crawl may simply be outside the crawl scope; it is not proof of a 404.
 - A page without a keyword mapping is not necessarily underperforming.
+- Multiple target paths for one keyword are a mapping conflict signal, not proof of Google cannibalization; confirm intent, rankings and actual search results before changing page ownership.
 - Internal-link counts are observed links to a different same-origin path; the crawler does not verify every destination's HTTP status.
 - Imported CSV metrics are user-supplied and not independently API-verified. CTR is calculated only from supplied clicks and impressions and must not be represented as authenticated Search Console data.
 - Browser crawls do not measure Google rankings, organic traffic, backlinks or indexing.
