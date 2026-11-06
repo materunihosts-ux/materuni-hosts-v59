@@ -48,3 +48,45 @@ test("keeps the newest crawl observation for each page path", () => {
   assert.equal(model.pages.length, 1);
   assert.equal(model.pages[0].title, "New");
 });
+
+test("detects duplicate metadata, thin content, weak internal linking and keyword mapping gaps", () => {
+  const model = buildSeoIntelligenceModel({
+    siteOrigin: "https://materunihosts.com",
+    keywords: [
+      { keyword: "Materuni waterfall tour", source: "manual", target_url: "https://materunihosts.com/waterfall" },
+      { keyword: "Materuni waterfall hike", source: "csv_import", target_url: "https://materunihosts.com/waterfall" },
+      { keyword: "Coffee experience", source: "manual", target_url: "https://materunihosts.com/missing-page" }
+    ],
+    snapshots: [{
+      schemaVersion: 1, source: "browser_live_crawl", siteOrigin: "https://materunihosts.com", capturedAt: "2026-11-06T12:00:00Z",
+      pages: [
+        { path: "/waterfall", status: 200, title: "Materuni Waterfall Experience", description: "Explore Materuni waterfall with local Chagga hosts and learn about village life, traditions and the beautiful forest trail.", h1Count: 1, hasViewport: true, wordCount: 110, internalLinkCount: 0, imageCount: 3, imagesMissingAlt: 1, canonicalUrl: "https://materunihosts.com/waterfall", findings: [] },
+        { path: "/coffee", status: 200, title: "Materuni Waterfall Experience", description: "Explore Materuni waterfall with local Chagga hosts and learn about village life, traditions and the beautiful forest trail.", h1Count: 1, hasViewport: true, wordCount: 550, internalLinkCount: 4, imageCount: 2, imagesMissingAlt: 0, canonicalUrl: "https://materunihosts.com/coffee", findings: [] }
+      ]
+    }]
+  });
+  const codes = model.recommendations.map((r) => r.code);
+  assert.ok(codes.includes("duplicate_title"));
+  assert.ok(codes.includes("duplicate_description"));
+  assert.ok(codes.includes("thin_content_review"));
+  assert.ok(codes.includes("no_internal_links"));
+  assert.ok(codes.includes("missing_image_alt"));
+  assert.ok(codes.includes("multiple_keywords_same_target"));
+  assert.ok(codes.includes("keyword_target_not_crawled"));
+  assert.ok(codes.includes("no_keyword_mapping"));
+  assert.equal(model.summary.highPriority, 0);
+  assert.ok(model.summary.mediumPriority > 0);
+});
+
+test("normalizes hostile paths and does not let older snapshots overwrite newer pages", () => {
+  const model = buildSeoIntelligenceModel({
+    siteOrigin: "https://materunihosts.com",
+    snapshots: [
+      { schemaVersion: 1, source: "browser_live_crawl", siteOrigin: "https://materunihosts.com", capturedAt: "2026-11-06T12:00:00Z", pages: [{ path: "/page", title: "Latest" }, { path: "//evil.example/path", title: "Bad" }] },
+      { schemaVersion: 1, source: "browser_live_crawl", siteOrigin: "https://materunihosts.com", capturedAt: "2026-11-05T12:00:00Z", pages: [{ path: "/page", title: "Old" }] }
+    ]
+  });
+  assert.equal(model.pages.length, 1);
+  assert.equal(model.pages[0].title, "Latest");
+  assert.equal(model.pages[0].path, "/page");
+});
