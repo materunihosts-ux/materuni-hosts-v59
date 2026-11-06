@@ -29,7 +29,7 @@ test("sitemap parser enforces a bounded URL count", () => {
 test("CSV escapes quotes and neutralises spreadsheet formulas", () => {
   const csv = buildAuditCsv([{ path: "=HYPERLINK(\"https://evil.example\")", status: 200, title: "+cmd", desc: "safe", h1: 1, canonical: "-", robots: "", viewport: true, ogTitle: "@SUM(1,1)", missingAlt: 0, issues: ["-1 issue"] }]);
   assert.match(csv, /'=HYPERLINK/);
-  assert.match(csv, /"\'+cmd"/);
+  assert.match(csv, /"'\+cmd"/);
   assert.match(csv, /"'@SUM\(1,1\)"/);
   assert.match(csv, /"'-1 issue"/);
   assert.match(csv, /""https://evil.example""/);
