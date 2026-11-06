@@ -1,6 +1,5 @@
 ---
 import SiteLayout from "../../layouts/SiteLayout.astro";
-import { Image } from "astro:assets";
 import { supabaseUrl } from "../../lib/supabase-public";
 
 const base = `${supabaseUrl}/storage/v1/object/public/materuni-images/`;
@@ -96,13 +95,11 @@ const faqSchema = {
     </header>
 
     <figure class="article-featured-media">
-      <Image
+      <img
         src={hikeHero}
         alt="Lush green walking trail through the tropical forest in Materuni"
         width={1200}
         height={675}
-        format="webp"
-        quality={82}
         loading="eager"
         decoding="async"
         class="featured-img"
@@ -134,13 +131,11 @@ const faqSchema = {
       </ul>
 
       <figure class="in-content-media">
-        <Image
+        <img
           src={waterfallImg}
           alt="Materuni waterfall plunge pool with mist spraying onto green ferns"
           width={900}
           height={500}
-          format="webp"
-          quality={80}
           loading="lazy"
           decoding="async"
         />
