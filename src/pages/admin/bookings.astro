@@ -38,7 +38,7 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
       </div>
       <div id="booking-list" class="admin-booking-list"><p class="muted">Choose a date range and load bookings.</p></div>
     </div>
-    <div class="booking-panel" style="margin-top:1.5rem"><span class="eyebrow">AUTOMATION HEALTH</span><h2>Notification delivery log</h2><p class="muted">See whether booking acknowledgement emails and WhatsApp alerts were sent, skipped or failed.</p><div id="notification-list" class="admin-notification-list"><p class="muted">Sign in to load notification history.</p></div></div>
+    <div class="booking-panel" style="margin-top:1.5rem"><span class="eyebrow">AUTOMATION HEALTH</span><h2>Notification delivery log</h2><p class="muted">See whether booking acknowledgement emails and WhatsApp alerts were sent, skipped or failed.</p><button class="button button-secondary" type="button" id="load-notification-logs">Load notification history</button><div id="notification-list" class="admin-notification-list"><p class="muted">Notification history is loaded only when requested.</p></div></div>
   </div>
 </section>
 <script>
@@ -77,6 +77,7 @@ function makeText(tag, className, value) {
   node.textContent = value == null ? "" : String(value);
   return node;
 }
+let notificationLogsLoaded = false;
 async function loadNotificationLogs() {
   const list = el("notification-list");
   try {
@@ -94,7 +95,12 @@ async function loadNotificationLogs() {
       list.append(line);
     });
   } catch (error) { list.replaceChildren(makeText("p","muted","Notification history could not be loaded: " + error.message)); }
+  notificationLogsLoaded = true;
 }
+el("load-notification-logs").addEventListener("click", async () => {
+  const button = el("load-notification-logs"); button.disabled = true;
+  await loadNotificationLogs(); button.textContent = "Refresh notification history"; button.disabled = false;
+});
 let bookingLoadRequest = 0;
 async function loadBookings() {
   const requestId = ++bookingLoadRequest;
@@ -147,7 +153,7 @@ async function loadBookings() {
         confirm.addEventListener("click", async () => {
           if (!window.confirm("Confirm this booking? The availability slot has already been reserved by the request.")) return;
           confirm.disabled = true;
-          try { await api("/rest/v1/rpc/admin_confirm_booking",{method:"POST",body:JSON.stringify({p_booking_id:booking.booking_id})}); const notice = await notifyBookingChange(booking.booking_id,"confirmed"); el("booking-feedback").textContent = notice.success ? "Booking confirmed and guest notification processed." : "Booking confirmed. Guest notification needs attention: " + (notice.error || "not sent"); await Promise.all([loadBookings(),loadNotificationLogs()]); }
+          try { await api("/rest/v1/rpc/admin_confirm_booking",{method:"POST",body:JSON.stringify({p_booking_id:booking.booking_id})}); const notice = await notifyBookingChange(booking.booking_id,"confirmed"); el("booking-feedback").textContent = notice.success ? "Booking confirmed and guest notification processed." : "Booking confirmed. Guest notification needs attention: " + (notice.error || "not sent"); await loadBookings(); if(notificationLogsLoaded) await loadNotificationLogs(); }
           catch (error) { el("booking-feedback").textContent = error.message; confirm.disabled = false; }
         });
         actions.append(confirm);
@@ -230,7 +236,7 @@ async function loadBookings() {
                 await api("/rest/v1/rpc/admin_reschedule_booking",{method:"POST",body:JSON.stringify({p_booking_id:booking.booking_id,p_new_slot_id:picker.value})});
                 const notice = await notifyBookingChange(booking.booking_id,"rescheduled");
                 el("booking-feedback").textContent = notice.success ? "Booking rescheduled and guest notification processed." : "Booking rescheduled. Guest notification needs attention: " + (notice.error || "not sent");
-                await Promise.all([loadBookings(),loadNotificationLogs()]);
+                await loadBookings();
               } catch(error) {
                 el("booking-feedback").textContent = error.message;
                 save.disabled = false;
@@ -298,7 +304,7 @@ el("login-form").addEventListener("submit", async event => {
   } catch (error) { el("login-feedback").textContent = error.message; }
   finally { button.disabled = false; }
 });
-restoreAdminSession(supabaseUrl,publishableKey).then(async session=>{if(!session)return;accessToken=session.accessToken;el("login-panel").hidden=true;el("manager").hidden=false;await Promise.all([loadBookings(),loadNotificationLogs()]).catch(error=>{el("booking-feedback").textContent=error.message})});
+restoreAdminSession(supabaseUrl,publishableKey).then(async session=>{if(!session)return;accessToken=session.accessToken;el("login-panel").hidden=true;el("manager").hidden=false;await loadBookings().catch(error=>{el("booking-feedback").textContent=error.message})});
 el("filter-form").addEventListener("submit", event => { event.preventDefault(); loadBookings(); });
 el("status-filter").addEventListener("change", loadBookings);
 let bookingSearchTimer;
