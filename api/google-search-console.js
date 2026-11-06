@@ -33,6 +33,16 @@ export default async function handler(req, res) {
   const accessToken = authorization.startsWith("Bearer ") ? authorization.slice(7) : "";
   if (!accessToken) return send(res, 401, { error: "Administrator sign-in is required." });
 
+    const body = typeof req.body === "string" ? JSON.parse(req.body) : (req.body || {});
+    const startDate = body.startDate;
+    const endDate = body.endDate;
+    const dimension = body.dimension === "page" ? "page" : "query";
+    if (!validDate(startDate) || !validDate(endDate) || startDate > endDate) {
+      return send(res, 400, { error: "Choose a valid date range. Start date must be on or before end date." });
+    }
+    const days = (Date.parse(endDate + "T00:00:00Z") - Date.parse(startDate + "T00:00:00Z")) / 86400000;
+    if (days > 92) return send(res, 400, { error: "Keep each report to 93 days or fewer for a fast, predictable response." });
+
   const supabaseUrl = (process.env.SUPABASE_URL || process.env.PUBLIC_SUPABASE_URL || "").replace(/\/+$/, "");
   const supabaseKey = process.env.SUPABASE_PUBLISHABLE_KEY || process.env.PUBLIC_SUPABASE_PUBLISHABLE_KEY;
   if (!supabaseUrl || !supabaseKey) return send(res, 503, { error: "Server-side Supabase authentication is not configured." });
@@ -54,16 +64,6 @@ export default async function handler(req, res) {
     const admins = await adminResponse.json();
     if (!Array.isArray(admins) || admins.length === 0) return send(res, 403, { error: "Administrator access is required." });
     if (!throttle(user.id)) return send(res, 429, { error: "Search Console request limit reached. Wait ten minutes and retry." });
-
-    const body = typeof req.body === "string" ? JSON.parse(req.body) : (req.body || {});
-    const startDate = body.startDate;
-    const endDate = body.endDate;
-    const dimension = body.dimension === "page" ? "page" : "query";
-    if (!validDate(startDate) || !validDate(endDate) || startDate > endDate) {
-      return send(res, 400, { error: "Choose a valid date range. Start date must be on or before end date." });
-    }
-    const days = (Date.parse(endDate + "T00:00:00Z") - Date.parse(startDate + "T00:00:00Z")) / 86400000;
-    if (days > 92) return send(res, 400, { error: "Keep each report to 93 days or fewer for a fast, predictable response." });
 
     const clientId = process.env.GOOGLE_SEARCH_CONSOLE_CLIENT_ID;
     const clientSecret = process.env.GOOGLE_SEARCH_CONSOLE_CLIENT_SECRET;
