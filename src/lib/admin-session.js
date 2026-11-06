@@ -8,7 +8,8 @@ export function saveAdminSession(session) {
     access_token: session.access_token,
     refresh_token: session.refresh_token,
     expires_at: expiresAt,
-    user_id: session.user.id
+    user_id: session.user.id,
+    admin_verified_at: Math.floor(Date.now() / 1000)
   }));
 }
 
@@ -52,16 +53,29 @@ export async function restoreAdminSession(supabaseUrl, publishableKey) {
     }
   }
 
+  // A short-lived verification cache avoids one admin_users REST read every
+  // time an administrator opens another dashboard module in the same tab.
+  // Sensitive database operations remain protected by their own RLS/RPC checks.
+  const verifiedAt = Number(saved.admin_verified_at || 0);
+  if (verifiedAt && now - verifiedAt < 60) {
+    return { accessToken: saved.access_token, userId: saved.user_id };
+  }
+
   try {
     const response = await fetch(
       supabaseUrl + "/rest/v1/admin_users?select=user_id&user_id=eq." + encodeURIComponent(saved.user_id),
       { headers: { apikey: publishableKey, Authorization: "Bearer " + saved.access_token }, cache: "no-store" }
     );
     const admins = await response.json().catch(() => null);
-    if (!response.ok || !Array.isArray(admins) || admins.length !== 1) {
+    if (response.status === 401 || response.status === 403 || (response.ok && (!Array.isArray(admins) || admins.length !== 1))) {
       clearAdminSession();
       return null;
     }
+    // Quota restrictions, server errors and network failures must not destroy
+    // a valid local session. The page remains signed out until verification works.
+    if (!response.ok) return null;
+    saved.admin_verified_at = now;
+    sessionStorage.setItem(ADMIN_SESSION_KEY, JSON.stringify(saved));
     return { accessToken: saved.access_token, userId: saved.user_id };
   } catch {
     return null;
