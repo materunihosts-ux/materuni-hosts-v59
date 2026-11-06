@@ -172,7 +172,8 @@ Deno.serve(async (request: Request) => {
     const matched = guidedReplies.find(rule => rule.test.test(question));
     let reply = matched ? matched.answers[language] : fallback[language];
     let mode = "guided_fallback";
-    // Price replies are deterministic: never let generated AI text overwrite the approved catalogue prices.\n    if (openAiKey && !matched?.answers) {
+    // Price replies are deterministic: never let generated AI text overwrite the approved catalogue prices.
+    if (openAiKey && !matched?.answers) {
       try {
         const response = await fetch("https://api.openai.com/v1/chat/completions", {
           method: "POST",
