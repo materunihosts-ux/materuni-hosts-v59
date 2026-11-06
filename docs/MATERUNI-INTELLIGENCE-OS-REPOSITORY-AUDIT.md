@@ -197,3 +197,10 @@ A second code-only batch extracted the crawler's URL and CSV handling into the d
 - Added `npm run test:seo` and four regression tests for same-origin validation, sitemap filtering/deduplication, URL limits and CSV formula injection.
 
 Validation: the four utility test cases were executed with Node's built-in test runner in an isolated temporary test fixture and passed (4/4). The repository's full `npm run check`, `npm run build` and `npm run qa` have **not** been executed because the repository has not been checked out in a local build environment in this session. No database migration or production deployment was performed.
+
+
+### Portable audit snapshot export
+
+The crawler now also exports a versioned JSON snapshot (schema version 1) alongside CSV. The JSON includes the actual crawl scope used (including fallback to core pages when the sitemap is unavailable/invalid), normalized site origin, capture timestamp, source label, page observations and derived page/issue counts. This is a portable local export, not database persistence: it is not uploaded, synced or retained centrally. The snapshot helper rejects invalid/non-HTTP(S) origins and unsupported scope values.
+
+The regression suite now contains six cases. The exact utility behavior was exercised in a temporary Node.js test fixture: **6 passed, 0 failed**. A first test attempt exposed an incorrect assertion pattern in the CSV test (the CSV correctly quoted the apostrophe-prefixed +cmd cell); the assertion was corrected and the six-case suite passed. A GitHub checkout/full Astro build could not be run because outbound GitHub network access was unavailable in the local execution container. The repository test command is committed as npm run test:seo; it still needs to be run against a fresh checkout before merge.
