@@ -37,7 +37,7 @@ const faqs = [
           entries = typeof raw === "string" ? JSON.parse(raw) : raw;
         } catch { return }
         if(!Array.isArray(entries)||!entries.length||entries.length>30||!entries.every(x=>x&&typeof x.question==="string"&&typeof x.answer==="string"))return;
-        const bookingAnswers = [
+        const bookingAnswers: Array<[RegExp, string]> = [
           [/^how do i make a booking/i, "Choose an experience, preferred date and group size, then submit the website form. This creates a booking request only; it does not reserve or confirm a place. The host must check availability and confirm the experience, itinerary, final price and any transfer arrangements in writing before the booking is confirmed. No payment is taken by submitting the request."],
           [/^how quickly will you reply/i, "Reply times are not guaranteed and may vary with the host’s availability and local operating hours. Include your preferred date, group size and a working contact method. For time-sensitive enquiries, follow up directly on WhatsApp; a message is not confirmation of availability."],
           [/transport|transfer/i, "Transport is not included in published experience prices. Arrange your own transport or request a separate transfer quote. Share the exact pickup point, date, group size and any luggage or flight details. A transfer is only arranged once the host confirms availability, vehicle details, pickup time and price."],
