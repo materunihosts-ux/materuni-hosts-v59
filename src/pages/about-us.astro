@@ -4,7 +4,6 @@ import { supabaseUrl, publishableKey } from "../lib/supabase-public";
 
 const defaultCommunity = `${supabaseUrl}/storage/v1/object/public/materuni-images/story_image/1791995912146-materuni-community.jpg`;
 
-const defaultTeam: any[] = []; // Publish individual host profiles only after names, roles and portraits are verified.
 
 let dynamic: any = null;
 try {
@@ -77,16 +76,6 @@ const communityNote = dynamic?.communityNote || "Based in Materuni Village, Mate
   </div>
 </section>
 
-<!-- Impact Metrics Strip -->
-<section class="village-metrics-strip" aria-label="What guests can discover">
-  <div class="metrics-grid">
-    <div class="metric-item"><strong>Local</strong><span>Hosts based in Materuni</span></div>
-    <div class="metric-item"><strong>Chagga</strong><span>Culture, food and coffee traditions</span></div>
-    <div class="metric-item"><strong>Nature</strong><span>Waterfall trails and green landscapes</span></div>
-    <div class="metric-item"><strong>Your pace</strong><span>Experiences planned around your visit</span></div>
-  </div>
-</section>
-
 <!-- Founder Section -->
 <section class="founder-section">
   <div class="founder-copy">
@@ -102,30 +91,7 @@ const communityNote = dynamic?.communityNote || "Based in Materuni Village, Mate
   </aside>
 </section>
 
-{team.length > 0 && (
-<section id="about-team-section" class="about-intro" aria-label="Local hosts">
-  <div class="section-heading" style="text-align:center;margin:0 auto 32px">
-    <p class="eyebrow">WHO WE ARE</p>
-    <h2>A local team, a personal welcome.</h2>
-    <p style="max-width:720px;margin:0 auto">Materuni Hosts is a locally hosted tourism business based in Materuni Village, in Tanzania’s Kilimanjaro Region. We believe a good visit begins with clear information, genuine warmth, and knowledgeable local guidance.</p>
-  </div>
-  
-  <div class="team-grid" id="about-team-grid">
-    {team.map((host: any) => (
-      <div class="team-card">
-        <img src={host.image || defaultCommunity} alt={`${host.name} local host in Materuni`} width="130" height="130" loading="lazy" decoding="async" class="host-avatar" />
-        <h3>{host.name}</h3>
-        <span class="host-role">{host.role}</span>
-        <p class="host-bio">{host.bio}</p>
-      </div>
-    ))}
-  </div>
-
-  <div class="community-callout">
-    <p id="about-community-note-el">{communityNote}</p>
-  </div>
-</section>
-)}
+<!-- Individual host profiles are intentionally not displayed until verified. -->
 
 <!-- Values Section -->
 <section class="values-section">
@@ -245,51 +211,9 @@ try {
     setTxt("about-founder-p2-el", data.founderP2);
     setTxt("about-founder-p3-el", data.founderP3);
     setTxt("about-founder-purpose-el", data.founderPurpose);
-    setTxt("about-community-note-el", data.communityNote);
+    // No unverified host/team claims are rendered.
 
-    // If dynamic team members are present
-    if (Array.isArray(data.team) && data.team.length && document.getElementById("about-team-grid")) {
-      const section = document.getElementById("about-team-section");
-      if (section) section.hidden = true;
-      const grid = document.getElementById("about-team-grid");
-      grid.replaceChildren();
-      data.team.forEach(host => {
-        if (!host || typeof host.name !== "string" || !host.name.trim() || typeof host.role !== "string" || !host.role.trim() || typeof host.bio !== "string" || !host.bio.trim() || typeof host.image !== "string" || !host.image.trim()) return;
-        const card = document.createElement("div");
-        card.className = "team-card";
-        
-        const img = document.createElement("img");
-        let safeImage = "";
-        try {
-          const candidate = new URL(host.image, window.location.origin);
-          if (candidate.protocol === "https:" && (candidate.hostname === window.location.hostname || candidate.hostname.endsWith(".supabase.co") || candidate.hostname.endsWith(".supabase.in"))) safeImage = candidate.href;
-        } catch {}
-        if (!safeImage) return;
-        img.src = safeImage;
-        img.alt = `${host.name} local host in Materuni`;
-        img.width = 130;
-        img.height = 130;
-        img.loading = "lazy";
-        img.decoding = "async";
-        img.className = "host-avatar";
-
-        const h3 = document.createElement("h3");
-        h3.textContent = host.name;
-
-        const role = document.createElement("span");
-        role.className = "host-role";
-        role.textContent = host.role;
-
-        const bio = document.createElement("p");
-        bio.className = "host-bio";
-        bio.textContent = host.bio;
-
-        card.append(img, h3, role, bio);
-        grid.append(card);
-      });
-      if (grid.childElementCount > 0 && section) section.hidden = false;
-    }
-  }).catch(() => {});
+    // Legacy CMS host profiles are intentionally ignored until verified.  }).catch(() => {});
 } catch {}
 </script>
 
