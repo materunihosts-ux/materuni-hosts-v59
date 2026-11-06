@@ -4,26 +4,7 @@ import { supabaseUrl, publishableKey } from "../lib/supabase-public";
 
 const defaultCommunity = `${supabaseUrl}/storage/v1/object/public/materuni-images/story_image/1791995912146-materuni-community.jpg`;
 
-const defaultTeam = [
-  {
-    name: "Saidi Materu",
-    role: "Founder & Lead Mountain Host",
-    bio: "Lifelong Materuni resident with 12+ years sharing Chagga history, waterfall trekking, and coffee culture.",
-    image: defaultCommunity
-  },
-  {
-    name: "Elia",
-    role: "Chagga Coffee Specialist",
-    bio: "Guiding the artisanal roasting ceremony over woodfire with ancestral songs and pestle grinding.",
-    image: `${supabaseUrl}/storage/v1/object/public/materuni-images/coffee_image/1791998412318-materuni-tour.jpg`
-  },
-  {
-    name: "Amani",
-    role: "Forest & Trail Guide",
-    bio: "Expert on native Kilimanjaro plants, birdlife, waterfall safety, and the scenic foothills paths.",
-    image: `${supabaseUrl}/storage/v1/object/public/materuni-images/story_image/1791601761441-q3iog8mni3r.jpg`
-  }
-];
+const defaultTeam: any[] = []; // Publish individual host profiles only after names, roles and portraits are verified.
 
 let dynamic: any = null;
 try {
@@ -64,7 +45,7 @@ const val3Desc = dynamic?.val3Desc || "We encourage visitors to appreciate the l
 const val4Title = dynamic?.val4Title || "Clear communication";
 const val4Desc = dynamic?.val4Desc || "We aim to explain each experience, its inclusions and arrangements clearly before guests book.";
 
-const communityNote = dynamic?.communityNote || "Authentic local Chagga hosts born and raised in Materuni Village · Moshi, Kilimanjaro, Tanzania";
+const communityNote = dynamic?.communityNote || "Based in Materuni Village, Materuni Juu, Moshi Rural, in Tanzania’s Kilimanjaro Region.";
 ---
 <SiteLayout title="About Us | Materuni Hosts – Founded by Saidi Materu" description="Meet Materuni Hosts, founded by Saidi Materu. Discover local waterfall tours, Chagga coffee and cooking, village culture and day trips near Kilimanjaro." canonicalOverride="/about-us" preloadImage={defaultCommunity}>
 <main class="about-page">
@@ -73,7 +54,7 @@ const communityNote = dynamic?.communityNote || "Authentic local Chagga hosts bo
   <div class="about-hero-copy">
     <p class="eyebrow" id="about-hero-eyebrow-el">{heroEyebrow}</p>
     <h1 id="about-hero-title-el">{heroTitle}</h1>
-    <p id="about-hero-p1-el" set:html={heroP1.replace("Saidi Materu", "<strong>Saidi Materu</strong>")}></p>
+    <p id="about-hero-p1-el">{heroP1}</p>
     <p id="about-hero-p2-el">{heroP2}</p>
     <div class="actions">
       <a class="button" href="/experiences">Explore our experiences</a>
@@ -86,24 +67,12 @@ const communityNote = dynamic?.communityNote || "Authentic local Chagga hosts bo
 </section>
 
 <!-- Impact Metrics Strip -->
-<section class="village-metrics-strip" aria-label="Village commitments and hosting metrics">
+<section class="village-metrics-strip" aria-label="What guests can discover">
   <div class="metrics-grid">
-    <div class="metric-item">
-      <strong>100%</strong>
-      <span>Chagga Hosted & Operated</span>
-    </div>
-    <div class="metric-item">
-      <strong>12+ Yrs</strong>
-      <span>Guiding Mount Kilimanjaro Slopes</span>
-    </div>
-    <div class="metric-item">
-      <strong>95 Metres</strong>
-      <span>Pristine Materuni Waterfall</span>
-    </div>
-    <div class="metric-item">
-      <strong>Direct</strong>
-      <span>Village Community Benefit</span>
-    </div>
+    <div class="metric-item"><strong>Local</strong><span>Hosts based in Materuni</span></div>
+    <div class="metric-item"><strong>Chagga</strong><span>Culture, food and coffee traditions</span></div>
+    <div class="metric-item"><strong>Nature</strong><span>Waterfall trails and green landscapes</span></div>
+    <div class="metric-item"><strong>Your pace</strong><span>Experiences planned around your visit</span></div>
   </div>
 </section>
 
@@ -122,8 +91,7 @@ const communityNote = dynamic?.communityNote || "Authentic local Chagga hosts bo
   </aside>
 </section>
 
-<!-- Team & Local Guides Section -->
-<section class="about-intro">
+<section id="about-team-section" class="about-intro" aria-label="Local hosts" hidden={team.length === 0}>
   <div class="section-heading" style="text-align:center;margin:0 auto 32px">
     <p class="eyebrow">WHO WE ARE</p>
     <h2>A local team, a personal welcome.</h2>
@@ -251,9 +219,8 @@ try {
 
     setTxt("about-hero-eyebrow-el", data.heroEyebrow);
     setTxt("about-hero-title-el", data.heroTitle);
-    if (data.heroP1 && document.getElementById("about-hero-p1-el")) {
-      document.getElementById("about-hero-p1-el").innerHTML = data.heroP1.replace("Saidi Materu", "<strong>Saidi Materu</strong>");
-    }
+    // Treat editable CMS copy as text, never executable HTML.
+    setTxt("about-hero-p1-el", data.heroP1);
     setTxt("about-hero-p2-el", data.heroP2);
     if (data.heroImage && document.getElementById("about-hero-img-el")) {
       document.getElementById("about-hero-img-el").src = data.heroImage;
@@ -269,6 +236,8 @@ try {
 
     // If dynamic team members are present
     if (Array.isArray(data.team) && data.team.length && document.getElementById("about-team-grid")) {
+      const section = document.getElementById("about-team-section");
+      if (section) section.hidden = false;
       const grid = document.getElementById("about-team-grid");
       grid.replaceChildren();
       data.team.forEach(host => {

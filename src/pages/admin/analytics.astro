@@ -2,7 +2,7 @@
 import SiteLayout from "../../layouts/SiteLayout.astro";
 ---
 <SiteLayout title="Analytics | Materuni Hosts" description="Private Materuni Hosts booking and guest analytics." noindex={true}>
-<section class="page-hero"><span class="eyebrow">PRIVATE ADMIN</span><h1>Performance overview</h1><p>Track booking demand, guest volume and estimated confirmed booking value.</p></section>
+<section class="page-hero analytics-hero"><span class="eyebrow">BUSINESS OS · PERFORMANCE INTELLIGENCE</span><h1>Know what is working.</h1><p>Understand booking demand, guest volume, experience interest and tagged enquiry sources. Figures come from the connected booking records, not simulated analytics.</p><div class="analytics-workspace-links"><a class="button" href="/admin/business-os">← Business OS</a><a class="button button-outline" href="/admin">Public Website Dashboard ↗</a></div></section>
 <section class="booking-wrap">
   <div class="booking-panel" id="login-panel">
     <h2>Administrator sign in</h2>
@@ -13,8 +13,8 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
     </form>
   </div>
   <div id="manager" hidden>
-    <div class="booking-panel">
-      <div class="section-heading"><div><span class="eyebrow">BUSINESS INTELLIGENCE</span><h2>Booking analytics</h2><p class="muted">The value shown is an estimate for confirmed bookings, not money collected.</p></div><div class="admin-shortcuts"><a class="button button-secondary" href="/admin/bookings">Bookings</a><a class="button button-secondary" href="/admin/conversations">Guest conversations</a><a class="button button-secondary" href="/admin/tours">Tours & availability</a><button class="button button-secondary" id="logout" type="button">Sign out</button></div></div>
+    <div class="booking-panel analytics-controls">
+      <div class="section-heading"><div><span class="eyebrow">REPORTING CONTROLS</span><h2>Booking analytics</h2><p class="muted">The value shown is an estimate for confirmed bookings, not money collected.</p></div><div class="admin-shortcuts"><a class="button button-secondary" href="/admin/bookings">Bookings</a><a class="button button-secondary" href="/admin/conversations">Guest inbox</a><a class="button button-secondary" href="/admin/marketing">Growth studio</a><button class="button button-secondary" id="logout" type="button">Sign out</button></div></div>
       <form id="filter-form" class="form-grid">
         <div class="field"><label for="from-date">From</label><input id="from-date" type="date" required></div>
         <div class="field"><label for="to-date">To</label><input id="to-date" type="date" required></div>
@@ -32,16 +32,20 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
       <div class="admin-stat analytics-value"><span>Estimated confirmed value</span><strong id="confirmed-value">—</strong><small>USD · not cash received</small></div>
     </div>
     <div class="booking-panel" style="margin-top:1.5rem"><span class="eyebrow">DEMAND</span><h2>Most requested experiences</h2><div id="popular-experiences" class="popular-experiences"><p class="muted">Choose a date range to view demand.</p></div></div>
-    <div class="booking-panel" style="margin-top:1.5rem"><span class="eyebrow">ACQUISITION</span><h2>Where enquiries come from</h2><p class="muted">Tracks tagged website enquiries from the new Camping and Day Trips landing pages. Older and untagged requests appear as Other / untracked.</p><div id="enquiry-sources" class="popular-experiences"><p class="muted">Choose a date range to view enquiry sources.</p></div></div>
+    <div class="booking-panel" style="margin-top:1.5rem"><span class="eyebrow">ACQUISITION</span><h2>Where enquiries come from</h2><p class="muted">Shows source tags recorded with booking enquiries. Only tagged sources can be attributed; older or untagged requests appear as Other / untracked.</p><div id="enquiry-sources" class="popular-experiences"><p class="muted">Choose a date range to view enquiry sources.</p></div></div>
   </div>
 </section>
+
+<style>
+.analytics-hero{padding:clamp(26px,5vw,48px);border-radius:20px;background:linear-gradient(120deg,#1a3322,#314b36 72%,#52684b);color:#faf7f2}.analytics-hero .eyebrow{color:#dfc17e}.analytics-hero h1{font:500 clamp(34px,5vw,48px)/1.08 Georgia,serif;color:#faf7f2}.analytics-hero p{max-width:740px;color:#e5e8df;line-height:1.7}.analytics-workspace-links{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}.analytics-hero .button{display:inline-flex;background:#c5a059;color:#1a3322;border:1px solid #c5a059}.analytics-hero .button-outline{background:transparent;color:#faf7f2;border-color:#faf7f277}.analytics-controls{margin-top:18px}.analytics-controls .section-heading{align-items:flex-start;gap:18px}.analytics-controls .admin-shortcuts{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}.analytics-grid{gap:12px}.analytics-grid .admin-stat{min-height:112px;border-radius:13px;border:1px solid #e6dfd3;box-shadow:0 5px 18px #24242108}.analytics-grid .admin-stat strong{font:600 26px Georgia,serif;color:#1a3322}.analytics-grid .analytics-value{background:#1a3322;color:#faf7f2}.analytics-grid .analytics-value span,.analytics-grid .analytics-value small{color:#e0e3d9}.analytics-grid .analytics-value strong{color:#f0d18a}.popular-row{padding:14px 0;border-bottom:1px solid #eee9e0}.popular-label{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:8px}.popular-label strong{color:#1a3322}.popular-label span{font-size:12px;color:#77766f}.popular-track{height:8px;border-radius:10px;background:#f0ece4;overflow:hidden}.popular-track span{display:block;height:100%;border-radius:10px;background:#c5a059}@media(max-width:700px){.analytics-hero{padding:26px 20px}.analytics-controls .section-heading{display:block}.analytics-controls .admin-shortcuts{justify-content:flex-start;margin-top:14px}.analytics-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
 <script>
 // @ts-nocheck
 import { supabaseUrl, publishableKey } from "../../lib/supabase-public";
 let accessToken="";
 const el=id=>document.getElementById(id);
 const headers=()=>({apikey:publishableKey,Authorization:"Bearer "+accessToken,"Content-Type":"application/json"});
-const dateString=d=>new Intl.DateTimeFormat("en-CA",{timeZone:"Africa/Dar_es_Salaam",year:"numeric",month:"2-digit",day:"2-digit"}).format(d);
+const dateString=d=>{const parts=new Intl.DateTimeFormat("en-GB",{timeZone:"Africa/Dar_es_Salaam",year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(d);const values=Object.fromEntries(parts.map(part=>[part.type,part.value]));return values.year+"-"+values.month+"-"+values.day;};
 const now=new Date();
 el("from-date").value=dateString(new Date(now.getFullYear(),now.getMonth(),1));
 el("to-date").value=dateString(now);
@@ -80,11 +84,11 @@ async function loadAnalytics(){
     sourceRows.push(...page);
     if(page.length<1000)break;
    }
-   const counts={"Homepage leading package":0,"Camping page":0,"Day Trips page":0,"Other / untracked":0};
+   const counts={"Homepage leading package":0,"Overnight village page":0,"Day Trips page":0,"Other / untracked":0};
    sourceRows.forEach(row=>{
     const note=String(row.notes||"");
     if(note.includes("[Enquiry source: Homepage leading package"))counts["Homepage leading package"]++;
-    else if(note.includes("[Enquiry source: Camping landing page"))counts["Camping page"]++;
+    else if(note.includes("[Enquiry source: Camping landing page"))counts["Overnight village page"]++;
     else if(note.includes("[Enquiry source: Day Trips landing page"))counts["Day Trips page"]++;
     else counts["Other / untracked"]++;
    });

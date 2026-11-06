@@ -3,9 +3,9 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
 ---
 <SiteLayout title="SEO & Metadata Manager | Materuni Hosts Admin" description="Private Materuni Hosts SEO and Open Graph metadata control center." noindex={true}>
 <section class="page-hero">
-  <span class="eyebrow">PRIVATE ADMIN · SEARCH & SOCIAL META</span>
-  <h1>SEO & Metadata Management Center</h1>
-  <p>Control search engine titles, meta descriptions, OpenGraph social share previews, canonical URLs, and indexability across all public Materuni Hosts routes.</p>
+  <span class="eyebrow">BUSINESS OS · GROWTH ENGINE · SEARCH & SOCIAL META</span>
+  <h1>SEO Metadata Studio</h1>
+  <p>Manage search titles, descriptions, social sharing previews, canonical URLs and indexability. Use the Public Website Dashboard for page copy, experiences, photography and site settings.</p>
 </section>
 
 <section class="booking-wrap">
@@ -25,11 +25,8 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
     <!-- Topbar Shortcuts -->
     <div class="admin-topbar">
       <div class="admin-topbar-links">
-        <a class="button button-secondary" href="/admin/">← Dashboard</a>
-        <a class="button button-secondary" href="/admin/seo-keywords">Keyword Research Studio</a>
-        <a class="button button-secondary" href="/admin/content">Content Manager</a>
-        <a class="button button-secondary" href="/admin/tours">Tour Catalog</a>
-        <a class="button button-secondary" href="/admin/settings">Settings</a>
+        <a class="button button-secondary" href="/admin/business-os">← Business OS</a><a class="button button-secondary" href="/admin/">Website dashboard</a>
+        <a class="button button-secondary" href="/admin/marketing">Marketing & SEO Studio</a>
         <a class="button button-secondary" href="/sitemap.xml" target="_blank" rel="noopener">View sitemap.xml ↗</a>
         <a class="button button-secondary" href="/robots.txt" target="_blank" rel="noopener">View robots.txt ↗</a>
       </div>
@@ -425,15 +422,15 @@ const defaultRoutes = [
   },
   {
     path: "/camping",
-    name: "Materuni Camping Experience",
-    desc: "Overnight stays beneath Mount Kilimanjaro with campfire dinner.",
-    title: "Materuni Camping | Overnight Village Stays under Kilimanjaro",
-    description: "Experience an overnight camping stay in Materuni Village. Stargaze in the Kilimanjaro foothills, share campfire stories and wake to fresh Chagga coffee.",
+    name: "Overnight Village Experience",
+    desc: "A village stay with local Chagga hosts in Materuni.",
+    title: "Materuni Overnight Village Experience | Chagga Village Stay",
+    description: "Spend a night in Materuni Village and experience the rhythms of everyday Chagga village life with local hosts at the foothills of Kilimanjaro.",
     image: `${supabaseUrl}/storage/v1/object/public/materuni-images/camping_image/1791601872981-zmji0mykwhd.jpg`,
     canonical: "https://materunihosts.com/camping",
     robots: "index,follow",
-    keywords: "Materuni camping, Kilimanjaro overnight stay, village camping",
-    schema: "Campground"
+    keywords: "Materuni overnight village experience, Chagga village stay, Materuni homestay",
+    schema: "TouristTrip"
   },
   {
     path: "/day-trips",
