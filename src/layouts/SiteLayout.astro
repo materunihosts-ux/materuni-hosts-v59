@@ -19,11 +19,13 @@ const is404 = pathname.startsWith("/404");
 const isVercelPreview = Astro.url.hostname.endsWith(".vercel.app") && Astro.url.hostname !== "materunihosts.com";
 const shouldNoindex = noindex || isAdmin || is404 || isVercelPreview;
 
+// Protected and non-canonical environments must never be made indexable
+// by a page-level robots override.
 let robotsMeta: string;
-if (typeof robots === "string" && robots.trim()) {
-  robotsMeta = robots.trim();
-} else if (isAdmin || is404 || isVercelPreview) {
+if (isAdmin || is404 || isVercelPreview) {
   robotsMeta = "noindex,nofollow";
+} else if (typeof robots === "string" && robots.trim()) {
+  robotsMeta = robots.trim();
 } else if (noindex && nofollow) {
   robotsMeta = "noindex,nofollow";
 } else if (noindex && !nofollow) {
@@ -55,7 +57,7 @@ const breadcrumbLabels: Record<string, string> = {
 };
 const breadcrumbParts = Astro.url.pathname.split("/").filter(Boolean);
 const breadcrumbItems = [{ "@type": "ListItem", position: 1, name: "Home", item: "https://materunihosts.com/" }];
-if (!noindex) {
+if (!shouldNoindex) {
   breadcrumbParts.forEach((part, index) => {
     const label = breadcrumbLabels[part];
     if (label) breadcrumbItems.push({
