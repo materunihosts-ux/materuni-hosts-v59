@@ -36,7 +36,9 @@ function renderIntelligence(){
   $("intel-keywords").textContent=model.summary.keywordCount;
   $("intel-pages").textContent=model.summary.crawlPageCount;
   $("intel-recommendations").textContent=model.summary.recommendationCount;
-  $("intel-high").textContent=model.summary.highPriority;\n  $("intel-medium").textContent=model.summary.mediumPriority;\n  $("intel-low").textContent=model.summary.lowPriority;
+  $("intel-high").textContent=model.summary.highPriority;
+  $("intel-medium").textContent=model.summary.mediumPriority;
+  $("intel-low").textContent=model.summary.lowPriority;
   $("intel-ctr").textContent=model.summary.keywordCtr===null?"—":(model.summary.keywordCtr*100).toFixed(2)+"%";
   const list=$("intel-list");list.replaceChildren();
   if(!model.recommendations.length){const p=document.createElement("p");p.className="muted";p.textContent="No technical recommendations from the imported crawl snapshot.";list.append(p)}
