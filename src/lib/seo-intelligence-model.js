@@ -33,6 +33,7 @@ export function buildSeoIntelligenceModel({ keywords = [], snapshots = [], siteO
 
   const normalizedKeywords = [];
   const keywordByKey = new Map();
+  const keywordTargetGroups = new Map();
   for (const row of Array.isArray(keywords) ? keywords : []) {
     const keyword = cleanText(row?.keyword, 300);
     if (!keyword) continue;
@@ -49,6 +50,11 @@ export function buildSeoIntelligenceModel({ keywords = [], snapshots = [], siteO
           targetPath = parsed.pathname === "/" ? "/" : (parsed.pathname.endsWith("/") && parsed.pathname.length > 1 ? parsed.pathname.slice(0, -1) : parsed.pathname);
         }
       } catch { /* Unsafe target URLs are deliberately omitted. */ }
+    }
+    if (targetPath) {
+      const targetGroup = keywordTargetGroups.get(key) || { keyword, paths: new Set() };
+      targetGroup.paths.add(targetPath);
+      keywordTargetGroups.set(key, targetGroup);
     }
     const record = {
       keyword, normalizedKeyword: key, intent, targetUrl, targetPath, source,
@@ -101,6 +107,24 @@ export function buildSeoIntelligenceModel({ keywords = [], snapshots = [], siteO
     id: code + ":" + page.path, code, severity, action, page: page.url, evidence,
     source: "browser_live_crawl"
   });
+
+  // A single search phrase assigned to multiple landing pages can indicate
+  // competing intent/ownership. Flag it for human review; do not infer rankings.
+  for (const [key, group] of keywordTargetGroups) {
+    if (group.paths.size < 2) continue;
+    const paths = [...group.paths].sort();
+    for (const path of paths) {
+      recommendations.push({
+        id: "keyword_multiple_targets:" + key + ":" + path,
+        code: "keyword_multiple_targets",
+        severity: "medium",
+        action: "Review which page should own this keyword, or confirm that the pages serve genuinely different search intents.",
+        page: origin + path,
+        evidence: "The keyword \"" + group.keyword + "\" is assigned to multiple target paths: " + paths.join(", "),
+        source: "keyword_target_mapping"
+      });
+    }
+  }
 
   for (const page of pages) {
     if (page.status != null && page.status >= 400) add("http_error", "high", "Resolve the HTTP error or update internal links.", page, "Observed HTTP " + page.status);
