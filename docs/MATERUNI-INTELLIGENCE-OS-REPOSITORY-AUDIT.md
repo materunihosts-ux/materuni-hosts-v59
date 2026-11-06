@@ -170,3 +170,17 @@ Acceptance criteria:
 ## Audit conclusion
 
 Materuni Hosts has a meaningful product foundation, but its current SEO/Marketing workspace is a collection of useful early tools rather than a connected intelligence operating system. Build the data, security, provenance, persistence and measurement foundation first. Then add agents and automation on top of verified evidence.
+
+
+## 2026-11-06 — First code-only foundation change
+
+The Marketing & SEO Studio's browser-side on-page crawler was strengthened on the feature branch:
+
+- Enforces same-origin URL inspection and rejects non-HTML responses.
+- Applies a 12-second per-page request timeout.
+- Records HTTP status, robots directive, mobile viewport presence and Open Graph title presence.
+- Flags noindex pages, missing viewport, missing Open Graph title and off-site canonical URLs in addition to the existing title/description/H1/image-alt checks.
+- Includes the additional observations in the visible audit table and CSV export.
+- Reports the crawl source and explicitly states that this is not Google ranking, traffic or backlink data.
+
+This remains a live crawl performed in the administrator's browser. It is **not yet a persisted, repeatable database snapshot**. No database schema, public route, booking flow, price, production deployment or secret was changed. Runtime/build tests have not yet been run in this environment; the change has been verified by re-fetching the committed source and checking that all intended code paths are present.
