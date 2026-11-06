@@ -1,0 +1,172 @@
+# Materuni Intelligence OS — Repository Audit & Foundation Plan
+
+Audit date: 2026-11-06  
+Repository: `materunihosts-ux/materuni-hosts-v59`  
+Base branch reviewed: `main`  
+Working branch: `intelligence-os/foundation-audit-2026-11-06`  
+Audit type: read-only source inspection; no production, database, deployment, or credential changes.
+
+## Executive summary
+
+The repository already contains a useful Astro + TypeScript + Supabase + Vercel foundation. It is not yet a complete autonomous marketing operating system. The strongest existing pieces are the public-site SEO quality gate, a browser-driven on-page crawler, a keyword library backed by a Supabase table, SEO metadata editing, and a server-side AI provider adapter.
+
+The principal gap is not the absence of an admin interface. It is the absence of a verified, end-to-end intelligence pipeline: trusted source data → normalized records → analysis → recommendations → human approval → controlled execution → measurement.
+
+Do not replace the current stack or rebuild the whole repository. Extend it incrementally and preserve the booking, catalogue, public website, and existing admin authorization model.
+
+## Scope and evidence
+
+Reviewed repository metadata, recent commits, the repository tree, and selected source files:
+
+- `package.json`, `astro.config.mjs`, `vercel.json`
+- `src/pages/admin/marketing.astro`
+- `src/pages/admin/seo.astro`
+- `src/pages/admin/seo-keywords.astro`
+- `src/pages/admin/business-os.astro`
+- `src/pages/admin/ai.astro`
+- `src/pages/admin/analytics.astro`
+- `src/pages/admin/approvals.astro`
+- `api/business-os-ai.js`
+- `docs/BUSINESS-OS-ARCHITECTURE.md`
+- `docs/ADMIN-OS-RESPONSIBILITY-MAP.md`
+- `docs/BUSINESS-OS-AI-COMMAND-CENTER.md`
+- `docs/BUSINESS-OS-CORE-DATA-MODEL.md`
+- `docs/BUSINESS-OS-SUPABASE-SECURITY-REVIEW.md`
+- `scripts/site-quality-gate.mjs`
+- `supabase/functions/guest-concierge/index.ts`
+- `src/lib/supabase-public.ts`
+
+This is a source review, not a successful local build, automated test run, live OAuth verification, or production penetration test. Findings below distinguish code observed from integrations that remain unverified.
+
+## Existing foundation
+
+### Stack and build
+
+- Astro static output with Vercel deployment configuration.
+- TypeScript and Astro checks are part of the build script.
+- Build sequence is `npm run check && astro build && npm run qa`.
+- A custom site quality gate checks built routes, sitemap/robots, metadata-related content, selected accessibility/contrast requirements, catalogue references, and other project-specific invariants.
+- Supabase is used for authentication, database, storage, RPCs, and Edge Functions.
+
+### SEO and marketing
+
+| Capability | Observed implementation | Assessment |
+|---|---|---|
+| Metadata editor | Admin UI reads/writes SEO metadata in `site_settings`; includes title, description, OG image, canonical and robots fields | Exists; verify public-page rendering and publishing semantics end-to-end |
+| On-page crawler | Browser fetches sitemap/core public routes and parses title, description, H1, canonical and image alt attributes | Basic crawler exists; limited checks and depends on browser-accessible pages |
+| Keyword library | Reads/writes `seo_keywords` via Supabase REST; supports CSV import and keyword records | Working code path exists; data quality, RLS and real ranking sync need tests |
+| Research brief | Produces structured topic/audience/intent guidance in the browser | Planning aid, not measured keyword research |
+| Content editor | Drafts are stored in browser localStorage and can be exported | Local-device draft only; no shared draft store or publishing pipeline |
+| Search Console | UI explicitly says connection required | Not verified/implemented as a live integration |
+| GA4 | UI/docs indicate connection required | Not verified/implemented as a live integration |
+| Competitor/SERP data | No live provider adapter verified in reviewed files | Missing as a verified capability |
+| Backlink intelligence | No live backlink source/adapter verified in reviewed files | Missing as a verified capability |
+| AI search visibility | No measurement integration verified | Missing as a verified capability |
+
+### AI and governance
+
+- `api/business-os-ai.js` provides server-side routing to OpenAI, Anthropic, and Gemini.
+- Provider keys are read from server environment variables; the browser calls the server endpoint with an administrator session.
+- Outputs are explicitly draft-only; the endpoint does not publish or perform external actions.
+- Current request throttling is an in-memory per-instance Map (8 requests per 10 minutes per user). It is best-effort, not durable, and not shared across serverless instances.
+- AI run history, durable usage ledger, job queue, approval records, and execution audit trail are documented as not implemented.
+- `/admin/approvals` is a policy preview, not a connected approval queue.
+- `/admin/analytics` includes internal booking/enquiry analytics; it is not a replacement for Search Console or GA4 acquisition analytics.
+
+### Security and operations
+
+- Existing security review documents six RLS-enabled tables without policies and a set of SECURITY DEFINER functions needing function-by-function review. Some may intentionally be server-only; do not add broad policies or revoke grants indiscriminately.
+- Supabase leaked-password protection was reported disabled in the prior security review; current setting must be rechecked in Supabase.
+- Public Supabase URL and publishable key are intentionally public credentials, not service-role secrets. The browser helper contains fallback values; future environments should be configured explicitly and server secrets must never enter browser code.
+- The Guest Concierge uses a service-role key server-side and has input bounds and rate limiting; review CORS, proxy IP trust, and abuse resistance before expanding usage.
+- Recent commits on 2026-11-06 show work to reduce unnecessary admin reads and bound availability reads. Preserve and regression-test those improvements.
+
+## Main gaps and risks
+
+1. **No single source-of-truth intelligence pipeline.** Keyword records, browser crawler output, analytics and AI drafts are not yet connected through a common data model.
+2. **No verified first-party search performance integration.** Search Console and GA4 are not shown as connected live sources in the reviewed UI.
+3. **Research is not equivalent to market data.** The current brief must not be represented as search volume, difficulty, rank tracking or competitor intelligence.
+4. **No durable background execution.** Scheduled crawls, sync jobs, retries, deduplication and job failure visibility are not verified.
+5. **No persisted content workflow.** The current blog draft is localStorage-only; drafts are not shared between devices/admins and are not publishable through a controlled pipeline.
+6. **Governance is a design preview.** Approval policy is described but not backed by durable records and execution-time authorization.
+7. **Rate limiting and cost accounting are incomplete.** Per-instance memory limits do not provide durable quotas or spend reporting.
+8. **Multi-business readiness is design-level only.** Workspace concepts appear in proposed docs, but a complete workspace-scoped data and authorization model has not been implemented.
+9. **SEO metadata publishing requires an end-to-end test.** Saving a database setting is not proof that a statically generated public page's HTML metadata changes for search crawlers.
+10. **No current test evidence.** This audit did not run `npm ci`, `npm run check`, `npm run build`, RLS tests, or production smoke tests.
+
+## Priority foundation plan
+
+### Phase 0 — protect the existing product (first)
+
+- Keep all work on this feature branch until reviewed.
+- Capture the current build/test baseline and list existing failing checks before changing behavior.
+- Map existing tables, RLS policies, RPCs, Edge Functions, admin auth checks, and public/admin route boundaries.
+- Do not alter bookings, prices, catalogue, guest records, production environment variables, DNS, or production deployment.
+- Keep AI and external integrations in draft/read-only mode.
+
+### Phase 1 — data and security foundation
+
+- Define a minimal, workspace-aware intelligence data contract while retaining `admin_users` as the current authorization source during the pilot.
+- Review the existing `seo_keywords` table schema and RLS before extending it.
+- Add no duplicate tables until existing schema inventory is complete.
+- Establish typed server-side adapters for source data; browser code must not hold provider secrets.
+- Define redaction, retention, idempotency, request budgets and audit-event conventions.
+
+### Phase 2 — first reliable SEO intelligence loop
+
+1. Technical crawl snapshot: store timestamped results and per-URL findings.
+2. Search Console import/sync: read-only OAuth/API, limited scopes, visible connection state.
+3. Keyword opportunity model: distinguish manually entered terms, GSC query observations, and third-party estimates.
+4. Recommendation engine: every recommendation references source evidence, confidence, affected URL and proposed action.
+5. Content workspace: shared saved drafts with versions; no auto-publishing.
+6. Measurement: compare impressions, clicks, CTR and average position before/after approved changes.
+
+### Phase 3 — agents and controlled automation
+
+- Introduce separate agents only after source data and task contracts are reliable.
+- Use durable jobs with bounded retries, idempotency keys, dead-letter visibility and usage budgets.
+- Persist AI runs, redacted input summaries, output references, model/provider identifiers, cost/usage metadata and errors.
+- Approval must bind to an immutable payload/version; any changed payload requires a new approval.
+- Require explicit approval for publishing, guest messaging, price changes, booking mutations, ads spend, destructive actions and external disclosure.
+- Keep execution adapters disabled until authorization and end-to-end tests pass.
+
+### Phase 4 — competitive capabilities
+
+- Competitor/SERP monitoring through a lawful, documented data provider.
+- Backlink opportunity and monitoring integration through a suitable provider.
+- AI answer/visibility tracking with repeatable prompts, dates, locations and source capture.
+- Scheduled reporting and recommendations tied to measurable business outcomes.
+
+## Recommended first implementation slice
+
+Do not start by building six autonomous agents. The highest-value, lowest-risk foundation is:
+
+**SEO Data Foundation v1**
+- inventory and validate the current `seo_keywords` schema/RLS;
+- introduce a typed, source-labelled SEO observation model only if no existing table can safely support it;
+- persist on-page crawl snapshots and URL findings;
+- make the UI label each value as live, imported, manually entered, estimated, or unavailable;
+- add no GSC OAuth until callback, token storage, refresh, revocation, scopes and privacy controls are designed;
+- do not add paid keyword/backlink APIs at this stage.
+
+Acceptance criteria:
+- no change to public pages, booking behavior, prices or production data;
+- admin-only access is verified for every read/write path;
+- crawler results are persisted and reproducible;
+- source and timestamp are visible for every metric;
+- duplicate runs do not create duplicate observations;
+- failures are visible and retry-safe;
+- build, type checks, and relevant RLS tests pass in preview.
+
+## Explicit non-goals for this phase
+
+- No framework migration.
+- No production deployment.
+- No production database migration.
+- No paid subscriptions or new third-party API spend.
+- No autonomous publishing, guest messaging, ads changes or booking mutations.
+- No claim that the repository currently matches Visibly AI or Outrank feature-for-feature.
+
+## Audit conclusion
+
+Materuni Hosts has a meaningful product foundation, but its current SEO/Marketing workspace is a collection of useful early tools rather than a connected intelligence operating system. Build the data, security, provenance, persistence and measurement foundation first. Then add agents and automation on top of verified evidence.
