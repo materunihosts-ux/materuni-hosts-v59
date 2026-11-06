@@ -1,6 +1,5 @@
 ---
 import SiteLayout from "../../layouts/SiteLayout.astro";
-import { Image } from "astro:assets";
 import { supabaseUrl } from "../../lib/supabase-public";
 
 const base = `${supabaseUrl}/storage/v1/object/public/materuni-images/`;
@@ -96,13 +95,11 @@ const faqSchema = {
     </header>
 
     <figure class="article-featured-media">
-      <Image
+      <img
         src={coffeeHero}
         alt="Coffee beans being roasted during a traditional coffee demonstration in Materuni Village"
         width={1200}
         height={675}
-        format="webp"
-        quality={82}
         loading="eager"
         decoding="async"
         class="featured-img"
@@ -121,13 +118,11 @@ const faqSchema = {
       <p>Coffee harvesting follows seasonal cycles, and the timing can vary with rainfall and local growing conditions. Where picking is taking place during your visit, your host can explain how ripe cherries are selected and harvested.</p>
 
       <figure class="in-content-media">
-        <Image
+        <img
           src={pickingImage}
           alt="Hands inspecting ripe red coffee cherries on an Arabica branch"
           width={900}
           height={500}
-          format="webp"
-          quality={80}
           loading="lazy"
           decoding="async"
         />
