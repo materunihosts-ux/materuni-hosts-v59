@@ -97,7 +97,7 @@ test("snapshot comparison reports resolved findings and metadata changes", () =>
 test("snapshot comparison rejects incompatible origins, schema and duplicate paths", () => {
   const base = snapshot([{ path: "/", findings: [] }]);
   assert.throws(() => compareAuditSnapshots(base, { ...base, siteOrigin: "https://other.example" }), /same siteOrigin/);
-  assert.throws(() => compareAuditSnapshots(base, { ...base, schemaVersion: 2 }), /schema v1/);
+  assert.throws(() => compareAuditSnapshots(base, { ...base, schemaVersion: 2 }), /schema v1/);\n  assert.throws(() => compareAuditSnapshots(base, { ...base, scope: "sitemap" }), /same valid crawl scope/);
   assert.throws(() => compareAuditSnapshots(base, snapshot([{ path: "/", findings: [] }, { path: "/", findings: [] }])), /duplicate page paths/);
 });
 
