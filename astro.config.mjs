@@ -13,7 +13,8 @@ export default defineConfig({
     // Supabase currently returns HTTP 402 after the project quota was exhausted.
     // Keep Astro builds independent of remote image availability; restore Sharp
     // optimisation after image delivery is recovered or assets are migrated.
-    service: passthroughImageService(),\n  },
+    service: passthroughImageService(),
+  },
   output: 'static',
   build: { assets: '_astro' },
 });
