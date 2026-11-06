@@ -10,7 +10,7 @@
     "check": "astro check",
     "lint": "astro check",
     "qa": "node scripts/site-quality-gate.mjs",
-    "test:seo": "node --test tests/seo-audit-utils.test.js"
+    "test:seo": "node --test tests/seo-audit-utils.test.js tests/seo-keyword-import.test.js"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.10",
