@@ -55,7 +55,6 @@ const val3Desc = dynamic?.val3Desc || "We encourage visitors to appreciate the l
 const val4Title = dynamic?.val4Title || "Clear communication";
 const val4Desc = dynamic?.val4Desc || "We aim to explain each experience, its inclusions and arrangements clearly before guests book.";
 
-const communityNote = dynamic?.communityNote || "Based in Materuni Village, Materuni Juu, Moshi Rural, in Tanzania’s Kilimanjaro Region.";
 ---
 <SiteLayout title="About Us | Materuni Hosts – Founded by Saidi Materu" description="Meet Materuni Hosts, founded by Saidi Materu. Discover local waterfall tours, Chagga coffee and cooking, village culture and day trips near Kilimanjaro." canonicalOverride="/about-us" preloadImage={defaultCommunity}>
 <main class="about-page">
@@ -213,7 +212,7 @@ try {
     setTxt("about-founder-purpose-el", data.founderPurpose);
     // No unverified host/team claims are rendered.
 
-    // Legacy CMS host profiles are intentionally ignored until verified.  }).catch(() => {});
+  }).catch(() => {});
 } catch {}
 </script>
 
