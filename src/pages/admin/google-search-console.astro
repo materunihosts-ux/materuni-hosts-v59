@@ -20,7 +20,7 @@ import SiteLayout from "../../layouts/SiteLayout.astro";
 import { supabaseUrl, publishableKey } from "../../lib/supabase-public";
 const el=(id)=>document.getElementById(id);let token="";let latest=null;
 const baseHeaders=()=>({apikey:publishableKey,"Content-Type":"application/json"});
-function isoDate(d){return d.toISOString().slice(0,10)}
+function isoDate(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
 const today=new Date();const end=new Date(today);end.setDate(end.getDate()-3);const start=new Date(end);start.setDate(start.getDate()-27);
 el("start-date").value=isoDate(start);el("end-date").value=isoDate(end);
 el("login-form").addEventListener("submit",async e=>{e.preventDefault();const b=el("login-button");b.disabled=true;el("login-feedback").textContent="Verifying administrator access…";try{const r=await fetch(supabaseUrl+"/auth/v1/token?grant_type=password",{method:"POST",headers:baseHeaders(),body:JSON.stringify({email:el("email").value.trim(),password:el("password").value})});const s=await r.json();if(!r.ok||!s.access_token)throw new Error(s.msg||s.message||"Sign in failed.");token=s.access_token;const a=await fetch(supabaseUrl+"/rest/v1/admin_users?select=user_id&user_id=eq."+encodeURIComponent(s.user.id),{headers:{apikey:publishableKey,Authorization:"Bearer "+token}});const admins=await a.json();if(!a.ok||!Array.isArray(admins)||!admins.length)throw new Error("This account is not on the administrator allowlist.");el("login-panel").hidden=true;el("workspace").hidden=false;el("report-status").textContent="Administrator verified. Load a report to test the Google connection.";}catch(err){token="";el("login-feedback").textContent=err.message;}finally{b.disabled=false;}});
