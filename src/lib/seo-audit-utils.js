@@ -48,3 +48,44 @@ export function buildAuditCsv(results) {
   ];
   return rows.map((row) => row.map(safeCsvValue).join(",")).join("\r\n");
 }
+
+
+export function buildAuditSnapshot(results, metadata = {}) {
+  const siteOrigin = typeof metadata.siteOrigin === "string" ? metadata.siteOrigin : "";
+  let parsedOrigin = "";
+  try {
+    const parsed = new URL(siteOrigin);
+    if (!["http:", "https:"].includes(parsed.protocol)) throw new Error("Unsupported origin protocol");
+    parsedOrigin = parsed.origin;
+  } catch {
+    throw new TypeError("A valid HTTP(S) siteOrigin is required");
+  }
+  const scope = metadata.scope === "sitemap" ? "sitemap" : metadata.scope === "core" ? "core" : null;
+  if (!scope) throw new TypeError("Snapshot scope must be sitemap or core");
+  const capturedAt = typeof metadata.capturedAt === "string" && !Number.isNaN(Date.parse(metadata.capturedAt))
+    ? new Date(metadata.capturedAt).toISOString()
+    : new Date().toISOString();
+  const pages = (Array.isArray(results) ? results : []).map((page) => ({
+    path: String(page.path ?? ""),
+    status: Number.isInteger(page.status) ? page.status : null,
+    title: String(page.title ?? ""),
+    description: String(page.desc ?? ""),
+    h1Count: Number.isInteger(page.h1) ? page.h1 : 0,
+    canonicalUrl: String(page.canonical ?? ""),
+    robots: String(page.robots ?? ""),
+    hasViewport: Boolean(page.viewport),
+    openGraphTitle: String(page.ogTitle ?? ""),
+    imagesMissingAlt: Number.isInteger(page.missingAlt) ? page.missingAlt : 0,
+    findings: Array.isArray(page.issues) ? page.issues.map(String) : []
+  }));
+  return {
+    schemaVersion: 1,
+    source: "browser_live_crawl",
+    siteOrigin: parsedOrigin,
+    scope,
+    capturedAt,
+    pageCount: pages.length,
+    issueCount: pages.reduce((count, page) => count + page.findings.length, 0),
+    pages
+  };
+}
