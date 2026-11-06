@@ -19,7 +19,7 @@ const fallback: Record<string, string> = {
 const systemPrompt = `You are the friendly guest concierge for Materuni Hosts, a boutique local experience host in Materuni Village near Moshi, Kilimanjaro, Tanzania.
 Your job is to help visitors choose an experience and move naturally toward an availability check or itinerary request.
 Use the visitor's language: English, Spanish, French or German. Be warm, concise and specific.
-Use only these current approved per-person prices: Waterfall & Chagga Village $40; Traditional Chagga Coffee $36; Traditional Chagga Cooking Class $49; Materuni & Moshi Town $52; Materuni & Rau Forest Nature $58; Overnight Village $90 USD only. Never convert the Overnight Village price into TZS or another currency. Transfers are quoted separately. Never use old package names or prices.
+Use only these approved prices: Waterfall & Chagga Village $40 per person; Traditional Chagga Coffee $36 per person; Traditional Chagga Cooking Class $49 per person; Materuni & Moshi Town $52 per person; Materuni & Rau Forest Nature $58 per person; Overnight Village $90 USD (quote in USD only; do not claim a per-person basis unless the host confirms it). Never convert the Overnight Village price into TZS or another currency. Transfers are quoted separately. Never use old package names or prices. If asked for an exact detail not listed here (duration, inclusions, difficulty, meals, child rates, group discounts, accessibility, weather, cancellation or availability), say the host must confirm it rather than guessing. Do not claim that a date or slot is available.
 The Materuni waterfall is approximately 95 metres high. The experiences are hosted in Materuni Village and focus on Chagga coffee, food, culture, nature and village life.
 Important booking rules: a website booking is a request, not a confirmed reservation; the host must confirm availability and arrangements; no online payment is taken at this stage; transport/pickup must be confirmed separately. Do not invent schedules, available spaces, transport inclusions, policies, licences, awards, ratings, reviews or claims of registration.
 Ask only one useful follow-up at a time, usually travel date, group size, preferred experience or pickup point.
@@ -129,10 +129,6 @@ Deno.serve(async (request: Request) => {
     const question = message.toLowerCase();
     const guidedReplies = [
       {
-        test: /price|prices|cost|how much|how much does|what does .* cost|precio|cuesta|cuánto|cuanto|prix|combien|kosten|preis|wie viel|tarif|tarifa/,
-        answers: fallback,
-      },
-      {
         test: /book|booking|availability|available|date|reserve|reserv|fecha|disponib|réserv|buch|verfügbar/,
         answers: {
           en: "You can check available dates and times on our booking page: https://materunihosts.com/booking. Choose your experience and group size, then send a request. A local host will confirm availability before the booking is final.",
@@ -169,11 +165,22 @@ Deno.serve(async (request: Request) => {
         }
       }
     ];
-    const matched = guidedReplies.find(rule => rule.test.test(question));
-    let reply = matched ? matched.answers[language] : fallback[language];
-    let mode = "guided_fallback";
+    const normalizedQuestion = question.normalize("NFD").replace(/[\\u0300-\\u036f]/g, "");
+    const priceIntent = /price|prices|cost|how much|precio|cuesta|cuanto|prix|combien|kosten|preis|wie viel|tarif|tarifa/.test(normalizedQuestion);
+    const priceItems = [
+      { keys: /coffee|cafe|café|kaffee/, values: { en: "The Traditional Chagga Coffee Experience is $36 per person.", es: "La experiencia de café tradicional Chagga cuesta 36 $ por persona.", fr: "L’expérience de café traditionnel Chagga coûte 36 $ par personne.", de: "Das traditionelle Chagga-Kaffeeerlebnis kostet 36 $ pro Person." } },
+      { keys: /cook|cooking|food|cuisine|cocina|kochen|kochkurs/, values: { en: "The Traditional Chagga Cooking Class is $49 per person.", es: "La clase de cocina tradicional Chagga cuesta 49 $ por persona.", fr: "Le cours de cuisine traditionnelle Chagga coûte 49 $ par personne.", de: "Der traditionelle Chagga-Kochkurs kostet 49 $ pro Person." } },
+      { keys: /waterfall|cascade|cascada|chute|wasserfall|chagga village|village chagga|aldea chagga|chagga-dorf/, values: { en: "The Waterfall & Chagga Village Experience is $40 per person.", es: "La experiencia de cascada y aldea Chagga cuesta 40 $ por persona.", fr: "L’expérience cascade et village Chagga coûte 40 $ par personne.", de: "Das Erlebnis Wasserfall & Chagga-Dorf kostet 40 $ pro Person." } },
+      { keys: /moshi|town|ciudad|ville|stadt/, values: { en: "Materuni & Moshi Town is $52 per person.", es: "Materuni y Moshi cuesta 52 $ por persona.", fr: "Materuni et Moshi coûte 52 $ par personne.", de: "Materuni & Moshi kostet 52 $ pro Person." } },
+      { keys: /rau|forest|bosque|foret|forêt|wald/, values: { en: "Materuni & Rau Forest Nature is $58 per person.", es: "Materuni y la naturaleza del bosque de Rau cuesta 58 $ por persona.", fr: "Materuni et la nature de la forêt de Rau coûte 58 $ par personne.", de: "Materuni & Natur im Rau-Wald kostet 58 $ pro Person." } },
+      { keys: /overnight|stay|night|noche|nuit|nacht|accommodation|alojamiento|hebergement|hébergement|ubernacht|übernacht/, values: { en: "The Overnight Village experience is quoted at $90 USD. The price is provided in USD only; please ask the host to confirm the basis and arrangements for your group.", es: "La experiencia de estancia nocturna en la aldea cuesta 90 USD. El precio se indica solo en USD; consulta al anfitrión para confirmar cómo se aplica a tu grupo y los detalles.", fr: "L’expérience avec nuit au village est proposée à 90 USD. Le tarif est indiqué uniquement en USD ; demandez à l’hôte de confirmer son application à votre groupe et les modalités.", de: "Das Übernachtungserlebnis im Dorf wird mit 90 USD angegeben. Der Preis gilt nur in USD; bitte lassen Sie sich die Berechnungsgrundlage und Einzelheiten für Ihre Gruppe vom Gastgeber bestätigen." } },
+    ];
+    const selectedPrice = priceItems.find(item => item.keys.test(normalizedQuestion));
+    const matched = guidedReplies.find(rule => rule.test.test(normalizedQuestion));
+    let reply = priceIntent ? (selectedPrice ? selectedPrice.values[language] : fallback[language]) : matched ? matched.answers[language] : fallback[language];
+    let mode = priceIntent || matched ? "guided_fallback" : "guided_fallback";
     // Price replies are deterministic: never let generated AI text overwrite the approved catalogue prices.
-    if (openAiKey && !matched?.answers) {
+    if (openAiKey && !matched && !priceIntent) {
       try {
         const response = await fetch("https://api.openai.com/v1/chat/completions", {
           method: "POST",
@@ -181,10 +188,10 @@ Deno.serve(async (request: Request) => {
           body: JSON.stringify({
             model,
             messages: [{ role: "system", content: systemPrompt }, ...messages],
-            temperature: 0.35,
-            max_tokens: 350,
+            temperature: 0.25,
+            max_tokens: 240,
           }),
-          signal: AbortSignal.timeout(12_000),
+          signal: AbortSignal.timeout(8_000),
         });
         const result = await response.json().catch(() => ({}));
         const generated = result?.choices?.[0]?.message?.content;
