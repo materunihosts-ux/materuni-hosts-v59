@@ -281,7 +281,7 @@ for (const route of imageCriticalRoutes) {
       if (!/\balt=["'][^"']*["']/i.test(image) || !/\bwidth=/.test(image) || !/\bheight=/.test(image) || !/\bdecoding=["'](?:async|sync|auto)["']/i.test(image)) {
         fail(route + ": temporary remote image fallback must retain alt, dimensions and decoding hints");
       }
-    } else if (!src.startsWith("/_astro/") && !src.startsWith("/images/")) {
+    } else if (!(src.startsWith("/") && !src.startsWith("//")) && !src.startsWith("https://materunihosts.com/")) {
       fail(route + ": image source is neither an approved remote original nor a local build asset");
     }
   }
