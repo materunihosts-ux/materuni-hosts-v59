@@ -1,6 +1,5 @@
 ---
 import SiteLayout from "../../layouts/SiteLayout.astro";
-import { Image } from "astro:assets";
 import { supabaseUrl } from "../../lib/supabase-public";
 
 const base = `${supabaseUrl}/storage/v1/object/public/materuni-images/`;
@@ -102,13 +101,11 @@ const categories = [
       {posts.map((post) => (
         <article class="journal-card" data-category={post.categoryKey}>
           <a class="card-media" href={`/journal/${post.slug}`} aria-label={`Read article: ${post.title}`}>
-            <Image
+            <img
               src={post.image}
               alt={post.alt}
               width={700}
               height={440}
-              format="webp"
-              quality={78}
               loading="lazy"
               decoding="async"
               class="card-img"
