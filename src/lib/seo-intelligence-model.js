@@ -119,7 +119,7 @@ export function buildSeoIntelligenceModel({ keywords = [], snapshots = [], siteO
       try {
         const canonical = new URL(page.canonicalUrl, origin);
         if (canonical.origin !== origin) add("external_canonical", "high", "Review the canonical URL; use a same-site canonical unless an intentional cross-domain canonical is required.", page, page.canonicalUrl);
-        else if ((canonical.pathname + canonical.search) !== page.path) add("canonical_mismatch", "medium", "Check that the canonical points to the intended preferred URL and that the page is not accidentally canonicalised elsewhere.", page, "Observed canonical: " + canonical.pathname + canonical.search);
+        else if (normalizePath(canonical.pathname + canonical.search) !== normalizePath(page.path)) add("canonical_mismatch", "medium", "Check that the canonical points to the intended preferred URL and that the page is not accidentally canonicalised elsewhere.", page, "Observed canonical: " + canonical.pathname + canonical.search);
       } catch { add("invalid_canonical", "medium", "Repair the malformed canonical URL.", page, page.canonicalUrl); }
     }
   }
@@ -160,7 +160,7 @@ export function buildSeoIntelligenceModel({ keywords = [], snapshots = [], siteO
   }
   const targetedPaths = new Set(targetCounts.keys());
   for (const page of pages) {
-    if (page.path !== "/" && !targetedPaths.has(page.path)) {
+    if (page.path !== "/" && !page.robots.toLowerCase().includes("noindex") && !targetedPaths.has(page.path)) {
       add("no_keyword_mapping", "low", "Review the page's search purpose and map one relevant primary keyword if it serves an organic-search need.", page, "No keyword record currently targets this crawled path; not proof of poor rankings.");
     }
   }
