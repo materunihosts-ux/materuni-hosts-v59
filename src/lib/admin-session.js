@@ -1,6 +1,6 @@
 const ADMIN_SESSION_KEY = "materuni-admin-session-v1";
 
-export function saveAdminSession(session) {
+export function saveAdminSession(session, adminVerified = true) {
   if (typeof window === "undefined" || !session?.access_token || !session?.refresh_token || !session?.user?.id) return;
   const now = Math.floor(Date.now() / 1000);
   const expiresAt = Number(session.expires_at) || now + Number(session.expires_in || 3600);
@@ -9,7 +9,7 @@ export function saveAdminSession(session) {
     refresh_token: session.refresh_token,
     expires_at: expiresAt,
     user_id: session.user.id,
-    admin_verified_at: Math.floor(Date.now() / 1000)
+    admin_verified_at: adminVerified ? Math.floor(Date.now() / 1000) : 0
   }));
 }
 
@@ -41,7 +41,7 @@ export async function restoreAdminSession(supabaseUrl, publishableKey) {
         clearAdminSession();
         return null;
       }
-      saveAdminSession(refreshed);
+      saveAdminSession(refreshed, false);
       saved = {
         access_token: refreshed.access_token,
         refresh_token: refreshed.refresh_token,
