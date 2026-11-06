@@ -33,19 +33,6 @@ const founderP2 = dynamic?.founderP2 || "That local perspective guides how we we
 const founderP3 = dynamic?.founderP3 || "Our story is closely connected to Materuni itself. Rather than offering only one kind of tour, we invite guests to choose from a range of experiences that reveal different sides of the village and the wider Kilimanjaro area.";
 const founderPurpose = dynamic?.founderPurpose || "To share the beauty and culture of Materuni through welcoming, meaningful experiences led with local knowledge and respect.";
 
-const isSafeHostImage = (value: unknown): value is string => {
-  if (typeof value !== "string" || !value.trim()) return false;
-  try {
-    const url = new URL(value, "https://materunihosts.com");
-    return url.protocol === "https:" && (url.hostname === "materunihosts.com" || url.hostname.endsWith(".supabase.co") || url.hostname.endsWith(".supabase.in"));
-  } catch { return false; }
-};
-const team = Array.isArray(dynamic?.team) ? dynamic.team.filter((host: any) =>
-  host && typeof host.name === "string" && host.name.trim() &&
-  typeof host.role === "string" && host.role.trim() &&
-  typeof host.bio === "string" && host.bio.trim() && isSafeHostImage(host.image)
-) : [];
-
 const val1Title = dynamic?.val1Title || "Local connection";
 const val1Desc = dynamic?.val1Desc || "We place local hosts, knowledge and perspectives at the heart of the guest experience.";
 const val2Title = dynamic?.val2Title || "Respect for culture";
@@ -76,6 +63,7 @@ const val4Desc = dynamic?.val4Desc || "We aim to explain each experience, its in
 </section>
 
 <!-- Founder Section -->
+{(founderTitle && founderP1) && (
 <section class="founder-section">
   <div class="founder-copy">
     <p class="eyebrow" id="about-founder-eyebrow-el">{founderEyebrow}</p>
@@ -89,6 +77,7 @@ const val4Desc = dynamic?.val4Desc || "We aim to explain each experience, its in
     <p id="about-founder-purpose-el">{founderPurpose}</p>
   </aside>
 </section>
+)}
 
 <!-- Individual host profiles are intentionally not displayed until verified. -->
 
