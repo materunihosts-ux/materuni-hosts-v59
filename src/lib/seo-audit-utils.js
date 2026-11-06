@@ -38,12 +38,12 @@ function safeCsvValue(value) {
 }
 
 export function buildAuditCsv(results) {
-  const headings = ["Page", "HTTP status", "Title", "Description", "H1 count", "Canonical URL", "Robots", "Mobile viewport", "Open Graph title", "Images missing alt", "Findings"];
+  const headings = ["Page", "HTTP status", "Title", "Description", "H1 count", "Canonical URL", "Robots", "Mobile viewport", "Open Graph title", "Images missing alt", "Word count", "Internal links", "Image count", "Findings"];
   const rows = [
     headings,
     ...(Array.isArray(results) ? results : []).map((r) => [
       r.path, r.status, r.title, r.desc, r.h1, r.canonical, r.robots,
-      r.viewport, r.ogTitle, r.missingAlt, Array.isArray(r.issues) ? r.issues.join("; ") : ""
+      r.viewport, r.ogTitle, r.missingAlt, r.wordCount, r.internalLinkCount, r.imageCount, Array.isArray(r.issues) ? r.issues.join("; ") : ""
     ])
   ];
   return rows.map((row) => row.map(safeCsvValue).join(",")).join("\r\n");
@@ -76,6 +76,11 @@ export function buildAuditSnapshot(results, metadata = {}) {
     hasViewport: Boolean(page.viewport),
     openGraphTitle: String(page.ogTitle ?? ""),
     imagesMissingAlt: Number.isInteger(page.missingAlt) ? page.missingAlt : 0,
+    wordCount: Number.isInteger(page.wordCount) ? page.wordCount : null,
+    internalLinkCount: Number.isInteger(page.internalLinkCount) ? page.internalLinkCount : null,
+    imageCount: Number.isInteger(page.imageCount) ? page.imageCount : null,
+    titleLength: String(page.title ?? "").length,
+    descriptionLength: String(page.desc ?? "").length,
     findings: Array.isArray(page.issues) ? page.issues.map(String) : []
   }));
   return {
@@ -93,7 +98,7 @@ export function buildAuditSnapshot(results, metadata = {}) {
 
 const SNAPSHOT_PAGE_FIELDS = [
   "status", "title", "description", "h1Count", "canonicalUrl", "robots",
-  "hasViewport", "openGraphTitle", "imagesMissingAlt"
+  "hasViewport", "openGraphTitle", "imagesMissingAlt", "wordCount", "internalLinkCount", "imageCount", "titleLength", "descriptionLength"
 ];
 
 function validateComparableSnapshot(snapshot, label) {
