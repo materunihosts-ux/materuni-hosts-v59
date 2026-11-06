@@ -22,7 +22,7 @@ const blogPostSchema = {
     "url": "https://materunihosts.com/"
   },
   "publisher": {
-    "@type": "TourOperator",
+    "@type": "Organization",
     "name": "Materuni Hosts",
     "logo": {
       "@type": "ImageObject",
@@ -62,15 +62,20 @@ const faqList = [
   }
 ];
 
+// Keep visible FAQ content and structured data generated from the same validated source.
+const validGuideFaqs = faqList.filter((item) =>
+  typeof item.q === "string" && item.q.trim().length > 0 &&
+  typeof item.a === "string" && item.a.trim().length > 0
+);
 const faqSchema = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
-  "mainEntity": faqList.map((f) => ({
+  "mainEntity": validGuideFaqs.map(({ q, a }) => ({
     "@type": "Question",
-    "name": f.q,
+    "name": q.trim(),
     "acceptedAnswer": {
       "@type": "Answer",
-      "text": f.a
+      "text": a.trim()
     }
   }))
 };
@@ -181,7 +186,7 @@ const faqSchema = {
 
       <div class="pro-tip-box">
         <strong>Host tip:</strong>
-        <p>If taking a private taxi from Moshi town, always agree on the full price—including driver waiting time and the return trip back to Moshi—before setting off. If it has rained recently, the clay dirt section can be slick, so a 4x4 or a local driver who knows the road turns is well worth it.</p>
+        <p>If taking a private taxi from Moshi town, agree the full price—including any driver waiting time and the return trip—before setting off. Ask the driver to assess the current road conditions and confirm that the vehicle is suitable for the route on your travel date.</p>
       </div>
 
       <p><strong>Taking public transport?</strong> Routes, departure points and onward connections can change. Check current services, drop-off points, fares and return options with local transport providers in Moshi before setting off. Confirm how you will reach the village from your drop-off point; do not assume a direct service or a waiting motorbike taxi will be available.</p>
@@ -253,7 +258,7 @@ const faqSchema = {
       <!-- FAQ Section -->
       <h2>Frequently Asked Questions</h2>
       <div class="faq-accordion">
-        {faqList.map((item) => (
+        {validGuideFaqs.map((item) => (
           <details class="faq-card">
             <summary>
               <span>{item.q}</span>
