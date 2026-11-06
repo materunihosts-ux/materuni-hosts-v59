@@ -70,7 +70,7 @@ export function normalizeKeywordImportRow(row, columns, siteOrigin) {
     try {
       const base = new URL(siteOrigin);
       const resolved = new URL(targetUrl, base);
-      if (!["http:", "https:"].includes(resolved.protocol) || resolved.origin !== base.origin) {
+      if (!["http:", "https:"].includes(resolved.protocol) || resolved.origin !== base.origin || resolved.username || resolved.password) {
         return { error: "Target URL must belong to the configured website" };
       }
       targetUrl = resolved.origin + resolved.pathname + resolved.search;
