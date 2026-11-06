@@ -165,7 +165,7 @@ Deno.serve(async (request: Request) => {
         }
       }
     ];
-    const normalizedQuestion = question.normalize("NFD").replace(/[\\u0300-\\u036f]/g, "");
+    const normalizedQuestion = question.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     const priceIntent = /price|prices|cost|how much|precio|cuesta|cuanto|prix|combien|kosten|preis|wie viel|tarif|tarifa/.test(normalizedQuestion);
     const priceItems = [
       { keys: /coffee|cafe|café|kaffee/, values: { en: "The Traditional Chagga Coffee Experience is $36 per person.", es: "La experiencia de café tradicional Chagga cuesta 36 $ por persona.", fr: "L’expérience de café traditionnel Chagga coûte 36 $ par personne.", de: "Das traditionelle Chagga-Kaffeeerlebnis kostet 36 $ pro Person." } },
@@ -178,7 +178,7 @@ Deno.serve(async (request: Request) => {
     const selectedPrice = priceItems.find(item => item.keys.test(normalizedQuestion));
     const matched = guidedReplies.find(rule => rule.test.test(normalizedQuestion));
     let reply = priceIntent ? (selectedPrice ? selectedPrice.values[language] : fallback[language]) : matched ? matched.answers[language] : fallback[language];
-    let mode = priceIntent || matched ? "guided_fallback" : "guided_fallback";
+    let mode = "guided_fallback";
     // Price replies are deterministic: never let generated AI text overwrite the approved catalogue prices.
     if (openAiKey && !matched && !priceIntent) {
       try {
