@@ -204,3 +204,21 @@ Validation: the four utility test cases were executed with Node's built-in test 
 The crawler now also exports a versioned JSON snapshot (schema version 1) alongside CSV. The JSON includes the actual crawl scope used (including fallback to core pages when the sitemap is unavailable/invalid), normalized site origin, capture timestamp, source label, page observations and derived page/issue counts. This is a portable local export, not database persistence: it is not uploaded, synced or retained centrally. The snapshot helper rejects invalid/non-HTTP(S) origins and unsupported scope values.
 
 The regression suite now contains six cases. The exact utility behavior was exercised in a temporary Node.js test fixture: **6 passed, 0 failed**. A first test attempt exposed an incorrect assertion pattern in the CSV test (the CSV correctly quoted the apostrophe-prefixed +cmd cell); the assertion was corrected and the six-case suite passed. A GitHub checkout/full Astro build could not be run because outbound GitHub network access was unavailable in the local execution container. The repository test command is committed as npm run test:seo; it still needs to be run against a fresh checkout before merge.
+
+
+## 2026-11-06 — Local snapshot comparison
+
+The feature branch now includes a browser-only comparison workflow for exported SEO snapshots:
+
+- Import a previously exported JSON snapshot (maximum 2 MB in the admin UI).
+- Compare it with a newly completed crawl from the same site origin and same crawl scope.
+- Identify added, removed, changed and unchanged URLs.
+- Show changed page observations and newly observed/resolved crawler findings.
+- Validate schema version, provenance, origin, path shape and duplicate paths before comparing.
+- Render imported content as text; imported files are not uploaded to a server.
+
+A scope mismatch is rejected so a sitemap crawl is not misleadingly compared with a core-page crawl. The comparison utility and UI regression cases have been added to the Node test suite. The suite now contains ten test cases, but **the expanded ten-case suite has not yet been executed** in this environment. The earlier six-case utility suite passed in an isolated temporary fixture; that result does not validate these newly added comparison cases or the Astro page.
+
+A small UI state issue was also corrected: the crawl scope is now retained outside the audit event handler so JSON export and comparison can access the actual scope, and the compare action becomes available when both a baseline and a new crawl exist.
+
+Limitations remain explicit: snapshots are still files kept by the administrator, not shared database history. No Supabase schema or data was changed. No production deployment or Vercel preview has been created, and the complete Astro check/build/quality gate remains unverified.
