@@ -2,6 +2,7 @@ User-agent: *
 Allow: /
 
 # Keep private administration and API endpoints out of search
+Disallow: /admin/
 Disallow: /admin
 Disallow: /api/
 
