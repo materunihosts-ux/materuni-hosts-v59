@@ -52,3 +52,56 @@ test("JSON snapshot rejects invalid origins and missing scope", () => {
   assert.throws(() => buildAuditSnapshot([], { siteOrigin: "javascript:alert(1)", scope: "core" }), /valid HTTP/);
   assert.throws(() => buildAuditSnapshot([], { siteOrigin: "https://materunihosts.com", scope: "all" }), /scope/);
 });
+
+
+import { compareAuditSnapshots } from "../src/lib/seo-audit-utils.js";
+
+function snapshot(pages, capturedAt = "2026-11-06T10:00:00.000Z") {
+  return {
+    schemaVersion: 1, source: "browser_live_crawl",
+    siteOrigin: "https://materunihosts.com", capturedAt, pages
+  };
+}
+
+test("snapshot comparison detects added, removed, changed and unchanged pages", () => {
+  const previous = snapshot([
+    { path: "/", status: 200, title: "Home", findings: [] },
+    { path: "/old", status: 200, title: "Old", findings: [] },
+    { path: "/same", status: 200, title: "Same", findings: [] }
+  ]);
+  const current = snapshot([
+    { path: "/", status: 200, title: "Materuni Hosts", findings: ["Missing description"] },
+    { path: "/new", status: 200, title: "New", findings: ["Missing alt"] },
+    { path: "/same", status: 200, title: "Same", findings: [] }
+  ], "2026-11-07T10:00:00.000Z");
+  const diff = compareAuditSnapshots(previous, current);
+  assert.deepEqual(diff.added.map(p => p.path), ["/new"]);
+  assert.deepEqual(diff.removed, ["/old"]);
+  assert.deepEqual(diff.unchanged, ["/same"]);
+  assert.equal(diff.changed[0].path, "/");
+  assert.deepEqual(diff.changed[0].findings.added, ["Missing description"]);
+  assert.equal(diff.summary.newFindings, 2);
+  assert.equal(diff.summary.resolvedFindings, 0);
+});
+
+test("snapshot comparison reports resolved findings and metadata changes", () => {
+  const previous = snapshot([{ path: "/tour", status: 404, title: "Tour", canonicalUrl: "", findings: ["HTTP error", "No H1"] }]);
+  const current = snapshot([{ path: "/tour", status: 200, title: "Tour", canonicalUrl: "https://materunihosts.com/tour", findings: ["No H1"] }]);
+  const diff = compareAuditSnapshots(previous, current);
+  assert.equal(diff.changed[0].fields.status.before, 404);
+  assert.equal(diff.changed[0].fields.status.after, 200);
+  assert.deepEqual(diff.changed[0].findings.resolved, ["HTTP error"]);
+  assert.equal(diff.summary.resolvedFindings, 1);
+});
+
+test("snapshot comparison rejects incompatible origins, schema and duplicate paths", () => {
+  const base = snapshot([{ path: "/", findings: [] }]);
+  assert.throws(() => compareAuditSnapshots(base, { ...base, siteOrigin: "https://other.example" }), /same siteOrigin/);
+  assert.throws(() => compareAuditSnapshots(base, { ...base, schemaVersion: 2 }), /schema v1/);
+  assert.throws(() => compareAuditSnapshots(base, snapshot([{ path: "/", findings: [] }, { path: "/", findings: [] }])), /duplicate page paths/);
+});
+
+test("snapshot comparison rejects malformed page paths", () => {
+  const base = snapshot([{ path: "/", findings: [] }]);
+  assert.throws(() => compareAuditSnapshots(base, snapshot([{ path: "//evil.example", findings: [] }])), /invalid page path/);
+});
