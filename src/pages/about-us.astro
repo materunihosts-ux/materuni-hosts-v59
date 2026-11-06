@@ -34,7 +34,18 @@ const founderP2 = dynamic?.founderP2 || "That local perspective guides how we we
 const founderP3 = dynamic?.founderP3 || "Our story is closely connected to Materuni itself. Rather than offering only one kind of tour, we invite guests to choose from a range of experiences that reveal different sides of the village and the wider Kilimanjaro area.";
 const founderPurpose = dynamic?.founderPurpose || "To share the beauty and culture of Materuni through welcoming, meaningful experiences led with local knowledge and respect.";
 
-const team = Array.isArray(dynamic?.team) && dynamic.team.length ? dynamic.team : defaultTeam;
+const isSafeHostImage = (value: unknown): value is string => {
+  if (typeof value !== "string" || !value.trim()) return false;
+  try {
+    const url = new URL(value, "https://materunihosts.com");
+    return url.protocol === "https:" && (url.hostname === "materunihosts.com" || url.hostname.endsWith(".supabase.co") || url.hostname.endsWith(".supabase.in"));
+  } catch { return false; }
+};
+const team = Array.isArray(dynamic?.team) ? dynamic.team.filter((host: any) =>
+  host && typeof host.name === "string" && host.name.trim() &&
+  typeof host.role === "string" && host.role.trim() &&
+  typeof host.bio === "string" && host.bio.trim() && isSafeHostImage(host.image)
+) : [];
 
 const val1Title = dynamic?.val1Title || "Local connection";
 const val1Desc = dynamic?.val1Desc || "We place local hosts, knowledge and perspectives at the heart of the guest experience.";
@@ -91,7 +102,8 @@ const communityNote = dynamic?.communityNote || "Based in Materuni Village, Mate
   </aside>
 </section>
 
-<section id="about-team-section" class="about-intro" aria-label="Local hosts" hidden={team.length === 0}>
+{team.length > 0 && (
+<section id="about-team-section" class="about-intro" aria-label="Local hosts">
   <div class="section-heading" style="text-align:center;margin:0 auto 32px">
     <p class="eyebrow">WHO WE ARE</p>
     <h2>A local team, a personal welcome.</h2>
@@ -113,6 +125,7 @@ const communityNote = dynamic?.communityNote || "Based in Materuni Village, Mate
     <p id="about-community-note-el">{communityNote}</p>
   </div>
 </section>
+)}
 
 <!-- Values Section -->
 <section class="values-section">
@@ -237,15 +250,22 @@ try {
     // If dynamic team members are present
     if (Array.isArray(data.team) && data.team.length && document.getElementById("about-team-grid")) {
       const section = document.getElementById("about-team-section");
-      if (section) section.hidden = false;
+      if (section) section.hidden = true;
       const grid = document.getElementById("about-team-grid");
       grid.replaceChildren();
       data.team.forEach(host => {
+        if (!host || typeof host.name !== "string" || !host.name.trim() || typeof host.role !== "string" || !host.role.trim() || typeof host.bio !== "string" || !host.bio.trim() || typeof host.image !== "string" || !host.image.trim()) return;
         const card = document.createElement("div");
         card.className = "team-card";
         
         const img = document.createElement("img");
-        img.src = host.image || data.heroImage || "";
+        let safeImage = "";
+        try {
+          const candidate = new URL(host.image, window.location.origin);
+          if (candidate.protocol === "https:" && (candidate.hostname === window.location.hostname || candidate.hostname.endsWith(".supabase.co") || candidate.hostname.endsWith(".supabase.in"))) safeImage = candidate.href;
+        } catch {}
+        if (!safeImage) return;
+        img.src = safeImage;
         img.alt = `${host.name} local host in Materuni`;
         img.width = 130;
         img.height = 130;
@@ -267,6 +287,7 @@ try {
         card.append(img, h3, role, bio);
         grid.append(card);
       });
+      if (grid.childElementCount > 0 && section) section.hidden = false;
     }
   }).catch(() => {});
 } catch {}
