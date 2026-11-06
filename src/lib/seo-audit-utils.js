@@ -129,7 +129,8 @@ function validateComparableSnapshot(snapshot, label) {
 export function compareAuditSnapshots(previous, current) {
   const before = validateComparableSnapshot(previous, "previous snapshot");
   const after = validateComparableSnapshot(current, "current snapshot");
-  if (before.origin !== after.origin) throw new TypeError("Snapshots must have the same siteOrigin");\n  if (previous.scope !== current.scope || !["core", "sitemap"].includes(previous.scope)) throw new TypeError("Snapshots must have the same valid crawl scope");
+  if (before.origin !== after.origin) throw new TypeError("Snapshots must have the same siteOrigin");
+  if (previous.scope !== current.scope || !["core", "sitemap"].includes(previous.scope)) throw new TypeError("Snapshots must have the same valid crawl scope");
 
   const added = [];
   const removed = [];
