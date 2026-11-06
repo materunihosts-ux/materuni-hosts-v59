@@ -11,13 +11,15 @@ export function isSameOriginUrl(value, origin) {
 export function extractSitemapPaths(xmlText, origin, maxUrls = DEFAULT_MAX_URLS) {
   if (typeof xmlText !== "string" || !xmlText.trim()) return [];
   const safeLimit = Number.isInteger(maxUrls) ? Math.max(0, Math.min(maxUrls, 1000)) : DEFAULT_MAX_URLS;
+  if (safeLimit === 0) return [];
   const matches = xmlText.matchAll(/<loc(?:\s[^>]*)?>([\s\S]*?)<\/loc>/gi);
   const paths = new Set();
   for (const match of matches) {
     const raw = match[1].replace(/&amp;/g, "&").trim();
-    if (!raw || !isSameOriginUrl(raw, origin)) continue;
+    if (!raw) continue;
     try {
-      const url = new URL(raw, origin);
+      const url = new URL(raw);
+      if (!isSameOriginUrl(url.href, origin)) continue;
       if (!["http:", "https:"].includes(url.protocol)) continue;
       paths.add(url.pathname);
     } catch {
