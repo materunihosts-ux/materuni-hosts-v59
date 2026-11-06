@@ -35,11 +35,13 @@ function renderIntelligence(){
   $("intelligence-results").hidden=false;
   $("intel-keywords").textContent=model.summary.keywordCount;
   $("intel-pages").textContent=model.summary.crawlPageCount;
-  $("intel-recommendations").textContent=model.summary.recommendationCount;\n  $("intel-high").textContent=model.summary.highPriority;\n  $("intel-medium").textContent=model.summary.mediumPriority;\n  $("intel-low").textContent=model.summary.lowPriority;
+  $("intel-recommendations").textContent=model.summary.recommendationCount;
+  $("intel-high").textContent=model.summary.highPriority;\n  $("intel-medium").textContent=model.summary.mediumPriority;\n  $("intel-low").textContent=model.summary.lowPriority;
   $("intel-ctr").textContent=model.summary.keywordCtr===null?"—":(model.summary.keywordCtr*100).toFixed(2)+"%";
   const list=$("intel-list");list.replaceChildren();
   if(!model.recommendations.length){const p=document.createElement("p");p.className="muted";p.textContent="No technical recommendations from the imported crawl snapshot.";list.append(p)}
-  model.recommendations.slice(0,50).forEach(item=>{const card=document.createElement("article");card.className="intel-item";const title=document.createElement("strong");title.textContent=item.severity.toUpperCase()+" · "+item.code.replaceAll("_"," ");const action=document.createElement("p");action.textContent=item.action;const evidence=document.createElement("p");evidence.className="intel-meta";evidence.textContent=item.evidence+" · "+item.page;card.append(title,action,evidence);list.append(card)});\n  if(model.recommendations.length>50){const more=document.createElement("p");more.className="muted";more.textContent="Showing first 50 of "+model.recommendations.length+" recommendations. Exported snapshot and source data remain unchanged.";list.append(more)}
+  model.recommendations.slice(0,50).forEach(item=>{const card=document.createElement("article");card.className="intel-item";const title=document.createElement("strong");title.textContent=item.severity.toUpperCase()+" · "+item.code.replaceAll("_"," ");const action=document.createElement("p");action.textContent=item.action;const evidence=document.createElement("p");evidence.className="intel-meta";evidence.textContent=item.evidence+" · "+item.page;card.append(title,action,evidence);list.append(card)});
+  if(model.recommendations.length>50){const more=document.createElement("p");more.className="muted";more.textContent="Showing first 50 of "+model.recommendations.length+" recommendations. Exported snapshot and source data remain unchanged.";list.append(more)}
   $("intelligence-msg").textContent=model.dataSources.warning;
 }
 $("analyse-intelligence").addEventListener("click",async()=>{
