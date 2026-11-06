@@ -8,7 +8,12 @@ export default defineConfig({
     port: 3000,
     host: '0.0.0.0',
   },
-  image: {\n    remotePatterns: [{ protocol: 'https', hostname: 'sskmzswoeljxwojcszta.supabase.co', pathname: '/storage/v1/object/public/materuni-images/**' }],\n    // Supabase currently returns HTTP 402 after the project quota was exhausted.\n    // Keep Astro builds independent of remote image availability; restore Sharp\n    // optimisation after image delivery is recovered or assets are migrated.\n    service: passthroughImageService(),\n  },
+  image: {
+    remotePatterns: [{ protocol: 'https', hostname: 'sskmzswoeljxwojcszta.supabase.co', pathname: '/storage/v1/object/public/materuni-images/**' }],
+    // Supabase currently returns HTTP 402 after the project quota was exhausted.
+    // Keep Astro builds independent of remote image availability; restore Sharp
+    // optimisation after image delivery is recovered or assets are migrated.
+    service: passthroughImageService(),\n  },
   output: 'static',
   build: { assets: '_astro' },
 });
