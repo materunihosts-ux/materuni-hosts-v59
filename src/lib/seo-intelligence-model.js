@@ -16,7 +16,7 @@ function normalizePath(value) {
   if (typeof value !== "string" || !value.startsWith("/") || value.startsWith("//")) return null;
   try {
     const url = new URL(value, "https://materuni.invalid");
-    return url.origin === "https://materuni.invalid" ? (url.pathname === "/" ? "/" : url.pathname.replace(/\\/$/, "")) : null;
+    return url.origin === "https://materuni.invalid" ? (url.pathname === "/" ? "/" : (url.pathname.endsWith("/") && url.pathname.length > 1 ? url.pathname.slice(0, -1) : url.pathname)) : null;
   } catch { return null; }
 }
 function cleanText(value, max = 1000) {
