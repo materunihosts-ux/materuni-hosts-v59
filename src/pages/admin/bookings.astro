@@ -161,7 +161,7 @@ async function loadBookings() {
         cancel.addEventListener("click", async () => {
           if (!window.confirm("Cancel this booking and restore its reserved spaces?")) return;
           cancel.disabled = true;
-          try { await api("/rest/v1/rpc/admin_cancel_booking",{method:"POST",body:JSON.stringify({p_booking_id:booking.booking_id})}); const notice = await notifyBookingChange(booking.booking_id,"cancelled"); el("booking-feedback").textContent = notice.success ? "Booking cancelled and guest notification processed." : "Booking cancelled. Guest notification needs attention: " + (notice.error || "not sent"); await Promise.all([loadBookings(),loadNotificationLogs()]); }
+          try { await api("/rest/v1/rpc/admin_cancel_booking",{method:"POST",body:JSON.stringify({p_booking_id:booking.booking_id})}); const notice = await notifyBookingChange(booking.booking_id,"cancelled"); el("booking-feedback").textContent = notice.success ? "Booking cancelled and guest notification processed." : "Booking cancelled. Guest notification needs attention: " + (notice.error || "not sent"); await loadBookings(); if(notificationLogsLoaded) await loadNotificationLogs(); }
           catch (error) { el("booking-feedback").textContent = error.message; cancel.disabled = false; }
         });
         actions.append(cancel);
@@ -191,7 +191,7 @@ async function loadBookings() {
         cancel.addEventListener("click", async () => {
           if (!window.confirm("Cancel this confirmed booking and restore its spaces?")) return;
           cancel.disabled = true;
-          try { await api("/rest/v1/rpc/admin_cancel_booking",{method:"POST",body:JSON.stringify({p_booking_id:booking.booking_id})}); const notice = await notifyBookingChange(booking.booking_id,"cancelled"); el("booking-feedback").textContent = notice.success ? "Booking cancelled and guest notification processed." : "Booking cancelled. Guest notification needs attention: " + (notice.error || "not sent"); await Promise.all([loadBookings(),loadNotificationLogs()]); }
+          try { await api("/rest/v1/rpc/admin_cancel_booking",{method:"POST",body:JSON.stringify({p_booking_id:booking.booking_id})}); const notice = await notifyBookingChange(booking.booking_id,"cancelled"); el("booking-feedback").textContent = notice.success ? "Booking cancelled and guest notification processed." : "Booking cancelled. Guest notification needs attention: " + (notice.error || "not sent"); await loadBookings(); if(notificationLogsLoaded) await loadNotificationLogs(); }
           catch (error) { el("booking-feedback").textContent = error.message; cancel.disabled = false; }
         });
         actions.append(cancel);
@@ -300,7 +300,7 @@ el("login-form").addEventListener("submit", async event => {
     if (!admins.length) { accessToken = ""; throw new Error("This account is not authorised as an administrator."); }
     saveAdminSession(session);
     el("login-panel").hidden = true; el("manager").hidden = false;
-    await Promise.all([loadBookings(),loadNotificationLogs()]);
+    await loadBookings(); if(notificationLogsLoaded) await loadNotificationLogs();
   } catch (error) { el("login-feedback").textContent = error.message; }
   finally { button.disabled = false; }
 });
