@@ -15,10 +15,10 @@ const bookingPreview = `${supabaseUrl}/storage/v1/object/public/materuni-images/
 </style>
 <section class="booking-wrap"><div class="booking-panel">
 <div class="booking-trust-bar">
-  <span><a href="https://www.tripadvisor.com/34765809" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:underline">TripAdvisor Verified</a></span>
-  <span><a href="https://g.page/r/CXy6M_Suiip9EBM/review" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:underline">Google Reviews</a></span>
+  <span><a href="https://www.tripadvisor.com/34765809" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:underline">TripAdvisor listing</a></span>
+  <span><a href="https://g.page/r/CXy6M_Suiip9EBM/review" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:underline">Google guest reviews</a></span>
   <span>Direct contact with local hosts</span>
-  <span>Clear booking details before confirmation</span>
+  <span>Booking request first — confirmation in writing</span>
   <span>Experiences hosted in Materuni Village</span>
 </div>
 <p class="muted" style="margin:0 0 16px"><span data-i18n="booking_reviews_intro">Independent guest feedback:</span> <a href="/reviews" data-i18n="booking_reviews_link">Read guest reviews</a> · <a href="https://www.tripadvisor.com/34765809" target="_blank" rel="noopener noreferrer">TripAdvisor</a> · <a href="https://g.page/r/CXy6M_Suiip9EBM/review" target="_blank" rel="noopener noreferrer" data-i18n="booking_leave_review">Google reviews</a></p>
@@ -43,7 +43,7 @@ const bookingPreview = `${supabaseUrl}/storage/v1/object/public/materuni-images/
   </div>
 
   <p style="margin:0 0 16px;line-height:1.7;color:#242421">
-    Welcome back to Materuni Hosts. Need to reschedule your experience date, modify party size, request private taxi transfers from Moshi or Kilimanjaro Airport, or coordinate special requests? A local host will review your request and follow up to confirm the arrangements.
+    Use this page to send a change or follow-up request for an existing booking. Changes are not automatic and take effect only after the host confirms them. Transfers are separate requests and depend on availability and a confirmed quote.
   </p>
 
   <div id="manual-ref-box" style="display:flex;gap:10px;align-items:center;margin-bottom:18px;flex-wrap:wrap">
@@ -59,13 +59,13 @@ const bookingPreview = `${supabaseUrl}/storage/v1/object/public/materuni-images/
     <a id="manage-email-btn" href="mailto:hello@materunihosts.com" class="button button-secondary" style="display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none">
       <span>✉️</span> Email Hosts Directly
     </a>
-    <a href="https://www.google.com/maps/search/?api=1&query=Materuni%20Hosts%20-%20Waterfall%20Tours%20%26%20Village%20Camping%2C%20Materuni%20Village%2C%20Moshi%2C%20Tanzania" target="_blank" rel="noopener noreferrer" class="button button-secondary" style="display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none">
+    <a href="https://www.google.com/maps/search/?api=1&query=Materuni%20Hosts%2C%20Materuni%20Village%2C%20Materuni%20Juu%2C%20Moshi%20Rural%2C%20Tanzania" target="_blank" rel="noopener noreferrer" class="button button-secondary" style="display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none">
       <span>📍</span> Meeting Point & Directions
     </a>
   </div>
 
   <div style="background:#fff;border:1px solid #E6DFD3;border-radius:8px;padding:16px;margin-bottom:16px">
-    <strong style="display:block;color:#1A3322;font-size:13px;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">🌿 Booking Policies & Guarantees</strong>
+    <strong style="display:block;color:#1A3322;font-size:13px;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">Booking arrangements</strong>
     <ul style="margin:0;padding-left:18px;font-size:13px;line-height:1.7;color:#4F524D">
       <li><strong>Changes to your visit:</strong> Contact your host to discuss date changes and any weather-related arrangements.</li>
       <li><strong>Cancellation:</strong> Ask your host to confirm the applicable cancellation terms before your booking is finalised.</li>
@@ -89,7 +89,7 @@ const bookingPreview = `${supabaseUrl}/storage/v1/object/public/materuni-images/
   <div><span>Private transfer</span><strong id="estimate-transfer">None</strong></div>
   <div class="booking-estimate-total"><span data-i18n="estimate_total">Estimated group total</span><strong id="estimate-total">—</strong></div>
  </div>
- <p>Group arrangements and private transfers are quoted separately. Share your group size and pickup point so your host can confirm the current details.</p>
+ <p>Group discounts apply only to published experience prices: 1–3 standard; 4–5 guests 5% off; 6–9 guests 8% off; 10–14 guests 10% off; 15+ guests custom quotation. Transport and separately agreed extras are excluded. Transfers are not included and require a separate confirmed quote.</p>
 </div>
 <form id="booking-form" class="form-grid">
 <div class="field full"><label for="experience" data-i18n="booking_experience_label">Choose your experience *</label><select id="experience" required><option value="">Loading experiences…</option></select></div>
@@ -98,7 +98,7 @@ const bookingPreview = `${supabaseUrl}/storage/v1/object/public/materuni-images/
 <div class="field"><label for="email" data-i18n="booking_email_label">Email address</label><input id="email" type="email" autocomplete="email"></div><div class="field"><label for="phone" data-i18n="booking_phone_label">WhatsApp / phone</label><input id="phone" type="tel" autocomplete="tel"><small class="muted" data-i18n="booking_contact_hint">Provide at least one contact method: email or phone.</small></div><div class="field"><label for="language" data-i18n="booking_language_label">Preferred language</label><select id="language"><option value="English">English</option><option value="Spanish">Español</option><option value="French">Français</option><option value="German">Deutsch</option></select></div>
 <div class="field"><label for="pickup-origin" data-i18n="booking_transfer_label">Private transfer request (optional)</label><select id="pickup-origin"><option value="" data-i18n="booking_transfer_none">No transfer / self-arranged</option><option value="Moshi" data-i18n="booking_transfer_moshi">Pickup from Moshi town — price confirmed by host</option><option value="Kilimanjaro International Airport (KIA)" data-i18n="booking_transfer_kia">Pickup from Kilimanjaro Airport / KIA — price confirmed by host</option><option value="Arusha" data-i18n="booking_transfer_arusha">Pickup from Arusha city — price confirmed by host</option><option value="Other">Other location (custom quote confirmed by host)</option></select><small class="muted" data-i18n="booking_transfer_note">Transfers are quoted separately. Your host will confirm availability, vehicle details and the current price based on your pickup point and group size.</small></div><div class="field"><label for="pickup" data-i18n="booking_pickup_label">Hotel, address or flight details</label><input id="pickup" placeholder="Hotel name, flight number or meeting point…" data-i18n-placeholder="booking_pickup_placeholder"></div>
 <div class="field full"><label for="notes" data-i18n="booking_notes_label">Special requests, dietary needs or accessibility notes</label><textarea id="notes" data-i18n-placeholder="booking_notes_placeholder"></textarea></div>
-<div class="field full"><div class="notice booking-terms-note" role="note"><strong data-i18n="booking_notice_title">Send a request — your host will confirm the details.</strong><p data-i18n="booking_notice">Sending this form submits a booking request; it does not confirm a reservation. Your host will contact you to discuss availability, itinerary, any transfer quote and payment instructions.</p><p data-i18n="booking_notice_contact">Cancellation terms, weather arrangements, available payment methods and any deposit requirements will be confirmed by your host before the booking is finalised.</p></div><button class="button" id="submit" type="submit" data-i18n="booking_submit_label">Send booking request</button><p id="feedback" aria-live="polite" class="muted"></p></div>
+<div class="field full"><div class="notice booking-terms-note" role="note"><strong data-i18n="booking_notice_title">Send a request — your host will confirm the details.</strong><p data-i18n="booking_notice">Sending this form submits a request only. It does not reserve a place or confirm a booking. Availability, itinerary, final price and any transfer must be checked and confirmed by the host in writing. No payment is taken by submitting this form.</p><p data-i18n="booking_notice_contact">Before you pay, obtain written confirmation of the applicable cancellation and weather terms, payment method, any deposit or balance, and all agreed arrangements.</p></div><button class="button" id="submit" type="submit" data-i18n="booking_submit_label">Send booking request</button><p id="feedback" aria-live="polite" class="muted"></p></div>
 </form></div></section>
 <script>
 // @ts-nocheck
