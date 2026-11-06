@@ -9,7 +9,7 @@ test("same-origin validation rejects external and malformed URLs", () => {
   assert.equal(isSameOriginUrl("http://[broken", "https://materunihosts.com"), false);
 });
 
-test("sitemap parser keeps unique same-origin paths and ignores unsafe entries", () => {
+test("sitemap parser keeps unique absolute same-origin paths and ignores unsafe entries", () => {
   const xml = `<urlset>
     <url><loc>https://materunihosts.com/</loc></url>
     <url><loc>https://materunihosts.com/materuni?ref=1</loc></url>
@@ -23,6 +23,7 @@ test("sitemap parser keeps unique same-origin paths and ignores unsafe entries",
 test("sitemap parser enforces a bounded URL count", () => {
   const xml = Array.from({ length: 20 }, (_, i) => `<loc>https://materunihosts.com/page-${i}</loc>`).join("");
   assert.equal(extractSitemapPaths(xml, "https://materunihosts.com", 7).length, 7);
+  assert.deepEqual(extractSitemapPaths(xml, "https://materunihosts.com", 0), []);
 });
 
 test("CSV escapes quotes and neutralises spreadsheet formulas", () => {
