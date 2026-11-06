@@ -106,3 +106,17 @@ test("snapshot comparison rejects malformed page paths", () => {
   const base = snapshot([{ path: "/", findings: [] }]);
   assert.throws(() => compareAuditSnapshots(base, snapshot([{ path: "//evil.example", findings: [] }])), /invalid page path/);
 });
+
+test("crawl snapshot preserves content quality and internal-link metrics", () => {
+  const snapshot = buildAuditSnapshot([{
+    path: "/materuni", status: 200, title: "Materuni Village Experience",
+    desc: "Discover a local Chagga village experience with hosts in Materuni, Moshi, Tanzania.",
+    h1: 1, canonical: "https://materunihosts.com/materuni", robots: "index,follow",
+    viewport: true, ogTitle: "Materuni Hosts", missingAlt: 1,
+    wordCount: 428, internalLinkCount: 7, imageCount: 4, issues: []
+  }], { siteOrigin: "https://materunihosts.com", scope: "core" });
+  assert.equal(snapshot.pages[0].wordCount, 428);
+  assert.equal(snapshot.pages[0].internalLinkCount, 7);
+  assert.equal(snapshot.pages[0].imageCount, 4);
+  assert.equal(snapshot.pages[0].titleLength, "Materuni Village Experience".length);
+});
