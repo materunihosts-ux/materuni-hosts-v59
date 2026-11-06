@@ -10,16 +10,16 @@ const json = (body: Record<string, unknown>, status = 200) =>
   new Response(JSON.stringify(body), { status, headers: corsHeaders });
 
 const fallback: Record<string, string> = {
-  en: "I can help you plan your Materuni visit. Our six experiences are From Bean to Cup ($65), The Waterfall & Heritage Trail ($75), Cook, Taste & Share ($85), The Complete Materuni Day ($75), Stay Beyond the Waterfall ($110) and The Materuni Signature Escape ($135) per person. Which date are you considering, and how many guests will be travelling?",
-  es: "Puedo ayudarte a planificar tu visita a Materuni. Ofrecemos seis experiencias: From Bean to Cup ($65), The Waterfall & Heritage Trail ($75), Cook, Taste & Share ($85), The Complete Materuni Day ($75), Stay Beyond the Waterfall ($110) y The Materuni Signature Escape ($135) por persona. ¿Qué fecha tienes en mente y cuántas personas viajarán?",
-  fr: "Je peux vous aider à organiser votre visite à Materuni. Nos six expériences sont : From Bean to Cup (65 $), The Waterfall & Heritage Trail (75 $), Cook, Taste & Share (85 $), The Complete Materuni Day (75 $), Stay Beyond the Waterfall (110 $) et The Materuni Signature Escape (135 $) par personne. Quelle date envisagez-vous et combien de personnes voyageront ?",
-  de: "Ich helfe Ihnen gern bei der Planung Ihres Besuchs in Materuni. Unsere sechs Erlebnisse sind: From Bean to Cup (65 $), The Waterfall & Heritage Trail (75 $), Cook, Taste & Share (85 $), The Complete Materuni Day (75 $), Stay Beyond the Waterfall (110 $) und The Materuni Signature Escape (135 $) pro Person. Für welches Datum planen Sie und wie viele Gäste reisen mit?"
+  en: "Our current experiences are: Waterfall & Chagga Village ($40 per person); Traditional Chagga Coffee ($36); Traditional Chagga Cooking Class ($49); Materuni & Moshi Town ($52); Materuni & Rau Forest Nature ($58); and Overnight Village ($90 USD). The Overnight Village price is quoted in USD only. Transfers are arranged and quoted separately. Which experience interests you?",
+  es: "Nuestras experiencias actuales son: Cascada y aldea Chagga (40 $ por persona); Café tradicional Chagga (36 $); Clase de cocina tradicional Chagga (49 $); Materuni y Moshi (52 $); Materuni y bosque de Rau (58 $); y estancia nocturna en la aldea (90 USD). El precio de la estancia nocturna se indica solo en USD. El transporte se cotiza por separado. ¿Qué experiencia te interesa?",
+  fr: "Nos expériences actuelles sont : Cascade et village Chagga (40 $ par personne) ; café traditionnel Chagga (36 $) ; cours de cuisine traditionnelle Chagga (49 $) ; Materuni et Moshi (52 $) ; Materuni et forêt de Rau (58 $) ; et nuit au village (90 USD). Le tarif de la nuitée est indiqué uniquement en USD. Le transport est organisé et facturé séparément. Quelle expérience vous intéresse ?",
+  de: "Unsere aktuellen Erlebnisse sind: Wasserfall und Chagga-Dorf (40 $ pro Person); traditioneller Chagga-Kaffee (36 $); traditioneller Chagga-Kochkurs (49 $); Materuni und Moshi (52 $); Materuni und Rau-Wald (58 $); sowie eine Übernachtung im Dorf (90 USD). Der Übernachtungspreis wird nur in USD angegeben. Transfers werden separat vereinbart und berechnet. Welches Erlebnis interessiert Sie?"
 };
 
 const systemPrompt = `You are the friendly guest concierge for Materuni Hosts, a boutique local experience host in Materuni Village near Moshi, Kilimanjaro, Tanzania.
 Your job is to help visitors choose an experience and move naturally toward an availability check or itinerary request.
 Use the visitor's language: English, Spanish, French or German. Be warm, concise and specific.
-Only use these approved per-person prices: From Bean to Cup $65; The Waterfall & Heritage Trail $75; Cook, Taste & Share $85; The Complete Materuni Day $75; Stay Beyond the Waterfall $110; The Materuni Signature Escape $135.
+Use only these current approved per-person prices: Waterfall & Chagga Village $40; Traditional Chagga Coffee $36; Traditional Chagga Cooking Class $49; Materuni & Moshi Town $52; Materuni & Rau Forest Nature $58; Overnight Village $90 USD only. Never convert the Overnight Village price into TZS or another currency. Transfers are quoted separately. Never use old package names or prices.
 The Materuni waterfall is approximately 95 metres high. The experiences are hosted in Materuni Village and focus on Chagga coffee, food, culture, nature and village life.
 Important booking rules: a website booking is a request, not a confirmed reservation; the host must confirm availability and arrangements; no online payment is taken at this stage; transport/pickup must be confirmed separately. Do not invent schedules, available spaces, transport inclusions, policies, licences, awards, ratings, reviews or claims of registration.
 Ask only one useful follow-up at a time, usually travel date, group size, preferred experience or pickup point.
@@ -129,7 +129,7 @@ Deno.serve(async (request: Request) => {
     const question = message.toLowerCase();
     const guidedReplies = [
       {
-        test: /price|cost|how much|precio|cuesta|prix|kosten|preis/,
+        test: /price|prices|cost|how much|how much does|what does .* cost|precio|cuesta|cuánto|cuanto|prix|combien|kosten|preis|wie viel|tarif|tarifa/,
         answers: fallback,
       },
       {
@@ -172,7 +172,7 @@ Deno.serve(async (request: Request) => {
     const matched = guidedReplies.find(rule => rule.test.test(question));
     let reply = matched ? matched.answers[language] : fallback[language];
     let mode = "guided_fallback";
-    if (openAiKey) {
+    // Price replies are deterministic: never let generated AI text overwrite the approved catalogue prices.\n    if (openAiKey && !matched?.answers) {
       try {
         const response = await fetch("https://api.openai.com/v1/chat/completions", {
           method: "POST",
