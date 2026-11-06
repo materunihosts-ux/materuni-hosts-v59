@@ -38,7 +38,7 @@ export function buildSeoIntelligenceModel({ keywords = [], snapshots = [], siteO
     const keyword = cleanText(row?.keyword, 300);
     if (!keyword) continue;
     const key = keyword.toLocaleLowerCase();
-    if (keywordByKey.has(key)) continue;
+    const isDuplicateKeyword = keywordByKey.has(key);
     const source = ALLOWED_SOURCES.has(row.source) ? row.source : "manual";
     const intent = VALID_INTENTS.has(row.intent) ? row.intent : "informational";
     let targetUrl = null, targetPath = null;
@@ -56,6 +56,9 @@ export function buildSeoIntelligenceModel({ keywords = [], snapshots = [], siteO
       targetGroup.paths.add(targetPath);
       keywordTargetGroups.set(key, targetGroup);
     }
+    // Keep one metrics row per normalized keyword, but retain all target paths
+    // so conflicting ownership is not hidden by deduplication.
+    if (isDuplicateKeyword) continue;
     const record = {
       keyword, normalizedKeyword: key, intent, targetUrl, targetPath, source,
       provenance: source === "csv_import" ? "user_supplied_csv_unverified"
