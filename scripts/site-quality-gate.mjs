@@ -164,9 +164,16 @@ if (fs.existsSync(packingGuidePath)) {
 const reviewsSourcePath = path.resolve("src/pages/reviews.astro");
 if (fs.existsSync(reviewsSourcePath)) {
   const reviewsSource = read(reviewsSourcePath);
+  const reviewDataPath = path.resolve("src/data/google-reviews.ts");
+  const reviewData = fs.existsSync(reviewDataPath) ? read(reviewDataPath) : "";
   const verifiedReviewers = ["Endika Unsuain", "Ariana Chalde Alvarez", "Dipesh Pabari"];
-  if (!verifiedReviewers.every((name) => reviewsSource.includes(name))) fail("Reviews page must display all three verified Google reviewers");
-  else pass("Reviews page displays all three verified Google reviewers");
+  if (!verifiedReviewers.every((name) => reviewData.includes(name))) fail("Shared review data must contain all three verified Google reviewers");
+  else pass("Shared review data contains all three verified Google reviewers");
+  if (!reviewsSource.includes('import { googleGuestReviews } from "../data/google-reviews"')) fail("Reviews page must use the shared verified Google review data");
+  else pass("Reviews page uses the shared verified Google review data");
+  const homepageSource = read(path.resolve("src/pages/index.astro"));
+  if (!homepageSource.includes('import { googleGuestReviews } from "../data/google-reviews"') || !homepageSource.includes("{googleGuestReviews.map")) fail("Homepage must display the shared verified Google reviews");
+  else pass("Homepage displays the shared verified Google reviews");
   if (!reviewsSource.includes("5.0 / 5") || !reviewsSource.includes("3 Google reviews") || !reviewsSource.includes("★★★★★")) fail("Reviews page must accurately label the current 5.0 average from three Google reviews");
   else pass("Reviews page rating and review count match the connected Google Business Profile");
   if (!reviewsSource.includes("https://g.page/r/CXy6M_Suiip9EBM/review") || !reviewsSource.includes("https://www.tripadvisor.com/34765809")) fail("Reviews page must link directly to the verified Google and TripAdvisor sources");
