@@ -161,6 +161,16 @@ if (fs.existsSync(packingGuidePath)) {
   if (!packingGuide.includes("Book waterfall experience ($40)") || !packingGuide.includes('"price": "40.00"')) fail("Materuni hike guide CTA and structured data must match the published $40 experience price");
   else pass("Materuni hike guide CTA matches the published $40 experience price");
 }
+const reviewsSourcePath = path.resolve("src/pages/reviews.astro");
+if (fs.existsSync(reviewsSourcePath)) {
+  const reviewsSource = read(reviewsSourcePath);
+  if (/Elena Rostova|David & Sarah Jenkins|Marc Dubois|Anika Lindström|Michael Torres|Claire van der Meer|★★★★★|VERIFIED REVIEWS/i.test(reviewsSource)) fail("Reviews page must not publish unverified testimonial text, invented reviewer identities or unsupported rating claims");
+  else pass("Reviews page avoids unverified testimonials and unsupported rating claims");
+  if (!reviewsSource.includes("https://g.page/r/CXy6M_Suiip9EBM/review") || !reviewsSource.includes("https://www.tripadvisor.com/34765809")) fail("Reviews page must link directly to the verified Google and TripAdvisor sources");
+  else pass("Reviews page links directly to the verified Google and TripAdvisor sources");
+  if (/Waterfall%20Tours%20%26%20Village%20Camping/i.test(reviewsSource)) fail("Google review link must use the current Materuni Hosts business identity");
+  else pass("Google review link uses the current Materuni Hosts business identity");
+}
 const bookingPage = routeFile("/booking");
 if (bookingPage) {
   const assetDirectory = path.join(root, "_astro");
