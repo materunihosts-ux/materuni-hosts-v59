@@ -1,7 +1,6 @@
 ---
 import globalStyles from "../styles/global.css?url";
 import CookieConsent from "../components/CookieConsent.astro";
-import { supabaseUrl } from "../lib/supabase-public";
 import { siteContent } from "../data/site-content";
 import { seoDefaults } from "../data/seo";
 import { primaryNavigation, primaryNavigationCta, supportedLanguages } from "../data/navigation";
@@ -132,7 +131,7 @@ const structuredData = {
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500..700&family=Manrope:wght@400..700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href={globalStyles} />
 <title>{title}</title><meta name="description" content={description} /><meta name="theme-color" content="#1A3322" /><link rel="canonical" href={canonicalHref} /><meta name="robots" content={robotsMeta} /><meta name="googlebot" content={robotsMeta} /><meta property="og:type" content="website" /><meta property="og:site_name" content="Materuni Hosts" /><meta property="og:title" content={title} /><meta property="og:description" content={description} /><meta property="og:url" content={canonicalHref} /><meta property="og:image" content={socialImage.startsWith("http") ? socialImage : `https://materunihosts.com${socialImage.startsWith("/") ? "" : "/"}${socialImage}`} /><meta property="og:locale" content="en_TZ" /><meta property="og:image:alt" content="Materuni Hosts authentic village experiences in Materuni, Tanzania" /><meta name="twitter:card" content="summary_large_image" /><meta name="twitter:title" content={title} /><meta name="twitter:description" content={description} /><meta name="twitter:image" content={socialImage.startsWith("http") ? socialImage : `https://materunihosts.com${socialImage.startsWith("/") ? "" : "/"}${socialImage}`} />{!shouldNoindex && <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />}{!shouldNoindex && <script type="application/ld+json" set:html={JSON.stringify(webPageData)} />}{!shouldNoindex && <script type="application/ld+json" set:html={JSON.stringify(breadcrumbData)} />}{preloadImage && <link rel="preload" as="image" href={preloadImage} fetchpriority="high" />}
-<link rel="icon" type="image/svg+xml" href="/materuni-hosts-logo-round.svg" /><link rel="apple-touch-icon" href="/materuni-hosts-logo-round.jpg" /><link rel="preconnect" href={supabaseUrl} crossorigin />
+<link rel="icon" type="image/svg+xml" href="/materuni-hosts-logo-round.svg" /><link rel="apple-touch-icon" href="/materuni-hosts-logo-round.jpg" />
 
 <style is:global>
 body.admin-shell .site-header,body.admin-shell .site-footer,body.admin-shell .mh-concierge{display:none!important}
