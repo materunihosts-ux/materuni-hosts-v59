@@ -1,7 +1,6 @@
 ---
 import SiteLayout from "../layouts/SiteLayout.astro";
-import { supabaseUrl } from "../lib/supabase-public";
-const faqPreview = `${supabaseUrl}/storage/v1/object/public/materuni-images/story_image/1791995912146-materuni-community.jpg`;
+const faqPreview = "https://sskmzswoeljxwojcszta.supabase.co/storage/v1/object/public/materuni-images/story_image/1791995912146-materuni-community.jpg";
 import { faqs } from "../data/faq";
 ---
 <SiteLayout title="Materuni Tours FAQ | Booking, Prices & Travel Advice" description="Answers about Materuni waterfall and village tours, Chagga coffee and cooking, day trips, prices, availability, transport and booking near Moshi, Tanzania." preloadImage={faqPreview}>
@@ -9,54 +8,7 @@ import { faqs } from "../data/faq";
 <section class="section faq-section">
   <div class="faq-intro"><span class="eyebrow" data-i18n="faq_section_eyebrow">PLAN WITH CONFIDENCE</span><h2 data-i18n="faq_section_title">Everything you need to know.</h2><p data-i18n="faq_section_intro">If you need help with something not covered here, speak directly with a local host.</p><a class="button" href="https://wa.me/255612068540" target="_blank" rel="noopener noreferrer" data-i18n="faq_whatsapp">Ask us on WhatsApp</a></div>
   <div class="faq-list">{faqs.map(([question,answer])=><details class="faq-item"><summary>{question}</summary><p>{answer}</p></details>)}</div>
-  <script>
-  import { supabaseUrl, publishableKey as faqPublicKey } from "../lib/supabase-public";
-  document.addEventListener("DOMContentLoaded",()=>{
-    const faqSettingsUrl=`${supabaseUrl}/rest/v1/site_settings?select=setting_key,setting_value&setting_key=eq.faq_items`;
-    fetch(faqSettingsUrl,{headers:{apikey:faqPublicKey,Authorization:"Bearer "+faqPublicKey}})
-      .then(response=>response.ok?response.json():[])
-      .then(rows=>{
-        if(!Array.isArray(rows)||!rows[0]?.setting_value)return;
-        let entries;
-        try {
-          const raw = rows[0].setting_value;
-          entries = typeof raw === "string" ? JSON.parse(raw) : raw;
-        } catch { return }
-        if(!Array.isArray(entries)||!entries.length||entries.length>30)return;
-        const seenQuestions=new Set();
-        entries=entries.filter(item=>{
-          if(!item||typeof item.question!=="string"||typeof item.answer!=="string")return false;
-          const question=item.question.trim(),answer=item.answer.trim(),key=question.toLocaleLowerCase();
-          if(question.length<8||question.length>180||answer.length<20||answer.length>1600||seenQuestions.has(key))return false;
-          seenQuestions.add(key);
-          return true;
-        });
-        if(!entries.length)return;
-        const bookingAnswers: Array<[RegExp, string]> = [
-          [/^how do i make a booking/i, "Choose an experience, preferred date and group size, then submit the website form. This creates a booking request only; it does not reserve or confirm a place. The host must check availability and confirm the experience, itinerary, final price and any transfer arrangements in writing before the booking is confirmed. No payment is taken by submitting the request."],
-          [/^how quickly will you reply/i, "Reply times are not guaranteed and may vary with the host’s availability and local operating hours. Include your preferred date, group size and a working contact method. For time-sensitive enquiries, follow up directly on WhatsApp; a message is not confirmation of availability."],
-          [/transport|transfer/i, "Transport is not included in published experience prices. Arrange your own transport or request a separate transfer quote. Share the exact pickup point, date, group size and any luggage or flight details. A transfer is only arranged once the host confirms availability, vehicle details, pickup time and price."],
-          [/when and how do i pay|when do i pay/i, "Submitting a booking request does not take payment. Wait until the host has confirmed availability, experience details, total price and payment instructions. Payment methods and any deposit or balance arrangements must be agreed directly before the booking is finalised."],
-          [/cancellation|refund|weather/i, "Cancellation, changes, refunds and weather-related arrangements depend on the confirmed booking terms. Ask the host for the terms that apply and keep written confirmation. Rain, road access and trail conditions may affect outdoor activities; the host or guide will discuss practical options if conditions are unsuitable."],
-          [/group discount/i, "Direct group discounts apply to published experience prices: 1–3 standard; 4–5 guests 5% off; 6–9 guests 8% off; 10–14 guests 10% off; 15+ guests custom quotation. Transport and separately agreed extras are excluded."],
-          [/which experiences can i book/i, "Published prices per person are: Waterfall & Chagga Village Experience — $40 (TZS 106,000); Traditional Chagga Coffee Experience — $36 (TZS 95,000); Traditional Chagga Cooking Class — $49 (TZS 130,000); Materuni & Moshi Town Cultural Experience — $52 (TZS 138,000); Materuni & Rau Forest Nature Experience — $58 (TZS 153,000); and Materuni Overnight Village Experience — $90. Overnight is USD only; confirm local-currency amount and inclusions with your host. Transport is quoted separately."]
-        ];
-        entries=entries.map(item=>{const rule=bookingAnswers.find(([pattern])=>pattern.test(item.question));return rule?{...item,answer:rule[1]}:item});
-        const list=document.querySelector(".faq-list");if(!list)return;
-        list.replaceChildren();
-        entries.forEach(item=>{
-          const details=document.createElement("details");details.className="faq-item";
-          const summary=document.createElement("summary");summary.textContent=item.question;
-          const answer=document.createElement("p");answer.textContent=item.answer;
-          details.append(summary,answer);list.append(details);
-        });
-        const schema=document.getElementById("faq-structured-data");
-        if(schema)schema.textContent=JSON.stringify({"@context":"https://schema.org","@type":"FAQPage","mainEntity":entries.map(item=>({"@type":"Question","name":item.question,"acceptedAnswer":{"@type":"Answer","text":item.answer}}))});
-      }).catch(()=>{});
-    let faqLanguageApplied=false;
-    const applyFaqLanguage=async()=>{const lang=(document.getElementById("site-language") as HTMLSelectElement | null)?.value||"en";if(lang==="en"){if(faqLanguageApplied)location.reload();return}try{const response=await fetch(`${supabaseUrl}/rest/v1/site_settings?select=setting_value&setting_key=eq.language_content`,{headers:{apikey:faqPublicKey,Authorization:"Bearer "+faqPublicKey},cache:"no-store"});if(!response.ok)return;const rows=await response.json();const content=JSON.parse(rows?.[0]?.setting_value||"{}");const localized=content?.[lang]?.faq_items_json;if(typeof localized!=="string"||!localized.trim())return;const entries=JSON.parse(localized);if(!Array.isArray(entries)||entries.length>30||!entries.length||!entries.every(x=>x&&typeof x.question==="string"&&x.question.trim().length>=8&&x.question.trim().length<=180&&typeof x.answer==="string"&&x.answer.trim().length>=20&&x.answer.trim().length<=1600))return;const list=document.querySelector(".faq-list");if(!list)return;list.replaceChildren();entries.forEach(item=>{const details=document.createElement("details");details.className="faq-item";const summary=document.createElement("summary");summary.textContent=item.question;const answer=document.createElement("p");answer.textContent=item.answer;details.append(summary,answer);list.append(details)});faqLanguageApplied=true;const schema=document.getElementById("faq-structured-data");if(schema)schema.textContent=JSON.stringify({"@context":"https://schema.org","@type":"FAQPage","mainEntity":entries.map(item=>({"@type":"Question","name":item.question,"acceptedAnswer":{"@type":"Answer","text":item.answer}}))})}catch(error){console.warn("Optional translated FAQ unavailable.",error)}};document.getElementById("site-language")?.addEventListener("change",applyFaqLanguage);applyFaqLanguage();
-  });
-  </script></section>
+/section>
 <section class="band"><h2 data-i18n="faq_cta_title">Still planning your visit?</h2><p data-i18n="faq_cta_intro">Tell us what you would like to experience and we will help you shape a practical plan.</p><div class="actions" style="justify-content:center"><a class="button button-light" href="/itinerary" data-i18n="faq_build_itinerary">Build your itinerary</a><a class="button secondary" href="/booking" data-i18n="faq_check_availability">Check availability</a></div></section>
 <script id="faq-structured-data" type="application/ld+json" set:html={JSON.stringify({"@context":"https://schema.org","@type":"FAQPage","mainEntity":faqs.map(([question,answer])=>({"@type":"Question","name":question.trim(),"acceptedAnswer":{"@type":"Answer","text":answer.trim()}}))})} />
 <style>.media-hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,.9fr);gap:clamp(24px,5vw,64px);align-items:center;padding:clamp(42px,7vw,88px) clamp(22px,7vw,100px);background:#1a3322;color:#faf7f2}.media-hero h1{color:#faf7f2;max-width:13ch;font:600 clamp(38px,5vw,64px)/1.04 "Cormorant Garamond",serif}.media-hero p{color:#e6dfd3;line-height:1.85;max-width:58ch}.media-hero img{display:block;width:100%;height:clamp(240px,34vw,430px);object-fit:cover;object-position:center 45%;border-radius:12px;box-shadow:0 18px 42px #0003}@media(max-width:720px){.media-hero{grid-template-columns:1fr;padding:42px 22px}.media-hero img{height:260px}}</style>
