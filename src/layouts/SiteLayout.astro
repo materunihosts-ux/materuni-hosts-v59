@@ -78,6 +78,7 @@ const breadcrumbData = {
   itemListElement: breadcrumbItems
 };
 const socialImage = preloadImage ?? seoDefaults.socialImage;
+const socialLinks = { facebook_url: siteContent.social.facebook, instagram_url: siteContent.social.instagram, google_review_url: siteContent.social.googleReviews };
 const webPageData = {
   "@context": "https://schema.org",
   "@type": "WebPage",
@@ -152,7 +153,7 @@ body.admin-shell #main-content{min-height:calc(100vh - 58px)}
 <nav id="primary-navigation" aria-label="Main navigation">{primaryNavigation.map((item) => <a href={item.href} data-i18n={item.key} aria-current={Astro.url.pathname === item.href ? "page" : undefined}>{item.label}</a>)}<a class="nav-cta" href={primaryNavigationCta.href} data-i18n={primaryNavigationCta.key}>{primaryNavigationCta.label}</a></nav>
 <div class="language-control"><label for="site-language" class="visually-hidden">Language</label><select id="site-language" aria-label="Select language">{supportedLanguages.map((language) => <option value={language.code}>{language.label}</option>)}</select></div>
 <button class="menu-toggle" type="button" aria-label="Open menu" aria-controls="primary-navigation" aria-expanded="false">☰</button></header>}
-<script>
+<script define:vars={{ socialLinks }}>
 // @ts-nocheck
 (() => {
  const supported=["en","es","fr","de"], labels={
@@ -192,7 +193,7 @@ body.admin-shell #main-content{min-height:calc(100vh - 58px)}
  window.MateruniApplyPageTranslations=loadPageTranslations;
  loadPageTranslations(lang);
   function loadSocialLinks(){
-   const fallback={facebook_url:"https://www.facebook.com/share/1VTNWPbqcc/",instagram_url:"https://instagram.com/materuni_hosts",google_review_url:"https://g.page/r/CXy6M_Suiip9EBM/review"};
+   const fallback=socialLinks;
    document.querySelectorAll("[data-social-key]").forEach(link=>{const value=fallback[link.dataset.socialKey];let valid=false;try{const parsed=new URL(value);valid=(parsed.protocol==="https:"||parsed.protocol==="http:")&&parsed.hostname.includes(".")}catch{}if(valid){link.href=value;link.hidden=false;link.removeAttribute("aria-hidden");link.removeAttribute("aria-disabled");link.removeAttribute("tabindex");link.classList.remove("social-link-pending");link.removeAttribute("title")}else{link.hidden=true;link.setAttribute("aria-hidden","true");link.removeAttribute("href")}});
   }
 document.addEventListener("DOMContentLoaded",()=>{loadPageTranslations(lang);loadSocialLinks()},{once:true});
