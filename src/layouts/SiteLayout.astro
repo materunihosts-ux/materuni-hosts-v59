@@ -4,7 +4,6 @@ import CookieConsent from "../components/CookieConsent.astro";
 import { siteContent } from "../data/site-content";
 import { seoDefaults } from "../data/seo";
 import { primaryNavigation, primaryNavigationCta, supportedLanguages } from "../data/navigation";
-import { pageFallbacks } from "../data/translations";
 const {
   title = seoDefaults.title,
   description = seoDefaults.description,
@@ -59,7 +58,7 @@ const breadcrumbLabels: Record<string, string> = {
   terms: "Booking terms"
 };
 const breadcrumbParts = Astro.url.pathname.split("/").filter(Boolean);
-const breadcrumbItems = [{ "@type": "ListItem", position: 1, name: "Home", item: siteContent.url }];
+const breadcrumbItems: Array<Record<string, unknown>> = [{ "@type": "ListItem", position: 1, name: "Home", item: siteContent.url }];
 if (!shouldNoindex) {
   breadcrumbParts.forEach((part, index) => {
     const label = breadcrumbLabels[part];
