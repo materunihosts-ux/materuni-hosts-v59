@@ -1,4 +1,5 @@
 /** Static journal catalogue. Article content remains in its individual Astro route files. */
+const base = "https://sskmzswoeljxwojcszta.supabase.co/storage/v1/object/public/materuni-images/";
 export const journalPosts = [
   {
     title: "How to Get to Materuni Village from Moshi, Arusha and Kilimanjaro Airport",
