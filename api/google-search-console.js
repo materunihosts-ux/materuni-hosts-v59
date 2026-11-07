@@ -33,7 +33,9 @@ export default async function handler(req, res) {
   const accessToken = authorization.startsWith("Bearer ") ? authorization.slice(7) : "";
   if (!accessToken) return send(res, 401, { error: "Administrator sign-in is required." });
 
-    const body = typeof req.body === "string" ? JSON.parse(req.body) : (req.body || {});
+  let body;
+  try { body = typeof req.body === "string" ? JSON.parse(req.body) : (req.body || {}); }
+  catch { return send(res, 400, { error: "Request body must be valid JSON." }); }
     const startDate = body.startDate;
     const endDate = body.endDate;
     const dimension = body.dimension === "page" ? "page" : "query";
