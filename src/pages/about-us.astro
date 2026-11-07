@@ -1,24 +1,11 @@
 ---
 import SiteLayout from "../layouts/SiteLayout.astro";
-import { supabaseUrl, publishableKey } from "../lib/supabase-public";
-
-const defaultCommunity = `${supabaseUrl}/storage/v1/object/public/materuni-images/story_image/1791995912146-materuni-community.jpg`;
 
 
-let dynamic: any = null;
-try {
-  const res = await fetch(`${supabaseUrl}/rest/v1/site_settings?select=setting_value&setting_key=eq.about_us_content`, {
-    headers: { apikey: publishableKey, Authorization: `Bearer ${publishableKey}` }
-  });
-  if (res.ok) {
-    const rows = await res.json();
-    if (rows?.[0]?.setting_value) {
-      dynamic = typeof rows[0].setting_value === "string" ? JSON.parse(rows[0].setting_value) : rows[0].setting_value;
-    }
-  }
-} catch (e) {
-  // Use rich static defaults
-}
+const defaultCommunity = "https://sskmzswoeljxwojcszta.supabase.co/storage/v1/object/public/materuni-images/story_image/1791995912146-materuni-community.jpg";
+
+
+const dynamic: any = null;
 
 const heroEyebrow = dynamic?.heroEyebrow || "ABOUT MATERUNI HOSTS · MATERUNI VILLAGE";
 const heroTitle = dynamic?.heroTitle || "Experience Materuni through the people who call it home.";
@@ -165,45 +152,7 @@ const val4Desc = dynamic?.val4Desc || "We aim to explain each experience, its in
 </main>
 </SiteLayout>
 
-<script>
-// @ts-nocheck
-import { supabaseUrl, publishableKey } from "../lib/supabase-public";
 
-// Client-side hydration for real-time updates from admin
-try {
-  fetch(`${supabaseUrl}/rest/v1/site_settings?select=setting_value&setting_key=eq.about_us_content`, {
-    headers: { apikey: publishableKey, Authorization: "Bearer " + publishableKey }
-  }).then(r => r.json()).then(rows => {
-    const val = rows?.[0]?.setting_value;
-    if (!val) return;
-    const data = typeof val === "string" ? JSON.parse(val) : val;
-    if (!data) return;
-
-    const setTxt = (id, str) => {
-      const el = document.getElementById(id);
-      if (el && typeof str === "string" && str.trim()) el.textContent = str;
-    };
-
-    setTxt("about-hero-eyebrow-el", data.heroEyebrow);
-    setTxt("about-hero-title-el", data.heroTitle);
-    // Treat editable CMS copy as text, never executable HTML.
-    setTxt("about-hero-p1-el", data.heroP1);
-    setTxt("about-hero-p2-el", data.heroP2);
-    if (data.heroImage && document.getElementById("about-hero-img-el")) {
-      document.getElementById("about-hero-img-el").src = data.heroImage;
-    }
-
-    setTxt("about-founder-eyebrow-el", data.founderEyebrow);
-    setTxt("about-founder-title-el", data.founderTitle);
-    setTxt("about-founder-p1-el", data.founderP1);
-    setTxt("about-founder-p2-el", data.founderP2);
-    setTxt("about-founder-p3-el", data.founderP3);
-    setTxt("about-founder-purpose-el", data.founderPurpose);
-    // No unverified host/team claims are rendered.
-
-  }).catch(() => {});
-} catch {}
-</script>
 
 <style>
 .about-page {
