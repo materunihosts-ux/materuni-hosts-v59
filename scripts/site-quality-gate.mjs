@@ -171,6 +171,14 @@ if (fs.existsSync(reviewsSourcePath)) {
   if (/Waterfall%20Tours%20%26%20Village%20Camping/i.test(reviewsSource)) fail("Google review link must use the current Materuni Hosts business identity");
   else pass("Google review link uses the current Materuni Hosts business identity");
 }
+const accommodationSourcePath = path.resolve("src/pages/accommodation.astro");
+if (fs.existsSync(accommodationSourcePath)) {
+  const accommodationSource = read(accommodationSourcePath);
+  if (/\\$101|\\$25 per vehicle|\\$50 per vehicle|\\$80 per vehicle|licensed drivers|14°C and 17°C|1,800m|3-inch|guaranteed within 12h/i.test(accommodationSource)) fail("Overnight page contains outdated pricing or unverified accommodation/transfer claims");
+  else pass("Overnight page avoids outdated prices and unverified facilities or transfer claims");
+  if (!accommodationSource.includes('"price": "90.00"') || !accommodationSource.includes("USD $90 per person") || !accommodationSource.includes("provide a separate quote")) fail("Overnight page must use the published $90 USD price and quote transport separately");
+  else pass("Overnight page matches the published $90 USD price and separate-transfer policy");
+}
 const bookingPage = routeFile("/booking");
 if (bookingPage) {
   const assetDirectory = path.join(root, "_astro");
