@@ -2,9 +2,9 @@
 import SiteLayout from "../layouts/SiteLayout.astro";
 import { Image } from "astro:assets";
 import LocalBusinessSchema from "../components/LocalBusinessSchema.astro";
-import { supabaseUrl } from "../lib/supabase-public";
 
-const base = `${supabaseUrl}/storage/v1/object/public/materuni-images/`;
+
+const base = "https://sskmzswoeljxwojcszta.supabase.co/storage/v1/object/public/materuni-images/";
 const heroImg = `${base}story_image/1791994219885-materuni-coffe-plantatio-tour.jpg`;
 const photo1 = `${base}story_image/1791601761441-q3iog8mni3r.jpg`;
 const photo2 = `${base}waterfall_image/1791998303073-materuni-waterfall-hike.jpg`;
