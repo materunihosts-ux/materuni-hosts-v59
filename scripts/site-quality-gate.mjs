@@ -153,6 +153,14 @@ if (itineraryFile) {
   if (!/application\/pdf|\.pdf|PDF/i.test(itinerarySource)) fail("Itinerary Builder source must retain its PDF output workflow");
   if (/<title>[^<]*Materuni Itinerary[^<]*<\/title>/i.test(itineraryHtml) && /navigator\.share|navigator\[['"]share['"]\]/i.test(itinerarySource) && /application\/pdf|\.pdf|PDF/i.test(itinerarySource)) pass("Itinerary Builder retains SEO title, source-level sharing and PDF output");
 }
+const packingGuidePath = path.resolve("src/pages/journal/what-to-bring-on-materuni-waterfall-hike.astro");
+if (fs.existsSync(packingGuidePath)) {
+  const packingGuide = read(packingGuidePath);
+  if (/95(?:-metre|m)|12[–-]15°C|1,700m|\\$45|Lead Mountain Host|purified refills/i.test(packingGuide)) fail("Materuni hike packing guide contains unverified measurements, outdated pricing or unsupported service claims");
+  else pass("Materuni hike packing guide avoids unverified measurements and outdated claims");
+  if (!packingGuide.includes("Book waterfall experience ($40)") || !packingGuide.includes('"price": "40.00"')) fail("Materuni hike guide CTA and structured data must match the published $40 experience price");
+  else pass("Materuni hike guide CTA matches the published $40 experience price");
+}
 const bookingPage = routeFile("/booking");
 if (bookingPage) {
   const assetDirectory = path.join(root, "_astro");
