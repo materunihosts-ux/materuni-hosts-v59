@@ -1,7 +1,7 @@
 name: Astro build check
 on:
   push:
-    branches: [main]
+    branches: [main, architecture/website-first-data]
   pull_request:
     branches: [main]
 permissions:
