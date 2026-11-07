@@ -1,7 +1,7 @@
 ---
 import SiteLayout from "../layouts/SiteLayout.astro";
 import { Image } from "astro:assets";
-import { supabaseUrl } from "../lib/supabase-public";
+
 type Experience = [string, number, string, string, string, string[], string[]];
 const items: Experience[]=[
  ["Materuni Waterfall & Chagga Village Experience",40,"Waterfall & Chagga heritage","waterfall_image/1792472007095-optimized.webp","Join a local host for a guided walk to Materuni Waterfall, then discover Chagga village life and traditional coffee making. A complimentary Mbege tasting is included.",["Guided walk to Materuni Waterfall","Meet local Chagga hosts and hear about village life","Discover traditional coffee making and enjoy a complimentary Mbege tasting"],["Local guide","Materuni village and waterfall entrance fees","Traditional Chagga coffee experience and tasting","Local lunch","Drinking water","Complimentary Mbege tasting"]],
@@ -13,7 +13,7 @@ const items: Experience[]=[
 ];
 const defaultExclusions = ["Transport to and from the experience unless separately confirmed","Personal purchases and expenses","Tips and gratuities","Travel insurance","Additional food or drinks not listed under confirmed inclusions"];
 const experienceKeys: Record<string,string> = {"Materuni Waterfall & Chagga Village Experience":"Waterfall & Chagga Culture","Traditional Chagga Coffee Experience":"Traditional Coffee Experience","Traditional Chagga Cooking Class":"Traditional Chagga Cooking Class","Materuni & Moshi Town Cultural Experience":"Materuni & Moshi Town Tour","Materuni & Rau Forest Nature Experience":"Materuni & Rau Forest Experience","Materuni Overnight Village Experience":"Camping & Village Life"};
-const base=`${supabaseUrl}/storage/v1/object/public/materuni-images/`;
+const base="https://sskmzswoeljxwojcszta.supabase.co/storage/v1/object/public/materuni-images/";
 const experienceAltByKey: Record<string,string> = {
   "Materuni Waterfall & Chagga Village Experience":"Materuni Waterfall and the surrounding green landscape in Materuni Village",
   "Traditional Chagga Coffee Experience":"Traditional Chagga coffee preparation in Materuni Village",
@@ -95,172 +95,5 @@ const experienceAltByKey: Record<string,string> = {
 @media(max-width:620px){.shared-standard{padding:20px}.shared-standard ul{grid-template-columns:1fr}}
 
 </style>
-<script>
-// @ts-nocheck
-import { supabaseUrl as catalogApi, publishableKey as catalogKey } from "../lib/supabase-public";
-const catalogHeaders = { apikey: catalogKey, Authorization: "Bearer " + catalogKey };
-const publicMediaBase = catalogApi + "/storage/v1/object/public/materuni-images/";
-const photoAltByKey: Record<string,string> = {
-  "Waterfall & Chagga Culture": "Materuni Waterfall and surrounding green forest in Materuni Village",
-  "Traditional Coffee Experience": "Traditional Chagga coffee preparation in Materuni Village",
-  "Traditional Chagga Cooking Class": "Traditional Chagga cooking class in Materuni Village",
-  "Materuni & Moshi Town Tour": "Market street in Moshi, Tanzania",
-  "Materuni & Rau Forest Experience": "Rau Forest landscape near Moshi, Tanzania",
-  "Camping & Village Life": "Overnight village stay in Materuni"
-};
-function experiencePhoto(key: string, imageUrl?: string | null) {
-  if (imageUrl) {
-    try {
-      const parsed = new URL(imageUrl);
-      const allowedStorage = parsed.hostname === "sskmzswoeljxwojcszta.supabase.co" && parsed.pathname.startsWith("/storage/v1/object/public/materuni-images/");
-      const allowedCommons = parsed.hostname === "commons.wikimedia.org" && parsed.pathname.startsWith("/wiki/Special:FilePath/");
-      if (parsed.protocol === "https:" && (allowedStorage || allowedCommons)) {
-        if (allowedCommons) parsed.searchParams.set("width", "800");
-        return parsed.href;
-      }
-    } catch {}
-  }
-  const fallback: Record<string,string> = {
-    "Waterfall & Chagga Culture": publicMediaBase + "waterfall_image/1792472007095-optimized.webp",
-    "Traditional Coffee Experience": publicMediaBase + "coffee_image/1792472054273-optimized.webp",
-    "Traditional Chagga Cooking Class": publicMediaBase + "cooking_image/1792089297987-cooking-class.jpg",
-    "Materuni & Moshi Town Tour": publicMediaBase + "story_image/1791995912146-materuni-community.jpg",
-    "Materuni & Rau Forest Experience": publicMediaBase + "story_image/1791601761441-q3iog8mni3r.jpg",
-    "Camping & Village Life": publicMediaBase + "camping_image/1792122487239-camping.jpg"
-  };
-  return fallback[key] || "";
-}
-const cardsRoot = document.querySelector(".cards");
-const formatPrice = (value: number) => Number.isInteger(value) ? value.toFixed(0) : value.toFixed(2);
-const safeText = (node, value) => { if (node && typeof value === "string") node.textContent = value; };
-function appendProductMeta(body, tour) {
-  const meta = document.createElement("div"); meta.dataset.productMeta = "true";
-  if (tour.product_tagline) { const tagline = document.createElement("span"); tagline.className = "catalog-product-tagline"; tagline.textContent = tour.product_tagline; meta.append(tagline); }
-  if (tour.best_for) { const best = document.createElement("p"); best.className = "catalog-best-for"; const label = document.createElement("span"); label.dataset.i18n = "exp_best_for"; label.textContent = "BEST FOR"; best.append(label, document.createTextNode(" · " + tour.best_for)); meta.append(best); }
-  const addList = (labelText, values) => {
-    if (!Array.isArray(values) || !values.length) return;
-    const label = document.createElement("strong"); label.className = "catalog-detail-heading"; label.textContent = labelText; meta.append(label);
-    const list = document.createElement("ul");
-    const uniqueValues = [...new Set(values)];
-    uniqueValues.forEach(value => { if (typeof value !== "string" || !value.trim()) return; const li = document.createElement("li"); li.textContent = value; list.append(li); });
-    meta.append(list);
-  };
-  addList("SIGNATURE MOMENTS", Array.isArray(tour.signature_moments) ? tour.signature_moments.slice(0,3) : []); meta.querySelectorAll(".catalog-detail-heading").forEach(label => { if (label.textContent === "SIGNATURE MOMENTS") label.dataset.i18n = "exp_signature_moments"; if (label.textContent === "YOUR UNIQUE EXPERIENCE") label.dataset.i18n = "exp_unique_experience"; });
-  addList("WHAT YOUR EXPERIENCE INCLUDES", tour.inclusions);
-  addList("YOUR UNIQUE EXPERIENCE", tour.unique_amenities);
-  if (meta.childNodes.length) body.append(meta);
-}
-function makeCatalogCard(tour) {
-  const card = document.createElement("article");
-  card.className = "experience-card";
-  if (tour.experience_key === "Camping & Village Life") card.id = "camping";
-  card.dataset.experienceKey = tour.experience_key;
-  const selectedImage = experiencePhoto(tour.experience_key, tour.image_url);
-  if (selectedImage && /^https:\/\//i.test(selectedImage)) {
-    const image = document.createElement("img");
-    image.src = selectedImage; image.alt = photoAltByKey[tour.experience_key] || (tour.experience_key === "Traditional Coffee Experience" ? "Materuni coffee experience with local hosts" : tour.display_name || "Materuni experience");
-    image.className = "experience-photo"; image.loading = "lazy"; image.decoding = "async"; image.width = 640; image.height = 420; image.referrerPolicy = "no-referrer";
-    card.append(image);
-  }
-  const body = document.createElement("div"); body.className = "card-body";
-  const top = document.createElement("div"); top.className = "card-top";
-  const duration = document.createElement("span"); duration.className = "pill";
-  duration.textContent = tour.duration_label || "Local experience";
-  const price = document.createElement("span"); price.className = "price";
-  price.textContent = "$" + formatPrice(Number(tour.price_usd)) + " ";
-  const per = document.createElement("small"); per.dataset.i18n = "exp_per_person"; per.textContent = "PER PERSON"; price.append(per);
-  top.append(duration, price);
-  const heading = document.createElement("h3"); heading.textContent = tour.display_name || "Materuni experience";
-  const description = document.createElement("p"); description.textContent = tour.full_description || tour.short_description || "Ask our local hosts for details about this experience.";
-  body.append(top, heading, description);
-  appendProductMeta(body, tour);
-  if (Array.isArray(tour.exclusions) && tour.exclusions.length) {
-    const label = document.createElement("strong"); label.style.cssText = "display:block;margin-top:1rem;font-size:12px;color:#1A3322"; label.textContent = "NOT INCLUDED"; label.dataset.i18n = "exp_excluded_label";
-    const list = document.createElement("ul"); tour.exclusions.forEach(value => { const li = document.createElement("li"); li.textContent = value; list.append(li); }); body.append(label, list);
-  }
-  const link = document.createElement("a"); link.className = "button"; link.textContent = "Check availability"; link.dataset.i18n = "exp_check_availability";
-  link.href = "/booking?experience=" + encodeURIComponent(tour.experience_key);
-  body.append(link); card.append(body); return card;
-}
-async function syncPublicCatalogue() {
-  if (!cardsRoot) return;
-  try {
-    const query = new URLSearchParams({
-      select: "experience_key,display_name,price_usd,is_active,short_description,full_description,image_url,duration_label,inclusions,exclusions,product_tagline,best_for,signature_moments,unique_amenities,sort_order",
-      order: "sort_order.asc"
-    });
-    const response = await fetch(catalogApi + "/rest/v1/experience_catalog?" + query, {
-      headers: catalogHeaders, cache: "no-store"
-    });
-    if (!response.ok) throw new Error("Catalogue unavailable");
-    const catalogue = await response.json();
-    const active = catalogue.filter(item => item.is_active).sort((a,b) => Number(a.sort_order || 0) - Number(b.sort_order || 0));
-    const activePrices = active.map(item => Number(item.price_usd)).filter(value => Number.isFinite(value) && value > 0);
-    const stickyPrice = document.querySelector("[data-sticky-from-price]");
-    if (stickyPrice && activePrices.length) stickyPrice.textContent = "From $" + formatPrice(Math.min(...activePrices));
-    const byKey = new Map(active.map(item => [item.experience_key, item]));
-    cardsRoot.querySelectorAll("[data-experience-key]").forEach(card => {
-      const item = byKey.get(card.dataset.experienceKey);
-      if (!item) { card.remove(); return; }
-      const price = card.querySelector("[data-catalog-price]");
-      if (price) {
-        price.textContent = "$" + formatPrice(Number(item.price_usd));
-        const suffix = document.createElement("small"); suffix.textContent = "PER PERSON"; price.append(suffix);
-      }
-      safeText(card.querySelector("[data-catalog-name]"), item.display_name);
-      safeText(card.querySelector("[data-catalog-description]"), item.full_description || item.short_description);
-      const image = card.querySelector("img");
-      const selectedImage = experiencePhoto(item.experience_key, item.image_url);
-      if (image && selectedImage && /^https:\/\//i.test(selectedImage)) { image.removeAttribute("srcset"); image.removeAttribute("sizes"); image.src = selectedImage; image.referrerPolicy = "no-referrer"; image.alt = photoAltByKey[item.experience_key] || item.display_name || "Materuni experience"; } else if (!image && selectedImage && /^https:\/\//i.test(selectedImage)) { const restored = document.createElement("img"); restored.src = selectedImage; restored.alt = item.experience_key === "Traditional Chagga Cooking Class" ? "Guests preparing traditional Chagga food during a Materuni cooking class" : item.display_name || "Materuni experience"; restored.className = "experience-photo"; restored.loading = "lazy"; restored.decoding = "async"; restored.width = 640; restored.height = 420; restored.referrerPolicy = "no-referrer"; card.prepend(restored); }
-      const pill = card.querySelector(".pill");
-      if (pill && item.duration_label) pill.textContent = item.duration_label;
-      const body = card.querySelector(".card-body");
-      if (body) {
-        body.querySelectorAll("[data-product-meta]").forEach(node => node.remove());
-        const lists = body.querySelectorAll(":scope > ul");
-        if (lists[0]) lists[0].remove();
-        if (lists[1]) lists[1].remove();
-        appendProductMeta(body, item);
-      }
-      let exTitle = card.querySelector("[data-exclusions-title]");
-      let exList = card.querySelector("[data-exclusions-list]");
-      if (!exTitle) { exTitle = document.createElement("strong"); exTitle.dataset.exclusionsTitle = "true"; exTitle.style.cssText = "display:block;margin-top:1rem;font-size:12px;color:#1A3322"; exTitle.textContent = "NOT INCLUDED"; }
-      if (!exList) { exList = document.createElement("ul"); exList.dataset.exclusionsList = "true"; }
-      if (Array.isArray(item.exclusions) && item.exclusions.length) {
-        exList.replaceChildren(...item.exclusions.map(value => { const li = document.createElement("li"); li.textContent = value; return li; }));
-        const bookingLink = card.querySelector('a[href^="/booking"]');
-        if (bookingLink) { const body = card.querySelector(".card-body"); body.insertBefore(exTitle, bookingLink); body.insertBefore(exList, bookingLink); }
-      } else { exTitle.remove(); exList.remove(); }
-      const bookingLink = card.querySelector('a[href^="/booking"]');
-      if (bookingLink) bookingLink.href = "/booking?experience=" + encodeURIComponent(item.experience_key);
-    });
-    active.filter(item => !cardsRoot.querySelector('[data-experience-key="' + CSS.escape(item.experience_key) + '"]'))
-      .forEach(item => cardsRoot.append(makeCatalogCard(item)));
-    try {
-      const sharedResponse = await fetch(catalogApi + "/rest/v1/site_settings?select=setting_value&setting_key=eq.experience_shared_inclusions", { headers: catalogHeaders, cache: "no-store" });
-      if (sharedResponse.ok) {
-        const sharedRows = await sharedResponse.json();
-        const raw = sharedRows?.[0]?.setting_value;
-        const shared = typeof raw === "string" ? JSON.parse(raw) : raw;
-        const old = document.querySelector("[data-shared-inclusions]");
-        if (old) old.remove();
-        if (Array.isArray(shared) && shared.length) {
-          const panel = document.createElement("section"); panel.dataset.sharedInclusions = "true"; panel.className = "shared-standard";
-          const heading = document.createElement("h2"); heading.dataset.i18n = "exp_shared_inclusions"; heading.textContent = "Included in every Materuni Hosts experience";
-          const list = document.createElement("ul");
-          shared.forEach(value => { if (typeof value !== "string" || !value.trim()) return; const li = document.createElement("li"); li.textContent = value; list.append(li); });
-          panel.append(heading, list); cardsRoot.insertAdjacentElement("afterend", panel);
-        }
-      }
-    } catch (sharedError) { console.warn("Shared inclusions unavailable.", sharedError); }
-  } catch (error) {
-    console.warn("Using the built-in experience catalogue because the live catalogue could not be loaded.", error);
-  } finally {
-    let language = "en";
-    try { language = localStorage.getItem("materuni-language") || "en"; } catch {}
-    if (window.MateruniApplyPageTranslations) window.MateruniApplyPageTranslations(language);
-  }
-}
-syncPublicCatalogue();
-</script>
+
 </SiteLayout>
