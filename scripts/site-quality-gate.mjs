@@ -187,10 +187,10 @@ if (fs.existsSync(legacyAccommodationPath)) {
   if (!legacyAccommodation.includes('Astro.redirect("/camping", 301)')) fail("Legacy accommodation route must redirect permanently to the canonical overnight page");
   else pass("Legacy accommodation route redirects to the canonical overnight page");
 }
-const sitemapPath = path.resolve("public/sitemap.xml");
-if (fs.existsSync(sitemapPath)) {
-  const sitemap = read(sitemapPath);
-  if (sitemap.includes("https://materunihosts.com/accommodation")) fail("Sitemap must not include the redirected accommodation URL");
+const sourceSitemapPath = path.resolve("public/sitemap.xml");
+if (fs.existsSync(sourceSitemapPath)) {
+  const sourceSitemap = read(sourceSitemapPath);
+  if (sourceSitemap.includes("https://materunihosts.com/accommodation")) fail("Sitemap must not include the redirected accommodation URL");
   else pass("Sitemap excludes the redirected accommodation URL");
 }
 const overnightPagePath = path.resolve("src/pages/camping.astro");
