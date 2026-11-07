@@ -38,26 +38,7 @@ let tourData=[
   {"key":"Camping & Village Life","name":"Materuni Overnight Village Experience","price":90,"duration":"2 days · 1 night","detail":"Stay overnight in Materuni: tent setup, dinner by the fire, storytelling, breakfast and next-day village tour."}
 ];
 const form=document.getElementById("planner"), output=document.getElementById("output");
-import { supabaseUrl, publishableKey } from "../lib/supabase-public";
-  const catalogueEndpoint=`${supabaseUrl}/rest/v1/experience_catalog?select=experience_key,display_name,price_usd,short_description,full_description,duration_label,is_active,sort_order&is_active=eq.true&order=sort_order.asc`;
-async function syncItineraryTours(){
- try{
-  const response=await fetch(catalogueEndpoint,{headers:{apikey:publishableKey,Authorization:"Bearer "+publishableKey},cache:"no-store"});
-  if(!response.ok)throw new Error("Catalogue unavailable");
-  const rows=await response.json();
-  if(!Array.isArray(rows)||!rows.length)return;
-  tourData=rows.map(row=>({key:row.experience_key,name:row.display_name,price:Number(row.price_usd),duration:row.duration_label||"Duration confirmed by host",detail:row.full_description||row.short_description||"A locally hosted Materuni experience."}));
-  const root=form.querySelector(".choices");root.replaceChildren();
-  tourData.forEach((tour,index)=>{
-   const label=document.createElement("label");label.className="choice";
-   const input=document.createElement("input");input.type="checkbox";input.name="tour";input.value=String(index);
-   const span=document.createElement("span");const strong=document.createElement("strong");strong.textContent=tour.name;
-   const small=document.createElement("small");small.textContent="$"+tour.price.toFixed(0)+" per person · "+tour.duration;
-   span.append(strong,small);label.append(input,span);root.append(label);
-  });
- }catch(error){console.warn("Using the built-in itinerary catalogue.",error)}
-}
-syncItineraryTours();
+
 const dateInput=document.getElementById("date");
 dateInput.min=new Intl.DateTimeFormat("en-CA",{timeZone:"Africa/Dar_es_Salaam",year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date());
 form.addEventListener("submit",event=>{
