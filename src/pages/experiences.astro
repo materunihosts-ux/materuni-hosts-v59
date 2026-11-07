@@ -97,7 +97,9 @@ const experienceAltByKey: Record<string,string> = {
 </style>
 <script>
 // @ts-nocheck
-const publicMediaBase = "https://sskmzswoeljxwojcszta.supabase.co/storage/v1/object/public/materuni-images/";
+import { supabaseUrl as catalogApi, publishableKey as catalogKey } from "../lib/supabase-public";
+const catalogHeaders = { apikey: catalogKey, Authorization: "Bearer " + catalogKey };
+const publicMediaBase = catalogApi + "/storage/v1/object/public/materuni-images/";
 const photoAltByKey: Record<string,string> = {
   "Waterfall & Chagga Culture": "Materuni Waterfall and surrounding green forest in Materuni Village",
   "Traditional Coffee Experience": "Traditional Chagga coffee preparation in Materuni Village",
@@ -183,10 +185,16 @@ function makeCatalogCard(tour) {
 async function syncPublicCatalogue() {
   if (!cardsRoot) return;
   try {
-    const response = await fetch("/data/experience-catalog.json", { cache: "force-cache" });
-    if (!response.ok) throw new Error("Website catalogue unavailable");
+    const query = new URLSearchParams({
+      select: "experience_key,display_name,price_usd,is_active,short_description,full_description,image_url,duration_label,inclusions,exclusions,product_tagline,best_for,signature_moments,unique_amenities,sort_order",
+      order: "sort_order.asc"
+    });
+    const response = await fetch(catalogApi + "/rest/v1/experience_catalog?" + query, {
+      headers: catalogHeaders, cache: "no-store"
+    });
+    if (!response.ok) throw new Error("Catalogue unavailable");
     const catalogue = await response.json();
-    const active = catalogue.experiences.filter(item => item.is_active).sort((a,b) => Number(a.sort_order || 0) - Number(b.sort_order || 0));
+    const active = catalogue.filter(item => item.is_active).sort((a,b) => Number(a.sort_order || 0) - Number(b.sort_order || 0));
     const activePrices = active.map(item => Number(item.price_usd)).filter(value => Number.isFinite(value) && value > 0);
     const stickyPrice = document.querySelector("[data-sticky-from-price]");
     if (stickyPrice && activePrices.length) stickyPrice.textContent = "From $" + formatPrice(Math.min(...activePrices));
@@ -228,16 +236,23 @@ async function syncPublicCatalogue() {
     });
     active.filter(item => !cardsRoot.querySelector('[data-experience-key="' + CSS.escape(item.experience_key) + '"]'))
       .forEach(item => cardsRoot.append(makeCatalogCard(item)));
-    const shared = catalogue.shared_inclusions;
-    const oldShared = document.querySelector("[data-shared-inclusions]");
-    if (oldShared) oldShared.remove();
-    if (Array.isArray(shared) && shared.length) {
-      const panel = document.createElement("section"); panel.dataset.sharedInclusions = "true"; panel.className = "shared-standard";
-      const heading = document.createElement("h2"); heading.dataset.i18n = "exp_shared_inclusions"; heading.textContent = "Included in every Materuni Hosts experience";
-      const list = document.createElement("ul");
-      shared.forEach(value => { if (typeof value !== "string" || !value.trim()) return; const li = document.createElement("li"); li.textContent = value; list.append(li); });
-      panel.append(heading, list); cardsRoot.insertAdjacentElement("afterend", panel);
-    }
+    try {
+      const sharedResponse = await fetch(catalogApi + "/rest/v1/site_settings?select=setting_value&setting_key=eq.experience_shared_inclusions", { headers: catalogHeaders, cache: "no-store" });
+      if (sharedResponse.ok) {
+        const sharedRows = await sharedResponse.json();
+        const raw = sharedRows?.[0]?.setting_value;
+        const shared = typeof raw === "string" ? JSON.parse(raw) : raw;
+        const old = document.querySelector("[data-shared-inclusions]");
+        if (old) old.remove();
+        if (Array.isArray(shared) && shared.length) {
+          const panel = document.createElement("section"); panel.dataset.sharedInclusions = "true"; panel.className = "shared-standard";
+          const heading = document.createElement("h2"); heading.dataset.i18n = "exp_shared_inclusions"; heading.textContent = "Included in every Materuni Hosts experience";
+          const list = document.createElement("ul");
+          shared.forEach(value => { if (typeof value !== "string" || !value.trim()) return; const li = document.createElement("li"); li.textContent = value; list.append(li); });
+          panel.append(heading, list); cardsRoot.insertAdjacentElement("afterend", panel);
+        }
+      }
+    } catch (sharedError) { console.warn("Shared inclusions unavailable.", sharedError); }
   } catch (error) {
     console.warn("Using the built-in experience catalogue because the live catalogue could not be loaded.", error);
   } finally {
