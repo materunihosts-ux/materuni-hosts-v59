@@ -21,7 +21,7 @@ export const siteContent = {
     bodyFont: "Manrope"
   },
   currency: ["USD", "TZS"],
-  language: ["English", "Swahili"],
+  language: ["English", "Spanish", "French", "German"],
   address: {
     streetAddress: "Materuni Juu, Moshi Rural",
     addressLocality: "Materuni Village",
