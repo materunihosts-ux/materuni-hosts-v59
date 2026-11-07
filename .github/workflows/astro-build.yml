@@ -21,6 +21,8 @@ jobs:
         with:
           node-version: 22
       - run: npm install --no-audit --no-fund
+      - name: Run SEO regression tests
+        run: npm run test:seo
       - name: Build, type-check and run website quality gate
         env:
           PUBLIC_SUPABASE_URL: https://sskmzswoeljxwojcszta.supabase.co

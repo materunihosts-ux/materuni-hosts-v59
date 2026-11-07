@@ -1,6 +1,5 @@
 ---
 import SiteLayout from "../../layouts/SiteLayout.astro";
-import { Image } from "astro:assets";
 import { supabaseUrl } from "../../lib/supabase-public";
 
 const base = `${supabaseUrl}/storage/v1/object/public/materuni-images/`;
@@ -114,13 +113,11 @@ const faqSchema = {
 
     <!-- Lead Cover Image -->
     <figure class="article-featured-media">
-      <Image
+      <img
         src={heroImage}
         alt="Materuni Waterfall surrounded by the green landscape of the Kilimanjaro foothills"
         width={1200}
         height={675}
-        format="webp"
-        quality={82}
         loading="eager"
         decoding="async"
         class="featured-img"
@@ -192,13 +189,11 @@ const faqSchema = {
       <p><strong>Taking public transport?</strong> Routes, departure points and onward connections can change. Check current services, drop-off points, fares and return options with local transport providers in Moshi before setting off. Confirm how you will reach the village from your drop-off point; do not assume a direct service or a waiting motorbike taxi will be available.</p>
 
       <figure class="in-content-media">
-        <Image
+        <img
           src={trailImage}
           alt="Hiking through the lush green banana and coffee trees on the way to Materuni"
           width={900}
           height={500}
-          format="webp"
-          quality={80}
           loading="lazy"
           decoding="async"
         />
@@ -229,13 +224,11 @@ const faqSchema = {
       </ul>
 
       <figure class="in-content-media">
-        <Image
+        <img
           src={villageImage}
           alt="Lush rainforest trail and river crossings in the Kilimanjaro foothills"
           width={900}
           height={500}
-          format="webp"
-          quality={80}
           loading="lazy"
           decoding="async"
         />

@@ -3885,3 +3885,26 @@ body.public-shell :where(input,select,textarea){max-width:100%}
   body.public-shell{scroll-behavior:auto}
   body.public-shell :where(*,*::before,*::after){scroll-behavior:auto!important}
 }
+
+
+/* Accessibility polish: visible keyboard focus, reduced motion and comfortable touch targets. */
+:where(a,button,input,select,textarea,summary,[tabindex]):focus-visible{
+  outline:3px solid var(--gold);
+  outline-offset:3px;
+  border-radius:3px;
+}
+:where(button,a,input,select,textarea){-webkit-tap-highlight-color:rgba(197,160,89,.22)}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{
+    animation-duration:.01ms!important;
+    animation-iteration-count:1!important;
+    scroll-behavior:auto!important;
+    transition-duration:.01ms!important;
+  }
+}
+@media(max-width:850px){
+  .site-header nav a{min-height:44px;display:flex;align-items:center}
+  .menu-toggle{min-width:44px;min-height:44px;display:grid;place-items:center}
+}
+:where(section[id],main[id],h1[id],h2[id]){scroll-margin-top:110px}

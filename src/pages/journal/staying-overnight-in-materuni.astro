@@ -1,6 +1,5 @@
 ---
 import SiteLayout from "../../layouts/SiteLayout.astro";
-import { Image } from "astro:assets";
 import { supabaseUrl } from "../../lib/supabase-public";
 
 const base = `${supabaseUrl}/storage/v1/object/public/materuni-images/`;
@@ -101,13 +100,11 @@ const faqSchema = {
     </header>
 
     <figure class="article-featured-media">
-      <Image
+      <img
         src={campingHero}
         alt="Mountain landscape during sunset over Materuni Village"
         width={1200}
         height={675}
-        format="webp"
-        quality={82}
         loading="eager"
         decoding="async"
         class="featured-img"
@@ -129,13 +126,11 @@ const faqSchema = {
       <p>As the mountain night turns crisp, we gather around a crackling woodfire. Dinner is cooked fresh by local village mamas using vegetables harvested just hours earlier from surrounding shambas: sweet potato stew, fresh chapati, seasoned beans, local avocado salad, and tender chicken or vegetarian curries.</p>
 
       <figure class="in-content-media">
-        <Image
+        <img
           src={communityImg}
           alt="Local Chagga hosts welcoming visitors in Materuni"
           width={900}
           height={500}
-          format="webp"
-          quality={80}
           loading="lazy"
           decoding="async"
         />

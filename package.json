@@ -9,7 +9,8 @@
     "preview": "astro preview",
     "check": "astro check",
     "lint": "astro check",
-    "qa": "node scripts/site-quality-gate.mjs"
+    "qa": "node scripts/site-quality-gate.mjs",
+    "test:seo": "node --test tests/seo-audit-utils.test.js tests/seo-keyword-import.test.js tests/seo-intelligence-model.test.js tests/google-search-console-api.test.js"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.10",

@@ -1,11 +1,9 @@
 ---
 import SiteLayout from "../layouts/SiteLayout.astro";
-import { Image, getImage } from "astro:assets";
 import { supabaseUrl } from "../lib/supabase-public";
 
 const base = `${supabaseUrl}/storage/v1/object/public/materuni-images/`;
 const heroSource = base + "hero_image/1791995544192-materuni-waterfall.jpg";
-const optimizedHero = await getImage({ src: heroSource, width: 1600, height: 1000, format: "webp", quality: 80 });
 
 // Curated 6 experiences with equal visual importance (authoritative pricing aligned with Supabase catalog)
 // Homepage catalogue fallback; prices match the published Materuni Hosts catalogue.
@@ -52,11 +50,11 @@ const faqs = [
 <SiteLayout
   title="Materuni Village Tours & Chagga Experiences | Materuni Hosts"
   description="Visit Materuni Village near Moshi, Tanzania. Explore the Materuni Waterfall, Chagga coffee traditions, local food and village experiences with Materuni Hosts."
-  preloadImage={optimizedHero.src}
+  preloadImage={heroSource}
 >
   <!-- 1. PREMIUM CINEMATIC HERO SECTION -->
   <section class="premium-hero" aria-labelledby="hero-heading">
-    <div class="hero-bg" style={`background-image: linear-gradient(180deg, rgba(20,45,32,0.34) 0%, rgba(20,45,32,0.56) 100%), url(${optimizedHero.src})`}></div>
+    <div class="hero-bg" style={`background-image: linear-gradient(180deg, rgba(20,45,32,0.34) 0%, rgba(20,45,32,0.56) 100%), url(${heroSource})`}></div>
     <div class="hero-content">
       <span class="hero-badge">MATERUNI VILLAGE · KILIMANJARO · TANZANIA</span>
       <h1 id="hero-heading">Materuni Village Tours &amp; Chagga Cultural Experiences</h1>
@@ -138,7 +136,7 @@ const faqs = [
       {curatedExperiences.map((exp) => (
         <article class="boutique-card" id={`exp-${exp.key}`} data-home-experience-key={exp.catalogKey}>
           <div class="boutique-card-media">
-            <Image src={base + exp.image} alt={exp.alt} width={640} height={420} format="webp" quality={78} loading="lazy" decoding="async" class="boutique-photo" data-home-image />
+            <img src={base + exp.image} alt={exp.alt} width={640} height={420} loading="lazy" decoding="async" class="boutique-photo" data-home-image />
             <span class="card-duration-badge">{exp.label}</span>
           </div>
           <div class="boutique-card-content">
@@ -168,7 +166,7 @@ const faqs = [
     <div class="hosts-grid">
       <article class="host-boutique-card">
         <div class="host-avatar-wrap">
-          <Image src={base + "story_image/1791995912146-materuni-community.jpg"} alt="Materuni community scene" width={640} height={420} format="webp" quality={78} loading="lazy" decoding="async" class="host-avatar" />
+          <img src={base + "story_image/1791995912146-materuni-community.jpg"} alt="Materuni community scene" width={640} height={420} loading="lazy" decoding="async" class="host-avatar" />
         </div>
         <h3>Local hosts in Materuni</h3>
         <span class="host-boutique-role">Village hospitality &amp; living heritage</span>
@@ -224,13 +222,11 @@ const faqs = [
     </div>
     <div class="split-nature-layout">
       <div class="nature-image-container">
-        <Image
+        <img
           src={base + "waterfall_image/1791998303073-materuni-waterfall-hike.jpg"}
           alt="Materuni Waterfall cascading into a natural pool in the green Kilimanjaro foothills"
           width={800}
           height={550}
-          format="webp"
-          quality={78}
           loading="lazy"
           decoding="async"
           class="nature-cover"
@@ -347,13 +343,11 @@ const faqs = [
       {journalPosts.map((post) => (
         <article class="journal-card">
           <a class="journal-media-link" href={`/journal/${post.slug}`} aria-label={post.title}>
-            <Image
+            <img
               src={base + post.image}
               alt={post.alt}
               width={640}
               height={380}
-              format="webp"
-              quality={78}
               loading="lazy"
               decoding="async"
               class="journal-cover"

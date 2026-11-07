@@ -1,6 +1,5 @@
 ---
 import SiteLayout from "../layouts/SiteLayout.astro";
-import { Image } from "astro:assets";
 import LocalBusinessSchema from "../components/LocalBusinessSchema.astro";
 import { supabaseUrl } from "../lib/supabase-public";
 
@@ -76,7 +75,7 @@ const faqs = [
         </div>
       </div>
       <div class="hero-media">
-        <Image src={heroImg} alt="Lush natural waterways and trees around Chemka Hot Springs in Kilimanjaro" width={800} height={600} loading="eager" fetchpriority="high" decoding="async" class="hero-img" format="webp" quality={76} />
+        <img src={heroImg} alt="Lush natural waterways and trees around Chemka Hot Springs in Kilimanjaro" width={800} height={600} loading="eager" fetchpriority="high" decoding="async" class="hero-img" />
       </div>
     </section>
 
@@ -89,15 +88,15 @@ const faqs = [
       </div>
       <div class="gallery-grid">
         <figure class="gallery-item">
-          <Image src={photo1} alt="Fresh clear water flowing through natural channels near Mount Kilimanjaro" width={600} height={420} loading="lazy" decoding="async" format="webp" quality={76} />
+          <img src={photo1} alt="Fresh clear water flowing through natural channels near Mount Kilimanjaro" width={600} height={420} loading="lazy" decoding="async" />
           <figcaption>Natural groundwater bubbling gently to the surface through limestone fissures.</figcaption>
         </figure>
         <figure class="gallery-item">
-          <Image src={photo2} alt="Local community gathering and enjoying the shade by the riverside" width={600} height={420} loading="lazy" decoding="async" format="webp" quality={76} />
+          <img src={photo2} alt="Local community gathering and enjoying the shade by the riverside" width={600} height={420} loading="lazy" decoding="async" />
           <figcaption>Warm hospitality and picnic facilities sheltered under ancient banyan and wild fig canopies.</figcaption>
         </figure>
         <figure class="gallery-item">
-          <Image src={photo3} alt="Expansive green landscapes leading from the foothills towards the plains" width={600} height={420} loading="lazy" decoding="async" format="webp" quality={76} />
+          <img src={photo3} alt="Expansive green landscapes leading from the foothills towards the plains" width={600} height={420} loading="lazy" decoding="async" />
           <figcaption>Picturesque views of Mount Kilimanjaro and Mount Meru across the open savanna.</figcaption>
         </figure>
       </div>
