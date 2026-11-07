@@ -232,33 +232,11 @@ body.admin-shell #main-content{min-height:calc(100vh - 58px)}
  };
  window.MateruniApplyPageTranslations=loadPageTranslations;
  loadPageTranslations(lang);
- async function loadSocialLinks(){
-  const fallback={
-   facebook_url:"https://www.facebook.com/share/1VTNWPbqcc/",
-   instagram_url:"https://instagram.com/materuni_hosts",
-   google_review_url:"https://g.page/r/CXy6M_Suiip9EBM/review"
-  };
-  const keys=["facebook_url","instagram_url","google_review_url"];
-  let values={...fallback};
-  try{
-   const response=await fetch(`${supabaseUrl}/rest/v1/site_settings?select=setting_key,setting_value&setting_key=in.(${keys.join(",")})`,{headers:{apikey:publishableKey,Authorization:"Bearer "+publishableKey},cache:"default"});
-   if(response.ok){
-    const rows=await response.json();
-    for(const row of rows){if(typeof row.setting_value==="string"&&row.setting_value.trim())values[row.setting_key]=row.setting_value.trim()}
-   }
-  }catch(error){console.warn("Using saved public social-link fallbacks.",error)}
-  document.querySelectorAll("[data-social-key]").forEach(link=>{
-   const key=link.dataset.socialKey,value=values[key];
-   let valid=false;
-   try{const parsed=new URL(value);valid=(parsed.protocol==="https:"||parsed.protocol==="http:")&&parsed.hostname.includes(".")}catch{}
-   if(valid){
-    link.href=value;link.hidden=false;link.removeAttribute("aria-hidden");link.removeAttribute("aria-disabled");link.removeAttribute("tabindex");link.classList.remove("social-link-pending");link.removeAttribute("title");
-   }else{
-    link.hidden=true;link.setAttribute("aria-hidden","true");link.removeAttribute("href");
-   }
-  });
- }
- document.addEventListener("DOMContentLoaded",()=>{loadPageTranslations(lang);loadSocialLinks()},{once:true});
+  function loadSocialLinks(){
+   const fallback={facebook_url:"https://www.facebook.com/share/1VTNWPbqcc/",instagram_url:"https://instagram.com/materuni_hosts",google_review_url:"https://g.page/r/CXy6M_Suiip9EBM/review"};
+   document.querySelectorAll("[data-social-key]").forEach(link=>{const value=fallback[link.dataset.socialKey];let valid=false;try{const parsed=new URL(value);valid=(parsed.protocol==="https:"||parsed.protocol==="http:")&&parsed.hostname.includes(".")}catch{}if(valid){link.href=value;link.hidden=false;link.removeAttribute("aria-hidden");link.removeAttribute("aria-disabled");link.removeAttribute("tabindex");link.classList.remove("social-link-pending");link.removeAttribute("title")}else{link.hidden=true;link.setAttribute("aria-hidden","true");link.removeAttribute("href")}});
+  }
+document.addEventListener("DOMContentLoaded",()=>{loadPageTranslations(lang);loadSocialLinks()},{once:true});
 
 })();
 </script>
