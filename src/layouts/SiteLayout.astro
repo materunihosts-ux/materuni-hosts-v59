@@ -2,6 +2,7 @@
 import globalStyles from "../styles/global.css?url";
 import CookieConsent from "../components/CookieConsent.astro";
 import { supabaseUrl } from "../lib/supabase-public";
+import { siteContent } from "../data/site-content";
 const {
   title = "Materuni Hosts | Authentic Chagga Experiences",
   description = "Discover authentic Chagga coffee, waterfalls, food and village life in Materuni, Kilimanjaro, Tanzania.",
@@ -100,32 +101,22 @@ const structuredData = {
   "@context": "https://schema.org",
   "@type": "TourOperator",
   "@id": "https://materunihosts.com/#localbusiness",
-  "name": "Materuni Hosts",
-  "url": "https://materunihosts.com/",
-  "logo": "https://materunihosts.com/materuni-hosts-logo-round.svg",
+  "name": siteContent.name,
+  "url": siteContent.url,
+  "logo": siteContent.logo,
   "image": socialImage,
-  "description": "Materuni Hosts introduces visitors to Materuni Village through locally hosted waterfall walks, Chagga coffee traditions, cooking and cultural experiences in the Kilimanjaro foothills near Moshi, Tanzania.",
-  "telephone": "+255612068540",
-  "email": "hello@materunihosts.com",
-  "currenciesAccepted": "USD, TZS",
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": "Materuni Juu, Moshi Rural",
-    "addressLocality": "Materuni Village",
-    "addressRegion": "Kilimanjaro",
-    "postalCode": "25210",
-    "addressCountry": "TZ"
-  },
-  "areaServed": {
-    "@type": "Place",
-    "name": "Materuni Village, Moshi Rural, Kilimanjaro, Tanzania"
-  },
+  "description": siteContent.description,
+  "telephone": siteContent.telephone,
+  "email": siteContent.email,
+  "currenciesAccepted": siteContent.currency.join(", "),
+  "address": { "@type": "PostalAddress", ...siteContent.address },
+  "areaServed": { "@type": "Place", "name": siteContent.areaServed },
   "contactPoint": {
     "@type": "ContactPoint",
-    "telephone": "+255612068540",
-    "email": "hello@materunihosts.com",
+    "telephone": siteContent.telephone,
+    "email": siteContent.email,
     "contactType": "customer service",
-    "availableLanguage": ["English", "Swahili"]
+    "availableLanguage": siteContent.language
   }
 };
 ---
