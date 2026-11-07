@@ -4,6 +4,7 @@ import SiteLayout from "../layouts/SiteLayout.astro";
 import { experienceItems } from "../data/experiences";
 
 const itineraryPreview = "https://sskmzswoeljxwojcszta.supabase.co/storage/v1/object/public/materuni-images/story_image/1791601761441-q3iog8mni3r.jpg";
+const tours = experienceItems.map((item) => ({ name: item[0], price: item[1], duration: item[7] }));
 
 ---
 <SiteLayout title="Build a Materuni Itinerary | Local Tours" description="Build a Materuni itinerary with waterfall hikes, Chagga coffee, cooking and overnight camping. Plan your visit with local hosts near Moshi, Tanzania." preloadImage={itineraryPreview}>
