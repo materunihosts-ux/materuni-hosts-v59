@@ -1,11 +1,12 @@
 ---
 import SiteLayout from "../layouts/SiteLayout.astro";
+import { aboutContent } from "../data/about";
 
 
 const defaultCommunity = "https://sskmzswoeljxwojcszta.supabase.co/storage/v1/object/public/materuni-images/story_image/1791995912146-materuni-community.jpg";
 
 
-const dynamic: any = null;
+const dynamic: any = aboutContent;
 
 const heroEyebrow = dynamic?.heroEyebrow || "ABOUT MATERUNI HOSTS · MATERUNI VILLAGE";
 const heroTitle = dynamic?.heroTitle || "Experience Materuni through the people who call it home.";
