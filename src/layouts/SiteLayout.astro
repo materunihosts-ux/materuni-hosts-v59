@@ -3,11 +3,12 @@ import globalStyles from "../styles/global.css?url";
 import CookieConsent from "../components/CookieConsent.astro";
 import { supabaseUrl } from "../lib/supabase-public";
 import { siteContent } from "../data/site-content";
+import { seoDefaults } from "../data/seo";
 import { primaryNavigation, primaryNavigationCta, supportedLanguages } from "../data/navigation";
 import { pageFallbacks } from "../data/translations";
 const {
-  title = "Materuni Hosts | Authentic Chagga Experiences",
-  description = "Discover authentic Chagga coffee, waterfalls, food and village life in Materuni, Kilimanjaro, Tanzania.",
+  title = seoDefaults.title,
+  description = seoDefaults.description,
   noindex = false,
   nofollow = false,
   robots = null,
@@ -40,9 +41,9 @@ if (isAdmin || is404 || isVercelPreview) {
 }
 
 const cleanPath = pathname === "/" ? "/" : pathname.replace(/\/+$/, "");
-const canonicalUrl = new URL(cleanPath, "https://materunihosts.com");
+const canonicalUrl = new URL(cleanPath, seoDefaults.siteUrl);
 const canonicalTarget = canonicalOverride ?? canonical;
-const canonicalHref = canonicalTarget ? new URL(canonicalTarget, "https://materunihosts.com").toString() : canonicalUrl.toString();
+const canonicalHref = canonicalTarget ? new URL(canonicalTarget, seoDefaults.siteUrl).toString() : canonicalUrl.toString();
 const breadcrumbLabels: Record<string, string> = {
   experiences: "Experiences",
   about: "Our story",
@@ -59,7 +60,7 @@ const breadcrumbLabels: Record<string, string> = {
   terms: "Booking terms"
 };
 const breadcrumbParts = Astro.url.pathname.split("/").filter(Boolean);
-const breadcrumbItems = [{ "@type": "ListItem", position: 1, name: "Home", item: "https://materunihosts.com/" }];
+const breadcrumbItems = [{ "@type": "ListItem", position: 1, name: "Home", item: siteContent.url }];
 if (!shouldNoindex) {
   breadcrumbParts.forEach((part, index) => {
     const label = breadcrumbLabels[part];
@@ -77,7 +78,7 @@ const breadcrumbData = {
   "@type": "BreadcrumbList",
   itemListElement: breadcrumbItems
 };
-const socialImage = preloadImage ?? `${supabaseUrl}/storage/v1/object/public/materuni-images/hero_image/1791995544192-materuni-waterfall.jpg`;
+const socialImage = preloadImage ?? seoDefaults.socialImage;
 const webPageData = {
   "@context": "https://schema.org",
   "@type": "WebPage",
@@ -87,7 +88,7 @@ const webPageData = {
   "inLanguage": "en",
   "isPartOf": {
     "@type": "WebSite",
-    "name": "Materuni Hosts",
+    "name": siteContent.name,
     "url": "https://materunihosts.com/"
   },
   "about": {
