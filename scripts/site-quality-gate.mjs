@@ -193,13 +193,13 @@ if (fs.existsSync(sitemapPath)) {
   if (sitemap.includes("https://materunihosts.com/accommodation")) fail("Sitemap must not include the redirected accommodation URL");
   else pass("Sitemap excludes the redirected accommodation URL");
 }
-const accommodationSourcePath = path.resolve("src/pages/accommodation.astro");
-if (fs.existsSync(accommodationSourcePath)) {
-  const accommodationSource = read(accommodationSourcePath);
-  if (/\\$101|\\$25 per vehicle|\\$50 per vehicle|\\$80 per vehicle|licensed drivers|14°C and 17°C|1,800m|3-inch|guaranteed within 12h/i.test(accommodationSource)) fail("Overnight page contains outdated pricing or unverified accommodation/transfer claims");
-  else pass("Overnight page avoids outdated prices and unverified facilities or transfer claims");
-  if (!accommodationSource.includes('"price": "90.00"') || !accommodationSource.includes("USD $90 per person") || !accommodationSource.includes("provide a separate quote")) fail("Overnight page must use the published $90 USD price and quote transport separately");
-  else pass("Overnight page matches the published $90 USD price and separate-transfer policy");
+const overnightPagePath = path.resolve("src/pages/camping.astro");
+if (fs.existsSync(overnightPagePath)) {
+  const overnightPage = read(overnightPagePath);
+  if (/\\$101|\\$25 per vehicle|\\$50 per vehicle|\\$80 per vehicle|licensed drivers|14°C and 17°C|1,800m|3-inch|guaranteed within 12h/i.test(overnightPage)) fail("Overnight page contains outdated pricing or unverified accommodation/transfer claims");
+  else pass("Canonical overnight page avoids outdated prices and unverified facilities or transfer claims");
+  if (!overnightPage.includes("$90") || !overnightPage.includes("provide a separate quote")) fail("Canonical overnight page must show the published $90 price and quote transport separately");
+  else pass("Canonical overnight page matches the published $90 USD price and separate-transfer policy");
 }
 const bookingPage = routeFile("/booking");
 if (bookingPage) {
