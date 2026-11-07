@@ -164,12 +164,15 @@ if (fs.existsSync(packingGuidePath)) {
 const reviewsSourcePath = path.resolve("src/pages/reviews.astro");
 if (fs.existsSync(reviewsSourcePath)) {
   const reviewsSource = read(reviewsSourcePath);
-  if (/Elena Rostova|David & Sarah Jenkins|Marc Dubois|Anika Lindström|Michael Torres|Claire van der Meer|★★★★★|VERIFIED REVIEWS/i.test(reviewsSource)) fail("Reviews page must not publish unverified testimonial text, invented reviewer identities or unsupported rating claims");
-  else pass("Reviews page avoids unverified testimonials and unsupported rating claims");
+  const verifiedReviewers = ["Endika Unsuain", "Ariana Chalde Alvarez", "Dipesh Pabari"];
+  if (!verifiedReviewers.every((name) => reviewsSource.includes(name))) fail("Reviews page must display all three verified Google reviewers");
+  else pass("Reviews page displays all three verified Google reviewers");
+  if (!reviewsSource.includes("5.0 / 5") || !reviewsSource.includes("3 Google reviews") || !reviewsSource.includes("★★★★★")) fail("Reviews page must accurately label the current 5.0 average from three Google reviews");
+  else pass("Reviews page rating and review count match the connected Google Business Profile");
   if (!reviewsSource.includes("https://g.page/r/CXy6M_Suiip9EBM/review") || !reviewsSource.includes("https://www.tripadvisor.com/34765809")) fail("Reviews page must link directly to the verified Google and TripAdvisor sources");
   else pass("Reviews page links directly to the verified Google and TripAdvisor sources");
-  if (/Waterfall%20Tours%20%26%20Village%20Camping/i.test(reviewsSource)) fail("Google review link must use the current Materuni Hosts business identity");
-  else pass("Google review link uses the current Materuni Hosts business identity");
+  if (/supabase\.co\/storage|Waterfall%20Tours%20%26%20Village%20Camping/i.test(reviewsSource)) fail("Reviews page must avoid unavailable remote Supabase images and outdated business naming");
+  else pass("Reviews page avoids unavailable Supabase media and uses the current business identity");
 }
 const accommodationSourcePath = path.resolve("src/pages/accommodation.astro");
 if (fs.existsSync(accommodationSourcePath)) {
