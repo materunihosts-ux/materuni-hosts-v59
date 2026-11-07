@@ -1,7 +1,7 @@
 ---
 import SiteLayout from "../layouts/SiteLayout.astro";
 
-const travelGuideHero = `${supabaseUrl}/storage/v1/object/public/materuni-images/waterfall_image/1791998303073-materuni-waterfall-hike.jpg`;
+const travelGuideHero = "https://sskmzswoeljxwojcszta.supabase.co/storage/v1/object/public/materuni-images/waterfall_image/1791998303073-materuni-waterfall-hike.jpg";
 ---
 <SiteLayout title="Materuni Visitor Guide | Waterfall, Coffee & Village Tours" description="Plan a Materuni visit near Moshi with advice on waterfall walks, Chagga coffee, village culture, transport, trail conditions, weather and booking." preloadImage={travelGuideHero}>
 <section class="media-hero" aria-labelledby="guide-title"><div><span class="eyebrow">BEFORE YOU VISIT</span><h1 id="guide-title">Prepare for a rewarding day in Materuni.</h1><p>A little preparation makes it easier to enjoy the forest paths, village hospitality and changing mountain weather. For detailed transport articles and cultural guides, visit our new <a href="/journal" style="color:#C5A059;text-decoration:underline">Materuni Journal →</a></p></div><img src={travelGuideHero} alt="Materuni Falls in the green foothills of Mount Kilimanjaro" width="1200" height="900" loading="eager" fetchpriority="high" decoding="async" /></section>
