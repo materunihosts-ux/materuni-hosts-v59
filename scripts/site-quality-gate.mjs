@@ -181,6 +181,18 @@ if (fs.existsSync(reviewsSourcePath)) {
   if (/supabase\.co\/storage|Waterfall%20Tours%20%26%20Village%20Camping/i.test(reviewsSource)) fail("Reviews page must avoid unavailable remote Supabase images and outdated business naming");
   else pass("Reviews page avoids unavailable Supabase media and uses the current business identity");
 }
+const legacyAccommodationPath = path.resolve("src/pages/accommodation.astro");
+if (fs.existsSync(legacyAccommodationPath)) {
+  const legacyAccommodation = read(legacyAccommodationPath);
+  if (!legacyAccommodation.includes('Astro.redirect("/camping", 301)')) fail("Legacy accommodation route must redirect permanently to the canonical overnight page");
+  else pass("Legacy accommodation route redirects to the canonical overnight page");
+}
+const sitemapPath = path.resolve("public/sitemap.xml");
+if (fs.existsSync(sitemapPath)) {
+  const sitemap = read(sitemapPath);
+  if (sitemap.includes("https://materunihosts.com/accommodation")) fail("Sitemap must not include the redirected accommodation URL");
+  else pass("Sitemap excludes the redirected accommodation URL");
+}
 const accommodationSourcePath = path.resolve("src/pages/accommodation.astro");
 if (fs.existsSync(accommodationSourcePath)) {
   const accommodationSource = read(accommodationSourcePath);
