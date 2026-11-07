@@ -2,6 +2,7 @@
 import SiteLayout from "../layouts/SiteLayout.astro";
 import { Image, getImage } from "astro:assets";
 import { experienceItems } from "../data/experiences";
+import { googleGuestReviews } from "../data/google-reviews";
 
 
 const base = "https://sskmzswoeljxwojcszta.supabase.co/storage/v1/object/public/materuni-images/";
@@ -235,23 +236,26 @@ const faqs = [
     </div>
   </section>
 
-  <!-- 8. GUEST FEEDBACK -->
+  <!-- GUEST FEEDBACK: three authentic Google reviews -->
   <section class="home-section bg-warm" aria-labelledby="reviews-heading">
     <div class="section-header">
-      <span class="eyebrow">GUEST FEEDBACK</span>
-      <h2 id="reviews-heading">Hear from travellers who visited Materuni</h2>
-      <p>Read independent guest feedback on our public review platforms before choosing your experience.</p>
+      <span class="eyebrow">GUEST FEEDBACK · GOOGLE</span>
+      <h2 id="reviews-heading">Experiences shared by our guests</h2>
+      <p>Three guests have shared their experiences on our Google Business Profile. Read their words in the original context.</p>
     </div>
-    <div class="reviews-action-strip">
-      <a class="gold-button" href="https://www.tripadvisor.com/34765809" target="_blank" rel="noopener noreferrer">
-        Read guest feedback on TripAdvisor ↗
-      </a>
-      <a class="hero-outline-button dark" href="https://g.page/r/CXy6M_Suiip9EBM/review" target="_blank" rel="noopener noreferrer">
-        View or leave a Google Review ↗
-      </a>
-      <a class="card-secondary-link" href="/reviews">
-        Explore guest feedback →
-      </a>
+    <div class="home-google-reviews">
+      {googleGuestReviews.map((review) => (
+        <article class="home-google-review">
+          <div class="home-google-review-top"><span aria-label="5 out of 5 stars">★★★★★</span><small>{review.language}</small></div>
+          <blockquote lang={review.language === "Español" ? "es" : "en"}>“{review.quote}”</blockquote>
+          <strong>{review.name}</strong>
+          <small>{review.date}</small>
+        </article>
+      ))}
+    </div>
+    <div class="section-center-cta">
+      <a class="gold-button" href="/reviews">Read all guest reviews</a>
+      <a class="card-secondary-link" href="https://g.page/r/CXy6M_Suiip9EBM/review" target="_blank" rel="noopener noreferrer">Share your honest Google review ↗</a>
     </div>
   </section>
 
@@ -397,7 +401,7 @@ const faqs = [
 
 
 <style>
-/* PREMIUM BOUTIQUE EDITORIAL STYLES */
+.home-google-reviews{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;max-width:1120px;margin:0 auto}.home-google-review{display:flex;flex-direction:column;padding:22px;background:#FAF7F2;border:1px solid #E6DFD3;border-radius:10px}.home-google-review-top{display:flex;justify-content:space-between;align-items:center;gap:10px}.home-google-review-top span{color:#C5A059;letter-spacing:2px}.home-google-review-top small,.home-google-review>small{color:#657066;font-size:11px}.home-google-review blockquote{margin:18px 0;color:#242421;font:500 21px/1.4 "Cormorant Garamond",serif}.home-google-review strong{margin-top:auto;color:#1A3322;font-size:13px}.home-google-review>small{margin-top:4px}@media(max-width:800px){.home-google-reviews{grid-template-columns:1fr 1fr}}@media(max-width:560px){.home-google-reviews{grid-template-columns:1fr}}\n/* PREMIUM BOUTIQUE EDITORIAL STYLES */
 :root {
   --forest: #1A3322;
   --cream: #FAF7F2;
