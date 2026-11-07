@@ -30,18 +30,6 @@ const curatedExperiences = experienceItems.map((item, index) => ({
  label: item[7]
 }));
 
-// Host profiles for Meet Your Hosts section
-
-
-// 4-step guest journey
-// A clear outline of the visit; meeting and transport details are agreed with the host.
-const daySteps = [
- {step:"01",title:"Plan your visit",text:"Choose an experience and share your preferred date, group size and any practical needs with your host."},
- {step:"02",title:"Arrive in Materuni",text:"Agree your meeting point and arrival arrangements with your host before travelling to the village."},
- {step:"03",title:"Discover village life",text:"Enjoy the experience you selected, from the waterfall and local food to Chagga coffee traditions."},
- {step:"04",title:"Confirm your return",text:"Before your visit, agree the timing and transport arrangements that suit your plans."}
-];
-
 // Journal posts
 const journalPosts = [
  {title:"How to Get to Materuni Village from Moshi, Arusha and KIA",excerpt:"Route options, road conditions and practical planning tips for reaching Materuni Village.",slug:"how-to-get-to-materuni",category:"Getting here",readTime:"5 min read",image:"hero_image/1791995544192-materuni-waterfall.jpg",alt:"Materuni Waterfall seen from the forest trail"},
@@ -170,31 +158,6 @@ const faqs = [
     </div>
   </section>
 
-  <!-- 4. MEET YOUR LOCAL HOSTS -->
-  <section class="home-section bg-warm" id="hosts" aria-labelledby="hosts-heading">
-    <div class="section-header">
-      <span class="eyebrow">LOCAL HOSPITALITY</span>
-      <h2 id="hosts-heading">Meet Your Local Hosts</h2>
-      <p>Discover Materuni through local hospitality, village stories and the traditions connected with everyday life.</p>
-    </div>
-    <div class="hosts-grid">
-      <article class="host-boutique-card">
-        <div class="host-avatar-wrap">
-          <Image src={base + "story_image/1791995912146-materuni-community.jpg"} alt="Materuni community scene" width={640} height={420} format="webp" quality={78} loading="lazy" decoding="async" class="host-avatar" />
-        </div>
-        <h3>Local hosts in Materuni</h3>
-        <span class="host-boutique-role">Village hospitality &amp; living heritage</span>
-        <p class="host-boutique-bio">Meet local hosts through the traditions, food, coffee and everyday stories of Materuni. The person you meet depends on the experience and arrangements for your visit.</p>
-      </article>
-    </div>
-    <div class="hosts-editorial-cta">
-      <p>
-        We believe a visit is more meaningful when you take time to learn about the place, its people and the traditions that shape village life.
-      </p>
-      <a class="gold-button" href="/about-us">Read our story</a>
-    </div>
-  </section>
-
   <!-- 5. DISCOVER THE CHAGGA CULTURE -->
   <section class="home-section" aria-labelledby="culture-heading">
     <div class="section-header">
@@ -269,27 +232,6 @@ const faqs = [
           <a class="hero-outline-button dark" href="/travel-guide">Read Travel Guide</a>
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- 7. HOW YOUR EXPERIENCE UNFOLDS -->
-  <section class="home-section" aria-labelledby="journey-heading">
-    <div class="section-header">
-      <span class="eyebrow">THE GUEST JOURNEY</span>
-      <h2 id="journey-heading">How Your Experience Unfolds</h2>
-      <p>Agree the practical details with your host before travelling, then enjoy the experience you selected in Materuni.</p>
-    </div>
-    <div class="journey-steps-grid">
-      {daySteps.map((s) => (
-        <div class="journey-step-card">
-          <div class="journey-step-num">{s.step}</div>
-          <h3>{s.title}</h3>
-          <p>{s.text}</p>
-        </div>
-      ))}
-    </div>
-    <div class="section-center-cta">
-      <a class="gold-button" href="/itinerary">Build a custom itinerary</a>
     </div>
   </section>
 
