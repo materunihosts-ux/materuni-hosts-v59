@@ -54,7 +54,7 @@ test("Search Console API rejects a signed-in non-admin account", async () => {
     await handler({
       method: "POST",
       headers: { host: "materunihosts.com", authorization: "Bearer valid-test-token" },
-      body: {}
+      body: { startDate: "2026-10-01", endDate: "2026-10-28", dimension: "query" }
     }, res);
     assert.equal(res.statusCode, 403);
     assert.match(res.body.error, /administrator/i);
@@ -96,6 +96,26 @@ test("Search Console API validates the date range before contacting Google", asy
     globalThis.fetch = originalFetch;
     if (oldUrl === undefined) delete process.env.SUPABASE_URL; else process.env.SUPABASE_URL = oldUrl;
     if (oldKey === undefined) delete process.env.SUPABASE_PUBLISHABLE_KEY; else process.env.SUPABASE_PUBLISHABLE_KEY = oldKey;
+  }
+});
+
+test("Search Console API rejects invalid ranges without any Supabase or Google request", async () => {
+  const originalFetch = globalThis.fetch;
+  let upstreamCalls = 0;
+  globalThis.fetch = async () => { upstreamCalls++; throw new Error("No upstream request expected"); };
+  try {
+    for (const body of [{}, { startDate: "2026-10-28", endDate: "2026-10-01" }, { startDate: "2026-01-01", endDate: "2026-12-31" }]) {
+      const res = response();
+      await handler({
+        method: "POST",
+        headers: { host: "materunihosts.com", authorization: "Bearer valid-test-token" },
+        body
+      }, res);
+      assert.equal(res.statusCode, 400);
+    }
+    assert.equal(upstreamCalls, 0);
+  } finally {
+    globalThis.fetch = originalFetch;
   }
 });
 

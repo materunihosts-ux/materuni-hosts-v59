@@ -36,14 +36,15 @@ export default async function handler(req, res) {
   let body;
   try { body = typeof req.body === "string" ? JSON.parse(req.body) : (req.body || {}); }
   catch { return send(res, 400, { error: "Request body must be valid JSON." }); }
-    const startDate = body.startDate;
-    const endDate = body.endDate;
-    const dimension = body.dimension === "page" ? "page" : "query";
-    if (!validDate(startDate) || !validDate(endDate) || startDate > endDate) {
-      return send(res, 400, { error: "Choose a valid date range. Start date must be on or before end date." });
-    }
-    const days = (Date.parse(endDate + "T00:00:00Z") - Date.parse(startDate + "T00:00:00Z")) / 86400000;
-    if (days > 92) return send(res, 400, { error: "Keep each report to 93 days or fewer for a fast, predictable response." });
+  // Validate input before any Supabase or Google request to avoid unnecessary upstream calls.
+  const startDate = body.startDate;
+  const endDate = body.endDate;
+  const dimension = body.dimension === "page" ? "page" : "query";
+  if (!validDate(startDate) || !validDate(endDate) || startDate > endDate) {
+    return send(res, 400, { error: "Choose a valid date range. Start date must be on or before end date." });
+  }
+  const days = (Date.parse(endDate + "T00:00:00Z") - Date.parse(startDate + "T00:00:00Z")) / 86400000;
+  if (days > 92) return send(res, 400, { error: "Keep each report to 93 days or fewer for a fast, predictable response." });
 
   const supabaseUrl = (process.env.SUPABASE_URL || process.env.PUBLIC_SUPABASE_URL || "").replace(/\/+$/, "");
   const supabaseKey = process.env.SUPABASE_PUBLISHABLE_KEY || process.env.PUBLIC_SUPABASE_PUBLISHABLE_KEY;
