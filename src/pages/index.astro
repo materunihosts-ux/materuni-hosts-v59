@@ -1,9 +1,9 @@
 ---
 import SiteLayout from "../layouts/SiteLayout.astro";
 import { Image, getImage } from "astro:assets";
-import { supabaseUrl } from "../lib/supabase-public";
 
-const base = `${supabaseUrl}/storage/v1/object/public/materuni-images/`;
+
+const base = "https://sskmzswoeljxwojcszta.supabase.co/storage/v1/object/public/materuni-images/";
 const heroSource = base + "hero_image/1791995544192-materuni-waterfall.jpg";
 const optimizedHero = await getImage({ src: heroSource, width: 1600, height: 1000, format: "webp", quality: 80 });
 
@@ -441,74 +441,7 @@ const faqs = [
   </section>
 </SiteLayout>
 
-<script>
-import { supabaseUrl, publishableKey } from "../lib/supabase-public";
 
-const homeCards = [...document.querySelectorAll<HTMLElement>("[data-home-experience-key]")];
-if (homeCards.length) {
-  const endpoint = new URL(`${supabaseUrl}/rest/v1/experience_catalog`);
-  endpoint.searchParams.set("select", "experience_key,display_name,price_usd,short_description,image_url,is_active");
-  endpoint.searchParams.set("order", "sort_order.asc");
-
-  fetch(endpoint, {
-    headers: {
-      apikey: publishableKey,
-      Authorization: `Bearer ${publishableKey}`
-    },
-    cache: "default"
-  })
-    .then((response) => {
-      if (!response.ok) throw new Error(`Catalogue request failed (${response.status})`);
-      return response.json();
-    })
-    .then((items) => {
-      for (const item of items) {
-        const card = homeCards.find((node) => node.dataset.homeExperienceKey === item.experience_key);
-        if (!card) continue;
-        if (item.is_active === false) {
-          card.hidden = true;
-          continue;
-        }
-
-        const price = Number(item.price_usd);
-        const priceNode = card.querySelector<HTMLSpanElement>("[data-home-price]");
-        if (priceNode && Number.isFinite(price) && price > 0 && priceNode.firstChild) {
-          const formattedPrice = Number.isInteger(price) ? price.toFixed(0) : price.toFixed(2);
-          priceNode.firstChild.textContent = `$${formattedPrice} `;
-        }
-
-        const nameNode = card.querySelector<HTMLHeadingElement>("[data-home-name]");
-        if (nameNode && typeof item.display_name === "string" && item.display_name.trim()) {
-          nameNode.textContent = item.display_name;
-        }
-
-        const descriptionNode = card.querySelector<HTMLParagraphElement>("[data-home-description]");
-        if (descriptionNode && typeof item.short_description === "string" && item.short_description.trim()) {
-          descriptionNode.textContent = item.short_description;
-        }
-
-        const imageNode = card.querySelector<HTMLImageElement>("[data-home-image]");
-        if (imageNode && typeof item.image_url === "string") {
-          try {
-            const imageUrl = new URL(item.image_url);
-            if (imageUrl.hostname === "commons.wikimedia.org") imageUrl.searchParams.set("width", "800");
-            const allowedHosts = ["sskmzswoeljxwojcszta.supabase.co", "commons.wikimedia.org"];
-            if (imageUrl.protocol === "https:" && allowedHosts.includes(imageUrl.hostname)) {
-              imageNode.src = imageUrl.href;
-              imageNode.removeAttribute("srcset");
-              imageNode.removeAttribute("sizes");
-              imageNode.referrerPolicy = "no-referrer";
-              imageNode.alt = item.display_name || imageNode.alt;
-            }
-          } catch {
-            // Keep the statically rendered, optimized fallback image.
-          }
-        }
-      }
-    })
-    .catch((error) => console.warn("Homepage catalogue fallback remains in use.", error));
-}
-</script>
 <style>
 /* PREMIUM BOUTIQUE EDITORIAL STYLES */
 :root {
