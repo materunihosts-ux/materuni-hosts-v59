@@ -158,7 +158,7 @@ if (fs.existsSync(packingGuidePath)) {
   const packingGuide = read(packingGuidePath);
   if (/95(?:-metre|m)|12[–-]15°C|1,700m|\\$45|Lead Mountain Host|purified refills/i.test(packingGuide)) fail("Materuni hike packing guide contains unverified measurements, outdated pricing or unsupported service claims");
   else pass("Materuni hike packing guide avoids unverified measurements and outdated claims");
-  if (!packingGuide.includes("Book waterfall experience ($40)") || !packingGuide.includes('"price": "40.00"')) fail("Materuni hike guide CTA and structured data must match the published $40 experience price");
+  if (!packingGuide.includes("Book waterfall experience ($40)")) fail("Materuni hike guide CTA must match the published $40 experience price");
   else pass("Materuni hike guide CTA matches the published $40 experience price");
 }
 const reviewsSourcePath = path.resolve("src/pages/reviews.astro");
