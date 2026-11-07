@@ -124,13 +124,22 @@ if (fs.existsSync(homepageSourcePath)) {
   else pass("Homepage meta description identifies Materuni Village and local experiences");
   if (homepageSource.includes("<iframe") || homepageSource.includes("map-embed-card") || !homepageSource.includes("materuni-map-svg")) fail("Homepage must use the accessible illustrated Materuni map, not an embedded map");
   else pass("Homepage uses an accessible illustrated Materuni village map");
-  if (!homepageSource.includes("cooking_image/1792089297987-cooking-class.jpg") || homepageSource.includes("1791994933291-materuni-coffe-picking-lesson.jpg")) fail("Homepage cooking card must use the cooking-class asset, not a coffee-picking photograph");
-  else pass("Homepage cooking card uses its catalogue cooking-class image");
-  const catalogueKeys = ["Waterfall & Chagga Culture", "Traditional Coffee Experience", "Traditional Chagga Cooking Class", "Materuni & Moshi Town Tour", "Materuni & Rau Forest Experience", "Camping & Village Life"];
-  if (!catalogueKeys.every((key) => homepageSource.includes('catalogKey:"' + key + '"'))) fail("Homepage must map every published experience to its catalogue key");
-  else pass("Homepage cards map all six published experiences to the live catalogue");
-  if (!homepageSource.includes("experience_catalog") || !homepageSource.includes("item.short_description") || !homepageSource.includes("item.price_usd") || !homepageSource.includes("item.image_url") || !homepageSource.includes("item.is_active")) fail("Homepage cards must sync prices, descriptions, imagery and active status from the experience catalogue");
-  else pass("Homepage cards sync live catalogue prices, descriptions, images and active status");
+  const cataloguePath = path.resolve("src/data/experiences.ts");
+  const catalogueSource = fs.existsSync(cataloguePath) ? read(cataloguePath) : "";
+  const requiredExperiences = [
+    ["Materuni Waterfall & Chagga Village Experience", 40],
+    ["Traditional Chagga Coffee Experience", 36],
+    ["Traditional Chagga Cooking Class", 49],
+    ["Materuni & Moshi Town Cultural Experience", 52],
+    ["Materuni & Rau Forest Nature Experience", 58],
+    ["Materuni Overnight Village Experience", 90]
+  ];
+  if (!homepageSource.includes('import { experienceItems } from "../data/experiences"') || !homepageSource.includes("experienceItems.map((item, index) =>")) fail("Homepage must render tour cards from the shared local experience catalogue");
+  else pass("Homepage tour cards use the shared local experience catalogue");
+  if (!catalogueSource || !requiredExperiences.every(([name, price]) => catalogueSource.includes('["' + name + '",' + price + ','))) fail("Local experience catalogue must contain all six verified experiences and published USD prices");
+  else pass("Local experience catalogue contains all six verified experiences and published USD prices");
+  if (!catalogueSource.includes("cooking_image/1792089297987-cooking-class.jpg") || catalogueSource.includes('["Traditional Chagga Cooking Class",49,"Cook, taste & share local food","coffee_image/')) fail("Cooking experience must use its cooking-class image, not a coffee photograph");
+  else pass("Cooking experience uses its dedicated cooking-class image");
   if (/95-metre|95 metre|1,800 metres|No outsourced staff|fees go directly/i.test(homepageSource)) fail("Homepage contains unverified geographic or community-benefit claims");
   else pass("Homepage avoids unverified geographic and community-benefit claims");
 }
