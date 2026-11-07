@@ -1,16 +1,10 @@
 ---
 // @ts-nocheck
 import SiteLayout from "../layouts/SiteLayout.astro";
+import { experienceItems } from "../data/experiences";
 
 const itineraryPreview = "https://sskmzswoeljxwojcszta.supabase.co/storage/v1/object/public/materuni-images/story_image/1791601761441-q3iog8mni3r.jpg";
-const tours=[
-  {"key":"Waterfall & Chagga Culture","name":"Materuni Waterfall & Chagga Village Experience","price":40,"duration":"7–8 hours","detail":"Guided hike to the 95m waterfall, coffee roasting, Chagga dance, local lunch and complimentary Mbege tasting."},
-  {"key":"Traditional Coffee Experience","name":"Materuni Coffee & Chagga Culture Experience","price":36,"duration":"4–5 hours","detail":"From bean to cup: Chagga coffee traditions, roasting, grinding, brewing and fresh tasting."},
-  {"key":"Traditional Chagga Cooking Class","name":"Materuni Chagga Cooking & Village Experience","price":49,"duration":"5–6 hours","detail":"Hands-on traditional firewood cooking class, authentic local ingredients and shared village meal."},
-  {"key":"Materuni & Moshi Town Tour","name":"Materuni & Moshi Town Cultural Tour","price":52,"duration":"7–8 hours","detail":"Pair Materuni waterfall and coffee with a guided Moshi town history walk, local market and culture."},
-  {"key":"Materuni & Rau Forest Experience","name":"Materuni & Rau Forest Nature Experience","price":58,"duration":"7–8 hours","detail":"Combine Materuni waterfall with a guided nature walk in Rau Forest, ancient Mvule tree and birdlife."},
-  {"key":"Camping & Village Life","name":"Materuni Overnight Village Experience","price":90,"duration":"2 days · 1 night","detail":"Stay overnight in Materuni: tent setup, dinner by the fire, storytelling, breakfast and next-day village tour."}
-];
+
 ---
 <SiteLayout title="Build a Materuni Itinerary | Local Tours" description="Build a Materuni itinerary with waterfall hikes, Chagga coffee, cooking and overnight camping. Plan your visit with local hosts near Moshi, Tanzania." preloadImage={itineraryPreview}>
 <section class="media-hero" aria-labelledby="itinerary-title"><div><span class="eyebrow">YOUR TRIP, THOUGHTFULLY PLANNED</span><h1 id="itinerary-title" data-i18n="itinerary_page_title">Build a Materuni itinerary that feels like yours.</h1><p data-i18n="itinerary_page_intro">Choose the experiences you are interested in. We will arrange them into a practical suggested plan for your visit.</p></div><img src={itineraryPreview} alt="Lush nature and trail around Materuni in the Kilimanjaro foothills" width="1200" height="900" loading="eager" fetchpriority="high" decoding="async" /></section>
@@ -28,15 +22,9 @@ const tours=[
 <div class="booking-panel itinerary-output" id="output"><span class="eyebrow">YOUR PERSONAL PLAN</span><h2>Your itinerary will appear here.</h2><p>Select one or more experiences and create your suggested plan. A local host can then confirm timing, availability and transport.</p></div></div></section>
 <script>
 // @ts-nocheck
+import { experienceItems } from "../data/experiences";
 
-let tourData=[
-  {"key":"Waterfall & Chagga Culture","name":"Materuni Waterfall & Chagga Village Experience","price":40,"duration":"7–8 hours","detail":"Guided hike to the 95m waterfall, coffee roasting, Chagga dance, local lunch and complimentary Mbege tasting."},
-  {"key":"Traditional Coffee Experience","name":"Materuni Coffee & Chagga Culture Experience","price":36,"duration":"4–5 hours","detail":"From bean to cup: Chagga coffee traditions, roasting, grinding, brewing and fresh tasting."},
-  {"key":"Traditional Chagga Cooking Class","name":"Materuni Chagga Cooking & Village Experience","price":49,"duration":"5–6 hours","detail":"Hands-on traditional firewood cooking class, authentic local ingredients and shared village meal."},
-  {"key":"Materuni & Moshi Town Tour","name":"Materuni & Moshi Town Cultural Tour","price":52,"duration":"7–8 hours","detail":"Pair Materuni waterfall and coffee with a guided Moshi town history walk, local market and culture."},
-  {"key":"Materuni & Rau Forest Experience","name":"Materuni & Rau Forest Nature Experience","price":58,"duration":"7–8 hours","detail":"Combine Materuni waterfall with a guided nature walk in Rau Forest, ancient Mvule tree and birdlife."},
-  {"key":"Camping & Village Life","name":"Materuni Overnight Village Experience","price":90,"duration":"2 days · 1 night","detail":"Stay overnight in Materuni: tent setup, dinner by the fire, storytelling, breakfast and next-day village tour."}
-];
+const tourData = experienceItems.map((item) => ({ key: item[0], name: item[0], price: item[1], duration: item[7], detail: item[4] }));
 const form=document.getElementById("planner"), output=document.getElementById("output");
 
 const dateInput=document.getElementById("date");
